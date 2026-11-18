@@ -159,6 +159,67 @@ SELECT coalesce(regexp_extract(url_decode(users.amanda_xu.build_sru_url(:title))
 
 If the title rules change, regenerate every `expected_title` the same way.
 
+## Online evaluation (production monitoring)
+
+In addition to the offline evaluation above, two custom scorers are registered to the MLflow experiment
+(`1096079759943475`) for **online (production) monitoring**. When started, they automatically score
+new traces as they are logged to the experiment, without running a separate eval script.
+
+| Scorer | Type | What it checks | Sample rate |
+|---|---|---|---|
+| `ToolCallEfficiency` | Custom (LLM judge) | Whether the agent used tools efficiently: no redundant calls, repeated parameters, or calls that should have been consolidated. Returns `yes` or `no`. | 0.0% (stopped) |
+| `ToolCallCorrectness` | Custom (LLM judge) | Whether the tool call produced a correct SRU URL for the given correction title. | 0.0% (stopped) |
+
+Both monitoring jobs are currently **turned off** (0% sample rate). To start them:
+
+```python
+import mlflow
+from mlflow.genai.scorers import get_scorer, ScorerSamplingConfig
+
+mlflow.set_experiment(experiment_id="1096079759943475")
+
+efficiency = get_scorer(name="ToolCallEfficiency")
+efficiency = efficiency.start(sampling_config=ScorerSamplingConfig(sample_rate=0.1))
+
+correctness = get_scorer(name="ToolCallCorrectness")
+correctness = correctness.start(sampling_config=ScorerSamplingConfig(sample_rate=0.1))
+```
+
+To stop them:
+
+```python
+efficiency.stop()
+correctness.stop()
+```
+
+### Service principal and authentication for online evaluation
+
+Online scorers are LLM judges that call the Unity Gateway model service (e.g.
+`models.ai.gpt-5-6-luna`) to evaluate each trace. The model service requires `EXECUTE`
+permission plus `USE CATALOG` and `USE SCHEMA` on its parent catalog and schema.
+
+**Questions for the workspace admin:**
+
+1. What identity do scheduled scorers run as? (Experiment owner, system service principal,
+   or a dedicated service principal?)
+2. Does that identity have `EXECUTE` on the model service the LLM judges call?
+3. Does that identity have `USE CATALOG` and `USE SCHEMA` on the model service's catalog and schema?
+4. Are there workspace-level settings required to allow scheduled scorers to call Unity Gateway
+   model services?
+5. Can the admin test by starting one scorer at a low sample rate (e.g. 0.1) and confirming new
+   traces get scored?
+
+### Online vs offline evaluation
+
+| Aspect | Offline evaluation | Online evaluation (production monitoring) |
+|---|---|---|
+| How it runs | `mlflow.genai.evaluate()` in a notebook with a `predict_fn` that calls the agent | Scheduled scorers automatically score traces as they are logged to the experiment |
+| Scorers | `sru_url_match`, `correctness`, `relevant_to_notice`, `no_invented_urls`, `safety` (5 scorers) | `ToolCallEfficiency`, `ToolCallCorrectness` (2 custom scorers) |
+| Dataset | 41 labelled notices in `datasets/sru-eval-0.csv` | No dataset -- scores live traces from production traffic |
+| Authentication | Service principal with OAuth M2M and `CAN_USE` on the app | Depends on the scorer's identity (see admin questions above) |
+| When it runs | On demand (run the notebook) | Continuously when scorers are started (sample rate > 0) |
+| Cost | ~7 minutes per run, 41 traces, 5 scorers | Per-trace LLM judge calls at the configured sample rate |
+
 ## Troubleshooting
 
 | Symptom | Cause / fix |

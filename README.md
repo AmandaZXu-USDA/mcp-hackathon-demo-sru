@@ -197,8 +197,11 @@ The app gets these through `valueFrom` in [`mcp_server/app.yaml`](mcp_server/app
 * **Safe tool behaviour.** The MCP tool is annotated read-only and idempotent, and returns stable error
   categories with an error ID instead of upstream error bodies. The outbound HTTP call uses
   `allow_redirects=False` to prevent SSRF via redirects.
-* **Evaluation.** An offline MLflow GenAI evaluation checks tool-call efficiency with the `ToolCallEfficiency`
-  scorer (LLM-as-judge). See [`eval/databricks/`](eval/databricks/README.md) and the
+* **Evaluation.** Offline MLflow GenAI evaluation checks URLs and agent behaviour over 41 labelled
+  notices (5 scorers: `sru_url_match`, `correctness`, `relevant_to_notice`, `no_invented_urls`, `safety`).
+  Online monitoring uses two registered custom scorers (`ToolCallEfficiency`, `ToolCallCorrectness`)
+  that score live traces automatically when started. Both are currently stopped (0% sample rate).
+  See [`eval/databricks/`](eval/databricks/README.md) and the
   [`eval/databricks/doc/`](eval/databricks/doc/) evaluation document.
 
 ### Tracing
