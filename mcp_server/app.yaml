@@ -1,0 +1,13 @@
+command:
+  - /bin/sh
+  - -c
+  - "export PYTHONPATH=/app/python/source_code/src:$PYTHONPATH && python -m sru_server.app"
+env:
+  - name: SERVING_ENDPOINT
+    valueFrom: serving-endpoint
+  - name: AGENT_TIMEOUT_SECONDS
+    value: "300"
+  - name: MODEL_SERVICE
+    valueFrom: model-service
+  - name: MLFLOW_EXPERIMENT_ID
+    valueFrom: app-experiment

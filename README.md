@@ -1,189 +1,78 @@
-# GSA MCP Hackathon — Server Template
+# sru-syntax-mcp
 
-A ready-to-run starter for building a [Model Context Protocol (MCP)](https://modelcontextprotocol.io) server in Python, plus deployment kits for **IBM Cloud (watsonx Orchestrate)** and **Databricks**.
+Converts erratum/correction notice titles into NAL Alma production SRU search URLs for the original article.
 
-Built with [FastMCP](https://github.com/jlowin/fastmcp) and [uv](https://docs.astral.sh/uv/). If you have never built an MCP server before, start with **[QUICKSTART.md](QUICKSTART.md)**.
+This folder is a Declarative Automation Bundle with one Databricks App and one MLflow experiment.
+The workspace is at its 100-app limit, so the MCP server and the agent share the `sru-syntax-mcp` app:
 
----
+| Endpoint | Code | What it does |
+| --- | --- | --- |
+| `/mcp` | `mcp_server/app.py` | MCP server (streamable HTTP) with one tool, `build_sru_search_url`, that calls the agent-sru-syntax Supervisor Agent endpoint `mas-c8629507-endpoint` |
+| `POST /invocations`, `POST /responses` | `mcp_server/agent.py` | OpenAI Agents SDK agent that uses the `/mcp` tool over localhost |
+| `GET /health` | `mcp_server/app.py` | Liveness check |
 
-## What is an MCP server?
+Agent traces go to the experiment `/Users/amanda.xu@usda.gov/sru-syntax-agent-uc-experiment`
+(ID `131270370350843`), which stores them in Unity Catalog tables `users.amanda_xu.sru_syntax_agent_*`.
 
-An MCP server exposes **tools** (functions the model can call), **prompts** (reusable conversation starters), and **resources** (data the model can read) to an AI client such as Claude Desktop, Claude Code, or an agent platform like watsonx Orchestrate. You write the tools; the client's model decides when to call them.
-
-This template gives you a working server with one example of each, so you can replace the examples with your own service and deploy.
-
----
-
-## Repo structure
+## Layout
 
 ```
-mcp-hackathon-template/
-├── README.md                  # This file
-├── QUICKSTART.md              # 5-minute clone → run → connect walkthrough
-├── main.py                    # Local entry point (uv run python main.py)
-├── pyproject.toml             # Package + dependencies (uv)
-├── requirements.txt           # Mirror of runtime deps (for buildpack hosts)
-├── Dockerfile                 # Container image (streamable-HTTP, port 8080)
-├── manifest.yaml              # cloud.gov (Cloud Foundry) deploy
-├── server.json                # MCP registry metadata
-├── .env.example               # Copy to .env for local dev
-├── .github/workflows/ci.yml   # Lint + test on push/PR
-├── docs/                      # Vendor-contributed reference materials
-├── src/
-│   └── example_server/        # ← rename to your service
-│       ├── app.py             # Thin entry point: builds FastMCP, picks transport
-│       ├── config.py          # Settings from env vars / .env
-│       ├── models.py          # Pydantic models & enums for tool params
-│       ├── utils.py           # Shared helpers (HTTP client, pagination)
-│       ├── routes.py          # HTTP-only routes (/health, /version)
-│       ├── tools/             # ONE FILE PER TOOL
-│       │   ├── __init__.py    #   register_tools(mcp) aggregator
-│       │   └── example_tool.py
-│       ├── prompts/
-│       │   ├── __init__.py    #   register_prompts(mcp) aggregator
-│       │   └── example.py
-│       └── resources/
-│           ├── __init__.py    #   register_resources(mcp) aggregator
-│           └── example.py
-├── tests/                     # Import + registration smoke tests
-├── eval/                      # Stub → build a Phoenix eval harness (see mcp-eval skill)
-└── deploy/
-    ├── README.md              # Which deployment kit to use
-    ├── ibm/                   # watsonx Orchestrate: 3 kits (see below)
-    └── databricks/            # Databricks Apps kit
+sru-syntax-mcp/
+  databricks.yml                     bundle: app, experiment, variables
+  mcp_server/                        the deployed app
+    app.py                           MCP server + agent HTTP routes
+    agent.py                         agent, local MCP connection, MLflow tracing
+    app.yaml, requirements.txt       env from app resources; dependencies
+  agent/                             standalone agent app version (not deployed; use if app capacity frees up)
+  setup/create_uc_backed_experiment.py  optional: experiment with traces in Unity Catalog
 ```
 
----
+## App resources
 
-## Getting started
+The app gets these through `valueFrom` in `mcp_server/app.yaml`:
 
-### Prerequisites
-- [uv](https://docs.astral.sh/uv/) — `pip install uv` or `brew install uv`
+* `serving-endpoint` -> `SERVING_ENDPOINT`: Supervisor Agent endpoint, `CAN_QUERY`
+* `model-service` -> `MODEL_SERVICE`: Unity Gateway model service (default `models.ai.gpt-5-6-luna`), `EXECUTE`
+* `app-experiment` -> `MLFLOW_EXPERIMENT_ID`: Unity Catalog-backed experiment (`var.trace_experiment_id`), `CAN_EDIT`
+* `trace-annotations`, `trace-logs`, `trace-metrics`, `trace-spans`: the four `users.amanda_xu.sru_syntax_agent_otel_*` tables, `MODIFY` (includes `SELECT`)
 
-### Install and run
+## Deploy
+
+Run from this folder (the bundle root):
 
 ```bash
-cp .env.example .env
-uv sync
-uv run python main.py
+databricks bundle validate --strict -t dev
+
+# One time: the sru-syntax-mcp app already exists, so let the bundle manage it
+databricks bundle deployment bind sru_syntax_mcp sru-syntax-mcp -t dev
+
+databricks bundle deploy -t dev
+databricks bundle run sru_syntax_mcp -t dev
 ```
 
-The server starts in **stdio** mode — it talks JSON-RPC over stdin/stdout, which is how local clients (Claude Desktop, Claude Code) launch it. See [QUICKSTART.md](QUICKSTART.md) to connect a client.
+Override any variable with `--var`, for example `--var model_service=models.ai.gpt-5-6-sol`.
 
-### Verify
+## Test the agent
 
 ```bash
-uv sync --group dev
-uv run pytest tests/ -v      # tests
-uv run ruff check .          # lint
+curl -X POST "https://sru-syntax-mcp-7474654188777746.aws.databricksapps.com/invocations" \
+  -H "Authorization: Bearer <OAUTH_TOKEN>" -H "Content-Type: application/json" \
+  -d '{"input": [{"role": "user", "content": "Correction: <article title>"}]}'
 ```
 
----
+Apps require an OAuth token (`databricks auth token`); personal access tokens are not accepted.
+Each title can take 60-90 seconds because the Supervisor Agent does the lookup.
 
-## The one-tool-per-file pattern
+## Tracing
 
-Each tool lives in its own file under `src/example_server/tools/` and exposes a `register(mcp)` function. `tools/__init__.py` calls each one from a single `register_tools(mcp)`. This keeps the tool list scannable and lets you add or remove an integration by touching two files.
+`mlflow.openai.autolog()` traces every model and MCP tool call automatically. `run_agent` adds an
+`AGENT` span plus a `preprocessing` child span.
 
-**Step 1 — create `src/example_server/tools/my_tool.py`:**
+Traces are stored in Unity Catalog under `users.amanda_xu`:
 
-```python
-from typing import Annotated
-from urllib.parse import quote
-from fastmcp import FastMCP
+* `sru_syntax_agent_otel_spans`, `_otel_logs`, `_otel_metrics`, `_otel_annotations` (tables)
+* `sru_syntax_agent_trace_unified`, `sru_syntax_agent_trace_metadata` (views)
 
-from example_server.utils import fetch_json
-
-
-def register(mcp: FastMCP) -> None:
-    @mcp.tool(
-        name="example_get_thing",
-        annotations={
-            "title": "Get a thing",
-            "readOnlyHint": True,
-            "destructiveHint": False,
-            "idempotentHint": True,
-            "openWorldHint": True,
-        },
-    )
-    async def get_thing(thing_id: Annotated[str, "The ID to fetch."]) -> dict:
-        """One-line summary. Document the data source, its update cadence,
-        and the return shape here — the model reads this docstring."""
-        safe_id = quote(thing_id, safe="")
-        return await fetch_json(f"things/{safe_id}")
-```
-
-**Step 2 — wire it up in `tools/__init__.py`:**
-
-```python
-from example_server.tools import example_tool, my_tool
-
-def register_tools(mcp) -> None:
-    example_tool.register(mcp)
-    my_tool.register(mcp)  # ← add this line
-```
-
-**Step 3 — add any API key** as a typed field in `config.py` and document the env var in `.env.example`.
-
-Prompts (`prompts/`) and resources (`resources/`) follow the exact same `register(mcp)` + aggregator pattern.
-
----
-
-## Rename the package
-
-Before publishing your server, rename `example_server` to your service (e.g. `census_mcp`):
-
-1. Rename the folder `src/example_server/` → `src/<your_name>/`.
-2. Update `pyproject.toml`: the `[project].name`, `[project.scripts]`, and `[tool.hatch.build.targets.wheel].packages`.
-3. Find-and-replace `example_server` across `src/`, `tests/`, `main.py`, `Dockerfile`, and `manifest.yaml`.
-
----
-
-## Tool design tips (federal data)
-
-- **Return structured data, not prose.** Return dicts/lists with consistent keys and let the model narrate.
-- **Document freshness.** Federal datasets lag; state the update frequency and "as-of" date in the docstring.
-- **Expose pagination.** Use `PaginationParams` / `paginate()` from `utils.py`, and return `has_more` / `next_offset`.
-- **Use explicit timeouts.** `utils.fetch_json` defaults to 30s.
-- **Actionable errors.** Return an error dict with a `hint`, not a raw stack trace.
-- **Constrain outbound requests.** Keep API origins in operator-controlled code or configuration, pass only validated relative paths to `fetch_json`, and encode path segments. Never pass a tool-supplied URL directly to an HTTP client.
-- **Treat redirects and DNS as security boundaries.** Redirects are disabled by default. A server that must fetch caller-supplied URLs needs connection-time IP validation on every hop plus network egress controls; a one-time DNS check is not sufficient.
-- **Keep sensitive data out of errors and logs.** Do not expose or log upstream bodies, headers, full URLs, query strings, credentials, stack traces, SSNs, dates of birth, or addresses.
-
----
-
-## Deploying
-
-Local development uses stdio. To share your server with an agent platform, deploy it and register it. See **[deploy/README.md](deploy/README.md)** for a chooser, then:
-
-- **IBM watsonx Orchestrate** — [deploy/ibm/](deploy/ibm/) (three kits: local stdio toolkit, Code Engine build-from-Git, and prebuilt image).
-- **Databricks Apps** — [deploy/databricks/](deploy/databricks/).
-
-Both read the same server code; `app.py` automatically serves HTTP when the platform injects a port.
-
----
-
-## Partner reference materials
-
-The [`docs/`](docs/) directory contains educational reference materials that
-IBM and Databricks may contribute for hackathon participants. Vendor-contributed
-materials do not represent the views, positions, or policies of GSA or the
-United States Government.
-
-GSA does not endorse any commercial product, service, or enterprise referenced
-in these materials. Reference to a commercial product, service, or enterprise
-does not constitute or imply endorsement, recommendation, or favoring by GSA or
-the United States Government. These materials are provided for educational
-purposes only. See [`docs/README.md`](docs/README.md) for the complete notice and
-contribution guidance.
-
----
-
-## Evaluations
-
-Measuring how well an LLM can use your tools is the real test of server quality. This template intentionally does **not** ship an eval harness — see [eval/README.md](eval/README.md) for how to build one with the `mcp-eval` skill.
-
----
-
-## License
-
-[MIT](LICENSE). See [SECURITY.md](SECURITY.md) for the vulnerability disclosure policy and hackathon security notes.
+`setup/create_uc_backed_experiment.py` created the experiment and tables (already run once). To use a
+different location, run it with new names and set `trace_experiment_id` / `trace_table_prefix` in
+`databricks.yml`. The original workspace-backed `sru-syntax-agent-experiment` is kept for its earlier trace.

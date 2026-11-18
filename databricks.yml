@@ -1,0 +1,75 @@
+bundle:
+  name: sru_syntax
+
+variables:
+  mcp_app_name:
+    description: "Name of the MCP server app (already deployed as sru-syntax-mcp; bind it before the first deploy)"
+    default: sru-syntax-mcp
+  serving_endpoint:
+    description: "Agent Bricks Supervisor Agent endpoint (agent-sru-syntax) the MCP server calls"
+    default: mas-c8629507-endpoint
+  model_service:
+    description: "Unity Gateway model service the agent uses"
+    default: models.ai.gpt-5-6-luna
+  trace_experiment_id:
+    description: "Experiment with a Unity Catalog trace location (created by setup/create_uc_backed_experiment.py)"
+    default: "131270370350843"
+  trace_table_prefix:
+    description: "Unity Catalog catalog.schema.prefix of the trace tables"
+    default: users.amanda_xu.sru_syntax_agent
+
+resources:
+  experiments:
+    # Original workspace-backed experiment (kept for its earlier traces; the app now uses
+    # the Unity Catalog-backed experiment in var.trace_experiment_id)
+    sru_agent_experiment:
+      name: /Users/${workspace.current_user.userName}/sru-syntax-agent-experiment
+
+  apps:
+    # One app hosts both the MCP server (/mcp) and the SRU syntax agent (/invocations, /responses).
+    # The workspace is at its 100-app limit, so the agent shares this app instead of having its own.
+    sru_syntax_mcp:
+      name: ${var.mcp_app_name}
+      description: "MCP server and SRU syntax agent: correction titles to NAL Alma SRU search URLs"
+      source_code_path: ./mcp_server
+      resources:
+        - name: serving-endpoint
+          description: "agent-sru-syntax Supervisor Agent endpoint"
+          serving_endpoint:
+            name: ${var.serving_endpoint}
+            permission: CAN_QUERY
+        - name: model-service
+          uc_securable:
+            securable_full_name: ${var.model_service}
+            securable_type: MODEL_SERVICE
+            permission: EXECUTE
+        - name: app-experiment
+          experiment:
+            experiment_id: ${var.trace_experiment_id}
+            permission: CAN_EDIT
+        # Unity Catalog trace tables (MODIFY also grants SELECT)
+        - name: trace-annotations
+          uc_securable:
+            securable_full_name: ${var.trace_table_prefix}_otel_annotations
+            securable_type: TABLE
+            permission: MODIFY
+        - name: trace-logs
+          uc_securable:
+            securable_full_name: ${var.trace_table_prefix}_otel_logs
+            securable_type: TABLE
+            permission: MODIFY
+        - name: trace-metrics
+          uc_securable:
+            securable_full_name: ${var.trace_table_prefix}_otel_metrics
+            securable_type: TABLE
+            permission: MODIFY
+        - name: trace-spans
+          uc_securable:
+            securable_full_name: ${var.trace_table_prefix}_otel_spans
+            securable_type: TABLE
+            permission: MODIFY
+
+targets:
+  dev:
+    mode: development
+    default: true

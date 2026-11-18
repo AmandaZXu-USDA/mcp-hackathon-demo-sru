@@ -1,204 +1,171 @@
-# Databricks offline MLflow evaluation
+# Databricks offline MLflow evaluation: sru-syntax-mcp
 
-Evaluate an LLM agent that uses **your deployed MCP server** (a Databricks App),
-scored by MLflow GenAI judges (Correctness, Safety, RelevanceToQuery, and a
-custom conciseness guideline). The eval runs **inside a Databricks notebook**
-against the already-deployed app.
+Evaluates the SRU syntax agent while it uses the **deployed** `sru-syntax-mcp` MCP server
+(a Databricks App), scored by MLflow GenAI judges plus a deterministic URL check. Adapted from
+the template kit in [`mcp-hackathon/eval/databricks/`](../../../mcp-hackathon/eval/databricks/README.md).
+
+Each dataset row is an erratum/correction notice title. The agent should return the NAL Alma
+production SRU URL for the original article, or no URL when the notice names no single article.
 
 ## What's in this kit
 
-This kit is a small **delta on top of the Databricks "generate agent from code"
-output**. You do **not** rewrite the generated agent. The kit adds exactly two
-files:
-
 | File | What it is |
 |------|------------|
-| `agent_eval_offline.py` | The eval script. Runs `mlflow.genai.evaluate` over a small Q/A dataset using a `predict_fn` that calls your agent. |
-| `agent_server/eval_auth.py` | The auth "fixer." Monkeypatches the generated agent at runtime so it authenticates to the OAuth-gated app with a service principal. The generated `agent.py` stays unmodified. |
-| `setup-eval-sp.sh` | One-shot script that provisions the service principal the eval needs (SP + entitlement + app grant + secret scope). |
+| `agent_eval_offline.py` | The eval script. Runs `mlflow.genai.evaluate` over the dataset with a `predict_fn` that calls the agent. |
+| `eval_auth.py` | Auth shim. Patches the agent's `ws` client and `mcp_url()` at runtime so it reaches the OAuth-gated app as a service principal. `agent/agent_server/agent.py` stays unmodified. |
+| `datasets/sru-eval-0.csv` | 41 rows covering every `extraction_rule` in the source spreadsheet (2 to 5 rows each), including 4 bare notices, 4 issue-level notices and the 2 titles that got an empty Supervisor Agent reply in the first 10-title test. |
 
-Everything else (`agent_server/agent.py`, `agent_server/utils.py`, the
-`agent_server/__init__.py`) comes from the Databricks agent export — the kit
-does not ship its own copies.
+Differences from the template:
+
+* **The agent is ours, not Playground-generated.** The script imports `sru-syntax-mcp/agent/agent_server/agent.py`
+  (the standalone agent version), so there is no export step and `eval_auth.py` sits next to the script.
+* **No copy of `setup-eval-sp.sh`.** Use the template script with this app's names (Step 1).
+* **Scorers fit the task:** a deterministic `sru_url_match` is the primary metric; the built-in
+  `RelevanceToQuery` is replaced by a domain-aware guideline (it reads "Correction to: <title>" as a
+  request to correct the article).
+* **No `mlflow.tracing.set_destination(...)`.** The experiment stores traces in Unity Catalog; setting
+  an experiment destination bypasses those tables, so assessments are not logged. A SQL warehouse ID
+  is set instead, which UC trace reads require.
 
 ## Why a service principal is required
 
-A deployed Databricks App is OAuth-gated. An offline notebook eval **cannot**
-reach it with the notebook's own identity:
+The app is OAuth-gated. An offline notebook eval cannot reach it with the notebook's identity: runtime
+auth cannot mint an OAuth token, and personal access tokens are rejected. A **service principal using
+OAuth M2M** with `CAN_USE` on the app is the identity that works. See the template README for the full
+explanation and diagram.
 
-- **OBO (on-behalf-of-user)** reads the `x-forwarded-access-token` request
-  header, which only exists when a real user calls the deployed app over HTTP.
-  A notebook calls `invoke()` in-process — there is no request, no header.
-- A plain notebook identity **cannot mint an OAuth token** (`OAuth tokens are
-  not available for runtime authentication`), so it cannot authenticate to the
-  app either.
+## Step 1 — Provision the service principal (one time)
 
-The only identity that reliably reaches the app from an offline eval is a
-**service principal using OAuth machine-to-machine (M2M)**. `eval_auth.py`
-injects that credential into the (unmodified) generated agent.
-
-### Authentication flow
-
-```mermaid
-flowchart LR
-    subgraph Online["Generated agent: online request path"]
-        U["Signed-in user"] -->|"HTTP request"| G["Databricks-hosted agent"]
-        G -->|"reads x-forwarded-access-token"| O["OBO workspace client"]
-        O -->|"user token"| A1["OAuth-gated MCP app"]
-    end
-
-    subgraph OfflineFail["Generated agent: offline notebook path"]
-        N1["MLflow eval notebook"] -->|"in-process invoke()"| I1["Generated agent"]
-        I1 -. "no HTTP request" .-> H["No forwarded user token"]
-        H -. "cannot authenticate" .-> A2["OAuth-gated MCP app"]
-    end
-
-    subgraph OfflineWork["Eval kit: offline M2M path"]
-        N2["MLflow eval notebook"] -->|"loads secret scope credentials"| S["Eval service principal"]
-        S -->|"OAuth M2M token"| I2["Patched workspace client"]
-        I2 -->|"CAN_USE grant"| A3["OAuth-gated MCP app"]
-    end
-```
-
-The generated OBO path works when the agent receives a real HTTP request from a
-signed-in user. An offline eval instead calls the exported agent directly inside
-the notebook process, so there is no `x-forwarded-access-token` to propagate.
-The eval service principal supplies its own non-user identity, obtains an OAuth
-M2M token, and is explicitly granted `workspace-access` plus `CAN_USE` on the MCP
-app. It authenticates the notebook-to-app hop; it does not replace the model
-endpoint or the MLflow judges.
-
----
-
-## Step 1 — Deploy your MCP server
-
-Deploy with the deploy kit (`deploy/databricks/`) and note the app's `/mcp` URL.
-
-## Step 2 — Generate and export the agent
-
-In the Databricks **Playground**, generate an agent from your MCP server and
-export it to your workspace ("agent from code"). Leave **On-Behalf-Of (OBO)**
-authentication **unchecked** — the eval uses a service principal instead.
-
-This produces an `agent_server/` package (`agent.py`, `utils.py`, `__init__.py`)
-in your workspace.
-
-## Step 3 — Add the two kit files
-
-Copy the two kit files into the exported agent so they sit alongside the
-generated code:
-
-```
-<exported agent folder>/
-├── agent_eval_offline.py          <- from this kit
-└── agent_server/
-    ├── agent.py                   (generated by Databricks — leave as-is)
-    ├── utils.py                   (generated by Databricks)
-    ├── __init__.py                (generated by Databricks)
-    └── eval_auth.py               <- from this kit
-```
-
-`eval_auth.py` **must** go inside `agent_server/` (it is imported as
-`agent_server.eval_auth`).
-
-## Step 4 — Provision the service principal
-
-You must be a **workspace admin** of the workspace where the app is deployed
-(you are, for your own hackathon workspace). From your machine, with the
-Databricks CLI authenticated:
+You must be a workspace admin. From a machine with the Databricks CLI and `jq`, at the repo root:
 
 ```bash
-# reuse the deploy config for APP_NAME / host / profile:
-set -a; source deploy/databricks/.env; set +a
-
-bash eval/databricks/setup-eval-sp.sh
+bash mcp-hackathon/eval/databricks/setup-eval-sp.sh \
+  --app-name sru-syntax-mcp \
+  --sp-name sp-sru-syntax-eval \
+  --scope sru-syntax-eval-secrets
 ```
 
-The script is idempotent and will:
+The script creates the SP, grants `workspace-access` and `CAN_USE` on the app, and stores `sp_id` and
+`sp_secret` in the secret scope. Minting the OAuth secret is an **account-level** action; if the script
+cannot do it, it prints the account console step, then re-run it with `--oauth-secret '<value>'`.
 
-1. Create (or reuse) a service principal `sp-mcp-eval`.
-2. Grant it the `workspace-access` entitlement.
-3. Grant it `CAN_USE` on your MCP app.
-4. Mint an OAuth secret for it.
-5. Create a Databricks secret scope `mcp-eval-secrets` and store `sp_id` +
-   `sp_secret`.
-6. Print the CONFIG values to paste into the eval.
+The workspace already has an `sp-mcp-eval` SP and `mcp-eval-secrets` scope, but you cannot read that scope,
+so create a dedicated SP for this app.
 
-**If step 4 (OAuth secret) can't be automated** — minting an SP OAuth secret is
-an *account-level* action. If your CLI isn't authenticated at the account level,
-the script prints the one UI step to do it, then re-run with the value:
+## Step 2 — Run the eval in a notebook
 
-```bash
-# after generating the secret in the account console UI:
-bash eval/databricks/setup-eval-sp.sh --oauth-secret 'dose_xxxxxxxx...'
-```
+Open a notebook in this folder (`sru-syntax-mcp/eval/databricks/`).
 
-Everything else the script did is preserved (idempotent), so re-running only
-finishes the last step.
-
-> Useful flags: `--app-name`, `--sp-name`, `--scope`, `--account-id`,
-> `--oauth-secret`. Run `bash eval/databricks/setup-eval-sp.sh --help`.
-
-## Step 5 — Run the eval in a notebook
-
-Open a notebook in the exported agent folder (so `agent_server/` is importable).
-
-**Cell 1 — install deps and restart** (run this alone, first):
+**Cell 1** (run alone, first):
 
 ```python
-%pip install openai-agents databricks-openai
+%pip install "openai-agents>=0.25" "databricks-openai>=0.17" "mlflow[databricks]>=3.14"
 %restart_python
 ```
 
-The generated agent imports `agents` (openai-agents) and `databricks_openai`,
-which are not on the default Databricks runtime. `%restart_python` must run so
-the freshly installed packages become importable. The eval also overrides the
-generated agent's `/v1/chat/completions` default with `/v1/responses`. OpenAI
-reasoning endpoints require the Responses API when MCP function tools are used.
+**Cell 2:** paste the contents of `agent_eval_offline.py` and run it. The `CONFIG` block already
+points at this app; each value can also be set with an environment variable:
 
-**Cell 2 — the eval.** Paste the contents of `agent_eval_offline.py`, edit the
-`CONFIG` block at the top, and run:
+| Setting | Default | Env var |
+|---|---|---|
+| `MCP_SERVER_URL` | `https://sru-syntax-mcp-7474654188777746.aws.databricksapps.com/mcp` | `SRU_EVAL_MCP_URL` |
+| `MODEL` | `models.ai.gpt-5-6-luna` | `SRU_EVAL_MODEL` |
+| `EXPERIMENT_ID` | `131270370350843` (UC-backed SRU agent experiment) | `SRU_EVAL_EXPERIMENT_ID` |
+| `SQL_WAREHOUSE_ID` | `50d2bd4ddf65e0f5` (Serverless Starter Warehouse) | `MLFLOW_TRACING_SQL_WAREHOUSE_ID` |
+| `SECRET_SCOPE` | `sru-syntax-eval-secrets` | none |
+| `AUTH_MODE` | `service_principal` | `SRU_EVAL_AUTH` |
 
-```python
-MCP_SERVER_URL           = "https://<your-app>.aws.databricksapps.com/mcp"
-MODEL                    = "databricks-claude-haiku-4-5"   # a serving endpoint you can query
-DATABRICKS_HOST          = "https://<your-workspace>.cloud.databricks.com/"
-EXPERIMENT_ID            = "<your-experiment-id>"          # an experiment you own
-SECRET_SCOPE             = "mcp-eval-secrets"              # from setup-eval-sp.sh
-SECRET_KEY_CLIENT_ID     = "sp_id"
-SECRET_KEY_CLIENT_SECRET = "sp_secret"
+A run takes about 7 minutes (41 rows, 3 at a time; the Supervisor Agent behind the tool takes about
+20 seconds per title). Metrics print at the end; per-row results and traces are in the experiment's
+**Evaluations** tab.
+
+### Local dev copy of the server
+
+To evaluate code changes before deploying, run `mcp_server/app.py` locally and point the eval at it with
+`SRU_EVAL_MCP_URL=http://127.0.0.1:<port>/mcp` and `SRU_EVAL_AUTH=current_user`. The local server has no
+Apps OAuth gate, so the current identity is enough.
+
+## Scorers
+
+| Scorer | Kind | Passes when |
+|---|---|---|
+| `sru_url_match` | Deterministic (primary) | The reply has an SRU URL on the production base whose decoded `alma.title` equals `expected_title`; or, when `expected_title` is blank, the reply has no SRU URL. |
+| `correctness` | LLM judge | The reply contains the row's `expected_facts`. |
+| `relevant_to_notice` | LLM guideline | The reply gives the SRU URL for the original article, or explains there is no single article. |
+| `no_invented_urls` | LLM guideline | Only tool-produced URLs, no unrelated commentary, and errors are relayed rather than papered over. |
+| `safety` | LLM judge | No harmful content. |
+
+Results against a local copy of the server (2026-11-18), before and after the agent instructions were
+changed to handle bare notices (two runs after):
+
+| Metric | Before | After (run 1) | After (run 2) |
+|---|---|---|---|
+| `sru_url_match` | 1.00 | 1.00 | 1.00 |
+| `correctness` | 0.91 | 1.00 | 1.00 |
+| `relevant_to_notice` | 0.91 | 1.00 | 0.91 |
+| `no_invented_urls` | 0.82 | 0.91 | 0.91 |
+| `safety` | 1.00 | 1.00 | 1.00 |
+
+* Before, the bare `Correction` row failed: the agent asked for the full title. It now replies that the
+  notice names no article, without calling the tool.
+* The remaining `no_invented_urls` failure is the issue-level row: the judge counts the agent's explanation
+  of why there is no URL as "unrelated commentary". This is the guideline's wording, not an agent error.
+* The Supervisor Agent's occasional empty replies would show up as `sru_url_match` failures (none occurred
+  in these runs).
+
+After the dataset grew to 41 rows, before and after the instructions were changed to answer issue-level
+notices directly (one run each, 2026-11-18):
+
+| Metric | Before | After |
+|---|---|---|
+| `sru_url_match` | 0.93 (38/41) | 0.93 (38/41) |
+| `correctness` | 0.93 | 0.90 |
+| `no_invented_urls` | 0.93 | 0.93 |
+| `relevant_to_notice` | 0.83 | 0.85 |
+| `safety` | 1.00 | 1.00 |
+
+What the new rows exposed (before the change):
+
+* **Empty Supervisor Agent replies (agent error):** 3 titles got no URL: "Overexpression of FBR41 ...",
+  "Structure–Function Parameters ..." and "Homologous promoter derived ...". These are the only
+  `sru_url_match` failures.
+* **Issue-level notices without notice wording (agent error):** for `Taxon 61(6)` and
+  `Errata to taxon 59(5)` the agent asked a clarifying question instead of saying the notice names no single
+  article. No URL was given, so `sru_url_match` passes, but both LLM guidelines fail.
+  **Fixed:** all 4 issue-level rows, and the 9 issue-level notices in the spreadsheet that are not in the
+  dataset, now get "covers a journal issue or several articles, ... no SRU URL" with no question, in 2 to
+  6 seconds (a tool call takes about 17). The prompt's examples are made up (e.g. `Taxon 72(3)`) so they do not leak dataset rows. The
+  remaining LLM-judge failures on these rows (`correctness` and `relevant_to_notice` on
+  `Errata to taxon 59(5)`, `no_invented_urls` on the two Data Papers rows) are judge strictness: the
+  replies are correct.
+* **Judge false negatives:** `relevant_to_notice` failed two correct URL answers for title-only notices
+  ("AAFP and ISFM Guidelines ...", "p21-Activated Kinase 1 ..."), apparently because the request has no
+  notice wording.
+
+## Dataset
+
+`datasets/sru-eval-0.csv` columns: `request` (the notice title, sent as-is), `expected_title` (the
+`alma.title` term from `users.amanda_xu.build_sru_url`, blank when no URL is expected) and `source_rule`
+(the extraction rule, logged as a tag). Every `request` is an `erratumn_article_title` from
+`Correction-Sample2-1494-Extracted-Titles-FINAL.xlsx`. The first 11 rows are one per `extraction_rule`
+(random_state=7); the next 30 add up to 3 more per rule (random_state=11) plus the known empty-reply titles.
+
+To add rows, append to the CSV and fill `expected_title` from the UC function (blank result = no URL expected):
+
+```sql
+SELECT coalesce(regexp_extract(url_decode(users.amanda_xu.build_sru_url(:title)),
+                'alma.title="(.*)" and alma.local_field_912', 1), '') AS expected_title
 ```
 
-Results print at the bottom and appear in the MLflow experiment UI.
-
-Expected first run (the built-in sample question):
-
-```
-metrics:
-  correctness/mean: 1.0
-  relevance_to_query/mean: 1.0
-  safety/mean: 1.0
-  conciseness/mean: 0.0   # the sample answer is verbose; drop/loosen this scorer if you don't care
-```
-
-## Customizing the eval
-
-- **Dataset:** edit `eval_dataset`. Each row is `{"inputs": {"request": "..."},
-  "expectations": {"expected_facts": ["..."]}}`. `expected_facts` must be a list
-  and must live under `expectations` (a top-level key is ignored by the
-  Correctness judge on MLflow 3.x).
-- **Scorers:** add, remove, or customize entries in `SCORERS` in the `CONFIG`
-  block. The template defaults to Safety, RelevanceToQuery, Correctness, and a
-  custom conciseness guideline.
+If the title rules change, regenerate every `expected_title` the same way.
 
 ## Troubleshooting
 
 | Symptom | Cause / fix |
 |---|---|
-| Agent answers with "I don't have access to tools" and logs `Failed to connect MCP server` | The MCP connection failed silently — the SP isn't reaching the app. Confirm the SP has `CAN_USE` on the app (step 4.3) and the secret scope holds valid creds. |
-| `403` on tool calls | SP lacks `CAN_USE` on the app, or lacks `workspace-access`. Re-run `setup-eval-sp.sh` (or grant in the UI). |
-| `ENDPOINT_NOT_FOUND` (404) on the model | `MODEL` isn't a valid serving-endpoint name. List them: `[e.name for e in WorkspaceClient().serving_endpoints.list()]`. |
-| `Function tools with reasoning_effort are not supported` (400) | The OpenAI reasoning endpoint received tools through `/v1/chat/completions`. Use the current eval script, which switches the generated agent to `/v1/responses` after import. |
-| `'NoneType' object has no attribute 'info'` then all scorers fail | Trace destination not set. The script sets it via `MlflowExperimentLocation`; make sure `EXPERIMENT_ID` is one you can write to. |
-| `bound to a different event loop` / `Event loop is closed` | Async-loop plumbing. The script already handles this with a single persistent loop — don't add `nest_asyncio`. |
-| Eval times out / hammers the app | Uncomment the tuning env vars near the top of `agent_eval_offline.py` (`MLFLOW_GENAI_EVAL_MAX_WORKERS=1`, timeouts). |
+| `Service-principal credentials are missing` | The secret scope or keys are missing. Re-run Step 1, or check `SECRET_SCOPE` / `SECRET_KEY_*`. |
+| Agent replies without a URL and logs a failed MCP connection, or tool calls return 401/403 | The SP is not reaching the app. Confirm it has `CAN_USE` on `sru-syntax-mcp` and `workspace-access`. |
+| `INVALID_PARAMETER_VALUE: sql_warehouse_id is required` | Reading UC-stored traces needs `MLFLOW_TRACING_SQL_WAREHOUSE_ID` set to a warehouse you can use. |
+| `no trace tagged with mlflow.eval.requestId was found` and missing assessments | Something set a trace destination other than the UC-backed experiment. Remove `set_destination` calls. |
+| A tool error such as `(error unavailable, id ...)` in replies | The server's Supervisor Agent call failed. Search `databricks apps logs sru-syntax-mcp` for the id. |
+| `bound to a different event loop` / `Event loop is closed` | Async plumbing. Do not add `nest_asyncio`; the script runs one persistent loop. |
