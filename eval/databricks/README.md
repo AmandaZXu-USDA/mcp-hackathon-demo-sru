@@ -1,5 +1,11 @@
 # Databricks offline MLflow evaluation: sru-syntax-mcp
 
+**Purpose:** verify that the SRU syntax agent produces correct NAL Alma production SRU URLs from
+erratum/correction notice titles. A labelled dataset of 41 notices is scored by a deterministic
+URL match plus four LLM judges (correctness, relevance, no invented URLs, safety), catching
+rule regressions, empty Supervisor Agent replies, and instruction-following failures before
+deploying changes.
+
 Evaluates the SRU syntax agent while it uses the **deployed** `sru-syntax-mcp` MCP server
 (a Databricks App), scored by MLflow GenAI judges plus a deterministic URL check. Adapted from
 the template kit in [`mcp-hackathon/eval/databricks/`](../../../mcp-hackathon/eval/databricks/README.md).
@@ -160,6 +166,11 @@ SELECT coalesce(regexp_extract(url_decode(users.amanda_xu.build_sru_url(:title))
 If the title rules change, regenerate every `expected_title` the same way.
 
 ## Online evaluation (production monitoring)
+
+**Purpose:** continuously monitor live agent traces for tool-call efficiency and correctness as
+the agent handles real correction titles in production. Two custom LLM judges score each trace
+when started, catching regressions in tool usage and URL output quality without running a
+separate eval script.
 
 In addition to the offline evaluation above, two custom scorers are registered to the MLflow experiment
 (`1096079759943475`) for **online (production) monitoring**. When started, they automatically score
