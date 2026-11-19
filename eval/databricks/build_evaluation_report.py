@@ -57,7 +57,7 @@ story += [
     p('SRU Syntax MCP Server - Evaluation Report', ParagraphStyle('T', parent=H1, fontSize=19, spaceAfter=4)),
     p('NAL Alma SRU URL builder for erratum/correction notices &nbsp;|&nbsp; Report date: November 18, 2026', SMALL),
     Spacer(1, 8),
-    p('This report covers four evaluations and a per-step latency analysis of the <b>sru-syntax-mcp</b> Databricks App (renamed <b>mcp-sru-syntax</b> on November 19, 2026 so Genie Code lists it as a custom MCP server; all tests in this report ran before the rename), a custom MCP server '
+    p('This report covers four evaluations and a per-step latency analysis of the <b>mcp-sru-syntax</b> Databricks App, a custom MCP server '
       '(streamable HTTP at <font face="Courier">/mcp</font>) exposing one tool, '
       '<font face="Courier">build_sru_search_url</font>. The tool sends an erratum/correction notice title to the '
       'agent-sru-syntax Supervisor Agent (serving endpoint <font face="Courier">mas-c8629507-endpoint</font>) and '
@@ -74,7 +74,7 @@ story += [
     Spacer(1, 6),
     table([
         ['Component', 'Value'],
-        ['App', 'mcp-sru-syntax (https://mcp-sru-syntax-7474654188777746.aws.databricksapps.com); tested as sru-syntax-mcp before the November 19, 2026 rename'],
+        ['App', 'mcp-sru-syntax (https://mcp-sru-syntax-7474654188777746.aws.databricksapps.com)'],
         ['MCP endpoint', '/mcp (stateless streamable HTTP, JSON responses)'],
         ['Tool', 'build_sru_search_url(correction_title: str) -> str (read-only, idempotent)'],
         ['Upstream agent', 'agent-sru-syntax Supervisor Agent, endpoint mas-c8629507-endpoint'],
@@ -116,7 +116,7 @@ story += [
          'Host set to the workspace URL (spark.databricks.workspaceUrl).'],
         ['ExceptionGroup / UnsupportedProtocol; app returned HTTP 401',
          'Inspector Gadget service principal had no permission on the app.',
-         'Granted CAN USE on sru-syntax-mcp to the service principal.'],
+         'Granted CAN USE on mcp-sru-syntax to the service principal.'],
         ['Tool error bad_response (HTTP 200, non-JSON from the agent endpoint)',
          "The app's own service principal (1ba82f86-...) could query the endpoint but had no access to the UC function the Supervisor Agent calls.",
          'Granted EXECUTE on users.amanda_xu.build_sru_url and USE SCHEMA on users.amanda_xu.'],
@@ -129,7 +129,7 @@ story += [
 # ---- Section 2: Offline evaluation ----
 story += [
     PageBreak(),
-    p('2. Databricks offline MLflow evaluation: sru-syntax-mcp', H1),
+    p('2. Databricks offline MLflow evaluation: mcp-sru-syntax', H1),
     p('<b>Purpose:</b> verify that the SRU syntax agent produces correct NAL Alma production SRU URLs from '
       'erratum/correction notice titles. A labelled dataset is scored by a deterministic URL match plus four LLM '
       'judges, catching rule regressions, empty Supervisor Agent replies, and instruction-following failures before '
@@ -137,7 +137,7 @@ story += [
     p('Method', H2),
     *bullets([
         '<font face="Courier">mlflow.genai.evaluate</font> runs over the dataset with a <font face="Courier">predict_fn</font> '
-        'that calls the SRU syntax agent while it uses the deployed sru-syntax-mcp MCP server.',
+        'that calls the SRU syntax agent while it uses the deployed mcp-sru-syntax MCP server.',
         'The app is OAuth-gated, so the eval reaches it as a service principal using OAuth M2M with CAN USE on the app '
         '(personal access tokens are rejected).',
         'Traces and assessments are stored in the Unity Catalog-backed experiment 131270370350843; a SQL warehouse ID '
@@ -386,13 +386,22 @@ print('Saved', OUTPUT_PATH)
 
 # DBTITLE 1,Verify report PDF
 import os
+import re
 from pypdf import PdfReader
 
 reader = PdfReader(OUTPUT_PATH)
 text = '\n'.join(page.extract_text() for page in reader.pages)
+flat = ' '.join(text.split())  # phrases can wrap across lines in extracted text
 print(f'{os.path.getsize(OUTPUT_PATH):,} bytes, {len(reader.pages)} pages')
 for check in ['1. Inspector Gadget testing', '2. Databricks offline MLflow evaluation', '3. Online evaluation',
               'build_sru_search_url', '0.93 (38/41)', 'ToolCallEfficiency', 'ToolCallCorrectness', '1096079759943475',
               'kindly-lamb-651', 'tr-49f67341cc640c67a33da696d5cecdd0', '4. Evaluation run',
-              '5. Agent latency per step', '18.62', '15.06', '68.9%', '53.77', 'about 69%', 'mcp-sru-syntax on November 19, 2026']:
-    print('OK  ' if check in text else 'MISSING  ', check)
+              '5. Agent latency per step', '18.62', '15.06', '68.9%', '53.77', 'about 69%', '2. Databricks offline MLflow evaluation: mcp-sru-syntax',
+              'Granted CAN USE on mcp-sru-syntax', 'deployed mcp-sru-syntax MCP server']:
+    print('OK  ' if check in flat else 'MISSING  ', check)
+
+# The server is named mcp-sru-syntax throughout. The only allowed old-name text is the
+# repo folder path sru-syntax-mcp/ (README link), which was not renamed.
+left = [flat[max(0, m.start() - 60):m.end() + 40] for m in re.finditer(r'sru-syntax-mcp', flat)
+        if not flat[m.end():m.end() + 1] == '/']
+print('old server name left:', len(left), left)
