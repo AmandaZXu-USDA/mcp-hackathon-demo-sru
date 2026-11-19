@@ -71,7 +71,7 @@ story += [
         ['4. Evaluation run kindly-lamb-651', 'Completed (1 judge error)', 'ToolCallEfficiency LLM judge on 2 agent traces: 1 yes, 1 judge parse error; trace review shows both traces used tools efficiently.'],
         ['5. Agent latency per step', 'Analyzed', '174 requests: those that call the tool take p50 22.5 s (tool about 69% of the time); 35 answered without the tool take p50 2.7 s. 1 error in 176 model calls.'],
         ['6. Live testing (November 19)', 'Passed; retry did not help', 'Page, page API, MCP and agent routes pass as Inspector Gadget. About 18 titles/min at 10 at a time. Every URL the agent returned matched the rules function. The empty-reply retry recovered 0 of 10 titles.'],
-        ['7. Lessons learned and recommendations', 'Summary', '19 lessons across access, MCP client, agent, evaluation, performance and engineering; 10 recommendations, starting with an independent, librarian-confirmed ground truth.'],
+        ['7. Lessons learned and recommendations', 'Summary', '20 lessons across access, MCP naming and client, agent, evaluation, performance and engineering; 10 recommendations, starting with an independent, librarian-confirmed ground truth.'],
     ], [2.0, 1.1, 4.0]),
     Spacer(1, 6),
     table([
@@ -451,6 +451,7 @@ story += [
         ['Access', 'The WorkspaceClient host must be the workspace URL, not the app URL; OAuth M2M finds its token endpoint there.', 'Section 1'],
         ['Access', 'Sharing the app needs workspace accounts first: none of the 8 planned NAL stakeholders had one, and adding users needs a workspace admin.', 'Access request, November 19'],
         ['MCP client', 'Client defaults assume fast tools: DatabricksMCPClient times out after 5 s, but this tool takes 15-90 s. Long-running tools need an explicit client timeout (300 s here).', 'Section 1'],
+        ['MCP naming', 'A Databricks App that hosts a custom MCP server must be named with the mcp- prefix to be offered as a custom MCP server in the Genie Code connectors. The first name, sru-syntax-mcp, did not appear there; after renaming the app to mcp-sru-syntax it did. Choose the name before the first deploy: the rename meant a new app with a new URL and service principal, so permissions and links in both repos had to be redone.', 'Databricks docs (Host an MCP server on Databricks Apps); app rename'],
         ['Agent', 'The agent never returned a wrong URL. Every miss was an empty reply that arrived in about 3 s, for the same titles each time.', 'Sections 6.3, 6.4'],
         ['Agent', 'A retry only helps intermittent failures. A live check before deploying showed the empty replies were tied to the title (0 of 10 recovered), so the retry adds latency without recovering these titles.', 'Section 6.4'],
         ['Agent', 'Prompt fixes can regress between runs: the issue-level fix from section 2 did not hold for "Taxon 61(6)" on November 19.', 'Sections 2, 6.3'],
@@ -540,11 +541,13 @@ for check in ['1. Inspector Gadget testing', '2. Databricks offline MLflow evalu
               '4,706 s', 'at least 7.8 min', '10.6 (231 s in total)', '30/33', '142/142', '6.4 Empty-reply retry',
               'recovered 0 of 10', '7/7 still empty', 'Test the browser page and /api/sru-url', 'POST /api/sru-url',
               '7. Lessons learned and recommendations', '7.1 Lessons learned', '7.2 Recommendations',
-              'independent ground truth', 'lessons learned and recommendations (section 7)', 'warm-up title']:
+              'independent ground truth', 'lessons learned and recommendations (section 7)', 'warm-up title',
+              'named with the mcp- prefix', '20 lessons']:
     print('OK  ' if check in flat else 'MISSING  ', check)
 
 # The server is named mcp-sru-syntax throughout. The only allowed old-name text is the
-# repo folder path sru-syntax-mcp/ (README link), which was not renamed.
+# repo folder path sru-syntax-mcp/ (README link), which was not renamed, and the MCP naming lesson
+# in section 7.1, which names the first app name on purpose.
 left = [flat[max(0, m.start() - 60):m.end() + 40] for m in re.finditer(r'sru-syntax-mcp', flat)
-        if not flat[m.end():m.end() + 1] == '/']
+        if not flat[m.end():m.end() + 1] == '/' and not flat[:m.start()].endswith('The first name, ')]
 print('old server name left:', len(left), left)

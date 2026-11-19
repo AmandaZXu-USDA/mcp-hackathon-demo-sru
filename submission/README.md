@@ -29,7 +29,7 @@ notice title into the NAL Alma production SRU searchRetrieve URL for the origina
 | 4. Evaluation run `kindly-lamb-651` | `ToolCallEfficiency` on 2 traces: 1 yes, 1 judge parse error. Trace review shows both used tools efficiently. |
 | 5. Agent latency per step | 174 requests: tool requests p50 22.5 s (tool about 69% of the time); requests answered without the tool p50 2.7 s. |
 | 6. Live testing (November 19) | Page, page API, MCP and agent routes pass as Inspector Gadget. About 18 titles/min at 10 at a time (142 titles via MCP). Every URL the agent returned matched the rules function. The empty-reply retry recovered 0 of 10 titles. |
-| 7. Lessons learned and recommendations | 19 lessons (access, MCP client, agent, evaluation, performance, engineering) and 10 recommendations, starting with an independent, librarian-confirmed ground truth. |
+| 7. Lessons learned and recommendations | 20 lessons (access, MCP naming and client, agent, evaluation, performance, engineering), including that a custom MCP server app must be named with the `mcp-` prefix to appear in the Genie Code connectors, and 10 recommendations, starting with an independent, librarian-confirmed ground truth. |
 
 See the PDF for method, per-scorer results, findings and next steps.
 
