@@ -18,7 +18,7 @@ from mcp.types import ToolAnnotations
 
 from sru_server.config import settings
 
-log = logging.getLogger("sru_syntax_mcp")
+log = logging.getLogger("mcp_sru_syntax")
 
 ENDPOINT = settings.serving_endpoint
 TIMEOUT_S = settings.agent_timeout_seconds

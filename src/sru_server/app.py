@@ -27,7 +27,7 @@ from sru_server.tools import register_tools
 
 logging.basicConfig(level=logging.INFO)
 logging.getLogger("httpx").setLevel(logging.WARNING)
-log = logging.getLogger("sru_syntax_mcp")
+log = logging.getLogger("mcp_sru_syntax")
 
 mcp = FastMCP(
     "mcp-sru-syntax",
