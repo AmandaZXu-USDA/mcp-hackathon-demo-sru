@@ -9,6 +9,7 @@ so the same title always gives the same URL. Pick by how many titles you have:
 
 | Option | Best for | Time per title | Access you need (ask the project owner) |
 |---|---|---|---|
+| [Browser page](#browser-page-no-setup) | One title, nothing to install | about 15-60 s | A user account in the Databricks workspace and `CAN USE` on app `mcp-sru-syntax` |
 | [1. Chat with the Supervisor Agent](#option-1-chat-with-the-supervisor-agent) | One title, no setup | about 15-25 s | `CAN QUERY` on endpoint `mas-c8629507-endpoint` |
 | [2. Genie Code with the MCP tool](#option-2-genie-code-with-the-mcp-tool) | Titles while you work in Databricks | about 15-25 s | `CAN USE` on app `mcp-sru-syntax` |
 | [3. Call the app's agent](#option-3-call-the-apps-agent-scripts) | Scripts and other tools | about 15-45 s | `CAN USE` on app `mcp-sru-syntax` |
@@ -24,6 +25,18 @@ so the same title always gives the same URL. Pick by how many titles you have:
   replication). Ask again, or use option 4.
 * Most replies take 15-25 seconds; rarely up to a minute. Do not use options 1-3 for long lists: in a
   20-title batch test, 6 timed out.
+
+## Browser page (no setup)
+
+1. Open <https://mcp-sru-syntax-7474654188777746.aws.databricksapps.com> in your browser.
+2. Sign in with your Databricks workspace account if asked. The first time, approve the app's request to
+   know who you are.
+3. Paste one correction title and click **Get SRU URL**. Wait 15-60 seconds.
+4. Click the URL to open the Alma record, or click **Copy URL**.
+
+If you see "Your sign-in may have expired", reload the page. If the page says you do not have access,
+ask the project owner for `CAN USE` on the app. You need a user account in the workspace
+(`https://dbc-aae0ba16-8727.cloud.databricks.com`); only a workspace admin can add one.
 
 ## Option 1: Chat with the Supervisor Agent
 
@@ -71,6 +84,8 @@ with the URLs.
 |---|---|
 | App URL | `https://mcp-sru-syntax-7474654188777746.aws.databricksapps.com` |
 | Agent endpoints | `POST /invocations` (same as `POST /responses`) |
+| URL-only endpoint | `POST /api/sru-url` with `{"title": "..."}`; used by the browser page |
+| Browser page | `GET /` |
 | Health check | `GET /health` returns `{"status":"ok"}` |
 | Workspace | `https://dbc-aae0ba16-8727.cloud.databricks.com` |
 | Login | OAuth token only; personal access tokens are rejected |
@@ -91,7 +106,8 @@ with the URLs.
 
 ### Step 2: Get a token and check the app
 
-Tokens expire after about an hour; repeat this step when you get `401`.
+Tokens expire after about an hour; repeat this step when you get `401` or `302` (a redirect to the
+login page).
 
 ```bash
 export TOKEN="$(databricks auth token --profile nal --output json | jq -r .access_token)"
@@ -111,7 +127,18 @@ curl -s -X POST https://mcp-sru-syntax-7474654188777746.aws.databricksapps.com/i
   -d '{"input": "Correction: Effects of drought stress on maize grain yield and quality"}'
 ```
 
-`input` is either the title as a string or a chat-style list:
+To get only the URL as JSON (the endpoint the browser page uses), send one title to `/api/sru-url`:
+
+```bash
+curl -s -X POST https://mcp-sru-syntax-7474654188777746.aws.databricksapps.com/api/sru-url \
+  -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json" --max-time 300 \
+  -d '{"title": "Correction: Effects of drought stress on maize grain yield and quality"}'
+```
+
+The reply is `{"text": "<agent reply>", "urls": ["https://nal.alma.exlibrisgroup.com/view/sru/..."]}`.
+`urls` is empty when the reply has no SRU URL. Titles are limited to 1,000 characters.
+
+For `/invocations`, `input` is either the title as a string or a chat-style list:
 `{"input": [{"role": "user", "content": "Correction: <title>"}]}`. Keep `--max-time 300`: replies
 usually take 15-45 seconds. If the title contains an apostrophe (`'`), write it as `'\''` inside the
 single-quoted `-d` text.
