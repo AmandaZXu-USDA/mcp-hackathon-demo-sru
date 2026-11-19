@@ -98,7 +98,8 @@ Run from the `sru-syntax-mcp/` folder (the bundle root):
 databricks bundle validate --strict -t dev
 
 # 2. One time: bind the existing app to the bundle resource
-#    (the mcp-sru-syntax app already exists in the workspace)
+#    (only if this bundle does not track the existing mcp-sru-syntax app yet,
+#    e.g. a different user or a fresh bundle state; skip it otherwise)
 databricks bundle deployment bind sru_syntax_mcp mcp-sru-syntax -t dev
 
 # 3. Deploy the app

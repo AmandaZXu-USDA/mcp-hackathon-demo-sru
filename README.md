@@ -156,7 +156,8 @@ Run from the repo root (the bundle root):
 ```bash
 databricks bundle validate --strict -t dev
 
-# One time: the mcp-sru-syntax app already exists, so let the bundle manage it
+# Only if this bundle does not track the app yet (e.g. a different user or a fresh bundle state):
+# the mcp-sru-syntax app already exists, so bind it instead of creating it
 databricks bundle deployment bind sru_syntax_mcp mcp-sru-syntax -t dev
 
 databricks bundle deploy -t dev
