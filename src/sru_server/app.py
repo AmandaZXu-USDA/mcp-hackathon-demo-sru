@@ -3,6 +3,11 @@
 Creates a FastMCP instance (mcp 1.x, stateless HTTP), registers the
 build_sru_search_url tool, and serves the MCP endpoint at /mcp. Also hosts
 the SRU syntax agent at /invocations and /responses, plus /health.
+
+Genie Code calls /mcp from the browser, so the app allows CORS from the
+workspace URL (DATABRICKS_HOST, set by Databricks Apps) plus any origins in
+ALLOWED_ORIGINS, and answers GET /mcp with 405 (no standalone SSE stream in
+stateless mode).
 """
 
 from __future__ import annotations
@@ -13,6 +18,7 @@ import uuid
 
 import uvicorn
 from mcp.server.fastmcp import FastMCP
+from starlette.middleware.cors import CORSMiddleware
 from starlette.requests import Request
 from starlette.responses import JSONResponse
 
@@ -37,6 +43,57 @@ mcp = FastMCP(
 register_tools(mcp)
 
 app = mcp.streamable_http_app()
+
+
+class NoGetStreamMiddleware:
+    """Answer GET /mcp with 405 right away.
+
+    In stateless mode the server offers no standalone SSE stream, so a GET would
+    otherwise hang. The MCP spec allows 405 here; clients then use POST only.
+    """
+
+    def __init__(self, app):
+        self.app = app
+
+    async def __call__(self, scope, receive, send):
+        is_get_mcp = (
+            scope["type"] == "http"
+            and scope["method"] == "GET"
+            and scope["path"].rstrip("/") == "/mcp"
+        )
+        if is_get_mcp:
+            response = JSONResponse(
+                {
+                    "jsonrpc": "2.0",
+                    "id": None,
+                    "error": {"code": -32600, "message": "Method Not Allowed"},
+                },
+                status_code=405,
+                headers={"Allow": "POST, DELETE"},
+            )
+            return await response(scope, receive, send)
+        return await self.app(scope, receive, send)
+
+
+def _allowed_origins() -> list[str]:
+    """Workspace URL (DATABRICKS_HOST) plus any extra origins in ALLOWED_ORIGINS."""
+    host = os.environ.get("DATABRICKS_HOST", "").strip().rstrip("/")
+    if host and not host.startswith("http"):
+        host = f"https://{host}"
+    extra = os.environ.get("ALLOWED_ORIGINS", "").split(",")
+    origins = [host, *(o.strip().rstrip("/") for o in extra)]
+    return [o for o in origins if o]
+
+
+app.add_middleware(NoGetStreamMiddleware)
+app.add_middleware(  # added last, so it runs first and answers CORS preflight
+    CORSMiddleware,
+    allow_origins=_allowed_origins(),
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+    expose_headers=["mcp-session-id", "mcp-protocol-version"],
+)
 
 
 async def health(request: Request) -> JSONResponse:
