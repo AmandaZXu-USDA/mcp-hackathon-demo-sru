@@ -63,7 +63,7 @@ Databricks documentation but has not been tested with a librarian account yet.*
 ## Option 3: Call the app's agent (scripts)
 
 The `mcp-sru-syntax` Databricks App hosts the SRU syntax agent next to the MCP server (see
-[`deploy/databricks/README.md`](https://github.com/AmandaZXu-USDA/mcp-hackathon-template/blob/main/deploy/databricks/README.md)).
+[`deploy/databricks/README.md`](https://github.com/AmandaZXu-USDA/mcp-hackathon-demo-sru/blob/main/deploy/databricks/README.md)).
 You send it titles from a terminal or script; it calls the `build_sru_search_url` tool and replies
 with the URLs.
 
@@ -163,7 +163,7 @@ print(r.json()["output"][0]["content"][0]["text"])
 ```
 
 To call the MCP tool `build_sru_search_url` directly instead of the agent, see the test notebook
-[`eval/databricks/inspector_gadget_mcp_test.py`](https://github.com/AmandaZXu-USDA/mcp-hackathon-template/blob/main/eval/databricks/inspector_gadget_mcp_test.py).
+[`eval/databricks/inspector_gadget_mcp_test.py`](https://github.com/AmandaZXu-USDA/mcp-hackathon-demo-sru/blob/main/eval/databricks/inspector_gadget_mcp_test.py).
 
 ### Replies and errors
 

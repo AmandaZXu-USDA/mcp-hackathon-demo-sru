@@ -40,7 +40,7 @@ to this repo:
     "example-mcp": {
       "command": "uv",
       "args": ["run", "example-server"],
-      "cwd": "/absolute/path/to/mcp-hackathon-template"
+      "cwd": "/absolute/path/to/mcp-hackathon-demo-sru"
     }
   }
 }
