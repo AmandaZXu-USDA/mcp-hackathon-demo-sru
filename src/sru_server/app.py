@@ -2,7 +2,9 @@
 
 Creates a FastMCP instance (mcp 1.x, stateless HTTP), registers the
 build_sru_search_url tool, and serves the MCP endpoint at /mcp. Also hosts
-the SRU syntax agent at /invocations and /responses, plus /health.
+the SRU syntax agent at /invocations and /responses, plus /health, and a
+browser page for librarians: GET / (paste one correction title, get the SRU URL
+as a link) backed by POST /api/sru-url ({"title": "..."} -> {"text", "urls"}).
 
 Genie Code calls /mcp from the browser, so the app allows CORS from the
 workspace URL (DATABRICKS_HOST, set by Databricks Apps) plus any origins in
@@ -12,17 +14,22 @@ stateless mode).
 
 from __future__ import annotations
 
+import asyncio
 import logging
 import os
+import re
+import secrets
 import uuid
+from pathlib import Path
 
 import uvicorn
 from mcp.server.fastmcp import FastMCP
 from starlette.middleware.cors import CORSMiddleware
 from starlette.requests import Request
-from starlette.responses import JSONResponse
+from starlette.responses import HTMLResponse, JSONResponse
 
 from sru_server.config import settings
+from sru_server.tools import build_sru_url as agent_tool
 from sru_server.tools import register_tools
 
 logging.basicConfig(level=logging.INFO)
@@ -136,6 +143,83 @@ async def invocations(request: Request) -> JSONResponse:
     )
 
 
+# ---- Browser page for librarians (Databricks Apps handles the login) ----
+
+SRU_PREFIX = "https://nal.alma.exlibrisgroup.com/view/sru/"
+MAX_TITLE_CHARS = 1000
+_SRU_URL_RE = re.compile(re.escape(SRU_PREFIX) + r"[^\s<>\"'`]+")
+PAGE = (Path(__file__).parent / "static" / "index.html").read_text(encoding="utf-8")
+
+
+async def index(request: Request) -> HTMLResponse:
+    nonce = secrets.token_urlsafe(16)
+    html = (
+        PAGE.replace("__NONCE__", nonce)
+        .replace("__PREFIX__", SRU_PREFIX)
+        .replace("__MAX__", str(MAX_TITLE_CHARS))
+    )
+    # only this page's own inline script and style may run; it may only call this app
+    csp = (
+        f"default-src 'none'; script-src 'nonce-{nonce}'; "
+        f"style-src 'nonce-{nonce}'; connect-src 'self'; img-src 'self'; "
+        "form-action 'self'; base-uri 'none'"
+    )
+    headers = {
+        "Content-Security-Policy": csp,
+        "X-Content-Type-Options": "nosniff",
+        "Referrer-Policy": "no-referrer",
+        "Cache-Control": "no-store",
+    }
+    return HTMLResponse(html, headers=headers)
+
+
+def _json_error(message: str, status: int) -> JSONResponse:
+    return JSONResponse({"error": message}, status_code=status)
+
+
+async def sru_url_api(request: Request) -> JSONResponse:
+    """JSON API behind the page: {"title": "..."} -> {"text", "urls"}."""
+    content_type = request.headers.get("content-type", "").lower()
+    if not content_type.startswith("application/json"):
+        # also blocks plain cross-site HTML form posts, which cannot send JSON
+        return _json_error('Send JSON: {"title": "..."}', 415)
+    try:
+        body = await request.json()
+    except Exception:
+        return _json_error("Request body must be JSON", 400)
+    title = body.get("title") if isinstance(body, dict) else None
+    if not isinstance(title, str) or not title.strip():
+        return _json_error("Body must include 'title' (the correction title)", 400)
+    if len(title) > MAX_TITLE_CHARS:
+        return _json_error(f"Title is longer than {MAX_TITLE_CHARS} characters", 400)
+    call = agent_tool._call_agent_retry_empty
+    try:
+        text = await asyncio.to_thread(call, title.strip())
+    except agent_tool.UpstreamError as e:
+        log.warning(
+            "page_error error_id=%s category=%s status=%s",
+            e.error_id,
+            e.category,
+            e.status_code,
+        )
+        status = 504 if e.category == "timeout" else 502
+        return _json_error(e.client_message(), status)
+    except Exception as e:  # never expose unexpected exception text
+        err = agent_tool.UpstreamError("unavailable")
+        log.warning(
+            "page_error error_id=%s category=unexpected exception=%s",
+            err.error_id,
+            type(e).__name__,
+        )
+        return _json_error(err.client_message(), 502)
+    urls = [u.rstrip(").,;") for u in _SRU_URL_RE.findall(text or "")]
+    return JSONResponse(
+        {"text": text or agent_tool.EMPTY_MSG, "urls": list(dict.fromkeys(urls))}
+    )
+
+
+app.add_route("/", index, methods=["GET"])
+app.add_route("/api/sru-url", sru_url_api, methods=["POST"])
 app.add_route("/health", health, methods=["GET"])
 app.add_route("/invocations", invocations, methods=["POST"])
 app.add_route("/responses", invocations, methods=["POST"])
