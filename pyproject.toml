@@ -35,7 +35,14 @@ dev = [
 line-length = 88
 target-version = "py311"
 exclude = [".venv", ".agents"]
-extend-exclude = ["*.md"]
+extend-exclude = [
+    "*.md",
+    # Databricks notebook source exports (contain %pip magics, so they are not valid
+    # Python modules). build_evaluation_report.py is regenerated from the workspace
+    # notebook "SRU Syntax MCP Evaluation Report"; edit the notebook, not this file.
+    "eval/databricks/build_evaluation_report.py",
+    "eval/databricks/inspector_gadget_mcp_test.py",
+]
 
 [tool.ruff.lint]
 select = ["E", "F", "I"]

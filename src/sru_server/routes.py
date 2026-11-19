@@ -2,5 +2,6 @@
 
 from __future__ import annotations
 
+
 def register_routes(mcp) -> None:
     pass

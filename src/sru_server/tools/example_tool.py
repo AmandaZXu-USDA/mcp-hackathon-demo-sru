@@ -18,10 +18,9 @@ from __future__ import annotations
 from typing import Annotated, Any
 
 import httpx
-from fastmcp import FastMCP
-
 from example_server.models import PaginationParams, ResponseFormat
 from example_server.utils import fetch_json, paginate
+from fastmcp import FastMCP
 
 
 def register(mcp: FastMCP) -> None:

@@ -23,9 +23,9 @@ log = logging.getLogger("sru_syntax_mcp")
 ENDPOINT = settings.serving_endpoint
 TIMEOUT_S = settings.agent_timeout_seconds
 EMPTY_MSG = (
-    "agent-sru-syntax returned an empty reply for this title. This happens for some titles "
-    "(for example, ones about inhibiting virus replication). Use the Unity Catalog function "
-    "users.amanda_xu.build_sru_url directly for this title."
+    "agent-sru-syntax returned an empty reply for this title. This happens for some "
+    "titles (for example, ones about inhibiting virus replication). Use the Unity "
+    "Catalog function users.amanda_xu.build_sru_url directly for this title."
 )
 
 # App service principal credentials from the Apps environment. Created on first use,
@@ -42,14 +42,22 @@ def _client() -> WorkspaceClient:
 
 
 class UpstreamError(Exception):
-    """Failure calling the Supervisor Agent, with a stable category safe to show clients."""
+    """Failure calling the Supervisor Agent.
+
+    Carries a stable category that is safe to show clients.
+    """
 
     MESSAGES = {
         "timeout": "The SRU syntax agent did not respond in time. Try again later.",
         "unavailable": "The SRU syntax agent is unavailable. Try again later.",
         "rate_limited": "The SRU syntax agent is busy. Wait a moment and try again.",
-        "permission_denied": "This app is not allowed to call the SRU syntax agent. Contact the app owner.",
-        "bad_response": "The SRU syntax agent returned an unexpected response. Try again later.",
+        "permission_denied": (
+            "This app is not allowed to call the SRU syntax agent. Contact the app "
+            "owner."
+        ),
+        "bad_response": (
+            "The SRU syntax agent returned an unexpected response. Try again later."
+        ),
     }
 
     def __init__(self, category: str, status_code: int | None = None):
@@ -59,7 +67,10 @@ class UpstreamError(Exception):
         super().__init__(category)
 
     def client_message(self) -> str:
-        return f"{self.MESSAGES[self.category]} (error {self.category}, id {self.error_id})"
+        return (
+            f"{self.MESSAGES[self.category]} "
+            f"(error {self.category}, id {self.error_id})"
+        )
 
 
 def _category_for_status(status: int) -> str:
@@ -118,20 +129,31 @@ def register(mcp) -> None:
         )
     )
     async def build_sru_search_url(correction_title: str) -> str:
-        """Send an erratum/correction notice title (e.g. 'Correction: <title>', 'Correction to \u201c<title>\u201d',
-        'Corrigendum: ...') to the agent-sru-syntax agent and return its reply, which contains the
-        NAL Alma production SRU searchRetrieve URL for the original article. Pass the full title exactly
-        as given. Replies can take 60-90 seconds.
+        """Send an erratum/correction notice title (e.g. 'Correction: <title>',
+        'Correction to \u201c<title>\u201d', 'Corrigendum: ...') to the agent-sru-syntax
+        agent and return its reply, which contains the NAL Alma production SRU
+        searchRetrieve URL for the original article. Pass the full title exactly as
+        given. Replies can take 60-90 seconds.
 
-        Errors are returned as a short message with a stable category (timeout, unavailable, rate_limited,
-        permission_denied, bad_response) and an error id for the app owner."""
+        Errors are returned as a short message with a stable category (timeout,
+        unavailable, rate_limited, permission_denied, bad_response) and an error id for
+        the app owner."""
         try:
             text = await asyncio.to_thread(_call_agent, correction_title)
         except UpstreamError as e:
-            log.warning("tool_error error_id=%s category=%s status=%s", e.error_id, e.category, e.status_code)
+            log.warning(
+                "tool_error error_id=%s category=%s status=%s",
+                e.error_id,
+                e.category,
+                e.status_code,
+            )
             raise ToolError(e.client_message()) from None
         except Exception as e:
             err = UpstreamError("unavailable")
-            log.warning("tool_error error_id=%s category=unexpected exception=%s", err.error_id, type(e).__name__)
+            log.warning(
+                "tool_error error_id=%s category=unexpected exception=%s",
+                err.error_id,
+                type(e).__name__,
+            )
             raise ToolError(err.client_message()) from None
         return text or EMPTY_MSG

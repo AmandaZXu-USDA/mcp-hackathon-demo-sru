@@ -18,8 +18,8 @@ from sru_server.tools.build_sru_url import (
     _final_text,
 )
 
-
 # ── _category_for_status ────────────────────────────────────────────────────
+
 
 @pytest.mark.parametrize(
     "status, expected",
@@ -40,6 +40,7 @@ def test_category_for_status(status: int, expected: str) -> None:
 
 # ── UpstreamError sanitization ──────────────────────────────────────────────
 
+
 def test_upstream_error_client_message_is_safe() -> None:
     """The client-facing message must not include status codes or response details."""
     err = UpstreamError("timeout", status_code=504)
@@ -58,11 +59,21 @@ def test_upstream_error_categories_have_messages() -> None:
 
 # ── _final_text extraction ───────────────────────────────────────────────────
 
+
 def test_final_text_extracts_last_text_content() -> None:
-    resp = {"output": [
-        {"content": [{"type": "output_text", "text": "first"}]},
-        {"content": [{"type": "output_text", "text": "https://nal.alma.exlibrisgroup.com/..."}]},
-    ]}
+    resp = {
+        "output": [
+            {"content": [{"type": "output_text", "text": "first"}]},
+            {
+                "content": [
+                    {
+                        "type": "output_text",
+                        "text": "https://nal.alma.exlibrisgroup.com/...",
+                    }
+                ]
+            },
+        ]
+    }
     assert _final_text(resp) == "https://nal.alma.exlibrisgroup.com/..."
 
 
@@ -79,6 +90,7 @@ def test_final_text_ignores_non_text_content() -> None:
 
 # ── _call_agent security ────────────────────────────────────────────────────
 
+
 def _mock_ws(host="https://dbc-test.cloud.databricks.com"):
     ws = MagicMock()
     ws.config.host = host
@@ -88,8 +100,11 @@ def _mock_ws(host="https://dbc-test.cloud.databricks.com"):
 
 @pytest.mark.asyncio
 async def test_call_agent_uses_allow_redirects_false() -> None:
-    """Requests must be sent with allow_redirects=False to prevent SSRF via redirects."""
-    with patch("sru_server.tools.build_sru_url._ws", _mock_ws()),          patch("sru_server.tools.build_sru_url.requests.post") as mock_post:
+    """Requests must use allow_redirects=False to prevent SSRF via redirects."""
+    with (
+        patch("sru_server.tools.build_sru_url._ws", _mock_ws()),
+        patch("sru_server.tools.build_sru_url.requests.post") as mock_post,
+    ):
         mock_post.return_value = MagicMock(
             status_code=200,
             json=lambda: {"output": [{"content": [{"text": "https://nal.alma..."}]}]},
@@ -101,7 +116,10 @@ async def test_call_agent_uses_allow_redirects_false() -> None:
 
 @pytest.mark.asyncio
 async def test_call_agent_sends_json_content_type() -> None:
-    with patch("sru_server.tools.build_sru_url._ws", _mock_ws()),          patch("sru_server.tools.build_sru_url.requests.post") as mock_post:
+    with (
+        patch("sru_server.tools.build_sru_url._ws", _mock_ws()),
+        patch("sru_server.tools.build_sru_url.requests.post") as mock_post,
+    ):
         mock_post.return_value = MagicMock(
             status_code=200,
             json=lambda: {"output": [{"content": [{"text": "url"}]}]},
@@ -115,7 +133,10 @@ async def test_call_agent_sends_json_content_type() -> None:
 @pytest.mark.asyncio
 async def test_call_agent_url_is_fixed_not_user_controlled() -> None:
     """The endpoint URL must be built from config, not from user input."""
-    with patch("sru_server.tools.build_sru_url._ws", _mock_ws()),          patch("sru_server.tools.build_sru_url.requests.post") as mock_post:
+    with (
+        patch("sru_server.tools.build_sru_url._ws", _mock_ws()),
+        patch("sru_server.tools.build_sru_url.requests.post") as mock_post,
+    ):
         mock_post.return_value = MagicMock(
             status_code=200,
             json=lambda: {"output": [{"content": [{"text": "url"}]}]},
@@ -123,13 +144,19 @@ async def test_call_agent_url_is_fixed_not_user_controlled() -> None:
         # A crafted title must not change the destination URL
         await _async_call_agent("http://169.254.169.254/latest/meta-data")
         args, _ = mock_post.call_args
-        assert args[0] == "https://dbc-test.cloud.databricks.com/serving-endpoints/mas-c8629507-endpoint/invocations"
+        assert (
+            args[0]
+            == "https://dbc-test.cloud.databricks.com/serving-endpoints/mas-c8629507-endpoint/invocations"
+        )
 
 
 @pytest.mark.asyncio
 async def test_call_agent_title_is_passed_in_json_body_not_url() -> None:
     """User input goes in the JSON body, never in the URL."""
-    with patch("sru_server.tools.build_sru_url._ws", _mock_ws()),          patch("sru_server.tools.build_sru_url.requests.post") as mock_post:
+    with (
+        patch("sru_server.tools.build_sru_url._ws", _mock_ws()),
+        patch("sru_server.tools.build_sru_url.requests.post") as mock_post,
+    ):
         mock_post.return_value = MagicMock(
             status_code=200,
             json=lambda: {"output": [{"content": [{"text": "url"}]}]},
@@ -145,7 +172,14 @@ async def test_call_agent_title_is_passed_in_json_body_not_url() -> None:
 @pytest.mark.asyncio
 async def test_call_agent_timeout_raises_upstream_error() -> None:
     import requests as req
-    with patch("sru_server.tools.build_sru_url._ws", _mock_ws()),          patch("sru_server.tools.build_sru_url.requests.post", side_effect=req.Timeout("timed out")):
+
+    with (
+        patch("sru_server.tools.build_sru_url._ws", _mock_ws()),
+        patch(
+            "sru_server.tools.build_sru_url.requests.post",
+            side_effect=req.Timeout("timed out"),
+        ),
+    ):
         with pytest.raises(UpstreamError) as exc:
             await _async_call_agent("Title")
         assert exc.value.category == "timeout"
@@ -154,7 +188,14 @@ async def test_call_agent_timeout_raises_upstream_error() -> None:
 @pytest.mark.asyncio
 async def test_call_agent_connection_error_raises_unavailable() -> None:
     import requests as req
-    with patch("sru_server.tools.build_sru_url._ws", _mock_ws()),          patch("sru_server.tools.build_sru_url.requests.post", side_effect=req.ConnectionError("refused")):
+
+    with (
+        patch("sru_server.tools.build_sru_url._ws", _mock_ws()),
+        patch(
+            "sru_server.tools.build_sru_url.requests.post",
+            side_effect=req.ConnectionError("refused"),
+        ),
+    ):
         with pytest.raises(UpstreamError) as exc:
             await _async_call_agent("Title")
         assert exc.value.category == "unavailable"
@@ -162,7 +203,10 @@ async def test_call_agent_connection_error_raises_unavailable() -> None:
 
 @pytest.mark.asyncio
 async def test_call_agent_non_200_raises_upstream_error() -> None:
-    with patch("sru_server.tools.build_sru_url._ws", _mock_ws()),          patch("sru_server.tools.build_sru_url.requests.post") as mock_post:
+    with (
+        patch("sru_server.tools.build_sru_url._ws", _mock_ws()),
+        patch("sru_server.tools.build_sru_url.requests.post") as mock_post,
+    ):
         mock_post.return_value = MagicMock(status_code=403)
         with pytest.raises(UpstreamError) as exc:
             await _async_call_agent("Title")
@@ -174,7 +218,10 @@ async def test_call_agent_non_200_raises_upstream_error() -> None:
 async def test_call_agent_sensitive_response_not_in_error(caplog) -> None:
     """When the upstream returns non-200, sensitive response data must not leak."""
     sensitive = "SSN 123-45-6789 token=secret"
-    with patch("sru_server.tools.build_sru_url._ws", _mock_ws()),          patch("sru_server.tools.build_sru_url.requests.post") as mock_post:
+    with (
+        patch("sru_server.tools.build_sru_url._ws", _mock_ws()),
+        patch("sru_server.tools.build_sru_url.requests.post") as mock_post,
+    ):
         mock_post.return_value = MagicMock(status_code=500, text=sensitive)
         with pytest.raises(UpstreamError) as exc:
             await _async_call_agent("Title")
@@ -187,7 +234,10 @@ async def test_call_agent_sensitive_response_not_in_error(caplog) -> None:
 @pytest.mark.asyncio
 async def test_call_agent_invalid_json_raises_bad_response() -> None:
     sensitive = "not-json SSN 123-45-6789"
-    with patch("sru_server.tools.build_sru_url._ws", _mock_ws()),          patch("sru_server.tools.build_sru_url.requests.post") as mock_post:
+    with (
+        patch("sru_server.tools.build_sru_url._ws", _mock_ws()),
+        patch("sru_server.tools.build_sru_url.requests.post") as mock_post,
+    ):
         mock_post.return_value = MagicMock(status_code=200)
         mock_post.return_value.json.side_effect = ValueError(sensitive)
         with pytest.raises(UpstreamError) as exc:
@@ -198,7 +248,9 @@ async def test_call_agent_invalid_json_raises_bad_response() -> None:
 
 # ── Helper ──────────────────────────────────────────────────────────────────
 
+
 async def _async_call_agent(title: str) -> str:
     """Run _call_agent in a thread (as the tool does via asyncio.to_thread)."""
     import asyncio
+
     return await asyncio.to_thread(_call_agent, title)

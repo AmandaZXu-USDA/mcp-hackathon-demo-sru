@@ -1,4 +1,6 @@
-"""Eval-time auth shim for the SRU syntax agent (sru-syntax-mcp/agent/agent_server/agent.py).
+"""Eval-time auth shim for the SRU syntax agent.
+
+Agent: sru-syntax-mcp/agent/agent_server/agent.py.
 
 Adapted from mcp-hackathon/eval/databricks/agent_server/eval_auth.py.
 
@@ -27,7 +29,13 @@ USAGE
     import agent_server.agent as agent
     from eval_auth import patch_agent_with_service_principal
 
-    patch_agent_with_service_principal(agent, mcp_url="https://<app>/mcp", host=..., client_id=..., client_secret=...)
+    patch_agent_with_service_principal(
+        agent,
+        mcp_url="https://<app>/mcp",
+        host=...,
+        client_id=...,
+        client_secret=...,
+    )
 """
 
 from __future__ import annotations
@@ -35,13 +43,28 @@ from __future__ import annotations
 from databricks.sdk import WorkspaceClient
 
 
-def build_service_principal_client(host: str, client_id: str, client_secret: str) -> WorkspaceClient:
-    """Return an OAuth M2M service-principal client (needs CAN_USE on the app + workspace-access)."""
-    return WorkspaceClient(host=host, client_id=client_id, client_secret=client_secret, auth_type="oauth-m2m")
+def build_service_principal_client(
+    host: str, client_id: str, client_secret: str
+) -> WorkspaceClient:
+    """Return an OAuth M2M service-principal client.
+
+    Needs CAN_USE on the app and the workspace-access entitlement.
+    """
+    return WorkspaceClient(
+        host=host,
+        client_id=client_id,
+        client_secret=client_secret,
+        auth_type="oauth-m2m",
+    )
 
 
-def patch_agent(agent_module, mcp_url: str, workspace_client: WorkspaceClient) -> WorkspaceClient:
-    """Point the agent at ``mcp_url`` and authenticate MCP calls with ``workspace_client``."""
+def patch_agent(
+    agent_module, mcp_url: str, workspace_client: WorkspaceClient
+) -> WorkspaceClient:
+    """Point the agent at ``mcp_url``.
+
+    MCP calls are authenticated with ``workspace_client``.
+    """
     agent_module.ws = workspace_client
     agent_module.mcp_url = lambda: mcp_url
     return workspace_client
@@ -53,7 +76,11 @@ def patch_agent_with_service_principal(
     """Patch the agent to reach the deployed app as the eval service principal."""
     if not client_id or not client_secret:
         raise ValueError(
-            "Service-principal credentials are missing. Run setup-eval-sp.sh (see README) "
-            "and check SECRET_SCOPE / SECRET_KEY_* in the CONFIG block."
+            "Service-principal credentials are missing. Run setup-eval-sp.sh (see "
+            "README) and check SECRET_SCOPE / SECRET_KEY_* in the CONFIG block."
         )
-    return patch_agent(agent_module, mcp_url, build_service_principal_client(host, client_id, client_secret))
+    return patch_agent(
+        agent_module,
+        mcp_url,
+        build_service_principal_client(host, client_id, client_secret),
+    )

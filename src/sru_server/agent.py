@@ -25,33 +25,49 @@ LOCAL_MCP_URL = f"http://127.0.0.1:{PORT}/mcp"
 MCP_TIMEOUT_S = float(os.environ.get("AGENT_TIMEOUT_SECONDS", "300"))
 
 INSTRUCTIONS = (
-    "You help NAL staff find the original article behind erratum and correction notices. "
-    "Call the build_sru_search_url tool once per title, passing the full title exactly as given. "
-    "Return the NAL Alma production SRU searchRetrieve URL. For bare notices (just a notice word "
-    "like Correction), reply that no article is named. For issue-level notices, reply that "
-    "the notice covers a journal issue, not a single article. Do not invent SRU URLs."
+    "You help NAL staff find the original article behind erratum and correction "
+    "notices. Call the build_sru_search_url tool once per title, passing the full "
+    "title exactly as given. Return the NAL Alma production SRU searchRetrieve URL. "
+    "For bare notices (just a notice word like Correction), reply that no article is "
+    "named. For issue-level notices, reply that the notice covers a journal issue, "
+    "not a single article. Do not invent SRU URLs."
 )
 
 
 def preprocess(messages):
     if isinstance(messages, str):
         messages = [{"role": "user", "content": messages}]
-    return [{**m, "content": m["content"].strip()} if isinstance(m.get("content"), str) else m for m in messages]
+    return [
+        {**m, "content": m["content"].strip()}
+        if isinstance(m.get("content"), str)
+        else m
+        for m in messages
+    ]
 
 
 @mlflow.trace(name="sru_syntax_agent_run", span_type="AGENT")
 async def run_agent(messages):
-    mlflow.update_current_trace(tags={"agent_name": "SRU Syntax Agent", "model_service": MODEL_SERVICE})
+    mlflow.update_current_trace(
+        tags={"agent_name": "SRU Syntax Agent", "model_service": MODEL_SERVICE}
+    )
     with mlflow.start_span(name="preprocessing") as span:
         span.set_inputs({"raw": messages})
         cleaned = preprocess(messages)
         span.set_outputs({"cleaned": cleaned})
     async with MCPServerStreamableHttp(
-        params={"url": LOCAL_MCP_URL, "timeout": MCP_TIMEOUT_S, "sse_read_timeout": MCP_TIMEOUT_S},
+        params={
+            "url": LOCAL_MCP_URL,
+            "timeout": MCP_TIMEOUT_S,
+            "sse_read_timeout": MCP_TIMEOUT_S,
+        },
         name="mcp-sru-syntax",
         client_session_timeout_seconds=MCP_TIMEOUT_S,
     ) as mcp_server:
-        agent = Agent(name="SRU Syntax Agent", instructions=INSTRUCTIONS,
-            model=MODEL_SERVICE, mcp_servers=[mcp_server])
+        agent = Agent(
+            name="SRU Syntax Agent",
+            instructions=INSTRUCTIONS,
+            model=MODEL_SERVICE,
+            mcp_servers=[mcp_server],
+        )
         result = await Runner.run(agent, cleaned)
     return result.final_output

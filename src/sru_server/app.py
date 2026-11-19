@@ -110,19 +110,30 @@ async def invocations(request: Request) -> JSONResponse:
         return JSONResponse({"error": "Body must include input"}, status_code=400)
     try:
         from sru_server.agent import run_agent
+
         text = await run_agent(messages)
     except Exception as e:
         error_id = uuid.uuid4().hex[:12]
         log.warning("agent_error error_id=%s exception=%s", error_id, type(e).__name__)
         return JSONResponse({"error": f"Agent failed (id {error_id})"}, status_code=502)
-    return JSONResponse({
-        "id": f"resp_{uuid.uuid4().hex}",
-        "object": "response",
-        "status": "completed",
-        "output": [{"type": "message", "id": f"msg_{uuid.uuid4().hex}",
-            "role": "assistant", "status": "completed",
-            "content": [{"type": "output_text", "text": text or "", "annotations": []}]}],
-    })
+    return JSONResponse(
+        {
+            "id": f"resp_{uuid.uuid4().hex}",
+            "object": "response",
+            "status": "completed",
+            "output": [
+                {
+                    "type": "message",
+                    "id": f"msg_{uuid.uuid4().hex}",
+                    "role": "assistant",
+                    "status": "completed",
+                    "content": [
+                        {"type": "output_text", "text": text or "", "annotations": []}
+                    ],
+                }
+            ],
+        }
+    )
 
 
 app.add_route("/health", health, methods=["GET"])
