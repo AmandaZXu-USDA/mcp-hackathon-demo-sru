@@ -21,6 +21,7 @@ production SRU URL for the original article, or no URL when the notice names no 
 | `eval_auth.py` | Auth shim. Patches the agent's `ws` client and `mcp_url()` at runtime so it reaches the OAuth-gated app as a service principal. `agent/agent_server/agent.py` stays unmodified. |
 | `inspector_gadget_mcp_test.py` | Notebook source. Calls the deployed app's MCP tools as the Inspector Gadget service principal: lists tools, calls `build_sru_search_url`, and tests every tool. See [Testing the deployed MCP server](#testing-the-deployed-mcp-server-inspector-gadget). |
 | `build_evaluation_report.py` | Notebook source. Builds the evaluation report PDF with `reportlab` and checks its text with `pypdf`. |
+| [`doc/SRU_Agent_Latency_per_Step_20261118.csv`](doc/SRU_Agent_Latency_per_Step_20261118.csv) | Per-step agent latency for 174 requests on November 18, 2026 (request, preprocessing, both model calls, `build_sru_search_url`), from `users.amanda_xu.sru_syntax_agent_otel_spans`. Columns: span and trace counts, avg/p50/p90/min/max seconds, error count. Summarized in section 5 of the evaluation report. |
 | `datasets/sru-eval-0.csv` | 41 rows covering every `extraction_rule` in the source spreadsheet (2 to 5 rows each), including 4 bare notices, 4 issue-level notices and the 2 titles that got an empty Supervisor Agent reply in the first 10-title test. |
 
 Differences from the template:
