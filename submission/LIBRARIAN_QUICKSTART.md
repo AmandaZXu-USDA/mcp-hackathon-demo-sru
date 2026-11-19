@@ -22,7 +22,8 @@ so the same title always gives the same URL. Pick by how many titles you have:
   or saying there is no single article. An issue-level notice (for example `Errata to taxon 59(5)`) gets
   "no SRU URL".
 * Occasionally the reply is empty (about 3 in 41 titles in testing, including some titles about virus
-  replication). Ask again, or use option 4.
+  replication). The app's MCP tool and browser page already ask the agent a second time when this
+  happens; in testing the same titles stayed empty on every try, so use option 4 for them.
 * Most replies take 15-25 seconds; rarely up to a minute. Do not use options 1-3 for long lists: in a
   20-title batch test, 6 timed out.
 
