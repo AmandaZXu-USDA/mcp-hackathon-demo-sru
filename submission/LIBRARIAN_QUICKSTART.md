@@ -38,10 +38,16 @@ You can paste one title per message in the same chat.
 
 One-time setup:
 
-1. Open the **Genie Code** pane and click **Settings**.
-2. Under **MCP Servers**, click **Add Server**, choose **Custom MCP server**, and select the
+1. Open **Genie Code**. In the chat pane, click the **More** menu (⋮) in the header and select
+   **Customizations**. In the full-page Genie Code view, open **Customizations** directly.
+2. On the **Connectors** tab, add a server, choose **Custom MCP server**, and select the
    Databricks App **mcp-sru-syntax**.
 3. Click **Save**. Make sure the `build_sru_search_url` tool is enabled.
+
+The Databricks documentation calls this Genie Code **Settings** > **MCP Servers**; in this workspace
+it is under **Customizations** > **Connectors**. Only Databricks Apps whose names start with `mcp-`
+are listed as custom MCP servers, which is why the app is named `mcp-sru-syntax`. If the app is not
+listed, ask the project owner for `CAN USE` on it.
 
 Then ask in plain language, for example:
 
