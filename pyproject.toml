@@ -1,5 +1,5 @@
 [project]
-name = "sru-syntax-mcp"
+name = "mcp-sru-syntax"
 version = "0.1.0"
 description = "NAL SRU Syntax MCP server: correction titles to Alma SRU search URLs"
 readme = "README.md"
@@ -15,7 +15,7 @@ dependencies = [
 ]
 
 [project.scripts]
-sru-syntax-mcp = "sru_server.app:main"
+mcp-sru-syntax = "sru_server.app:main"
 
 [build-system]
 requires = ["hatchling"]

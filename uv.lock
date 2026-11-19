@@ -5,8 +5,8 @@ resolution-markers = [
     "python_full_version >= '3.14' and sys_platform == 'win32'",
     "python_full_version >= '3.14' and sys_platform != 'win32'",
     "python_full_version >= '3.12' and python_full_version < '3.14' and sys_platform == 'win32'",
-    "python_full_version < '3.12' and sys_platform == 'win32'",
     "python_full_version >= '3.12' and python_full_version < '3.14' and sys_platform != 'win32'",
+    "python_full_version < '3.12' and sys_platform == 'win32'",
     "python_full_version < '3.12' and sys_platform != 'win32'",
 ]
 
@@ -2048,6 +2048,45 @@ wheels = [
 ]
 
 [[package]]
+name = "mcp-sru-syntax"
+version = "0.1.0"
+source = { editable = "." }
+dependencies = [
+    { name = "databricks-openai" },
+    { name = "databricks-sdk" },
+    { name = "mcp" },
+    { name = "mlflow" },
+    { name = "openai-agents" },
+    { name = "requests" },
+    { name = "uvicorn" },
+]
+
+[package.dev-dependencies]
+dev = [
+    { name = "pytest" },
+    { name = "pytest-asyncio" },
+    { name = "ruff" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "databricks-openai", specifier = ">=0.17.0" },
+    { name = "databricks-sdk", specifier = ">=0.50.0" },
+    { name = "mcp", specifier = ">=1.10.0,<2" },
+    { name = "mlflow", specifier = ">=3.14.0" },
+    { name = "openai-agents", specifier = ">=0.25.0" },
+    { name = "requests", specifier = ">=2.31.0" },
+    { name = "uvicorn", specifier = ">=0.30.0" },
+]
+
+[package.metadata.requires-dev]
+dev = [
+    { name = "pytest", specifier = ">=8.0.0" },
+    { name = "pytest-asyncio", specifier = ">=0.23.0" },
+    { name = "ruff", specifier = ">=0.6.0" },
+]
+
+[[package]]
 name = "mlflow"
 version = "3.18.0"
 source = { registry = "https://pypi.org/simple" }
@@ -4034,45 +4073,6 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/7e/e0/361c764ea58cc1a75f7b4b424a74b08449db8bfa5e9199c7275999fdd1b9/sqlparse-0.6.1.tar.gz", hash = "sha256:ca722573f848ff2d30e40ea30f53a104b7dea7635ea9285891263eb2c58fb6e7", size = 182236, upload-time = "2026-11-01T18:06:45.951Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/df/ff/2fee788e82e75be8f210c65c5d103bf44c880e3769c884652a4cd911b8ba/sqlparse-0.6.1-py3-none-any.whl", hash = "sha256:3be5a72d04c873d690d7c6dedd33d6fae2ef82759881ceec02fc2efd0cba564f", size = 51200, upload-time = "2026-11-01T18:06:47.434Z" },
-]
-
-[[package]]
-name = "sru-syntax-mcp"
-version = "0.1.0"
-source = { editable = "." }
-dependencies = [
-    { name = "databricks-openai" },
-    { name = "databricks-sdk" },
-    { name = "mcp" },
-    { name = "mlflow" },
-    { name = "openai-agents" },
-    { name = "requests" },
-    { name = "uvicorn" },
-]
-
-[package.dev-dependencies]
-dev = [
-    { name = "pytest" },
-    { name = "pytest-asyncio" },
-    { name = "ruff" },
-]
-
-[package.metadata]
-requires-dist = [
-    { name = "databricks-openai", specifier = ">=0.17.0" },
-    { name = "databricks-sdk", specifier = ">=0.50.0" },
-    { name = "mcp", specifier = ">=1.10.0,<2" },
-    { name = "mlflow", specifier = ">=3.14.0" },
-    { name = "openai-agents", specifier = ">=0.25.0" },
-    { name = "requests", specifier = ">=2.31.0" },
-    { name = "uvicorn", specifier = ">=0.30.0" },
-]
-
-[package.metadata.requires-dev]
-dev = [
-    { name = "pytest", specifier = ">=8.0.0" },
-    { name = "pytest-asyncio", specifier = ">=0.23.0" },
-    { name = "ruff", specifier = ">=0.6.0" },
 ]
 
 [[package]]

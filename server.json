@@ -1,6 +1,6 @@
 {
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-09-29/server.schema.json",
-  "name": "io.github.AmandaZXu-USDA/sru-syntax-mcp",
+  "name": "io.github.AmandaZXu-USDA/mcp-sru-syntax",
   "description": "NAL SRU Syntax MCP server: converts erratum/correction notice titles into NAL Alma production SRU search URLs for the original article.",
   "repository": {
     "url": "https://github.com/AmandaZXu-USDA/mcp-hackathon-template",
