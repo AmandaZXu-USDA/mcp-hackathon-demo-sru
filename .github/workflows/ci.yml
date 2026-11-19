@@ -5,10 +5,21 @@ on:
     branches: [main]
   pull_request:
     branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
+  # Unit tests. No Databricks credentials are needed: the WorkspaceClient is
+  # created on first tool call, and the tests mock it.
   test:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
 
@@ -16,18 +27,38 @@ jobs:
         uses: astral-sh/setup-uv@v4
         with:
           version: "latest"
+          enable-cache: true
 
       - name: Install Python
         run: uv python install 3.11
 
-      - name: Install dependencies
-        run: uv sync --group dev
-
-      - name: Lint
-        run: uv run ruff check .
-
-      - name: Format check
-        run: uv run ruff format --check .
+      - name: Install dependencies (from uv.lock)
+        run: uv sync --group dev --locked --python 3.11
 
       - name: Run tests
-        run: uv run pytest tests/ -v
+        run: uv run --no-sync pytest tests/ -v
+
+  # Separate job so existing lint/format findings do not block the tests.
+  lint:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v4
+        with:
+          version: "latest"
+          enable-cache: true
+
+      - name: Install Python
+        run: uv python install 3.11
+
+      - name: Install dependencies (from uv.lock)
+        run: uv sync --group dev --locked --python 3.11
+
+      - name: Lint
+        run: uv run --no-sync ruff check .
+
+      - name: Format check
+        run: uv run --no-sync ruff format --check .
