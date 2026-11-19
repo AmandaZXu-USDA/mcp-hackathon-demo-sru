@@ -3,8 +3,8 @@ bundle:
 
 variables:
   mcp_app_name:
-    description: "Name of the MCP server app (already deployed as sru-syntax-mcp; bind it before the first deploy)"
-    default: sru-syntax-mcp
+    description: "Name of the MCP server app (mcp- prefix so it is listed as a custom MCP server in Genie Code)"
+    default: mcp-sru-syntax
   serving_endpoint:
     description: "Agent Bricks Supervisor Agent endpoint (agent-sru-syntax) the MCP server calls"
     default: mas-c8629507-endpoint

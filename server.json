@@ -10,7 +10,7 @@
   "remotes": [
     {
       "type": "streamable-http",
-      "url": "https://sru-syntax-mcp-7474654188777746.aws.databricksapps.com/mcp"
+      "url": "https://mcp-sru-syntax-7474654188777746.aws.databricksapps.com/mcp"
     }
   ]
 }

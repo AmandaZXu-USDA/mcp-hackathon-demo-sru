@@ -109,7 +109,7 @@ https://nal.alma.exlibrisgroup.com/view/sru/01NAL_INST?version=1.2&operation=sea
 | --- | --- |
 | Unity Catalog function `users.amanda_xu.build_sru_url(correction_title)` | Python UDF with the Part 1 rules. Deterministic; the source of truth for SRU URLs. Use it for bulk processing in SQL. |
 | Supervisor Agent `agent-sru-syntax` (endpoint `mas-c8629507-endpoint`) | Agent Bricks agent that calls the function as a tool. |
-| Databricks App `sru-syntax-mcp` | Custom MCP server with one read-only tool, `build_sru_search_url`, that calls the Supervisor Agent. The same app serves an OpenAI Agents SDK agent at `/invocations` that uses the tool. See [`deploy/databricks/README.md`](deploy/databricks/README.md). |
+| Databricks App `mcp-sru-syntax` | Custom MCP server with one read-only tool, `build_sru_search_url`, that calls the Supervisor Agent. The same app serves an OpenAI Agents SDK agent at `/invocations` that uses the tool. See [`deploy/databricks/README.md`](deploy/databricks/README.md). |
 | Agent skill `agent-sru-syntax` | Instructions and rules for coding agents working on this project ([`SKILL.md`](.agents/skills/agent-sru-syntax/SKILL.md)). |
 | Offline evaluation | MLflow GenAI evaluation over labelled notices ([`eval/databricks/`](eval/databricks/README.md)). |
 
@@ -119,7 +119,7 @@ interactive use rather than thousands of rows.
 ### The MCP server (`src/sru_server/`)
 
 The server is built on MCP 1.x (`mcp.server.fastmcp`) and serves stateless streamable-HTTP. The workspace
-is at its 100-app limit, so the MCP server and the agent share the `sru-syntax-mcp` app:
+is at its 100-app limit, so the MCP server and the agent share the `mcp-sru-syntax` app:
 
 | Endpoint | Code | What it does |
 | --- | --- | --- |
@@ -143,9 +143,9 @@ Catalog functions as MCP tools at:
 A workspace admin must enable Managed MCP Servers on the workspace Previews page. Clients request the
 `unity-catalog` OAuth scope.
 
-**2. Custom MCP server on Databricks Apps (`sru-syntax-mcp`).** Managed MCP has no endpoint for
+**2. Custom MCP server on Databricks Apps (`mcp-sru-syntax`).** Managed MCP has no endpoint for
 Supervisor Agents, so the app wraps the agent in an MCP tool:
-`https://sru-syntax-mcp-7474654188777746.aws.databricksapps.com/mcp`. Databricks Apps require an OAuth token;
+`https://mcp-sru-syntax-7474654188777746.aws.databricksapps.com/mcp`. Databricks Apps require an OAuth token;
 personal access tokens are rejected. See [`deploy/databricks/README.md`](deploy/databricks/README.md) for
 full deployment instructions.
 
@@ -156,8 +156,8 @@ Run from the repo root (the bundle root):
 ```bash
 databricks bundle validate --strict -t dev
 
-# One time: the sru-syntax-mcp app already exists, so let the bundle manage it
-databricks bundle deployment bind sru_syntax_mcp sru-syntax-mcp -t dev
+# One time: the mcp-sru-syntax app already exists, so let the bundle manage it
+databricks bundle deployment bind sru_syntax_mcp mcp-sru-syntax -t dev
 
 databricks bundle deploy -t dev
 databricks bundle run sru_syntax_mcp -t dev
@@ -168,7 +168,7 @@ Override any variable with `--var`, for example `--var model_service=models.ai.g
 ### Test the agent
 
 ```bash
-curl -X POST "https://sru-syntax-mcp-7474654188777746.aws.databricksapps.com/invocations" \\
+curl -X POST "https://mcp-sru-syntax-7474654188777746.aws.databricksapps.com/invocations" \\
   -H "Authorization: Bearer <OAUTH_TOKEN>" -H "Content-Type: application/json" \\
   -d '{"input": [{"role": "user", "content": "Correction: <article title>"}]}'
 ```
@@ -236,4 +236,4 @@ tables (already run once). To use a different location, run it with new names an
 
 This project is built on the [GSA MCP Hackathon template](https://github.com/GSA-TTS/mcp-hackathon-template),
 adapted for the NAL SRU Syntax MCP server. The template's `src/`, `tests/`, `deploy/`, and `eval/` structure
-is preserved; the example server code is replaced with the sru-syntax-mcp server, agent, and tools.
+is preserved; the example server code is replaced with the mcp-sru-syntax server, agent, and tools.

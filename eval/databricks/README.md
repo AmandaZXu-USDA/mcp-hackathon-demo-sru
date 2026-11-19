@@ -1,4 +1,4 @@
-# Databricks offline MLflow evaluation: sru-syntax-mcp
+# Databricks offline MLflow evaluation: mcp-sru-syntax
 
 **Purpose:** verify that the SRU syntax agent produces correct NAL Alma production SRU URLs from
 erratum/correction notice titles. A labelled dataset of 41 notices is scored by a deterministic
@@ -6,7 +6,7 @@ URL match plus four LLM judges (correctness, relevance, no invented URLs, safety
 rule regressions, empty Supervisor Agent replies, and instruction-following failures before
 deploying changes.
 
-Evaluates the SRU syntax agent while it uses the **deployed** `sru-syntax-mcp` MCP server
+Evaluates the SRU syntax agent while it uses the **deployed** `mcp-sru-syntax` MCP server
 (a Databricks App), scored by MLflow GenAI judges plus a deterministic URL check. Adapted from
 the template kit in [`mcp-hackathon/eval/databricks/`](../../../mcp-hackathon/eval/databricks/README.md).
 
@@ -49,7 +49,7 @@ You must be a workspace admin. From a machine with the Databricks CLI and `jq`, 
 
 ```bash
 bash mcp-hackathon/eval/databricks/setup-eval-sp.sh \
-  --app-name sru-syntax-mcp \
+  --app-name mcp-sru-syntax \
   --sp-name sp-sru-syntax-eval \
   --scope sru-syntax-eval-secrets
 ```
@@ -77,7 +77,7 @@ points at this app; each value can also be set with an environment variable:
 
 | Setting | Default | Env var |
 |---|---|---|
-| `MCP_SERVER_URL` | `https://sru-syntax-mcp-7474654188777746.aws.databricksapps.com/mcp` | `SRU_EVAL_MCP_URL` |
+| `MCP_SERVER_URL` | `https://mcp-sru-syntax-7474654188777746.aws.databricksapps.com/mcp` | `SRU_EVAL_MCP_URL` |
 | `MODEL` | `models.ai.gpt-5-6-luna` | `SRU_EVAL_MODEL` |
 | `EXPERIMENT_ID` | `131270370350843` (UC-backed SRU agent experiment) | `SRU_EVAL_EXPERIMENT_ID` |
 | `SQL_WAREHOUSE_ID` | `50d2bd4ddf65e0f5` (Serverless Starter Warehouse) | `MLFLOW_TRACING_SQL_WAREHOUSE_ID` |
@@ -253,7 +253,7 @@ Required permissions:
 
 | Principal | Needs |
 |---|---|
-| Inspector Gadget service principal | `CAN USE` on the `sru-syntax-mcp` app |
+| Inspector Gadget service principal | `CAN USE` on the `mcp-sru-syntax` app |
 | The app's own service principal | `CAN QUERY` on `mas-c8629507-endpoint`, `EXECUTE` on `users.amanda_xu.build_sru_url`, `USE SCHEMA` on `users.amanda_xu` |
 
 | Symptom | Cause |
@@ -268,8 +268,8 @@ Required permissions:
 | Symptom | Cause / fix |
 |---|---|
 | `Service-principal credentials are missing` | The secret scope or keys are missing. Re-run Step 1, or check `SECRET_SCOPE` / `SECRET_KEY_*`. |
-| Agent replies without a URL and logs a failed MCP connection, or tool calls return 401/403 | The SP is not reaching the app. Confirm it has `CAN_USE` on `sru-syntax-mcp` and `workspace-access`. |
+| Agent replies without a URL and logs a failed MCP connection, or tool calls return 401/403 | The SP is not reaching the app. Confirm it has `CAN_USE` on `mcp-sru-syntax` and `workspace-access`. |
 | `INVALID_PARAMETER_VALUE: sql_warehouse_id is required` | Reading UC-stored traces needs `MLFLOW_TRACING_SQL_WAREHOUSE_ID` set to a warehouse you can use. |
 | `no trace tagged with mlflow.eval.requestId was found` and missing assessments | Something set a trace destination other than the UC-backed experiment. Remove `set_destination` calls. |
-| A tool error such as `(error unavailable, id ...)` in replies | The server's Supervisor Agent call failed. Search `databricks apps logs sru-syntax-mcp` for the id. |
+| A tool error such as `(error unavailable, id ...)` in replies | The server's Supervisor Agent call failed. Search `databricks apps logs mcp-sru-syntax` for the id. |
 | `bound to a different event loop` / `Event loop is closed` | Async plumbing. Do not add `nest_asyncio`; the script runs one persistent loop. |

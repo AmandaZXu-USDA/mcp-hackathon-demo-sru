@@ -10,8 +10,8 @@ so the same title always gives the same URL. Pick by how many titles you have:
 | Option | Best for | Time per title | Access you need (ask the project owner) |
 |---|---|---|---|
 | [1. Chat with the Supervisor Agent](#option-1-chat-with-the-supervisor-agent) | One title, no setup | about 15-25 s | `CAN QUERY` on endpoint `mas-c8629507-endpoint` |
-| [2. Genie Code with the MCP tool](#option-2-genie-code-with-the-mcp-tool) | Titles while you work in Databricks | about 15-25 s | `CAN USE` on app `sru-syntax-mcp` |
-| [3. Call the app's agent](#option-3-call-the-apps-agent-scripts) | Scripts and other tools | about 15-45 s | `CAN USE` on app `sru-syntax-mcp` |
+| [2. Genie Code with the MCP tool](#option-2-genie-code-with-the-mcp-tool) | Titles while you work in Databricks | about 15-25 s | `CAN USE` on app `mcp-sru-syntax` |
+| [3. Call the app's agent](#option-3-call-the-apps-agent-scripts) | Scripts and other tools | about 15-45 s | `CAN USE` on app `mcp-sru-syntax` |
 | [4. SQL function, no agent](#option-4-sql-function-no-agent-lists-of-titles) | Lists of titles (tens to thousands) | seconds for a whole list (up to a minute more if the SQL warehouse is starting) | `EXECUTE` on `users.amanda_xu.build_sru_url`, `USE CATALOG` on `users`, `USE SCHEMA` on `users.amanda_xu`, a SQL warehouse; for lists, also `READ VOLUME` and `WRITE VOLUME` on `users.amanda_xu.erratum_files` |
 
 **What to expect from options 1-3 (the agent):**
@@ -40,7 +40,7 @@ One-time setup:
 
 1. Open the **Genie Code** pane and click **Settings**.
 2. Under **MCP Servers**, click **Add Server**, choose **Custom MCP server**, and select the
-   Databricks App **sru-syntax-mcp**.
+   Databricks App **mcp-sru-syntax**.
 3. Click **Save**. Make sure the `build_sru_search_url` tool is enabled.
 
 Then ask in plain language, for example:
@@ -49,26 +49,26 @@ Then ask in plain language, for example:
 
 Genie Code calls the `build_sru_search_url` tool and shows the URL. The app must be in the same
 workspace (it is). Other MCP clients that support OAuth can connect to
-`https://sru-syntax-mcp-7474654188777746.aws.databricksapps.com/mcp` the same way.
+`https://mcp-sru-syntax-7474654188777746.aws.databricksapps.com/mcp` the same way.
 
 *Status: the tool is tested from a notebook (Inspector Gadget); the Genie Code connection follows the
 Databricks documentation but has not been tested with a librarian account yet.*
 
 ## Option 3: Call the app's agent (scripts)
 
-The `sru-syntax-mcp` Databricks App hosts the SRU syntax agent next to the MCP server (see
+The `mcp-sru-syntax` Databricks App hosts the SRU syntax agent next to the MCP server (see
 [`deploy/databricks/README.md`](https://github.com/AmandaZXu-USDA/mcp-hackathon-template/blob/main/deploy/databricks/README.md)).
 You send it titles from a terminal or script; it calls the `build_sru_search_url` tool and replies
 with the URLs.
 
 | Item | Value |
 |---|---|
-| App URL | `https://sru-syntax-mcp-7474654188777746.aws.databricksapps.com` |
+| App URL | `https://mcp-sru-syntax-7474654188777746.aws.databricksapps.com` |
 | Agent endpoints | `POST /invocations` (same as `POST /responses`) |
 | Health check | `GET /health` returns `{"status":"ok"}` |
 | Workspace | `https://dbc-aae0ba16-8727.cloud.databricks.com` |
 | Login | OAuth token only; personal access tokens are rejected |
-| Access | `CAN USE` on the app `sru-syntax-mcp` (ask the project owner) |
+| Access | `CAN USE` on the app `mcp-sru-syntax` (ask the project owner) |
 
 ### Step 1: One-time setup
 
@@ -90,7 +90,7 @@ Tokens expire after about an hour; repeat this step when you get `401`.
 ```bash
 export TOKEN="$(databricks auth token --profile nal --output json | jq -r .access_token)"
 curl -s -H "Authorization: Bearer $TOKEN" \
-  https://sru-syntax-mcp-7474654188777746.aws.databricksapps.com/health
+  https://mcp-sru-syntax-7474654188777746.aws.databricksapps.com/health
 ```
 
 Expected: `{"status":"ok"}`. Without `jq`, run `databricks auth token --profile nal` and copy the
@@ -99,7 +99,7 @@ Expected: `{"status":"ok"}`. Without `jq`, run `databricks auth token --profile 
 ### Step 3: Send a title
 
 ```bash
-curl -s -X POST https://sru-syntax-mcp-7474654188777746.aws.databricksapps.com/invocations \
+curl -s -X POST https://mcp-sru-syntax-7474654188777746.aws.databricksapps.com/invocations \
   -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json" \
   --max-time 300 \
   -d '{"input": "Correction: Effects of drought stress on maize grain yield and quality"}'
@@ -134,7 +134,7 @@ bullets (`- https://...`), in the same order. Two titles took about 35 seconds i
 requests to a few titles; for lists use option 4.
 
 ```bash
-curl -s -X POST https://sru-syntax-mcp-7474654188777746.aws.databricksapps.com/invocations \
+curl -s -X POST https://mcp-sru-syntax-7474654188777746.aws.databricksapps.com/invocations \
   -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json" --max-time 300 \
   -d '{"input": "Correction: Effects of drought stress on maize grain yield and quality\nCorrection to: Identification of JAZ1-MYC2 Complex in Lotus corniculatus"}' \
   | jq -r '.output[0].content[0].text'
@@ -145,7 +145,7 @@ curl -s -X POST https://sru-syntax-mcp-7474654188777746.aws.databricksapps.com/i
 ```python
 import subprocess, json, requests
 
-APP = "https://sru-syntax-mcp-7474654188777746.aws.databricksapps.com"
+APP = "https://mcp-sru-syntax-7474654188777746.aws.databricksapps.com"
 token = json.loads(subprocess.check_output(
     ["databricks", "auth", "token", "--profile", "nal", "--output", "json"]))["access_token"]
 

@@ -52,7 +52,7 @@ class InspectorGadget:
 
 
 # Provide the MCP server's network location (the host) without the path [/mcp]
-mcp_server_url = 'https://sru-syntax-mcp-7474654188777746.aws.databricksapps.com/mcp'
+mcp_server_url = 'https://mcp-sru-syntax-7474654188777746.aws.databricksapps.com/mcp'
 server_url = urljoin(mcp_server_url, 'mcp')
 
 # create an instance of Inspector Gadget and use to create a WorkspaceClient

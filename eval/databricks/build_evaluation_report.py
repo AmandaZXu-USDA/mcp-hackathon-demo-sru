@@ -57,7 +57,7 @@ story += [
     p('SRU Syntax MCP Server - Evaluation Report', ParagraphStyle('T', parent=H1, fontSize=19, spaceAfter=4)),
     p('NAL Alma SRU URL builder for erratum/correction notices &nbsp;|&nbsp; Report date: November 18, 2026', SMALL),
     Spacer(1, 8),
-    p('This report covers four evaluations and a per-step latency analysis of the <b>sru-syntax-mcp</b> Databricks App, a custom MCP server '
+    p('This report covers four evaluations and a per-step latency analysis of the <b>sru-syntax-mcp</b> Databricks App (renamed <b>mcp-sru-syntax</b> on November 19, 2026 so Genie Code lists it as a custom MCP server; all tests in this report ran before the rename), a custom MCP server '
       '(streamable HTTP at <font face="Courier">/mcp</font>) exposing one tool, '
       '<font face="Courier">build_sru_search_url</font>. The tool sends an erratum/correction notice title to the '
       'agent-sru-syntax Supervisor Agent (serving endpoint <font face="Courier">mas-c8629507-endpoint</font>) and '
@@ -74,7 +74,7 @@ story += [
     Spacer(1, 6),
     table([
         ['Component', 'Value'],
-        ['App', 'sru-syntax-mcp (https://sru-syntax-mcp-7474654188777746.aws.databricksapps.com)'],
+        ['App', 'mcp-sru-syntax (https://mcp-sru-syntax-7474654188777746.aws.databricksapps.com); tested as sru-syntax-mcp before the November 19, 2026 rename'],
         ['MCP endpoint', '/mcp (stateless streamable HTTP, JSON responses)'],
         ['Tool', 'build_sru_search_url(correction_title: str) -> str (read-only, idempotent)'],
         ['Upstream agent', 'agent-sru-syntax Supervisor Agent, endpoint mas-c8629507-endpoint'],
@@ -394,5 +394,5 @@ print(f'{os.path.getsize(OUTPUT_PATH):,} bytes, {len(reader.pages)} pages')
 for check in ['1. Inspector Gadget testing', '2. Databricks offline MLflow evaluation', '3. Online evaluation',
               'build_sru_search_url', '0.93 (38/41)', 'ToolCallEfficiency', 'ToolCallCorrectness', '1096079759943475',
               'kindly-lamb-651', 'tr-49f67341cc640c67a33da696d5cecdd0', '4. Evaluation run',
-              '5. Agent latency per step', '18.62', '15.06', '68.9%', '53.77', 'about 69%']:
+              '5. Agent latency per step', '18.62', '15.06', '68.9%', '53.77', 'about 69%', 'mcp-sru-syntax on November 19, 2026']:
     print('OK  ' if check in text else 'MISSING  ', check)

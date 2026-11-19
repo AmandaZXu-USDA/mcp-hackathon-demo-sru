@@ -24,7 +24,7 @@ logging.getLogger("httpx").setLevel(logging.WARNING)
 log = logging.getLogger("sru_syntax_mcp")
 
 mcp = FastMCP(
-    "sru-syntax-mcp",
+    "mcp-sru-syntax",
     instructions=(
         "Converts erratum/correction notice titles into NAL Alma production SRU "
         "search URLs for the original article, using the agent-sru-syntax agent."
@@ -40,7 +40,7 @@ app = mcp.streamable_http_app()
 
 
 async def health(request: Request) -> JSONResponse:
-    return JSONResponse({"status": "ok", "service": "sru-syntax-mcp"})
+    return JSONResponse({"status": "ok", "service": "mcp-sru-syntax"})
 
 
 async def invocations(request: Request) -> JSONResponse:

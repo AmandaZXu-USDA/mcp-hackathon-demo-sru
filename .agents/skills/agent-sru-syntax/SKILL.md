@@ -1,6 +1,6 @@
 ---
 name: agent-sru-syntax
-description: 'Use, operate, or change the agent-sru-syntax system that turns erratum/correction notice titles ("Correction: ...", "Corrigendum to ...", "Erratum: ...") into NAL Alma production SRU searchRetrieve URLs for the original article. Read this skill when calling the sru-syntax-mcp MCP tool or agent endpoint, building SRU URLs in SQL, deploying the sru-syntax-mcp app, checking its traces or latency, or editing the title-extraction rules.'
+description: 'Use, operate, or change the agent-sru-syntax system that turns erratum/correction notice titles ("Correction: ...", "Corrigendum to ...", "Erratum: ...") into NAL Alma production SRU searchRetrieve URLs for the original article. Read this skill when calling the mcp-sru-syntax MCP tool or agent endpoint, building SRU URLs in SQL, deploying the mcp-sru-syntax app, checking its traces or latency, or editing the title-extraction rules.'
 ---
 
 # agent-sru-syntax
@@ -22,7 +22,7 @@ The exact extraction and encoding rules are in [references/sru_url_rules.md](./r
 | --- | --- | --- |
 | UC function `users.amanda_xu.build_sru_url(correction_title)` | Unity Catalog | Deterministic Python rules: title extraction + SRU URL. Source of truth for the rules. |
 | Supervisor Agent `agent-sru-syntax` | Serving endpoint `mas-c8629507-endpoint` (Responses API) | Agent Bricks Supervisor Agent that produces the SRU URL for a title. |
-| MCP server `sru-syntax-mcp` | Databricks App, `/mcp` (streamable HTTP, stateless JSON) | One tool, `build_sru_search_url(correction_title)`, that calls the Supervisor Agent. Code: `mcp_server/app.py`. |
+| MCP server `mcp-sru-syntax` | Databricks App, `/mcp` (streamable HTTP, stateless JSON) | One tool, `build_sru_search_url(correction_title)`, that calls the Supervisor Agent. Code: `mcp_server/app.py`. |
 | SRU syntax agent | Same app, `POST /invocations`, `POST /responses` | OpenAI Agents SDK agent (`mcp_server/agent.py`) that calls the MCP tool over localhost and answers in Responses format. |
 | Bundle | `sru-syntax-mcp/databricks.yml` | Declarative Automation Bundle `sru_syntax`, target `dev`. |
 | Traces | Experiment `/Users/amanda.xu@usda.gov/sru-syntax-agent-uc-experiment` (ID `131270370350843`) | MLflow traces stored in `users.amanda_xu.sru_syntax_agent_otel_*`. |
@@ -39,7 +39,7 @@ The agent and the MCP server share one app because the workspace is at its 100-a
   SELECT title, users.amanda_xu.build_sru_url(title) AS sru_url FROM <table>
   ```
 
-* **An MCP client or coding agent:** connect to `https://sru-syntax-mcp-7474654188777746.aws.databricksapps.com/mcp`
+* **An MCP client or coding agent:** connect to `https://mcp-sru-syntax-7474654188777746.aws.databricksapps.com/mcp`
   and call `build_sru_search_url` with the full notice title, unchanged. Callers need `CAN USE` on the app and an
   OAuth token (personal access tokens are rejected).
 * **A chat-style request (one or more titles in prose):** `POST /invocations` with
@@ -76,7 +76,7 @@ Run bundle commands from `sru-syntax-mcp/` (the bundle root):
 databricks bundle validate --strict -t dev
 databricks bundle deploy -t dev
 databricks bundle run sru_syntax_mcp -t dev      # redeploys and restarts the app
-databricks apps logs sru-syntax-mcp              # first step when the app misbehaves
+databricks apps logs mcp-sru-syntax              # first step when the app misbehaves
 ```
 
 * The app's permissions come from app resources in `databricks.yml`: `serving-endpoint` (CAN_QUERY),
@@ -109,7 +109,7 @@ Met:
   * Tool (`isError: true`): `timeout`, `unavailable`, `rate_limited`, `permission_denied`, `bad_response`,
     e.g. `The SRU syntax agent is unavailable. Try again later. (error unavailable, id 51443671b919)`.
   * `/invocations`: HTTP 502 with `error agent_failed, id <id>`.
-  * Server logs (`databricks apps logs sru-syntax-mcp`) hold only `error_id`, category, HTTP status and exception
+  * Server logs (`databricks apps logs mcp-sru-syntax`) hold only `error_id`, category, HTTP status and exception
     class, so search the logs by the error id a user reports. Redirects from the agent endpoint are not followed.
 * The tool has MCP annotations: `readOnlyHint: true`, `destructiveHint: false`, `idempotentHint: true`,
   `openWorldHint: false` (annotations are hints, not access control).

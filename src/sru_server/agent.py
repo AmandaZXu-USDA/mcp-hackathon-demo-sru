@@ -48,7 +48,7 @@ async def run_agent(messages):
         span.set_outputs({"cleaned": cleaned})
     async with MCPServerStreamableHttp(
         params={"url": LOCAL_MCP_URL, "timeout": MCP_TIMEOUT_S, "sse_read_timeout": MCP_TIMEOUT_S},
-        name="sru-syntax-mcp",
+        name="mcp-sru-syntax",
         client_session_timeout_seconds=MCP_TIMEOUT_S,
     ) as mcp_server:
         agent = Agent(name="SRU Syntax Agent", instructions=INSTRUCTIONS,

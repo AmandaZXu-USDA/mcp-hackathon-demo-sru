@@ -98,8 +98,8 @@ Run from the `sru-syntax-mcp/` folder (the bundle root):
 databricks bundle validate --strict -t dev
 
 # 2. One time: bind the existing app to the bundle resource
-#    (the sru-syntax-mcp app already exists in the workspace)
-databricks bundle deployment bind sru_syntax_mcp sru-syntax-mcp -t dev
+#    (the mcp-sru-syntax app already exists in the workspace)
+databricks bundle deployment bind sru_syntax_mcp mcp-sru-syntax -t dev
 
 # 3. Deploy the app
 databricks bundle deploy -t dev
@@ -138,7 +138,7 @@ supports HTTP + headers:
 ```json
 {
   "mcpServers": {
-    "sru-syntax-mcp": {
+    "mcp-sru-syntax": {
       "type": "http",
       "url": "https://<app-url>/mcp",
       "headers": { "Authorization": "Bearer <DATABRICKS_TOKEN>" }
@@ -183,7 +183,7 @@ Agent does the lookup.
 
 ```bash
 # Stop and delete the app (the bundle can redeploy it later)
-databricks apps delete sru-syntax-mcp
+databricks apps delete mcp-sru-syntax
 
 # Or destroy the bundle deployment entirely
 databricks bundle destroy -t dev
@@ -195,7 +195,7 @@ databricks bundle destroy -t dev
 
 | Variable | Default | Description |
 |---|---|---|
-| `mcp_app_name` | `sru-syntax-mcp` | Name of the Databricks App |
+| `mcp_app_name` | `mcp-sru-syntax` | Name of the Databricks App |
 | `serving_endpoint` | `mas-c8629507-endpoint` | Agent Bricks Supervisor Agent endpoint |
 | `model_service` | `models.ai.gpt-5-6-luna` | Unity Gateway model service |
 | `trace_experiment_id` | `131270370350843` | Unity Catalog-backed MLflow experiment |
@@ -209,7 +209,7 @@ databricks bundle destroy -t dev
   unauthenticated probes return 302/401 — that's expected, not a failure. Use a
   bearer token to reach the app programmatically.
 - **App limit:** The workspace is at its 100-app limit, so the MCP server and the
-  agent share one app (`sru-syntax-mcp`). The standalone agent in `agent/` is an
+  agent share one app (`mcp-sru-syntax`). The standalone agent in `agent/` is an
   alternative if app capacity frees up.
 - **Stateless HTTP:** The server runs stateless streamable-HTTP, which scales
   cleanly on Apps (no sticky sessions required).

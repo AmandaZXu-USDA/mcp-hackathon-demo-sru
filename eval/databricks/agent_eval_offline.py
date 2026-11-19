@@ -1,10 +1,10 @@
 # =============================================================================
-# OFFLINE MLflow GenAI EVAL for the sru-syntax-mcp Databricks App
+# OFFLINE MLflow GenAI EVAL for the mcp-sru-syntax Databricks App
 # =============================================================================
 # Adapted from mcp-hackathon/eval/databricks/agent_eval_offline.py.
 #
 # Evaluates the SRU syntax agent (sru-syntax-mcp/agent/agent_server/agent.py,
-# used UNMODIFIED) while it calls the DEPLOYED sru-syntax-mcp MCP server. Each
+# used UNMODIFIED) while it calls the DEPLOYED mcp-sru-syntax MCP server. Each
 # row is an erratum/correction notice title; the agent should return the NAL
 # Alma production SRU URL for the original article (or no URL for bare and
 # issue-level notices).
@@ -37,7 +37,7 @@ from mlflow.genai.scorers import Correctness, Guidelines, Safety, scorer
 
 # --- CONFIG: the things you edit --------------------------------------------
 # 1) The deployed MCP server's /mcp URL.
-MCP_SERVER_URL = os.getenv("SRU_EVAL_MCP_URL", "https://sru-syntax-mcp-7474654188777746.aws.databricksapps.com/mcp")
+MCP_SERVER_URL = os.getenv("SRU_EVAL_MCP_URL", "https://mcp-sru-syntax-7474654188777746.aws.databricksapps.com/mcp")
 
 # 2) The model service the agent drives (same as the app's model-service resource).
 MODEL = os.getenv("SRU_EVAL_MODEL", "models.ai.gpt-5-6-luna")

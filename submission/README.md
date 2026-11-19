@@ -1,6 +1,6 @@
 # Submission: SRU Syntax MCP Server (NAL)
 
-A custom MCP server, deployed as the Databricks App `sru-syntax-mcp`, that turns an erratum/correction
+A custom MCP server, deployed as the Databricks App `mcp-sru-syntax`, that turns an erratum/correction
 notice title into the NAL Alma production SRU searchRetrieve URL for the original article.
 
 ## Contents

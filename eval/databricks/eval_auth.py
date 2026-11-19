@@ -4,7 +4,7 @@ Adapted from mcp-hackathon/eval/databricks/agent_server/eval_auth.py.
 
 WHY THIS FILE EXISTS
 --------------------
-The agent connects to the sru-syntax-mcp Databricks App with a module-level
+The agent connects to the mcp-sru-syntax Databricks App with a module-level
 ``ws = WorkspaceClient()``. Inside the deployed app that is the app's service
 principal. In an offline notebook eval it would be the notebook identity, which
 cannot mint the OAuth token a Databricks App requires ("OAuth tokens are not
