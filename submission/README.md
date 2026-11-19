@@ -7,6 +7,7 @@ notice title into the NAL Alma production SRU searchRetrieve URL for the origina
 
 | File | What it is |
 |------|------------|
+| [`GSA-MCP-Hackathon-mcp-sru-syntax.pptx`](GSA-MCP-Hackathon-mcp-sru-syntax.pptx) | Hackathon presentation (14 slides, with speaker notes): challenge, solution, server design and key decisions, demo, evaluation setup and results, security, lessons learned, and next steps |
 | [`sru-syntax-mcp-evaluation-report.pdf`](sru-syntax-mcp-evaluation-report.pdf) | Evaluation report (13 pages, November 18, 2026; updated November 19, 2026), including lessons learned and recommendations |
 | [`LIBRARIAN_QUICKSTART.md`](LIBRARIAN_QUICKSTART.md) | Librarian quick-start: four ways to get an SRU URL from a correction title (Supervisor Agent chat, Genie Code with the MCP tool, the app's agent endpoint, the SQL function for lists), with access needed and errors |
 
