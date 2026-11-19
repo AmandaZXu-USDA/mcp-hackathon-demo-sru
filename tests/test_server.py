@@ -45,6 +45,18 @@ async def test_build_sru_search_url_is_discoverable():
     assert "build_sru_search_url" in tool_names
 
 
+def test_workspace_client_created_on_first_use(monkeypatch):
+    """Importing the server must not need Databricks credentials."""
+    from sru_server.tools import build_sru_url as tool
+
+    created = []
+    monkeypatch.setattr(tool, "_ws", None)
+    monkeypatch.setattr(tool, "WorkspaceClient", lambda: created.append(1) or object())
+    first = tool._client()
+    assert tool._client() is first
+    assert created == [1]
+
+
 def test_allowed_origins_from_env(monkeypatch):
     """Genie Code calls /mcp from the workspace URL, so it must be allowed."""
     from sru_server.app import _allowed_origins

@@ -28,7 +28,17 @@ EMPTY_MSG = (
     "users.amanda_xu.build_sru_url directly for this title."
 )
 
-_ws = WorkspaceClient()  # app service principal credentials from the Apps environment
+# App service principal credentials from the Apps environment. Created on first use,
+# not at import, so the server and its tests load without Databricks credentials.
+# Tests replace _ws with a mock.
+_ws: WorkspaceClient | None = None
+
+
+def _client() -> WorkspaceClient:
+    global _ws
+    if _ws is None:
+        _ws = WorkspaceClient()
+    return _ws
 
 
 class UpstreamError(Exception):
@@ -72,11 +82,12 @@ def _final_text(resp: dict) -> str:
 
 
 def _call_agent(title: str) -> str:
-    headers = _ws.config.authenticate()
+    ws = _client()
+    headers = ws.config.authenticate()
     headers["Content-Type"] = "application/json"
     try:
         r = requests.post(
-            f"{_ws.config.host}/serving-endpoints/{ENDPOINT}/invocations",
+            f"{ws.config.host}/serving-endpoints/{ENDPOINT}/invocations",
             headers=headers,
             json={"input": [{"role": "user", "content": title}]},
             timeout=TIMEOUT_S,
