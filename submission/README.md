@@ -8,6 +8,7 @@ notice title into the NAL Alma production SRU searchRetrieve URL for the origina
 | File | What it is |
 |------|------------|
 | [`sru-syntax-mcp-evaluation-report.pdf`](sru-syntax-mcp-evaluation-report.pdf) | Evaluation report (8 pages, November 18, 2026) |
+| [`LIBRARIAN_QUICKSTART.md`](LIBRARIAN_QUICKSTART.md) | Librarian quick-start: four ways to get an SRU URL from a correction title (Supervisor Agent chat, Genie Code with the MCP tool, the app's agent endpoint, the SQL function for lists), with access needed and errors |
 
 ## How it works
 
