@@ -135,3 +135,106 @@ for tool in mcp_client.list_tools():
 for r in results:
     print(f"[{r['status']}] {r['tool']} ({r['seconds']}s) args={r['args']}\n  {r['output']}\n")
 print(f"{sum(r['status'] == 'PASS' for r in results)}/{len(results)} tools passed")
+
+# COMMAND ----------
+
+# DBTITLE 1,Test the browser page and /api/sru-url
+import requests
+
+# The browser page (GET /) and its JSON API, called as Inspector Gadget (needs CAN USE on the app).
+app_url = mcp_server_url.rsplit('/mcp', 1)[0]
+headers = workspace_client.config.authenticate()
+checks = []
+r = requests.get(f'{app_url}/', allow_redirects=False, timeout=30)
+checks.append(('GET / without a token goes to the login page', r.status_code in (302, 303, 401), r.status_code))
+r = requests.get(f'{app_url}/', headers=headers, timeout=30)
+csp = r.headers.get('Content-Security-Policy', '')
+checks.append(('GET / serves the page with a per-request CSP nonce', r.status_code == 200 and "script-src 'nonce-" in csp, r.status_code))
+r = requests.post(f'{app_url}/api/sru-url', headers=headers, data={'title': 'x'}, timeout=30)
+checks.append(('A plain form post to /api/sru-url is refused', r.status_code == 415, r.status_code))
+start = time.time()
+r = requests.post(f'{app_url}/api/sru-url', headers=headers, json={'title': sample_title}, timeout=300)
+urls = r.json().get('urls', []) if r.ok else []
+checks.append((f'POST /api/sru-url returns one SRU URL ({time.time() - start:.0f} s)', r.status_code == 200 and len(urls) == 1, r.status_code))
+for name, ok, status in checks:
+    print(f"[{'PASS' if ok else 'FAIL'}] {name} (HTTP {status})")
+
+# COMMAND ----------
+
+# DBTITLE 1,Offline test: load Sample3 and expected URLs
+# Offline regression test of the MCP server against the confirmed UC function users.amanda_xu.build_sru_url.
+# INPUT is the Sample3 workbook copy in the erratum Volume.
+INPUT = '/Volumes/users/amanda_xu/erratum_files/Correction-Sample3-142-20261016-20261030.xlsx'
+RESULT_TABLE = 'users.amanda_xu.sample3_mcp_offline_test'
+
+spark.sql("""SELECT * FROM read_files(:path, format => 'excel', headerRows => 1,
+    dataAddress => '''Digital titles export''!A1:C143', schemaEvolutionMode => 'none')""",
+    args={'path': INPUT}).createOrReplaceTempView('sample3_raw')
+
+exp = spark.sql("""
+SELECT row_number() OVER (ORDER BY `MMS ID`) AS row_num,
+       Title AS erratum_title, `Record Number` AS record_number, `MMS ID` AS erratum_mms_id,
+       users.amanda_xu.build_sru_url(Title) AS expected_url
+FROM sample3_raw""").toPandas()
+print(len(exp), 'titles;', (exp.expected_url.fillna('') == '').sum(), 'with blank expected URL')
+
+# COMMAND ----------
+
+# DBTITLE 1,Offline test: call MCP tool for every title
+import asyncio, time, httpx2
+from mcp import Client
+from mcp.client.streamable_http import streamable_http_client
+from databricks_mcp import DatabricksOAuthClientProvider
+
+async def _call_one(sem, title, timeout_s=300):
+    async with sem:
+        t0 = time.time()
+        try:
+            async with httpx2.AsyncClient(auth=DatabricksOAuthClientProvider(workspace_client),
+                                          follow_redirects=True, timeout=httpx2.Timeout(timeout_s)) as hc:
+                async with Client(streamable_http_client(server_url, http_client=hc)) as s:
+                    r = await s.call_tool('build_sru_search_url', {'correction_title': title},
+                                          read_timeout_seconds=timeout_s)
+            text = ' '.join(getattr(c, 'text', '') for c in r.content).strip()
+            status = 'TOOL_ERROR' if r.is_error else 'OK'
+        except BaseException as e:
+            errs = getattr(e, 'exceptions', None) or [e]
+            text, status = '; '.join(f'{type(x).__name__}: {x}' for x in errs), 'EXCEPTION'
+        return status, text, round(time.time() - t0, 1)
+
+async def run_batch(titles, concurrency=10):
+    sem = asyncio.Semaphore(concurrency)
+    return await asyncio.gather(*[_call_one(sem, t) for t in titles])
+
+# ~8 minutes for 142 titles at concurrency 10
+res = asyncio.run(run_batch(exp.erratum_title.tolist()))
+exp['mcp_status'], exp['mcp_output'], exp['mcp_seconds'] = zip(*res)
+
+# COMMAND ----------
+
+# DBTITLE 1,Offline test: classify results and save
+import pandas as pd
+
+def classify(r):
+    expected = r.expected_url or ''
+    if r.mcp_status != 'OK':
+        return 'ERROR'
+    if r.mcp_output == expected:
+        return 'EXACT'
+    if not expected:
+        return 'BARE_NOTICE_NO_URL'          # bare Correction/Erratum: agent asks for full title
+    if r.mcp_output.startswith('agent-sru-syntax returned an empty reply'):
+        return 'EMPTY_AGENT_REPLY'
+    if expected in r.mcp_output:
+        return 'CORRECT_URL_EXTRA_TEXT'
+    return 'WRONG_URL'
+
+exp['result'] = exp.apply(classify, axis=1)
+exp['tested_at'] = pd.Timestamp.now(tz='UTC')
+exp['run_id'] = exp['tested_at'].iloc[0].strftime('%Y%m%dT%H%M%S')
+# Append so earlier runs are kept; compare with GROUP BY run_id, result
+spark.createDataFrame(exp).write.mode('append').option('mergeSchema', 'true').saveAsTable(RESULT_TABLE)
+
+print(exp.result.value_counts().to_string())
+print(f"latency s: median {exp.mcp_seconds.median():.1f}, max {exp.mcp_seconds.max():.1f}")
+display(spark.table(RESULT_TABLE).where(f"run_id = '{exp.run_id.iloc[0]}' AND result <> 'EXACT'").select('row_num', 'result', 'mcp_seconds', 'erratum_title', 'mcp_output'))

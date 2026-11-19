@@ -55,9 +55,9 @@ story = []
 # ---- Title and summary ----
 story += [
     p('SRU Syntax MCP Server - Evaluation Report', ParagraphStyle('T', parent=H1, fontSize=19, spaceAfter=4)),
-    p('NAL Alma SRU URL builder for erratum/correction notices &nbsp;|&nbsp; Report date: November 18, 2026', SMALL),
+    p('NAL Alma SRU URL builder for erratum/correction notices &nbsp;|&nbsp; Report date: November 18, 2026 (updated November 19, 2026)', SMALL),
     Spacer(1, 8),
-    p('This report covers four evaluations and a per-step latency analysis of the <b>mcp-sru-syntax</b> Databricks App, a custom MCP server '
+    p('This report covers four evaluations, a per-step latency analysis, and live testing on November 19, 2026 (section 6) of the <b>mcp-sru-syntax</b> Databricks App, a custom MCP server '
       '(streamable HTTP at <font face="Courier">/mcp</font>) exposing one tool, '
       '<font face="Courier">build_sru_search_url</font>. The tool sends an erratum/correction notice title to the '
       'agent-sru-syntax Supervisor Agent (serving endpoint <font face="Courier">mas-c8629507-endpoint</font>) and '
@@ -70,12 +70,14 @@ story += [
         ['3. Online evaluation (production monitoring)', 'Configured, stopped', '2 custom LLM-judge scorers registered (ToolCallEfficiency, ToolCallCorrectness) at 0% sample rate, pending admin confirmation of scorer identity and permissions.'],
         ['4. Evaluation run kindly-lamb-651', 'Completed (1 judge error)', 'ToolCallEfficiency LLM judge on 2 agent traces: 1 yes, 1 judge parse error; trace review shows both traces used tools efficiently.'],
         ['5. Agent latency per step', 'Analyzed', '174 requests: those that call the tool take p50 22.5 s (tool about 69% of the time); 35 answered without the tool take p50 2.7 s. 1 error in 176 model calls.'],
+        ['6. Live testing (November 19)', 'Passed; retry did not help', 'Page, page API, MCP and agent routes pass as Inspector Gadget. About 18 titles/min at 10 at a time. Every URL the agent returned matched the rules function. The empty-reply retry recovered 0 of 10 titles.'],
     ], [2.0, 1.1, 4.0]),
     Spacer(1, 6),
     table([
         ['Component', 'Value'],
         ['App', 'mcp-sru-syntax (https://mcp-sru-syntax-7474654188777746.aws.databricksapps.com)'],
         ['MCP endpoint', '/mcp (stateless streamable HTTP, JSON responses)'],
+        ['Browser page', 'GET / (one title in, SRU URL out as a link) and its JSON API POST /api/sru-url; added November 19, 2026'],
         ['Tool', 'build_sru_search_url(correction_title: str) -> str (read-only, idempotent)'],
         ['Upstream agent', 'agent-sru-syntax Supervisor Agent, endpoint mas-c8629507-endpoint'],
         ['Rules function', 'users.amanda_xu.build_sru_url (Unity Catalog function)'],
@@ -348,24 +350,115 @@ story += [
         'build_sru_url itself took 3.9-4.0 s. The guardrail check and the Supervisor\'s model calls, not the URL rules, '
         'account for most of the tool time.',
     ]),
+    # ---- Section 6: Live testing on November 19, 2026 ----
+    PageBreak(),
+    p('6. Live testing on November 19, 2026: browser page, throughput, agent vs rules function, empty-reply retry', H1),
+    p('<b>Purpose:</b> re-test the deployed app as the Inspector Gadget service principal after adding a browser page '
+      'for librarians and an automatic retry on empty agent replies; measure how many titles per minute each path '
+      'handles; and compare the agent path with calling the rules function users.amanda_xu.build_sru_url directly.'),
+    p('6.1 Inspector Gadget tests of the deployed app', H2),
+    table([
+        ['Test', 'Result', 'Time'],
+        ['GET / without a token', '302 redirect to the workspace login', '-'],
+        ['GET /health', '200 {"status": "ok"}', '-'],
+        ['GET / (browser page)', '200; Content-Security-Policy with a per-request nonce', '-'],
+        ['POST /api/sru-url, 3 titles', '200; one correct SRU URL each', '55 s (first call), 16 s, 20 s'],
+        ['POST /api/sru-url as a plain HTML form post', '415 (refused; JSON required)', '-'],
+        ['MCP tools/list', "200; ['build_sru_search_url']", '-'],
+        ['MCP tools/call build_sru_search_url', '200; correct SRU URL', '14 s'],
+        ['POST /invocations (agent endpoint)', '200; correct SRU URL', '21 s'],
+        ['After the retry was deployed: normal title via the page API and the MCP tool', '200; correct SRU URL', '53 s (first call after redeploy), 17 s'],
+        ['After the retry was deployed: known empty-reply title via the page API and the MCP tool', '200; empty-reply message after one automatic retry (confirmed in the app logs)', '5 s each'],
+        ['New notebook cell "Test the browser page and /api/sru-url"', '4/4 PASS', '55 s (first call)'],
+    ], [2.6, 3.0, 1.5]),
+    Spacer(1, 4),
+    p('The first reply after the app has been idle or redeployed takes 46-55 s; later replies take 14-21 s. '
+      'Send one title before a demo.'),
+    KeepTogether([p('6.2 Titles per minute', H2),
+    table([
+        ['How titles were sent', 'Titles', 'At a time', 'Per-title time', 'Titles per minute'],
+        ['MCP tool as Inspector Gadget (Sample3 workbook)', '142', '10', 'median 27.0 s, p90 58.2 s, max 70.4 s', 'about 18 at most (run took at least 7.8 min)'],
+        ['Supervisor Agent endpoint directly (eval dataset)', '41', '4', 'median 15 s, p90 52 s, max 55 s', '10.6 (231 s in total)'],
+        ['MCP tool or page, one at a time (steady state)', '-', '1', '14-21 s; 46-55 s for the first call', 'about 3-4'],
+        ['Rules function via the SQL Statement API, one title per call', '41', '1', '3.3-3.6 s steady; 36 s for the first call', 'about 17'],
+    ], [2.2, 0.6, 0.7, 2.0, 1.6])]),
+    Spacer(1, 4),
+    *bullets([
+        'Sending more titles at once raises throughput but slows each title: at 10 at a time the median was 27 s, '
+        'against 15 s at 4 at a time.',
+        'The 142-title run took at least 7.8 minutes (its per-title times add up to 4,706 s across 10 parallel calls). '
+        'Its total run time was not recorded, so about 18 titles a minute is an upper bound.',
+        'For long lists the librarian quickstart recommends one SQL query with the rules function over the whole list; '
+        'that path was not timed here.',
+    ]),
+    KeepTogether([p('6.3 Agent vs rules function', H2),
+    table([
+        ['Dataset', 'Agent', 'Rules function'],
+        ['41 eval titles (33 with an article, 8 bare or issue-level notices); agent called directly',
+         'Same URL as the function on 30/33; 3 empty replies; 0 different URLs; no URL for 8/8 notices',
+         '41/41 match expected; empty result for the 8 notices'],
+        ['142 Sample3 titles via the MCP tool (run at 04:19 UTC)',
+         '130 exact; 7 empty replies; 4 bare notices answered with text and no URL; 1 correct URL with extra text; 0 wrong URLs',
+         '142/142 match expected_url'],
+    ], [2.4, 2.7, 2.0])]),
+    Spacer(1, 4),
+    *bullets([
+        '<b>Caveat:</b> expected_title and expected_url were generated by the rules function, so its 100% shows only '
+        'that it has not changed. The useful result is agreement: every URL the agent returned was the function\'s URL.',
+        '<b>Every agent miss was an empty reply.</b> Empty replies arrive fast (median 3.2 s in the 142-title run), so '
+        'they are not timeouts.',
+        '<b>The function was timed through the SQL Statement API, not through MCP.</b> The MCP tool always calls the '
+        'agent; no MCP tool calls the function directly.',
+        '<b>Decision:</b> the agent-only MCP path is kept for the demo. Calling the function first would have been about '
+        '4 times faster per title (3.5 s vs 15 s median) with the same URLs.',
+        '<b>Agent replies to no-URL notices vary.</b> Bare notices get a request for the full title. "Taxon 61(6)" got '
+        '"Let me search for correction or erratum notices from this journal issue" with no search done, so the '
+        'section 2 fix for issue-level notices does not hold on every run.',
+    ]),
+    KeepTogether([p('6.4 Empty-reply retry', H2),
+    p('When the agent\'s reply is empty, the MCP tool and the browser page now ask it once more. Errors such as '
+      'timeouts are not retried, so a slow failure never doubles the wait. Deployed November 19, 2026; also in the '
+      'fork\'s src/sru_server code.'),
+    table([
+        ['Test', 'Result'],
+        ['Unit tests, agent stubbed (MCP tool and page API)', 'URL first: 1 call. Empty then URL: 2 calls, URL returned. Whitespace then URL: 2 calls. Empty twice: 2 calls, empty-reply message. Timeout: 1 call, no retry. Fork CI: 50 tests pass.'],
+        ['3 empty-reply titles from the 41-row dataset, before deploying', '9/9 extra calls to the agent empty (3 per title, 2-6 s each)'],
+        ['Same titles after deploying (one via the page, one via MCP)', 'Retry ran (app logs: retrying=1, then retry_result=empty); empty-reply message in 5 s'],
+        ['7 empty-reply titles from the 142-title run, via the deployed MCP tool', '7/7 still empty; 7 retries in the app logs, all empty; 4-9 s each (4 at a time)'],
+    ], [2.6, 4.5])]),
+    Spacer(1, 4),
+    *bullets([
+        '<b>The retry recovered none of the 10 titles that got empty replies.</b> For these titles the empty reply is '
+        'consistent, not intermittent. The retry was kept at the owner\'s request in case other titles\' empty replies '
+        'are intermittent; it adds about 2-3 s per empty reply.',
+        '<b>Pattern (not verified):</b> most of the 10 titles are about viruses or antivirals (for example sheeppox virus, '
+        'anticoronaviral therapies, anti-viral mushroom extracts) or plant disease and resistance (fungicides, a '
+        'resistance locus, a mycotoxin), but not all (for example "Structure-Function Parameters Over Different Surface '
+        'Footprints in Coastal Zones"). A Supervisor Agent guardrail is one possibility; their traces have not been reviewed.',
+        '<b>Workaround:</b> the rules function users.amanda_xu.build_sru_url returns the expected URL for all 10.',
+    ]),
     KeepTogether([p('Next steps', H1),
     *bullets([
-        'Investigate the empty Supervisor Agent replies (3/41 titles), the only remaining sru_url_match failures.',
+        'Investigate the empty Supervisor Agent replies (10 titles across both datasets; the only agent misses, and not '
+        'fixed by the retry): review their Supervisor traces for a guardrail or tool error (section 6.4).',
+        'Make the 142-title MCP test record its total run time, so titles per minute is measured rather than bounded.',
         'Tighten the relevant_to_notice and no_invented_urls guideline wording to remove judge false negatives on title-only and issue-level notices.',
         'Confirm the online scorer identity and permissions with the workspace admin, then start both scorers at a 0.1 sample rate.',
         'Provision the dedicated eval service principal (sp-sru-syntax-eval) so offline runs target the deployed app rather than a local server copy.',
         'Fix the ToolCallEfficiency judge\'s output format (it returned JSON inside a markdown code block, causing a '
         'parse error and an unsupported verdict), then re-run it on a larger trace sample before starting online monitoring.',
         'To cut response time, focus on the build_sru_search_url path (about 69% of latency in tool requests): review whether the '
-        'Supervisor Agent\'s code_safety guardrail is needed for this read-only UC function, and consider calling '
-        'users.amanda_xu.build_sru_url directly for well-formed titles. Re-run the latency query on a larger sample.',
+        'Supervisor Agent\'s code_safety guardrail is needed for this read-only UC function. Calling '
+        'users.amanda_xu.build_sru_url directly was measured in section 6.3 (about 4 times faster, same URLs); the '
+        'agent-only path was kept for the MCP demo. Re-run the latency query on a larger sample.',
     ])]),
     Spacer(1, 10),
     p(f'Sources: Inspector Gadget results from the test notebook runs on November 18, 2026; offline and online '
       f'evaluation details from <link href="{README_URL}" color="blue">sru-syntax-mcp/eval/databricks/README.md</link> '
       f'(branch add-mcp-servers); kindly-lamb-651 results from the run\'s trace assessments and span data in '
       f'experiment 1096079759943475; latency from the SRU Agent Latency per Step query over '
-      f'users.amanda_xu.sru_syntax_agent_otel_spans.', SMALL),
+      f'users.amanda_xu.sru_syntax_agent_otel_spans; section 6 from Inspector Gadget runs against the deployed app '
+      f'on November 19, 2026, users.amanda_xu.sample3_mcp_offline_test, and the app logs.', SMALL),
 ]
 
 def footer(canvas, doc):
@@ -397,7 +490,10 @@ for check in ['1. Inspector Gadget testing', '2. Databricks offline MLflow evalu
               'build_sru_search_url', '0.93 (38/41)', 'ToolCallEfficiency', 'ToolCallCorrectness', '1096079759943475',
               'kindly-lamb-651', 'tr-49f67341cc640c67a33da696d5cecdd0', '4. Evaluation run',
               '5. Agent latency per step', '18.62', '15.06', '68.9%', '53.77', 'about 69%', '2. Databricks offline MLflow evaluation: mcp-sru-syntax',
-              'Granted CAN USE on mcp-sru-syntax', 'deployed mcp-sru-syntax MCP server']:
+              'Granted CAN USE on mcp-sru-syntax', 'deployed mcp-sru-syntax MCP server',
+              '6. Live testing on November 19, 2026', 'updated November 19, 2026', '6.2 Titles per minute',
+              '4,706 s', 'at least 7.8 min', '10.6 (231 s in total)', '30/33', '142/142', '6.4 Empty-reply retry',
+              'recovered 0 of 10', '7/7 still empty', 'Test the browser page and /api/sru-url', 'POST /api/sru-url']:
     print('OK  ' if check in flat else 'MISSING  ', check)
 
 # The server is named mcp-sru-syntax throughout. The only allowed old-name text is the
