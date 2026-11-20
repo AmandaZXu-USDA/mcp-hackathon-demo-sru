@@ -217,15 +217,19 @@ import pandas as pd
 
 def classify(r):
     expected = r.expected_url or ''
-    if r.mcp_status != 'OK':
+    out = r.mcp_output or ''
+    # Since 2026-11-20 the tool returns an empty reply as a tool error (category empty_reply) after its
+    # one retry; earlier runs returned it as plain text starting 'agent-sru-syntax returned an empty reply'.
+    empty = 'error empty_reply' in out or out.startswith('agent-sru-syntax returned an empty reply')
+    if r.mcp_status != 'OK' and not empty:
         return 'ERROR'
-    if r.mcp_output == expected:
+    if out == expected:
         return 'EXACT'
     if not expected:
         return 'BARE_NOTICE_NO_URL'          # bare Correction/Erratum: agent asks for full title
-    if r.mcp_output.startswith('agent-sru-syntax returned an empty reply'):
+    if empty:
         return 'EMPTY_AGENT_REPLY'
-    if expected in r.mcp_output:
+    if expected in out:
         return 'CORRECT_URL_EXTRA_TEXT'
     return 'WRONG_URL'
 
