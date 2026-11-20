@@ -199,7 +199,7 @@ To call the MCP tool `build_sru_search_url` directly instead of the agent, see t
 |---|---|---|
 | `200` with a URL | Success | Copy the URL as-is |
 | `200` with "names no article" or "covers a journal issue" | Bare or issue-level notice; no single article | Nothing to search |
-| `200` with "returned an empty reply for this title" | The Supervisor Agent gave no answer (happens for some titles, e.g. about virus replication) | Use option 4 for that title |
+| `200` with "returned an empty reply for this title" (`error empty_reply`) | The Supervisor Agent gave no answer, also after the app's one retry; for a few titles this happens every time | Use option 4 for that title; if it happens for many titles, send the error id to the project owner |
 | `302` or `401` | Missing or expired token, or no `CAN USE` on the app | Repeat step 2; if it still fails, ask the project owner for `CAN USE` |
 | `400` `Body must include 'input'` | The JSON has no `input` field | Check the `-d` text |
 | `502` `agent_failed` with an id | The agent failed | Try again; send the id to the project owner if it repeats |

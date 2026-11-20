@@ -129,8 +129,12 @@ is at its 100-app limit, so the MCP server and the agent share the `mcp-sru-synt
 
 The tool implementation is in [`src/sru_server/tools/build_sru_url.py`](src/sru_server/tools/build_sru_url.py).
 It sends the correction title to the Supervisor Agent, returns the SRU URL, and handles errors with stable
-categories (`timeout`, `unavailable`, `rate_limited`, `permission_denied`, `bad_response`) and an error ID
-instead of leaking upstream response bodies.
+categories (`invalid_input`, `timeout`, `unavailable`, `rate_limited`, `permission_denied`, `not_found`,
+`bad_request`, `bad_response`, `empty_reply`, `internal`) and an error ID instead of leaking upstream response
+bodies. Each message says what to do next. An empty reply, a busy agent (429) or a temporary outage
+(502/503, connection error) is retried once, after the agent's Retry-After or 2 s (at most 10 s); timeouts and
+permission or configuration errors are not retried. If the reply is still empty after the retry, the tool
+returns the `empty_reply` error, which points to the SQL function for that title.
 
 ### Two ways to reach the logic over MCP
 

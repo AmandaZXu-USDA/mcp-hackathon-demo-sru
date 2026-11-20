@@ -16,6 +16,7 @@ from sru_server.tools.build_sru_url import (
     _call_agent,
     _category_for_status,
     _final_text,
+    _retry_after_seconds,
 )
 
 # ── _category_for_status ────────────────────────────────────────────────────
@@ -31,11 +32,38 @@ from sru_server.tools.build_sru_url import (
         (504, "timeout"),
         (500, "unavailable"),
         (502, "unavailable"),
-        (404, "unavailable"),
+        (503, "unavailable"),
+        (404, "not_found"),
+        (400, "bad_request"),
+        (413, "bad_request"),
+        (422, "bad_request"),
     ],
 )
 def test_category_for_status(status: int, expected: str) -> None:
     assert _category_for_status(status) == expected
+
+
+@pytest.mark.parametrize(
+    "value, expected",
+    [("3", 3.0), ("0.5", 0.5), ("-4", 0.0), (None, None), ("soon", None), (7, None)],
+)
+def test_retry_after_seconds(value, expected) -> None:
+    assert _retry_after_seconds(value) == expected
+
+
+@pytest.mark.asyncio
+async def test_call_agent_keeps_retry_after_header() -> None:
+    with (
+        patch("sru_server.tools.build_sru_url._ws", _mock_ws()),
+        patch("sru_server.tools.build_sru_url.requests.post") as mock_post,
+    ):
+        mock_post.return_value = MagicMock(
+            status_code=429, headers={"Retry-After": "4"}
+        )
+        with pytest.raises(UpstreamError) as exc:
+            await _async_call_agent("Title")
+        assert exc.value.category == "rate_limited"
+        assert exc.value.retry_after == 4.0
 
 
 # ── UpstreamError sanitization ──────────────────────────────────────────────

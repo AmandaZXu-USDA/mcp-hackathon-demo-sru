@@ -177,6 +177,17 @@ def _json_error(message: str, status: int) -> JSONResponse:
     return JSONResponse({"error": message}, status_code=status)
 
 
+_ERROR_STATUS = {"invalid_input": 400, "timeout": 504, "rate_limited": 429}
+
+
+def _upstream_error(e: agent_tool.UpstreamError) -> JSONResponse:
+    """Error reply for the page: the message, plus its category and error id."""
+    return JSONResponse(
+        {"error": e.client_message(), "category": e.category, "error_id": e.error_id},
+        status_code=_ERROR_STATUS.get(e.category, 502),
+    )
+
+
 async def sru_url_api(request: Request) -> JSONResponse:
     """JSON API behind the page: {"title": "..."} -> {"text", "urls"}."""
     content_type = request.headers.get("content-type", "").lower()
@@ -192,30 +203,29 @@ async def sru_url_api(request: Request) -> JSONResponse:
         return _json_error("Body must include 'title' (the correction title)", 400)
     if len(title) > MAX_TITLE_CHARS:
         return _json_error(f"Title is longer than {MAX_TITLE_CHARS} characters", 400)
-    call = agent_tool._call_agent_retry_empty
+    call = agent_tool._call_agent_with_retry
     try:
         text = await asyncio.to_thread(call, title.strip())
     except agent_tool.UpstreamError as e:
         log.warning(
-            "page_error error_id=%s category=%s status=%s",
+            "page_error error_id=%s category=%s status=%s retried=%s",
             e.error_id,
             e.category,
             e.status_code,
+            e.retried,
         )
-        status = 504 if e.category == "timeout" else 502
-        return _json_error(e.client_message(), status)
+        return _upstream_error(e)
     except Exception as e:  # never expose unexpected exception text
-        err = agent_tool.UpstreamError("unavailable")
+        err = agent_tool.UpstreamError("internal")
         log.warning(
             "page_error error_id=%s category=unexpected exception=%s",
             err.error_id,
             type(e).__name__,
         )
-        return _json_error(err.client_message(), 502)
-    urls = [u.rstrip(").,;") for u in _SRU_URL_RE.findall(text or "")]
-    return JSONResponse(
-        {"text": text or agent_tool.EMPTY_MSG, "urls": list(dict.fromkeys(urls))}
-    )
+        return _upstream_error(err)
+    text = agent_tool._checked_reply(text)
+    urls = [u.rstrip(").,;") for u in _SRU_URL_RE.findall(text)]
+    return JSONResponse({"text": text, "urls": list(dict.fromkeys(urls))})
 
 
 app.add_route("/", index, methods=["GET"])

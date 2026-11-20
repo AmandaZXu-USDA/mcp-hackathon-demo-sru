@@ -106,8 +106,11 @@ Met:
   least-privilege resources.
 * Titles and agent replies are treated as data; the agent is told never to invent URLs.
 * Errors are stable categories with an error id, never upstream bodies, URLs or exception text:
-  * Tool (`isError: true`): `timeout`, `unavailable`, `rate_limited`, `permission_denied`, `bad_response`,
-    e.g. `The SRU syntax agent is unavailable. Try again later. (error unavailable, id 51443671b919)`.
+  * Tool (`isError: true`): `invalid_input`, `timeout`, `unavailable`, `rate_limited`, `permission_denied`,
+    `not_found`, `bad_request`, `bad_response`, `empty_reply` (still empty after the one retry), `internal`.
+    Empty replies, 429 and 502/503 are retried once; when a retried error fails again the message ends with
+    "The app already retried once." The page API returns the same message with `category` and `error_id`,
+    e.g. `Send one correction notice title as plain text (1 to 1,000 characters). (error invalid_input, id 0c6e4684e005)`.
   * `/invocations`: HTTP 502 with `error agent_failed, id <id>`.
   * Server logs (`databricks apps logs mcp-sru-syntax`) hold only `error_id`, category, HTTP status and exception
     class, so search the logs by the error id a user reports. Redirects from the agent endpoint are not followed.
