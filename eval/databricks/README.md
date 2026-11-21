@@ -297,6 +297,18 @@ Required permissions:
 | Tool error `bad_response` | The app's service principal cannot run the UC function the Supervisor Agent calls. |
 | `ReadTimeout` | The default 5 s client timeout; use `call_tool_with_timeout`. |
 
+### Results on November 21, 2026 (function-first tool)
+
+142-title MCP test, run `20261121T041852` in `users.amanda_xu.sample3_mcp_offline_test`, 10 at a time, as
+Inspector Gadget: **142/142 correct** (138 `EXACT`, 4 `BARE_NOTICE_NO_URL`), 0 empty replies, 0 errors, all 142
+answered by the rules function. Total 79 s for 142 titles, about 108 titles per minute (run time is now
+recorded); per title median 5.2 s, max 9.2 s. On November 20 (run `20261120T025204`, agent path) the same test
+had 126 `EXACT`, 7 `EMPTY_AGENT_REPLY` and 5 `CORRECT_URL_EXTRA_TEXT`; all 12 are `EXACT` now. A separate SQL
+check found the URL in every reply equal to `users.amanda_xu.build_sru_url` recomputed for the title.
+
+The classifier now compares the SRU URL in the reply (function-first replies label the URL) and records
+`answered_by` (`function` or `agent`, from the reply's fixed wording), `run_seconds` and `concurrency`.
+
 ### Results on November 19, 2026
 
 After the browser page and the empty-reply retry were deployed (section 6 of the evaluation report).

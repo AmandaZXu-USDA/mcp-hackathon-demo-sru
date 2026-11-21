@@ -206,14 +206,27 @@ async def run_batch(titles, concurrency=10):
     sem = asyncio.Semaphore(concurrency)
     return await asyncio.gather(*[_call_one(sem, t) for t in titles])
 
-# ~8 minutes for 142 titles at concurrency 10
-res = asyncio.run(run_batch(exp.erratum_title.tolist()))
+# Record the whole run's time and concurrency, so titles per minute is measured, not bounded
+CONCURRENCY = 10
+RUN_STARTED = time.time()
+res = asyncio.run(run_batch(exp.erratum_title.tolist(), concurrency=CONCURRENCY))
+RUN_SECONDS = time.time() - RUN_STARTED
 exp['mcp_status'], exp['mcp_output'], exp['mcp_seconds'] = zip(*res)
 
 # COMMAND ----------
 
 # DBTITLE 1,Offline test: classify results and save
+import re
 import pandas as pd
+
+_SRU_RE = re.compile(r'https://nal\.alma\.exlibrisgroup\.com/view/sru/[^\s<>"\'`]+')
+FUNCTION_PREFIX = 'NAL Alma SRU search URL for the original article:'
+NO_URL_PREFIX = 'No SRU URL: this notice does not name one original article'
+
+def answered_by(out):
+    # Since 2026-11-21 the tool runs the rules function first; its replies have fixed wording.
+    # Anything else came from the Supervisor Agent fallback (or is an error).
+    return 'function' if out.startswith(FUNCTION_PREFIX) or out.startswith(NO_URL_PREFIX) else 'agent'
 
 def classify(r):
     expected = r.expected_url or ''
@@ -223,22 +236,29 @@ def classify(r):
     empty = 'error empty_reply' in out or out.startswith('agent-sru-syntax returned an empty reply')
     if r.mcp_status != 'OK' and not empty:
         return 'ERROR'
-    if out == expected:
+    urls = list(dict.fromkeys(u.rstrip(').,;') for u in _SRU_RE.findall(out)))
+    # EXACT: the reply is the URL, or (function-first replies) its only SRU URL is the expected one
+    if out == expected or (expected and urls == [expected]):
         return 'EXACT'
     if not expected:
-        return 'BARE_NOTICE_NO_URL'          # bare Correction/Erratum: agent asks for full title
+        return 'BARE_NOTICE_NO_URL' if not urls else 'WRONG_URL'   # no single article: no URL expected
     if empty:
         return 'EMPTY_AGENT_REPLY'
-    if expected in out:
+    if expected in urls:
         return 'CORRECT_URL_EXTRA_TEXT'
     return 'WRONG_URL'
 
 exp['result'] = exp.apply(classify, axis=1)
+exp['answered_by'] = exp.mcp_output.fillna('').map(answered_by)
 exp['tested_at'] = pd.Timestamp.now(tz='UTC')
 exp['run_id'] = exp['tested_at'].iloc[0].strftime('%Y%m%dT%H%M%S')
+exp['run_seconds'] = round(RUN_SECONDS, 1)
+exp['concurrency'] = CONCURRENCY
 # Append so earlier runs are kept; compare with GROUP BY run_id, result
 spark.createDataFrame(exp).write.mode('append').option('mergeSchema', 'true').saveAsTable(RESULT_TABLE)
 
 print(exp.result.value_counts().to_string())
+print(exp.answered_by.value_counts().to_string())
+print(f"run: {RUN_SECONDS:.0f} s for {len(exp)} titles at {CONCURRENCY} at a time = {len(exp) / RUN_SECONDS * 60:.1f} titles/min")
 print(f"latency s: median {exp.mcp_seconds.median():.1f}, max {exp.mcp_seconds.max():.1f}")
 display(spark.table(RESULT_TABLE).where(f"run_id = '{exp.run_id.iloc[0]}' AND result <> 'EXACT'").select('row_num', 'result', 'mcp_seconds', 'erratum_title', 'mcp_output'))
