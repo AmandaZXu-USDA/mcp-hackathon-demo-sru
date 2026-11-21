@@ -253,6 +253,10 @@ The rules were built up iteratively on real notices:
    (`Correction`, `ERRATA`) and issue-level notices (`Taxon 61(6)`, `Correction for Data Papers Published in 2020`).
 5. Guard against false positives: a real title such as `Correction of hypocalcemia in dairy cows` is kept.
 
+**Journal-agnostic corrigendum parsing.** Corrigendum citations use many journal names and formats. Instead of
+listing journals, the extractor takes the text immediately after the year `(YYYY)` and cuts it at the first
+journal citation segment, so it also works for journals that are not in the sample.
+
 The full rule table, with an example and rule name for each case, is in
 [`.agents/skills/agent-sru-syntax/references/sru_url_rules.md`](.agents/skills/agent-sru-syntax/references/sru_url_rules.md).
 
@@ -332,6 +336,35 @@ Catalog functions as MCP tools at:
 A workspace admin must enable Managed MCP Servers on the workspace Previews page. Clients request the
 `unity-catalog` OAuth scope.
 
+From a Databricks notebook, using `DatabricksMCPClient` from the `databricks-mcp` package:
+
+```python
+%pip install databricks-mcp nest_asyncio
+```
+
+```python
+import nest_asyncio
+nest_asyncio.apply()  # the client runs asyncio internally; this lets it run inside the notebook's event loop
+
+from databricks.sdk import WorkspaceClient
+from databricks_mcp import DatabricksMCPClient
+
+ws = WorkspaceClient()  # authenticated as the notebook user
+server_url = f"{ws.config.host}/api/2.0/mcp/functions/users/amanda_xu/build_sru_url"
+client = DatabricksMCPClient(server_url=server_url, workspace_client=ws)
+
+print([t.name for t in client.list_tools()])  # ['users__amanda_xu__build_sru_url']
+result = client.call_tool(
+    "users__amanda_xu__build_sru_url",
+    {"correction_title": "Correction: Lorazepam reduces recurrence of urethral obstruction in male cats"},
+)
+print(result.content[0].text)  # JSON with the SRU URL in rows[0][0]
+```
+
+Tool names are the function's full name with `__` in place of dots. The schema-level URL also lists
+`build_sru_url_v1`, an older version, so use the function-level URL to expose only the current function.
+The first call can time out while the function warms up; retry once.
+
 **2. Custom MCP server on Databricks Apps (`mcp-sru-syntax`).** Managed MCP has no endpoint for
 Supervisor Agents, so the app wraps the agent in an MCP tool:
 `https://mcp-sru-syntax-7474654188777746.aws.databricksapps.com/mcp`. Databricks Apps require an OAuth token;
@@ -370,12 +403,18 @@ The agent uses the Databricks-hosted model endpoint `databricks-gpt-5-6-luna` (`
 
 ### App resources
 
-The app gets these through `valueFrom` in [`mcp_server/app.yaml`](mcp_server/app.yaml):
+The bundle ([`databricks.yml`](databricks.yml)) declares these app resources, and the app's service principal gets each permission.
+Three of them reach the app as environment variables through `valueFrom` in [`mcp_server/app.yaml`](mcp_server/app.yaml); the others are
+permission grants only.
 
-* `serving-endpoint` -> `SERVING_ENDPOINT`: Supervisor Agent endpoint, `CAN_QUERY`
-* `model-service` -> `MODEL_SERVICE`: Unity Gateway model service (default `models.ai.gpt-5-6-luna`), `EXECUTE`
-* `app-experiment` -> `MLFLOW_EXPERIMENT_ID`: Unity Catalog-backed experiment, `CAN_EDIT`
-* `trace-annotations`, `trace-logs`, `trace-metrics`, `trace-spans`: the four `users.amanda_xu.sru_syntax_agent_otel_*` tables, `MODIFY` (includes `SELECT`)
+| Resource | Permission | Environment variable |
+| --- | --- | --- |
+| `serving-endpoint`: Supervisor Agent endpoint | `CAN_QUERY` | `SERVING_ENDPOINT` (`valueFrom`) |
+| `model-service`: Unity Gateway model service (default `models.ai.gpt-5-6-luna`) | `EXECUTE` | `MODEL_SERVICE` (`valueFrom`) |
+| `app-experiment`: Unity Catalog-backed experiment | `CAN_EDIT` | `MLFLOW_EXPERIMENT_ID` (`valueFrom`) |
+| `sql-warehouse`: the warehouse that runs `build_sru_url` | `CAN_USE` | `SQL_WAREHOUSE_ID`, set as a plain value in `app.yaml` |
+| `sru-function`: `users.amanda_xu.build_sru_url` | `EXECUTE` | none |
+| `trace-annotations`, `trace-logs`, `trace-metrics`, `trace-spans`: the four `users.amanda_xu.sru_syntax_agent_otel_*` tables | `MODIFY` (includes `SELECT`) | none; lets MLflow write the app's traces to these tables |
 
 ### Governance
 
