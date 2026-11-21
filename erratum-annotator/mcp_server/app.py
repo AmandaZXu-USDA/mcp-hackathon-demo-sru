@@ -17,6 +17,7 @@ from databricks.sdk import WorkspaceClient
 from databricks.sdk import errors as dberr
 from mcp.server.fastmcp import FastMCP
 from mcp.server.fastmcp.exceptions import ToolError
+from mcp.types import ToolAnnotations
 
 from erratum_annotator import (
     ModsRecord,
@@ -199,7 +200,14 @@ def _with_status(result: dict, correction_id: str) -> dict:
     return {**result, "status": status, "warnings": warnings}
 
 
-@mcp.tool()
+def _read_only(title: str) -> ToolAnnotations:
+    """MCP annotations for every tool here: each one only reads (saved SRU responses or XML it is given),
+    creates or changes nothing, gives the same result for the same input, and calls no outside service."""
+    return ToolAnnotations(title=title, readOnlyHint=True, destructiveHint=False,
+                           idempotentHint=True, openWorldHint=False)
+
+
+@mcp.tool(annotations=_read_only("Check the erratum annotator"))
 @_handled
 def health() -> str:
     """Check that the erratum annotator server is running and can read the saved SRU responses."""
@@ -211,7 +219,7 @@ def health() -> str:
     return f"mcp-erratum-note is running; {count} saved SRU responses are readable."
 
 
-@mcp.tool()
+@mcp.tool(annotations=_read_only("Parse an SRU response"))
 @_handled
 def parse_sru_response(xml: str) -> dict:
     """Parse an SRU searchRetrieveResponse XML string into classified records.
@@ -230,7 +238,7 @@ def parse_sru_response(xml: str) -> dict:
     }
 
 
-@mcp.tool()
+@mcp.tool(annotations=_read_only("Format an erratum note"))
 @_handled
 def extract_erratum_note(part_text: str, doi: str) -> str:
     """Format an erratum note from a correction record's <part><text> and DOI.
@@ -244,7 +252,7 @@ def extract_erratum_note(part_text: str, doi: str) -> str:
     return _extract_note(rec) or ""
 
 
-@mcp.tool()
+@mcp.tool(annotations=_read_only("Append an erratum note to a title"))
 @_handled
 def enhance_title(original_title: str, erratum_note: str) -> dict:
     """Append an erratum note to the end of the original title.
@@ -259,7 +267,7 @@ def enhance_title(original_title: str, erratum_note: str) -> dict:
             "already_annotated": already}
 
 
-@mcp.tool()
+@mcp.tool(annotations=_read_only("Annotate a title from SRU XML"))
 @_handled
 def process_sru_response(xml: str, search_title: str = "", correction_id: str = "") -> dict:
     """Full pipeline: parse SRU XML, match correction to original, annotate the title.
@@ -277,7 +285,7 @@ def process_sru_response(xml: str, search_title: str = "", correction_id: str = 
     return _with_status(_process(_check_xml(xml), search_title, correction_id), correction_id)
 
 
-@mcp.tool()
+@mcp.tool(annotations=_read_only("List saved SRU responses"))
 @_handled
 def list_sru_files(contains: str = "") -> dict:
     """List saved SRU response XML files in the erratum volume folder.
@@ -290,7 +298,7 @@ def list_sru_files(contains: str = "") -> dict:
     return {"folder": SRU_DIR, "count": len(names), "files": names}
 
 
-@mcp.tool()
+@mcp.tool(annotations=_read_only("Annotate a title from a saved SRU response"))
 @_handled
 def process_sru_file(file_name: str, search_title: str = "", correction_id: str = "") -> dict:
     """Read a saved SRU response from the erratum volume folder and annotate the title.

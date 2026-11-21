@@ -24,7 +24,7 @@ Demo notice (Sample 1, row 43; erratum MMS ID 9917175550407426):
 | 3 (1 min) | Erratum demo page: pick row 43 | The second app reads the saved response, picks the original record and builds the note. | Status ready; original MMS ID 9917168304707426; title ending `[Erratum: Dec. 2026, v. 53, no. 1, 1310, 10.1007/s11033-026-12468-5]` |
 | 4 (30 s) | Erratum page: **See all saved notices at once** | All 48 notices in one table. | 32 ready, 14 already annotated, 2 no original in Alma |
 | 5 (1.5 min) | Genie Code: "Build the SRU search URL for this correction notice: ..." then "Annotate Sample 1 row 43" | The same tools serve agents through MCP. | Same URL and annotated title as steps 1 and 3 (this step is not in the recorded replay) |
-| 6 (1 min) | [`../results/README.md`](../results/README.md) | Tested from outside as Inspector Gadget: 55/55 and 82/89; the 7 failures are missing tool annotations. | |
+| 6 (1 min) | [`../results/README.md`](../results/README.md) | Tested from outside as Inspector Gadget: 55/55 and 89/89. | |
 
 ## If something goes wrong
 

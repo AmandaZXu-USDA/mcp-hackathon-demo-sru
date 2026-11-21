@@ -30,7 +30,7 @@ there or at an existing evaluation report.
 | 1.1 | MCP servers | Inspector Gadget suite on both live apps: smoke, contract, functional, errors, security, auth, determinism, latency | done (2026-11-21) | [`results/runs/`](results/README.md) |
 | 1.2 | MCP servers | `mcp-sru-syntax` functional accuracy on 41 labelled notices | done: 41/41 | `20261121T2055Z_mcp-sru-syntax_2e5cacd5` |
 | 1.3 | MCP servers | `mcp-erratum-note` functional accuracy on 48 saved responses | done: 48/48 (46 annotated titles exact, 2 correctly with no original) | `20261121T2056Z_mcp-erratum-note_f236ef6d` |
-| 1.4 | MCP servers | Tool contract (descriptions, schemas, read-only annotations) | partial: `mcp-sru-syntax` 3/3; `mcp-erratum-note` 14/21, its 7 tools send no MCP annotations | both runs, suite `contract` |
+| 1.4 | MCP servers | Tool contract (descriptions, schemas, read-only annotations) | done: `mcp-sru-syntax` 3/3; `mcp-erratum-note` 21/21 after read-only annotations were added (14/21 before) | `20261121T2244Z_mcp-erratum-note_92e3a211`, suite `contract` |
 | 1.5 | MCP servers | Error categories and security probes (prompt injection, CQL operators, path traversal, XML entities) | done: 6/6 and 10/10 | both runs, suites `errors`, `security` |
 | 1.6 | MCP servers | Live throughput: 142 new notices through the MCP tool, 10 at a time | done: 142/142 in 79 s (2026-11-21) | table `users.amanda_xu.sample3_mcp_offline_test`, run `20261121T041852` |
 | 1.7 | MCP servers | Load beyond 10 concurrent callers, and behaviour during an outage | design-only | 3.3 below |

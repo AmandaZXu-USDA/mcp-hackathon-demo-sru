@@ -10,7 +10,8 @@ principal ID and MMS IDs are already public in this repository.
 | Run | App | Result | By suite | Functional latency (new session per call) |
 | --- | --- | --- | --- | --- |
 | [`20261121T2055Z_mcp-sru-syntax_2e5cacd5`](runs/20261121T2055Z_mcp-sru-syntax_2e5cacd5/report.log) | `mcp-sru-syntax` | **55/55 pass** | smoke 1/1, contract 3/3, functional 41/41, errors 3/3, security 3/3, determinism 2/2, auth 2/2 | p50 4.09 s, p95 5.29 s, max 13.94 s (41 calls, 5 at a time) |
-| [`20261121T2056Z_mcp-erratum-note_f236ef6d`](runs/20261121T2056Z_mcp-erratum-note_f236ef6d/report.log) | `mcp-erratum-note` | **82/89** (fail: contract) | smoke 3/3, contract 14/21, functional 51/51, errors 7/7, security 3/3, determinism 2/2, auth 2/2 | p50 1.99 s, p95 2.16 s, max 2.19 s (51 calls, 8 at a time) |
+| [`20261121T2244Z_mcp-erratum-note_92e3a211`](runs/20261121T2244Z_mcp-erratum-note_92e3a211/report.log) | `mcp-erratum-note`, after read-only annotations (deployment `01f1e5fcf78a124badf5925e264ae1ca`) | **89/89 pass** | smoke 3/3, contract 21/21, functional 51/51, errors 7/7, security 3/3, determinism 2/2, auth 2/2 | p50 2.06 s, p95 2.46 s, max 2.5 s (51 calls, 8 at a time) |
+| [`20261121T2056Z_mcp-erratum-note_f236ef6d`](runs/20261121T2056Z_mcp-erratum-note_f236ef6d/report.log) | `mcp-erratum-note`, before | **82/89** (fail: contract) | smoke 3/3, contract 14/21, functional 51/51, errors 7/7, security 3/3, determinism 2/2, auth 2/2 | p50 1.99 s, p95 2.16 s, max 2.19 s (51 calls, 8 at a time) |
 
 **`mcp-sru-syntax`.** All 41 labelled notices give exactly the expected reply: 33 the expected SRU URL and 8 (bare
 or issue-level notices) no URL. A title asking the model to return another URL, a title with markup and a title
@@ -19,9 +20,10 @@ with CQL operators all got only NAL Alma SRU URLs. No token and an invalid token
 **`mcp-erratum-note`.** All 48 saved responses give the librarian-checked result: 46 the exact annotated title and
 original MMS ID, and the 2 notices with no original in Alma an empty `original_id`. The 7 error and 3 security
 cases (path traversal, absolute path, XML entity expansion) were rejected with the documented categories.
-The 7 failures are one finding: **none of the 7 tools sends MCP tool annotations** (`readOnlyHint`,
-`destructiveHint`), so a client cannot tell from `tools/list` that they are read-only. The tools do not write
-anything; the fix is to add the annotations in `erratum-annotator/mcp_server/app.py`, as `mcp-sru-syntax` does.
+The 7 failures in the first run were one finding: **none of the 7 tools sent MCP tool annotations** (`readOnlyHint`,
+`destructiveHint`), so a client could not tell from `tools/list` that they are read-only. The tools do not write
+anything. **Fixed:** `erratum-annotator/mcp_server/app.py` now marks all 7 tools `readOnlyHint=true`, `destructiveHint=false`,
+`idempotentHint=true` and `openWorldHint=false`, as `mcp-sru-syntax` does; after redeploying, the rerun passes 89/89.
 
 **Other observations (not scored).**
 * Error message suffixes differ: `mcp-sru-syntax` ends with `(error <category>, id <12 hex>)`,
