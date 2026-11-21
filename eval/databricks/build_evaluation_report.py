@@ -55,13 +55,14 @@ story = []
 # ---- Title and summary ----
 story += [
     p('SRU Syntax MCP Server - Evaluation Report', ParagraphStyle('T', parent=H1, fontSize=19, spaceAfter=4)),
-    p('NAL Alma SRU URL builder for erratum/correction notices &nbsp;|&nbsp; Report date: November 18, 2026 (updated November 19, 2026)', SMALL),
+    p('NAL Alma SRU URL builder for erratum/correction notices &nbsp;|&nbsp; Report date: November 18, 2026 (updated November 21, 2026)', SMALL),
     Spacer(1, 8),
-    p('This report covers four evaluations, a per-step latency analysis, live testing on November 19, 2026 (section 6), and lessons learned and recommendations (section 7) of the <b>mcp-sru-syntax</b> Databricks App, a custom MCP server '
+    p('This report covers four evaluations, a per-step latency analysis, live testing on November 19, 2026 (section 6), and lessons learned and recommendations (section 7), and an offline evaluation re-run on November 21, 2026 (section 8) of the <b>mcp-sru-syntax</b> Databricks App, a custom MCP server '
       '(streamable HTTP at <font face="Courier">/mcp</font>) exposing one tool, '
       '<font face="Courier">build_sru_search_url</font>. The tool sends an erratum/correction notice title to the '
       'agent-sru-syntax Supervisor Agent (serving endpoint <font face="Courier">mas-c8629507-endpoint</font>) and '
-      'returns the NAL Alma production SRU searchRetrieve URL for the original article.'),
+      'returns the NAL Alma production SRU searchRetrieve URL for the original article. Since November 21, 2026 the tool '
+      'runs the rules function first and asks the Supervisor Agent only if that call fails (section 8).'),
     Spacer(1, 4),
     table([
         ['Evaluation', 'Status', 'Headline result'],
@@ -72,6 +73,7 @@ story += [
         ['5. Agent latency per step', 'Analyzed', '174 requests: those that call the tool take p50 22.5 s (tool about 69% of the time); 35 answered without the tool take p50 2.7 s. 1 error in 176 model calls.'],
         ['6. Live testing (November 19)', 'Passed; retry did not help', 'Page, page API, MCP and agent routes pass as Inspector Gadget. About 18 titles/min at 10 at a time. Every URL the agent returned matched the rules function. The empty-reply retry recovered 0 of 10 titles.'],
         ['7. Lessons learned and recommendations', 'Summary', '20 lessons across access, MCP naming and client, agent, evaluation, performance and engineering; 10 recommendations, starting with an independent, librarian-confirmed ground truth.'],
+        ['8. Offline evaluation re-run (November 21)', 'Completed', 'Function-first tool and databricks-gpt-5-6-luna agent: sru_url_match 1.00 (41/41), correctness 1.00, safety 1.00; median 6.9 s per title on /invocations.'],
     ], [2.0, 1.1, 4.0]),
     Spacer(1, 6),
     table([
@@ -82,7 +84,8 @@ story += [
         ['Tool', 'build_sru_search_url(correction_title: str) -> str (read-only, idempotent)'],
         ['Upstream agent', 'agent-sru-syntax Supervisor Agent, endpoint mas-c8629507-endpoint'],
         ['Rules function', 'users.amanda_xu.build_sru_url (Unity Catalog function)'],
-        ['Agent model', 'models.ai.gpt-5-6-luna'],
+        ['Agent model', 'models.ai.gpt-5-6-luna until November 20, 2026; databricks-gpt-5-6-luna (Databricks-hosted) since November 21'],
+        ['Tool path since November 21, 2026', 'Rules function on SQL warehouse 50d2bd4ddf65e0f5 first (about 4 s); Supervisor Agent only if that call fails'],
     ], [1.5, 5.6]),
 ]
 
@@ -481,21 +484,63 @@ story += [
         ['9', 'Make one repo the source of the server code, or add a CI check that the deployed and fork copies match.', 'Two copies of the server (7.1)'],
         ['10', 'Re-run the offline MLflow evaluation and the 142-title MCP test after any change to the Supervisor Agent, its guardrails or the title rules, and compare runs by run ID.', 'Prompt regression (6.3)'],
     ], [0.35, 4.75, 2.0])]),
+    # ---- Section 8: Offline evaluation re-run on November 21, 2026 ----
+    PageBreak(),
+    p('8. Offline evaluation re-run on November 21, 2026: function-first tool, new agent model', H1),
+    p("<b>Purpose:</b> re-score the deployed agent after two changes on November 21, 2026, with the same 41-row "
+      "dataset and the same five scorers as section 2."),
+    p('8.1 What changed', H2),
+    table([
+        ['Change', 'Detail'],
+        ['Tool runs the rules function first', 'build_sru_search_url and the browser page run users.amanda_xu.build_sru_url on SQL warehouse 50d2bd4ddf65e0f5 (title as a bound parameter) and ask the Supervisor Agent only if that call fails. If the function finds no single article, the tool says so at once. Deployment 01f1e558046f12c68fdc6ec13900905b.'],
+        ['Agent model', 'Every models.ai model service (gpt-5-6-luna, gpt-5-6-terra, gpt-5-6-sol, gpt-6-astra) returned 401 "API key has expired", so /invocations returned 502. The app agent now uses the Databricks-hosted endpoint databricks-gpt-5-6-luna (AGENT_MODEL in app.yaml). Deployment 01f1e55cbc5d174c85c3e21d90ee1023.'],
+        ['Evaluation script', 'agent_eval_deployed.py: predict_fn sends each title to the deployed app (POST /invocations) as Inspector Gadget, so it scores what users get. The section 2 script drives a separate agent copy through models.ai and cannot run while that key is expired.'],
+    ], [1.6, 5.5]),
+    KeepTogether([p('8.2 Results', H2),
+    table([
+        ['Metric', 'November 18 (Supervisor Agent tool, models.ai)', 'November 21 (function first, databricks-gpt-5-6-luna)'],
+        ['sru_url_match', '0.93 (38/41)', '1.00 (41/41)'],
+        ['correctness', '0.90', '1.00'],
+        ['relevant_to_notice', '0.85', '0.90'],
+        ['no_invented_urls', '0.93', '0.90'],
+        ['safety', '1.00', '1.00'],
+    ], [1.6, 2.75, 2.75])]),
+    Spacer(1, 4),
+    p('MLflow run 3bd980fb57ec4b769ba66036c91091ee in experiment 131270370350843; 41 rows, 3 at a time, 212 s in total. '
+      'Per title: median 6.9 s, p90 7.3 s, max 7.5 s; the fastest, bare and issue-level notices, about 1 s.'),
+    *bullets([
+        "<b>All 41 replies are right.</b> The 3 titles that got empty Supervisor Agent replies on November 18 now get the "
+        "correct URL, because the tool no longer goes through the Supervisor Agent.",
+        "<b>The 7 judge failures are judge strictness, not agent errors</b> (each reply checked by hand). relevant_to_notice "
+        "failed the issue-level rows Errata to taxon 59(5) and Taxon 61(6), and two correct URL answers for title-only "
+        "notices (AAFP and ISFM Guidelines ..., Monographic Revision of the American Genus Euphoria ...). no_invented_urls "
+        "failed the two Data Papers rows (the explanation counted as commentary) and two correct URL answers, because this "
+        "script sees only the HTTP reply: the judge cannot see the tool call.",
+        "<b>Caveat:</b> expected_title comes from the rules function, and the tool now calls that same function, so "
+        "sru_url_match mostly checks that the agent relays the tool's URL unchanged and skips the tool for bare and "
+        "issue-level notices. It does not show the rules pick the right Alma record; recommendation 1 (section 7.2) still applies.",
+    ]),
+    KeepTogether([p('8.3 Live response times after both changes (Inspector Gadget)', H2),
+    table([
+        ['Route', 'Result', 'Time'],
+        ['Browser page API POST /api/sru-url, 3 titles', '200; source function; correct URL, or the no-URL message for a bare "Correction"', '3.9-4.7 s'],
+        ['MCP tools/call build_sru_search_url', '200; correct SRU URL', '4.0 s'],
+        ['POST /invocations (app agent), 2 titles', '200; correct SRU URL', '6.6 s, 10.1 s'],
+        ['POST /invocations, "Corrigendum"', '200; names no article, no URL', '1.1 s'],
+    ], [2.6, 3.3, 1.2])]),
     PageBreak(),
     KeepTogether([p('Next steps', H1),
     *bullets([
         'Investigate the empty Supervisor Agent replies (10 titles across both datasets; the only agent misses, and not '
-        'fixed by the retry): review their Supervisor traces for a guardrail or tool error (section 6.4).',
+        'fixed by the retry): review their Supervisor traces for a guardrail or tool error (section 6.4). Users no longer see them: the tool calls the rules function first (section 8).',
         'Make the 142-title MCP test record its total run time, so titles per minute is measured rather than bounded.',
         'Tighten the relevant_to_notice and no_invented_urls guideline wording to remove judge false negatives on title-only and issue-level notices.',
         'Confirm the online scorer identity and permissions with the workspace admin, then start both scorers at a 0.1 sample rate.',
         'Provision the dedicated eval service principal (sp-sru-syntax-eval) so offline runs target the deployed app rather than a local server copy.',
         'Fix the ToolCallEfficiency judge\'s output format (it returned JSON inside a markdown code block, causing a '
         'parse error and an unsupported verdict), then re-run it on a larger trace sample before starting online monitoring.',
-        'To cut response time, focus on the build_sru_search_url path (about 69% of latency in tool requests): review whether the '
-        'Supervisor Agent\'s code_safety guardrail is needed for this read-only UC function. Calling '
-        'users.amanda_xu.build_sru_url directly was measured in section 6.3 (about 4 times faster, same URLs); the '
-        'agent-only path was kept for the MCP demo. Re-run the latency query on a larger sample.',
+        'Response time: done November 21, 2026. The tool now calls users.amanda_xu.build_sru_url first (about 4 s instead of '
+        '15-25 s); the Supervisor Agent is only the fallback (section 8).',
     ])]),
     Spacer(1, 10),
     p(f'Sources: Inspector Gadget results from the test notebook runs on November 18, 2026; offline and online '
@@ -504,7 +549,8 @@ story += [
       f'experiment 1096079759943475; latency from the SRU Agent Latency per Step query over '
       f'users.amanda_xu.sru_syntax_agent_otel_spans; section 6 from Inspector Gadget runs against the deployed app '
       f'on November 19, 2026, users.amanda_xu.sample3_mcp_offline_test, and the app logs; section 7 from sections 1-6 '
-      f'and the deployment and access work on the app.', SMALL),
+      f'and the deployment and access work on the app; section 8 from MLflow run 3bd980fb57ec4b769ba66036c91091ee '
+      f'(experiment 131270370350843) and Inspector Gadget calls to the deployed app on November 21, 2026.', SMALL),
 ]
 
 def footer(canvas, doc):
@@ -537,12 +583,14 @@ for check in ['1. Inspector Gadget testing', '2. Databricks offline MLflow evalu
               'kindly-lamb-651', 'tr-49f67341cc640c67a33da696d5cecdd0', '4. Evaluation run',
               '5. Agent latency per step', '18.62', '15.06', '68.9%', '53.77', 'about 69%', '2. Databricks offline MLflow evaluation: mcp-sru-syntax',
               'Granted CAN USE on mcp-sru-syntax', 'deployed mcp-sru-syntax MCP server',
-              '6. Live testing on November 19, 2026', 'updated November 19, 2026', '6.2 Titles per minute',
+              '6. Live testing on November 19, 2026', 'updated November 21, 2026', '6.2 Titles per minute',
               '4,706 s', 'at least 7.8 min', '10.6 (231 s in total)', '30/33', '142/142', '6.4 Empty-reply retry',
               'recovered 0 of 10', '7/7 still empty', 'Test the browser page and /api/sru-url', 'POST /api/sru-url',
               '7. Lessons learned and recommendations', '7.1 Lessons learned', '7.2 Recommendations',
               'independent ground truth', 'lessons learned and recommendations (section 7)', 'warm-up title',
-              'named with the mcp- prefix', '20 lessons']:
+              'named with the mcp- prefix', '20 lessons',
+              '8. Offline evaluation re-run on November 21, 2026', '1.00 (41/41)', 'databricks-gpt-5-6-luna',
+              '3bd980fb57ec4b769ba66036c91091ee', '8.3 Live response times', 'Response time: done November 21, 2026']:
     print('OK  ' if check in flat else 'MISSING  ', check)
 
 # The server is named mcp-sru-syntax throughout. The only allowed old-name text is the
