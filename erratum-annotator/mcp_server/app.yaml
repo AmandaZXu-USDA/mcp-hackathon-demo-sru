@@ -1,0 +1,6 @@
+command:
+  - python
+  - app.py
+env:
+  - name: SRU_VOLUME_DIR
+    value: /Volumes/users/amanda_xu/erratum_files/sru_responses

@@ -13,6 +13,23 @@ This project is the initial stage of automating that workflow:
 2. **Part 2, agents, MCP and governance on Databricks:** make the same logic available to people and AI
    agents as a governed Unity Catalog function, a Supervisor Agent and an MCP server, with tracing and
    evaluation.
+3. **Part 3, erratum annotation:** from the SRU response, find the original article's record and append an
+   erratum note to its title, with a second MCP server and agent ([`erratum-annotator/`](erratum-annotator/README.md)).
+
+## At a glance: two MCP apps, two agents
+
+| | Project 1: SRU syntax (Parts 1 and 2) | Project 2: Erratum annotator (Part 3) |
+| --- | --- | --- |
+| What it does | Correction notice title -> NAL Alma SRU search URL | SRU response (MODS XML) -> original title with `[Erratum: ...]` note |
+| MCP server (Databricks App) | `mcp-sru-syntax`: 1 tool, `build_sru_search_url` | `mcp-erratum-note`: 7 tools, e.g. `list_sru_files`, `process_sru_file` |
+| Agent | Supervisor Agent `agent-sru-syntax` (`mas-c8629507-endpoint`); the app also serves an OpenAI Agents SDK agent at `/invocations` | Supervisor Agent `agent-erratum-annotator` (`mas-c341c0aa-endpoint`), [configuration](erratum-annotator/agent/README.md) |
+| Deterministic rules | UC function `users.amanda_xu.build_sru_url` | UC function `users.amanda_xu.process_sru_response` |
+| Code | Repo root: [`src/sru_server/`](src/sru_server/), [`databricks.yml`](databricks.yml) | [`erratum-annotator/`](erratum-annotator/README.md) |
+| Evaluation | [`eval/databricks/`](eval/databricks/README.md), [report PDF](submission/sru-syntax-mcp-evaluation-report.pdf) | [`erratum-annotator/eval/databricks/`](erratum-annotator/eval/databricks/README.md), [report PDF](erratum-annotator/eval/databricks/doc/agent-erratum-annotator-evaluation-report.pdf) |
+| Headline result | 135/142 correct replies via MCP, 0 wrong URLs | Agent: 50/53 exact annotated titles; MCP server alone: 0 errors, 48/48 original MMS IDs |
+| Deploy | Declarative Automation Bundle `sru_syntax` | `databricks apps deploy` from `erratum-annotator/mcp_server` |
+
+See [Deploying the two apps safely](#deploying-the-two-apps-safely) and [`submission/`](submission/README.md).
 
 ```
 Correction notice title
@@ -40,6 +57,8 @@ https://nal.alma.exlibrisgroup.com/view/sru/01NAL_INST?version=1.2&operation=sea
 | [`databricks.yml`](databricks.yml) | Declarative Automation Bundle: defines the app, its resources, and variables. |
 | [`setup/`](setup/create_uc_backed_experiment.py) | One-time setup: create a Unity Catalog-backed MLflow experiment for trace storage. |
 | [`mcp_server/`](mcp_server/) | App runtime config (`app.yaml`, `requirements.txt`) used by the bundle deploy. |
+| [`erratum-annotator/`](erratum-annotator/README.md) | Part 3, self-contained: MCP server `mcp-erratum-note` (`mcp_server/`), agent `agent-erratum-annotator` configuration (`agent/`), evaluation, Inspector Gadget test and report (`eval/databricks/`). |
+| [`submission/`](submission/README.md) | Hackathon deck, both evaluation reports and the librarian quick-start. |
 
 ## Part 1: Spreadsheet processing
 
@@ -223,6 +242,51 @@ Traces are stored in Unity Catalog under `users.amanda_xu`:
 tables (already run once). To use a different location, run it with new names and set
 `trace_experiment_id` / `trace_table_prefix` in [`databricks.yml`](databricks.yml).
 
+## Part 3: Erratum annotation
+
+Once the SRU search returns the original article and its correction notice, [`erratum-annotator/`](erratum-annotator/README.md)
+picks the original record (cited DOI first, then title similarity), builds the erratum note from the correction
+record and appends it to the original title, for example
+`<original title> [Erratum: Aug. 2026, v. 52, no. 4, 134, 10.1007/s10695-026-01767-0]`. Titles that already carry
+a note are returned unchanged; uncertain matches are flagged `needs_review`.
+
+* **MCP server `mcp-erratum-note`** ([`erratum-annotator/mcp_server/`](erratum-annotator/mcp_server/)): 7 read-only
+  tools; `process_sru_file` reads saved SRU responses from a Unity Catalog volume.
+* **Agent `agent-erratum-annotator`**: Supervisor Agent with the MCP server and the UC function
+  `process_sru_response` (generated from the same Python file) as tools.
+* **Evaluation** ([`erratum-annotator/eval/databricks/`](erratum-annotator/eval/databricks/README.md)): MLflow
+  evaluation of the agent on the 53-row Sample1 set (annotated_title_exact 50/53, erratum_note_exact 52/53,
+  original MMS ID 45/46) and a direct Inspector Gadget test of the MCP server (48 files, 0 errors, 46/48 titles
+  with the 2 expected differences, 48/48 MMS IDs, median 0.28 s per call).
+
+The live `mcp-erratum-note` app is deployed from the same folder in NAL's repository; this copy is kept
+byte-identical.
+
+## Deploying the two apps safely
+
+The two projects deploy independently: neither deploy touches the other app, agent or permissions.
+
+| | `mcp-sru-syntax` | `mcp-erratum-note` |
+| --- | --- | --- |
+| How | Bundle `sru_syntax` from the repo root (see [Deploy](#deploy)) | `databricks apps deploy mcp-erratum-note --source-code-path <repo>/erratum-annotator/mcp_server` |
+| App service principal gets | `CAN_QUERY` on `mas-c8629507-endpoint`, `EXECUTE` on the model service, `CAN_EDIT` on the experiment, `MODIFY` on the trace tables | `READ VOLUME` on `users.amanda_xu.erratum_files` only |
+| Check after deploy | [`eval/databricks/inspector_gadget_mcp_test.py`](eval/databricks/inspector_gadget_mcp_test.py) | `erratum-annotator/eval/databricks/mcp-erratum-note Inspector Gadget Test` (expect 0 errors, 46/48, 48/48) |
+
+* **Update in place, never recreate.** The workspace is at its 100-app limit and both apps already exist. Run
+  `databricks bundle validate` first; if the bundle state does not track `mcp-sru-syntax`, bind it
+  (`bundle deployment bind`) instead of creating it. Never rename the bundle resource key `sru_syntax_mcp`
+  without unbinding and rebinding, or the next deploy would delete the app.
+* **Callers need CAN USE.** Both apps are OAuth-gated by Databricks Apps. The test service principal
+  (Inspector Gadget) has CAN USE on both; its credentials stay in the Unity Catalog secret
+  `models.ai/inspector-gadget`, never in Git.
+* **Supervisor Agents are configured in Agent Bricks**, not in a bundle, so redeploying an app never changes
+  an agent. The `agent-erratum-annotator` tools and instructions are in
+  [`erratum-annotator/agent/README.md`](erratum-annotator/agent/README.md) so it can be recreated.
+* **Keep one source of rules.** Each project's deterministic rules are a governed UC function, and the agents
+  call tools instead of writing answers themselves. For Project 2, `process_sru_response` is generated from
+  `erratum-annotator/mcp_server/erratum_annotator.py`: regenerate it whenever that file changes, then rerun
+  the evaluation.
+
 ## Tests
 
 * [`tests/test_server.py`](tests/test_server.py) -- smoke tests: server import, name, default transport, tool registration, `build_sru_search_url` discoverability.
@@ -231,11 +295,11 @@ tables (already run once). To use a different location, run it with new names an
 ## Status and next steps
 
 * Done: extraction rules, Unity Catalog function, Supervisor Agent, MCP server app, Unity Catalog tracing,
-  offline evaluation.
+  offline evaluation; Part 3 erratum annotation (second MCP server and agent) on saved SRU responses.
 * Known issue: the Supervisor Agent sometimes returns an empty reply for a title (3 of 41 eval rows). Use the
   function directly for those titles.
-* Next: run the SRU searches against Alma to retrieve the original article's MMS ID and link it to the
-  correction record; provision the evaluation service principal so the eval can run against the deployed app.
+* Next: run the SRU searches against Alma live (needs USDA eAuth; Part 3 currently reads saved responses) to
+  retrieve the original article's MMS ID and link it to the correction record; provision the evaluation service principal so the eval can run against the deployed app.
 
 ## Acknowledgements
 

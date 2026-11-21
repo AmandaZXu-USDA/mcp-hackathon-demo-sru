@@ -42,6 +42,10 @@ extend-exclude = [
     # notebook "SRU Syntax MCP Evaluation Report"; edit the notebook, not this file.
     "eval/databricks/build_evaluation_report.py",
     "eval/databricks/inspector_gadget_mcp_test.py",
+    # Project 2 (mcp-erratum-note + agent-erratum-annotator) is kept byte-identical to the
+    # source the live app is deployed from (AmandaZXu-USDA/NAL, erratum-annotator/), so it
+    # is not reformatted here. Its notebooks are Databricks source exports.
+    "erratum-annotator",
 ]
 
 [tool.ruff.lint]
