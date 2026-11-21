@@ -46,6 +46,8 @@ extend-exclude = [
     # source the live app is deployed from (AmandaZXu-USDA/NAL, erratum-annotator/), so it
     # is not reformatted here. Its notebooks are Databricks source exports.
     "erratum-annotator",
+    # Byte-identical copy of the deployed mcp-sru-syntax source (AmandaZXu-USDA/NAL, sru-syntax-mcp/).
+    "sru-syntax-mcp",
 ]
 
 [tool.ruff.lint]

@@ -17,6 +17,43 @@ and exposes it behind your workspace's authentication.
 > the app and wires its Unity Catalog resources so `app.yaml` can read them via
 > `valueFrom` at runtime.
 
+## Tools and functions
+
+All code for this app is in Git, at the same paths in both repos
+([AmandaZXu-USDA/NAL](https://github.com/AmandaZXu-USDA/NAL/tree/add-mcp-servers/sru-syntax-mcp), branch
+`add-mcp-servers`, and [AmandaZXu-USDA/mcp-hackathon-demo-sru](https://github.com/AmandaZXu-USDA/mcp-hackathon-demo-sru/tree/main/sru-syntax-mcp)).
+Paths below are from the repo root. The live app is deployed from the NAL copy.
+
+### MCP tool (at `/mcp`)
+
+| Tool | Input | What it does | Code |
+| --- | --- | --- | --- |
+| `build_sru_search_url` | `correction_title` (string, 1 to 1,000 characters) | Turns an erratum or correction notice title into the NAL Alma production SRU searchRetrieve URL for the original article. Runs the UC function `users.amanda_xu.build_sru_url` on the SQL warehouse in `SQL_WAREHOUSE_ID` first (about 4 s); only if that call fails, asks the `agent-sru-syntax` Supervisor Agent (`SERVING_ENDPOINT`). A notice that names no single article (bare `Correction`, an issue-level notice) gets a short no-URL message. Errors come back as a short message with a category (`invalid_input`, `timeout`, `unavailable`, `rate_limited`, `permission_denied`, `not_found`, `bad_request`, `bad_response`, `empty_reply`, `internal`) and an error id. Annotations: read-only, not destructive, idempotent, closed world. | `sru-syntax-mcp/mcp_server/app.py` |
+
+### Other routes on the same app
+
+| Route | What it does | Code |
+| --- | --- | --- |
+| `GET /` | Browser page: paste one title, get the SRU URL as a link | `sru-syntax-mcp/mcp_server/app.py` |
+| `POST /api/sru-url` | `{"title": "..."}` returns `{"text", "urls", "source"}`; same lookup as the tool (`source` is `function` or `agent`); `"use_agent": true` asks the agent directly | `sru-syntax-mcp/mcp_server/app.py` |
+| `POST /invocations`, `POST /responses` | The app's agent (OpenAI Responses-style input; model `AGENT_MODEL`, `databricks-gpt-5-6-luna`), which calls the MCP tool | `sru-syntax-mcp/mcp_server/agent.py` |
+| `GET /health` | Liveness check | `sru-syntax-mcp/mcp_server/app.py` |
+
+### Unity Catalog function
+
+| Function | What it does | Used by | Definition |
+| --- | --- | --- | --- |
+| `users.amanda_xu.build_sru_url(correction_title STRING) RETURNS STRING` | Python, deterministic. Removes the Correction, Corrigendum, Erratum and similar prefixes and builds the production SRU URL (`https://nal.alma.exlibrisgroup.com/view/sru/01NAL_INST`, `alma.title` plus the Article filter, spaces as `%20`, no `maximumRecords`). Returns an empty string for bare and issue-level notices. | The MCP tool and page (first), the `agent-sru-syntax` Supervisor Agent (its tool), and SQL users (librarian quick-start, option 4) | `sru-syntax-mcp/uc_functions/build_sru_url.sql` |
+
+To recreate the function, run `build_sru_url.sql` in the SQL editor (change `users.amanda_xu` for another schema),
+then grant it as in [1.4](#14-unity-catalog-permissions). The file was exported from Unity Catalog on
+November 21, 2026; recreating a copy from it gave the same definition and the same URL for all 142 Sample3 titles.
+
+The fork also has `src/sru_server/`, the same tool adapted to the GSA hackathon template (`tools/build_sru_url.py`),
+with its tests in `tests/`.
+
+---
+
 ## What Databricks injects at runtime
 
 | Variable | Purpose |
@@ -35,6 +72,8 @@ The app also receives these from the bundle's app resources (via `valueFrom` in
 | `MODEL_SERVICE` | `model-service` | Unity Gateway model service (default `models.ai.gpt-5-6-luna`), `EXECUTE` |
 | `MLFLOW_EXPERIMENT_ID` | `app-experiment` | Unity Catalog-backed experiment for traces, `CAN_EDIT` |
 | `AGENT_TIMEOUT_SECONDS` | (literal) | Timeout for agent calls (300s) |
+| `AGENT_MODEL` | (literal) | Model the app's agent uses: `databricks-gpt-5-6-luna`, a Databricks-hosted endpoint. While it is set, `MODEL_SERVICE` is not used (its OpenAI key expired November 20, 2026) |
+| `SQL_WAREHOUSE_ID` | (literal) | SQL warehouse (`50d2bd4ddf65e0f5`) the tool and page run `users.amanda_xu.build_sru_url` on; the app's service principal needs `CAN USE` on it |
 
 ---
 
@@ -73,9 +112,10 @@ cd NAL/sru-syntax-mcp
 
 ### 1.4 Unity Catalog permissions
 
-The MCP server's tool (`build_sru_search_url`) calls the Unity Catalog function
-`users.amanda_xu.build_sru_url` through the Agent Bricks Supervisor Agent. Ensure
-the app's service principal (or your user, in development) has:
+The MCP server's tool (`build_sru_search_url`) runs the Unity Catalog function
+`users.amanda_xu.build_sru_url` directly on a SQL warehouse, and the Agent Bricks Supervisor Agent
+(the fallback) uses the same function as its tool. Ensure the app's service principal (or your user,
+in development) has `CAN USE` on the SQL warehouse in `SQL_WAREHOUSE_ID`, and:
 
 ```sql
 GRANT USE CATALOG ON CATALOG users TO `<principal>`;

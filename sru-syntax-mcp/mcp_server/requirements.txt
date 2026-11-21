@@ -1,0 +1,7 @@
+mcp>=1.10.0,<2
+databricks-sdk>=0.50.0
+uvicorn>=0.30.0
+requests>=2.31.0
+openai-agents>=0.25.0
+databricks-openai>=0.17.0
+mlflow>=3.14.0

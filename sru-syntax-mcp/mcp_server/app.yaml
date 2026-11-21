@@ -1,0 +1,22 @@
+command:
+  - python
+  - app.py
+env:
+  - name: SERVING_ENDPOINT
+    valueFrom: serving-endpoint
+  - name: AGENT_TIMEOUT_SECONDS
+    value: "300"
+  - name: MODEL_SERVICE
+    valueFrom: model-service
+  # Databricks-hosted serving endpoint the app's agent uses instead of MODEL_SERVICE (whose OpenAI
+  # key expired 2026-11-20). Remove this to go back to the Unity Gateway model service.
+  - name: AGENT_MODEL
+    value: "databricks-gpt-5-6-luna"
+  - name: MLFLOW_EXPERIMENT_ID
+    valueFrom: app-experiment
+  # Function first: the tool and page run users.amanda_xu.build_sru_url on this warehouse,
+  # and ask the agent only if that call fails.
+  # The app's service principal needs CAN USE on this warehouse and EXECUTE on the function
+  # (granted directly; the bundle also declares them as resources sql-warehouse and sru-function).
+  - name: SQL_WAREHOUSE_ID
+    value: "50d2bd4ddf65e0f5"

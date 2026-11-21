@@ -49,6 +49,7 @@ https://nal.alma.exlibrisgroup.com/view/sru/01NAL_INST?version=1.2&operation=sea
 | Folder | What it is |
 | --- | --- |
 | [`src/sru_server/`](src/sru_server/) | Part 2: the MCP server and agent code, adapted to the GSA MCP hackathon template structure (`app.py`, `agent.py`, `tools/build_sru_url.py`, `config.py`). |
+| [`sru-syntax-mcp/`](sru-syntax-mcp/README.md) | Part 2, as deployed: byte-identical copy of the live `mcp-sru-syntax` source (`mcp_server/`) and the UC function `build_sru_url` (`uc_functions/`). Tools and functions are listed in [`deploy/databricks/README.md`](deploy/databricks/README.md#tools-and-functions). |
 | [`title-extraction/`](title-extraction/README.md) | Part 1: `erratum_title_extractor.py`, the spreadsheet processing script. |
 | [`deploy/databricks/`](deploy/databricks/README.md) | Deployment runbook: how to deploy the MCP server as a Databricks App using a Declarative Automation Bundle. |
 | [`eval/databricks/`](eval/databricks/README.md) | Offline evaluation: MLflow GenAI evaluation over labelled notices with the `ToolCallEfficiency` scorer. |
@@ -57,7 +58,7 @@ https://nal.alma.exlibrisgroup.com/view/sru/01NAL_INST?version=1.2&operation=sea
 | [`databricks.yml`](databricks.yml) | Declarative Automation Bundle: defines the app, its resources, and variables. |
 | [`setup/`](setup/create_uc_backed_experiment.py) | One-time setup: create a Unity Catalog-backed MLflow experiment for trace storage. |
 | [`mcp_server/`](mcp_server/) | App runtime config (`app.yaml`, `requirements.txt`) used by the bundle deploy. |
-| [`erratum-annotator/`](erratum-annotator/README.md) | Part 3, self-contained: MCP server `mcp-erratum-note` (`mcp_server/`), agent `agent-erratum-annotator` configuration (`agent/`), evaluation, Inspector Gadget test and report (`eval/databricks/`). |
+| [`erratum-annotator/`](erratum-annotator/README.md) | Part 3, self-contained: MCP server `mcp-erratum-note` (`mcp_server/`), agent `agent-erratum-annotator` configuration (`agent/`), UC function definitions (`uc_functions/`), evaluation, Inspector Gadget test and report (`eval/databricks/`). |
 | [`submission/`](submission/README.md) | Hackathon deck, both evaluation reports and the librarian quick-start. |
 
 ## Part 1: Spreadsheet processing
@@ -291,8 +292,9 @@ The two projects deploy independently: neither deploy touches the other app, age
   [`erratum-annotator/agent/README.md`](erratum-annotator/agent/README.md) so it can be recreated.
 * **Keep one source of rules.** Each project's deterministic rules are a governed UC function, and the agents
   call tools instead of writing answers themselves. For Project 2, `process_sru_response` is generated from
-  `erratum-annotator/mcp_server/erratum_annotator.py`: regenerate it whenever that file changes, then rerun
-  the evaluation.
+  `erratum-annotator/mcp_server/erratum_annotator.py`: regenerate it whenever that file changes
+  (`erratum-annotator/uc_functions/build_uc_functions.py`), then rerun the evaluation. Both projects' function
+  definitions are in Git (`sru-syntax-mcp/uc_functions/`, `erratum-annotator/uc_functions/`).
 
 ## Tests
 
