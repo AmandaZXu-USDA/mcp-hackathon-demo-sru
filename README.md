@@ -39,9 +39,26 @@ Correction notice title
 Original article title
   "Effects of a Mixture of Humulus japonicus on Longitudinal Bone Growth in Hypophysectomized Rats"
         |
-        v  SRU URL builder
+        v  SRU URL builder (Part 2, mcp-sru-syntax)
 https://nal.alma.exlibrisgroup.com/view/sru/01NAL_INST?version=1.2&operation=searchRetrieve
   &recordSchema=mods&query=alma.title%3D%22Effects%20of%20a%20Mixture...%22%20and%20alma.local_field_912%3D%22Article%22
+        |
+        v  run the SRU search in Alma; save the response (MODS XML) to the volume, or paste it
+SRU searchRetrieveResponse (MODS XML)
+  correction notice record + original article record
+        |
+        v  erratum annotation (Part 3, mcp-erratum-note)
+        |    list_sru_files / process_sru_file   saved file    (or process_sru_response for pasted XML)
+        |    1. parse_sru_response    records: title, MMS ID, <part><text>, DOI, is_correction
+        |    2. match                 correction record (erratum MMS ID) -> original article
+        |                             (cited DOI first, then title similarity; else needs_review)
+        |    3. extract_erratum_note  "[Erratum: Mon. YYYY, v. V, no. N, page, DOI]"
+        |    4. enhance_title         append the note; titles that already have "[Erratum:" stay unchanged
+        v
+Annotated original title + original MMS ID
+  "Effects of a Mixture of Humulus japonicus on Longitudinal Bone Growth in Hypophysectomized Rats
+   [Erratum: Mon. YYYY, v. V, no. N, page, DOI]"
+  plus status, warnings and needs_review flags for the librarian
 ```
 
 ## Repository layout
