@@ -118,9 +118,9 @@ so the same title always gives the same URL. Pick by how many titles you have:
 
 | Option | Best for | Time per title | Access you need (ask the project owner) |
 |---|---|---|---|
-| [Browser page](#browser-page-no-setup) | One title, nothing to install | about 15-60 s | A user account in the Databricks workspace and `CAN USE` on app `mcp-sru-syntax` |
+| [Browser page](#browser-page-no-setup) | One title, nothing to install | about 4 s (SQL function first; up to a minute only if it falls back to the agent) | A user account in the Databricks workspace and `CAN USE` on app `mcp-sru-syntax` |
 | [1. Chat with the Supervisor Agent](#option-1-chat-with-the-supervisor-agent) | One title, no setup | about 15-25 s | `CAN QUERY` on endpoint `mas-c8629507-endpoint` |
-| [2. Genie Code with the MCP tool](#option-2-genie-code-with-the-mcp-tool) | Titles while you work in Databricks | about 15-25 s | `CAN USE` on app `mcp-sru-syntax` |
+| [2. Genie Code with the MCP tool](#option-2-genie-code-with-the-mcp-tool) | Titles while you work in Databricks | about 4 s for the tool, plus Genie Code's own time | `CAN USE` on app `mcp-sru-syntax` |
 | [3. Call the app's agent](#option-3-call-the-apps-agent-scripts) | Scripts and other tools | about 15-45 s | `CAN USE` on app `mcp-sru-syntax` |
 | [4. SQL function, no agent](#option-4-sql-function-no-agent-lists-of-titles) | Lists of titles (tens to thousands) | seconds for a whole list (up to a minute more if the SQL warehouse is starting) | `EXECUTE` on `users.amanda_xu.build_sru_url`, `USE CATALOG` on `users`, `USE SCHEMA` on `users.amanda_xu`, a SQL warehouse; for lists, also `READ VOLUME` and `WRITE VOLUME` on `users.amanda_xu.erratum_files` |
 
@@ -141,7 +141,10 @@ so the same title always gives the same URL. Pick by how many titles you have:
 1. Open <https://mcp-sru-syntax-7474654188777746.aws.databricksapps.com> in your browser.
 2. Sign in with your Databricks workspace account if asked. The first time, approve the app's request to
    know who you are.
-3. Paste one correction title and click **Get SRU URL**. Wait 15-60 seconds.
+3. Paste one correction title and click **Get SRU URL**. Most answers take about 4 seconds: the page runs the
+   SQL function `users.amanda_xu.build_sru_url` first and asks the AI agent only if that call fails. If the
+   function finds no single original article, the page says so at once and offers **Ask the AI agent
+   instead**.
 4. Click the URL to open the Alma record, or click **Copy URL**.
 
 If you see "Your sign-in may have expired", reload the page. If the page says you do not have access,
