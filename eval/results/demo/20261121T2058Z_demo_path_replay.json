@@ -1,0 +1,96 @@
+{
+  "recorded_utc": "2026-11-21T20:58:26+00:00",
+  "tester": "Inspector Gadget (service principal f22c554b-c019-4511-8774-079d9891c7d5)",
+  "git_commit": "8316e98",
+  "purpose": "Replay of the live demo path (both demo pages and their JSON APIs) with an OAuth token, as RUNBOOK.md describes",
+  "demo_notice": {
+    "correction_title": "Publisher Correction: DNMT3A/TET2-mediated epigenetic alteration in Type-1 diabetes dysregulates the haematopoiesis",
+    "erratum_mms_id": "9917175550407426",
+    "saved_response": "Sample1-Row43-9917175550407426.xml"
+  },
+  "steps": [
+    {
+      "step": "SRU demo page loads",
+      "method": "GET",
+      "path": "/",
+      "http_status": 200,
+      "seconds": 0.15,
+      "content_type": "text/html; charset=utf-8",
+      "bytes": 5546,
+      "body": null
+    },
+    {
+      "step": "SRU URL for the demo notice",
+      "method": "POST",
+      "path": "/api/sru-url",
+      "http_status": 200,
+      "seconds": 3.77,
+      "content_type": "application/json",
+      "bytes": 676,
+      "body": {
+        "source": "function",
+        "urls": [
+          "https://nal.alma.exlibrisgroup.com/view/sru/01NAL_INST?version=1.2&operation=searchRetrieve&recordSchema=mods&query=alma.title%3D%22DNMT3A%2FTET2-mediated%20epigenetic%20alteration%20in%20Type-1%20diabetes%20dysregulates%20the%20haematopoiesis%22%20and%20alma.local_field_912%3D%22Article%22"
+        ]
+      }
+    },
+    {
+      "step": "Erratum demo page loads",
+      "method": "GET",
+      "path": "/",
+      "http_status": 200,
+      "seconds": 0.07,
+      "content_type": "text/html; charset=utf-8",
+      "bytes": 12681,
+      "body": null
+    },
+    {
+      "step": "Erratum examples list",
+      "method": "GET",
+      "path": "/api/examples",
+      "http_status": 200,
+      "seconds": 0.08,
+      "content_type": "application/json",
+      "bytes": 12895,
+      "body": {
+        "folder": "/Volumes/users/amanda_xu/erratum_files/sru_responses",
+        "examples": 48
+      }
+    },
+    {
+      "step": "Annotate the demo notice from its saved response",
+      "method": "POST",
+      "path": "/api/annotate",
+      "http_status": 200,
+      "seconds": 0.07,
+      "content_type": "application/json",
+      "bytes": 804,
+      "body": {
+        "status": "ready",
+        "correction_id": "9917175550407426",
+        "original_id": "9917168304707426",
+        "needs_review": false,
+        "erratum_note": "[Erratum: Dec. 2026, v. 53, no. 1, 1310, 10.1007/s11033-026-12468-5]",
+        "annotated_title": "DNMT3A/TET2-mediated epigenetic alteration in Type-1 diabetes dysregulates the haematopoiesis [Erratum: Dec. 2026, v. 53, no. 1, 1310, 10.1007/s11033-026-12468-5]"
+      }
+    },
+    {
+      "step": "Annotate all saved notices",
+      "method": "GET",
+      "path": "/api/annotate-all",
+      "http_status": 200,
+      "seconds": 0.08,
+      "content_type": "application/json",
+      "bytes": 24902,
+      "body": {
+        "count": 48,
+        "status_counts": {
+          "ready": 32,
+          "no_original": 2,
+          "already_annotated": 14
+        },
+        "matches_ground_truth": "48/48"
+      }
+    }
+  ]
+}

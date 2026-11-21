@@ -1,0 +1,85 @@
+{
+  "run_id": "f236ef6d",
+  "app": "mcp-erratum-note",
+  "server_url": "https://mcp-erratum-note-7474654188777746.aws.databricksapps.com/mcp",
+  "tester": "Inspector Gadget (service principal f22c554b-c019-4511-8774-079d9891c7d5)",
+  "git_commit": "8316e98",
+  "started_utc": "2026-11-21T20:56:53+00:00",
+  "finished_utc": "2026-11-21T20:57:08+00:00",
+  "status": "fail",
+  "cases": 89,
+  "passed": 82,
+  "suites": {
+    "smoke": {
+      "passed": 3,
+      "failed": 0
+    },
+    "contract": {
+      "passed": 14,
+      "failed": 7
+    },
+    "functional": {
+      "passed": 51,
+      "failed": 0
+    },
+    "errors": {
+      "passed": 7,
+      "failed": 0
+    },
+    "security": {
+      "passed": 3,
+      "failed": 0
+    },
+    "determinism": {
+      "passed": 2,
+      "failed": 0
+    },
+    "auth": {
+      "passed": 2,
+      "failed": 0
+    }
+  },
+  "latency_functional": {
+    "n": 51,
+    "p50_s": 1.99,
+    "p95_s": 2.16,
+    "max_s": 2.19
+  },
+  "failed_cases": [
+    {
+      "suite": "contract",
+      "name": "health: annotated read-only and non-destructive",
+      "note": "tool sends no MCP annotations, so clients cannot tell it is read-only"
+    },
+    {
+      "suite": "contract",
+      "name": "parse_sru_response: annotated read-only and non-destructive",
+      "note": "tool sends no MCP annotations, so clients cannot tell it is read-only"
+    },
+    {
+      "suite": "contract",
+      "name": "extract_erratum_note: annotated read-only and non-destructive",
+      "note": "tool sends no MCP annotations, so clients cannot tell it is read-only"
+    },
+    {
+      "suite": "contract",
+      "name": "enhance_title: annotated read-only and non-destructive",
+      "note": "tool sends no MCP annotations, so clients cannot tell it is read-only"
+    },
+    {
+      "suite": "contract",
+      "name": "process_sru_response: annotated read-only and non-destructive",
+      "note": "tool sends no MCP annotations, so clients cannot tell it is read-only"
+    },
+    {
+      "suite": "contract",
+      "name": "list_sru_files: annotated read-only and non-destructive",
+      "note": "tool sends no MCP annotations, so clients cannot tell it is read-only"
+    },
+    {
+      "suite": "contract",
+      "name": "process_sru_file: annotated read-only and non-destructive",
+      "note": "tool sends no MCP annotations, so clients cannot tell it is read-only"
+    }
+  ]
+}
