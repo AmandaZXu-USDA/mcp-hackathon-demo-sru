@@ -19,6 +19,7 @@ import logging
 import os
 import re
 import secrets
+import threading
 import uuid
 from pathlib import Path
 
@@ -189,7 +190,11 @@ def _upstream_error(e: agent_tool.UpstreamError) -> JSONResponse:
 
 
 async def sru_url_api(request: Request) -> JSONResponse:
-    """JSON API behind the page: {"title": "..."} -> {"text", "urls"}."""
+    """JSON API behind the page.
+
+    {"title": "...", "use_agent": false} -> {"text", "urls", "source"}, where
+    source is "function" or "agent".
+    """
     content_type = request.headers.get("content-type", "").lower()
     if not content_type.startswith("application/json"):
         # also blocks plain cross-site HTML form posts, which cannot send JSON
@@ -199,13 +204,15 @@ async def sru_url_api(request: Request) -> JSONResponse:
     except Exception:
         return _json_error("Request body must be JSON", 400)
     title = body.get("title") if isinstance(body, dict) else None
+    use_agent = isinstance(body, dict) and body.get("use_agent") is True
     if not isinstance(title, str) or not title.strip():
         return _json_error("Body must include 'title' (the correction title)", 400)
     if len(title) > MAX_TITLE_CHARS:
         return _json_error(f"Title is longer than {MAX_TITLE_CHARS} characters", 400)
-    call = agent_tool._call_agent_with_retry
     try:
-        text = await asyncio.to_thread(call, title.strip())
+        found = await asyncio.to_thread(
+            agent_tool._sru_lookup, title.strip(), use_agent
+        )
     except agent_tool.UpstreamError as e:
         log.warning(
             "page_error error_id=%s category=%s status=%s retried=%s",
@@ -223,9 +230,11 @@ async def sru_url_api(request: Request) -> JSONResponse:
             type(e).__name__,
         )
         return _upstream_error(err)
-    text = agent_tool._checked_reply(text)
+    text = agent_tool._checked_reply(found["text"])
     urls = [u.rstrip(").,;") for u in _SRU_URL_RE.findall(text)]
-    return JSONResponse({"text": text, "urls": list(dict.fromkeys(urls))})
+    return JSONResponse(
+        {"text": text, "urls": list(dict.fromkeys(urls)), "source": found["source"]}
+    )
 
 
 app.add_route("/", index, methods=["GET"])
@@ -237,6 +246,10 @@ app.add_route("/responses", invocations, methods=["POST"])
 
 def main() -> None:
     platform_port = os.getenv("DATABRICKS_APP_PORT") or os.getenv("PORT")
+    if settings.sql_warehouse_id and (
+        platform_port or settings.mcp_transport == "streamable-http"
+    ):
+        threading.Thread(target=agent_tool.warm_up, daemon=True).start()
     if platform_port:
         uvicorn.run(app, host="0.0.0.0", port=int(platform_port))
     elif settings.mcp_transport == "streamable-http":

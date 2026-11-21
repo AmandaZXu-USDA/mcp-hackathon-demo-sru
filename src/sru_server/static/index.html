@@ -29,26 +29,32 @@ production SRU searchRetrieve URL for the original article. Open it to see the m
 </form>
 <div id="status" role="status" aria-live="polite"></div>
 <div id="result"></div>
-<p class="hint">Replies usually take 15-60 seconds. One title per request; for long lists, use the SQL
-function <code>users.amanda_xu.build_sru_url</code>. Copy URLs as they are; do not edit the encoding.</p>
+<p class="hint">Answers usually take 3-5 seconds: the page runs the governed SQL function
+<code>users.amanda_xu.build_sru_url</code> first and asks the AI agent (up to a minute) only if that fails.
+One title per request; for long lists, call the SQL function directly. Copy URLs as they are; do not edit
+the encoding.</p>
 <script nonce="__NONCE__">
 (function () {
   var PREFIX = "__PREFIX__";
   var form = document.getElementById("f"), btn = document.getElementById("go");
   var statusEl = document.getElementById("status"), out = document.getElementById("result");
   function para(text, cls) { var p = document.createElement("p"); p.textContent = text; if (cls) p.className = cls; return p; }
-  form.addEventListener("submit", async function (ev) {
-    ev.preventDefault();
+  var SOURCES = { "function": "Answered by the governed SQL function", "agent": "Answered by the AI agent" };
+  form.addEventListener("submit", function (ev) { ev.preventDefault(); run(false); });
+  async function run(useAgent) {
     var title = document.getElementById("title").value.trim();
     if (!title) return;
-    btn.disabled = true; out.replaceChildren(); statusEl.textContent = "Working... this usually takes 15-60 seconds.";
+    btn.disabled = true; out.replaceChildren();
+    statusEl.textContent = useAgent ? "Asking the AI agent... this can take up to a minute." : "Working... usually 3-5 seconds.";
+    var source = "";
     var started = Date.now(), ctrl = new AbortController(), timer = setTimeout(function () { ctrl.abort(); }, 300000);
     try {
       var r = await fetch("api/sru-url", { method: "POST", credentials: "same-origin", signal: ctrl.signal,
-        headers: { "Content-Type": "application/json" }, body: JSON.stringify({ title: title }) });
+        headers: { "Content-Type": "application/json" }, body: JSON.stringify({ title: title, use_agent: useAgent }) });
       var data = null; try { data = await r.json(); } catch (e) { data = null; }
       if (!data) { out.append(para("Your sign-in may have expired. Reload the page and try again.", "error")); return; }
       if (!r.ok) { out.append(para(data.error || ("Request failed (HTTP " + r.status + ")."), "error")); return; }
+      source = SOURCES[data.source] || "";
       var urls = (data.urls || []).filter(function (u) { return typeof u === "string" && u.indexOf(PREFIX) === 0; });
       if (urls.length) {
         urls.forEach(function (u) {
@@ -60,15 +66,19 @@ function <code>users.amanda_xu.build_sru_url</code>. Copy URLs as they are; do n
         });
       } else {
         out.append(para(data.text || "No SRU URL in the reply. Try again, or use the SQL function."));
+        if (data.source === "function") {
+          var ask = document.createElement("button"); ask.type = "button"; ask.textContent = "Ask the AI agent instead (up to a minute)";
+          ask.addEventListener("click", function () { run(true); }); out.append(ask);
+        }
       }
     } catch (e) {
       out.append(para(e && e.name === "AbortError" ? "No reply after 5 minutes. Try again later."
         : "Could not reach the app. Your sign-in may have expired; reload the page and try again.", "error"));
     } finally {
       clearTimeout(timer); btn.disabled = false;
-      statusEl.textContent = "Done in " + Math.round((Date.now() - started) / 1000) + " s.";
+      statusEl.textContent = "Done in " + Math.round((Date.now() - started) / 1000) + " s." + (source ? " " + source + "." : "");
     }
-  });
+  }
 })();
 </script>
 </body>

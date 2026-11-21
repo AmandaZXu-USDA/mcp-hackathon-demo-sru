@@ -1,8 +1,10 @@
 """MCP tool: build_sru_search_url.
 
-Sends an erratum/correction notice title to the agent-sru-syntax Supervisor
-Agent and returns the NAL Alma production SRU searchRetrieve URL for the
-original article.
+Turns an erratum/correction notice title into the NAL Alma production SRU
+searchRetrieve URL for the original article. Function first, agent second: it
+runs the governed Unity Catalog function users.amanda_xu.build_sru_url on a SQL
+warehouse (usually 3-5 s), and asks the agent-sru-syntax Supervisor Agent
+(15-90 s) only if that call fails.
 """
 
 from __future__ import annotations
@@ -35,6 +37,11 @@ OTHER_LINK_NOTE = (
 )
 _LINK_RE = re.compile(r"https?://[^\s<>\"'`]+")
 _sleep = time.sleep  # tests replace this to skip the wait
+NO_URL_TEXT = (
+    "No SRU URL: this notice does not name one original article (for example a "
+    "bare 'Correction' or 'Erratum', or a notice for a whole issue), so there is "
+    "nothing to search. Check it by hand."
+)
 
 # App service principal credentials from the Apps environment. Created on first use,
 # not at import, so the server and its tests load without Databricks credentials.
@@ -237,6 +244,75 @@ def _call_agent_with_retry(title: str) -> str:
     return text
 
 
+def _call_function(title: str) -> str:
+    """Run the UC function on the SQL warehouse; return its URL ('' = no URL).
+
+    The title is a bound parameter, never part of the SQL text. Raises on any
+    failure, so the caller can fall back to the agent.
+    """
+    if not settings.sql_warehouse_id:
+        raise RuntimeError("SQL_WAREHOUSE_ID is not set")
+    from databricks.sdk.service.sql import (
+        ExecuteStatementRequestOnWaitTimeout,
+        StatementParameterListItem,
+        StatementState,
+    )
+
+    r = _client().statement_execution.execute_statement(
+        warehouse_id=settings.sql_warehouse_id,
+        statement=f"SELECT {SQL_FUNCTION}(:title) AS url",
+        parameters=[StatementParameterListItem(name="title", value=title)],
+        wait_timeout=settings.function_wait_timeout,
+        on_wait_timeout=ExecuteStatementRequestOnWaitTimeout.CANCEL,
+    )
+    if r.status is None or r.status.state != StatementState.SUCCEEDED:
+        raise RuntimeError(f"statement state {getattr(r.status, 'state', None)}")
+    rows = (r.result.data_array if r.result else None) or [[None]]
+    url = (rows[0][0] or "").strip()
+    if url and not url.startswith(SRU_PREFIX):
+        raise RuntimeError("function returned a non-SRU URL")
+    return url
+
+
+def _function_text(url: str) -> str:
+    if url:
+        return f"NAL Alma SRU search URL for the original article:\n{url}"
+    return NO_URL_TEXT
+
+
+def _sru_lookup(title: str, use_agent: bool = False) -> dict:
+    """Function first; the agent only if the function call fails or is asked for.
+
+    An empty URL from the function is a real answer (no single original
+    article). The agent calls the same function, so asking it as well would only
+    add a minute of waiting. Returns {"source": "function" | "agent", "text"}.
+    """
+    if not use_agent:
+        started = time.monotonic()
+        try:
+            url = _call_function(title)
+            log.info(
+                "function_ok seconds=%.1f has_url=%s",
+                time.monotonic() - started,
+                bool(url),
+            )
+            return {"source": "function", "text": _function_text(url)}
+        except Exception as e:  # fall back; never expose the exception text
+            log.warning(
+                "function_failed_fallback_to_agent exception=%s", type(e).__name__
+            )
+    return {"source": "agent", "text": _call_agent_with_retry(title)}
+
+
+def warm_up() -> None:
+    """Run the function once at start-up, so the first user skips the cold start."""
+    try:
+        _call_function("Correction: warm up")
+        log.info("function_warm_up ok")
+    except Exception as e:
+        log.warning("function_warm_up failed exception=%s", type(e).__name__)
+
+
 def _check_title(title: object) -> None:
     """Reject empty or over-long titles before calling the agent."""
     if not isinstance(title, str) or not title.strip() or len(title) > MAX_TITLE_CHARS:
@@ -265,11 +341,13 @@ def register(mcp) -> None:
         )
     )
     async def build_sru_search_url(correction_title: str) -> str:
-        """Send an erratum/correction notice title (e.g. 'Correction: <title>',
-        'Correction to \u201c<title>\u201d', 'Corrigendum: ...') to the agent-sru-syntax
-        agent and return its reply, which contains the NAL Alma production SRU
-        searchRetrieve URL for the original article. Pass the full title exactly as
-        given. Replies can take 60-90 seconds.
+        """Turn an erratum/correction notice title (e.g. 'Correction: <title>',
+        'Correction to \u201c<title>\u201d', 'Corrigendum: ...') into the NAL Alma
+        production SRU searchRetrieve URL for the original article. Pass the full
+        title exactly as given. Runs the governed SQL function
+        users.amanda_xu.build_sru_url first (usually 3-5 seconds); only if that
+        fails, asks the agent-sru-syntax agent (15-90 seconds). If the notice names
+        no single original article, says so and returns no URL.
 
         Errors are returned as a short message that says what to do, with a stable
         category (invalid_input, timeout, unavailable, rate_limited,
@@ -278,7 +356,8 @@ def register(mcp) -> None:
         or a temporary outage is retried once; timeouts are not."""
         try:
             _check_title(correction_title)
-            text = await asyncio.to_thread(_call_agent_with_retry, correction_title)
+            found = await asyncio.to_thread(_sru_lookup, correction_title)
+            text = found["text"]
         except UpstreamError as e:
             log.warning(
                 "tool_error error_id=%s category=%s status=%s retried=%s",

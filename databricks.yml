@@ -17,6 +17,12 @@ variables:
   trace_table_prefix:
     description: "Unity Catalog catalog.schema.prefix of the trace tables"
     default: users.amanda_xu.sru_syntax_agent
+  warehouse_id:
+    description: "SQL warehouse that runs the build_sru_url function (function first, agent as fallback)"
+    default: 50d2bd4ddf65e0f5
+  sru_function:
+    description: "Governed Unity Catalog function with the title rules"
+    default: users.amanda_xu.build_sru_url
 
 resources:
   experiments:
@@ -38,6 +44,16 @@ resources:
           serving_endpoint:
             name: ${var.serving_endpoint}
             permission: CAN_QUERY
+        - name: sql-warehouse
+          description: "Runs the build_sru_url function (tried before the agent)"
+          sql_warehouse:
+            id: ${var.warehouse_id}
+            permission: CAN_USE
+        - name: sru-function
+          uc_securable:
+            securable_full_name: ${var.sru_function}
+            securable_type: FUNCTION
+            permission: EXECUTE
         - name: model-service
           uc_securable:
             securable_full_name: ${var.model_service}

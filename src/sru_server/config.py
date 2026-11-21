@@ -29,5 +29,11 @@ class Settings(BaseSettings):
     model_service: str = ""
     mlflow_experiment_id: str = ""
 
+    # ── Function first (SQL warehouse) ────────────────────────────────────────
+    # The tool and page run the governed UC function on this warehouse first and
+    # ask the agent only if that call fails. Empty: always ask the agent.
+    sql_warehouse_id: str = ""
+    function_wait_timeout: str = "40s"  # SQL API wait (5s-50s), then fall back
+
 
 settings = Settings()
