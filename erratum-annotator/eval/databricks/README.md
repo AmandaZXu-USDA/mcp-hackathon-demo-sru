@@ -9,7 +9,38 @@ librarian-checked Sample1 spreadsheet.
 `/Volumes/users/amanda_xu/erratum_files/reports/agent-erratum-annotator-evaluation-report.pdf`
 (Catalog Explorer, then Download).
 
-## MLflow evaluation run, November 21, 2026 (latest)
+## Row 9: "no original in Alma" (November 21, 2026, latest)
+
+Rows 9 and 39 have no saved SRU response, and the librarian's Alma search found only the correction notice
+(ground truth `no original in Alma - correction notice only`). The agent cannot tell that from a missing file, so:
+
+* The evaluation request for these two rows now passes on the librarian's search result: "The librarian's Alma
+  search found only the correction notice; the original article is not in Alma." Other rows are unchanged.
+* New agent rule (live, and in [`../../agent/README.md`](../../agent/README.md)): when the request says the Alma
+  search found only the correction notice, report `no original in Alma - correction notice only` and the correction
+  MMS ID, with no annotated title and no request for XML; never conclude this only because no file is saved.
+
+Checks before the full run: rows 9 and 39 said `no original in Alma` in 6 of 6 runs (3 of 4 with the new request
+but the old instructions); rows 6, 16 and 19 (manual review) and row 9 without the search result (2 runs) did not.
+
+Full run `capricious-hound-768` (`cfbf93c778a74563915c1a52878dae9b`), smoke run `bemused-koi-45`, rescore run
+`kindly-worm-600`; per-row results in
+[`doc/agent-erratum-annotator-eval-results-20261121-row9.csv`](doc/agent-erratum-annotator-eval-results-20261121-row9.csv).
+
+| Scorer | Earlier Nov 21 run | This run |
+| --- | --- | --- |
+| annotated_title_exact | 51/53 | 51/53 (rows 34 and 40, curly apostrophe limitation) |
+| erratum_note_exact | 53/53 | 53/53 |
+| original_mms_id_match | 46/46 | 46/46 |
+| called_tool | 48/48 | 48/48 |
+| tool_annotated_title_exact | 53/53 | 53/53 |
+| correctness (LLM judge) | 51/53 | 52/53; row 9 now passes; row 24's reply is right (no original, no title) but the judge wanted it to say it gives no search_title fallback |
+| no_fabrication (LLM judge) | 42/53 | 42/53 |
+
+Only rows 4, 9, 24 and 39 say `no original in Alma`, the four rows with that ground-truth status. The PDF report
+still describes the earlier November 21 run.
+
+## MLflow evaluation run, November 21, 2026
 
 New full run of `Erratum Annotator Agent Evaluation` on all 53 rows, with the current agent instructions and
 `mcp-erratum-note` deployment. MLflow experiment `/Users/amanda.xu@usda.gov/agent-erratum-annotator-eval`

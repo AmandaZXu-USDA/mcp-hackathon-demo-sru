@@ -74,6 +74,10 @@ def build_row(r) -> dict:
     request = (f'Annotate the original article title for the correction notice "{r.erratum_title}" '
                f"(erratum MMS ID {r.erratum_mms_id}).")
     request += f" The saved SRU response file is {f}." if f else " No SRU response file is saved for this notice."
+    if not f and not expected and "manual" not in status:
+        # Rows 9 and 39: the librarian's Alma search found only the correction notice. The request passes that
+        # search result on, as a librarian would; the agent cannot tell it from a missing file alone.
+        request += " The librarian's Alma search found only the correction notice; the original article is not in Alma."
     note = re.search(r"\[Erratum:.*?\]", expected)
     if expected:
         case = "already_annotated" if status.startswith("already") else "annotated"

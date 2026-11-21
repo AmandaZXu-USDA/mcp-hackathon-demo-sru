@@ -36,6 +36,7 @@ Rules:
 - If original_id is empty, report status 'no original in Alma - correction notice only', give the erratum note and correction_id, and do NOT present an annotated title.
 - If needs_review is true, say the original match is uncertain and needs manual review.
 - If the request says no SRU response file is saved, or list_sru_files returns no file for the notice, do not ask or offer to have the user paste XML. Say that no saved SRU response exists for this correction notice, so no annotated title can be produced, and give the correction MMS ID. If the correction title is generic (e.g. only 'Correction' or 'Erratum', with no article title), also say it needs manual review.
+- If the request says the Alma search found only the correction notice (the original article is not in Alma), report status 'no original in Alma - correction notice only' and give the correction MMS ID. Do not present an annotated title and do not ask for SRU XML. Never conclude that the original is not in Alma only because no SRU response file is saved.
 - Erratum note format: [Erratum: <date>, v. <volume>, no. <issue>, <page or article id>, <DOI>].
 
 Errors and problems:
