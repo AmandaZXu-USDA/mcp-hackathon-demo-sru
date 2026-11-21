@@ -26,7 +26,7 @@ Every option uses the same code, so the same SRU response always gives the same 
 
 | Option | Best for | Time | Access you need (ask the project owner) |
 |---|---|---|---|
-| [Demo web page](#erratum-annotator-demo-web-page) | Anyone; demos for staff and sponsors | under a second per notice | A user account in the workspace and `CAN USE` on app `mcp-erratum-note` |
+| [Demo web page](#erratum-annotator-demo-web-page) | Anyone; demos for staff and sponsors | under a second per notice | A user account in the workspace and `CAN USE` on app `mcp-erratum-note`; or none for the offline copy |
 | [Chat with the agent](#erratum-annotator-chat-with-the-agent) | Asking in plain language | slower: the agent plans its tool calls | `CAN QUERY` on endpoint `mas-c341c0aa-endpoint` |
 | [Genie Code with the MCP tools](#erratum-annotator-genie-code-with-the-mcp-tools) | While you work in Databricks | a few seconds plus Genie Code's own time | `CAN USE` on app `mcp-erratum-note` |
 | [SQL function](#erratum-annotator-sql-function-lists) | Many saved SRU responses at once | about 20 s for all 48 saved responses | `EXECUTE` on `users.amanda_xu.process_sru_response`, `READ VOLUME` on `users.amanda_xu.erratum_files`, a SQL warehouse |
@@ -59,6 +59,11 @@ never change Alma or any file.
 
 If the page says you do not have access, ask the project owner for `CAN USE` on the app. If you see "Your
 sign-in may have expired", reload the page.
+
+**No Databricks account?** Open the offline copy instead: download
+[`erratum-annotator-demo-offline.html`](erratum-annotator-demo-offline.html) (in this folder, and in
+`erratum-annotator/demo/`) and open it in your browser. It has the same quick examples and all 48 saved
+notices with their results, needs no sign-in or network, but cannot annotate pasted XML.
 
 ## Erratum annotator: chat with the agent
 

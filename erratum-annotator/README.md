@@ -22,6 +22,7 @@ catalog title.
 | `mcp_server/erratum_annotator.py` | Core logic: parse SRU MODS XML, pick the original record, build the erratum note, enhance the title |
 | `mcp_server/app.py` | MCP server `mcp-erratum-note` (FastMCP, streamable HTTP at `/mcp`) for Databricks Apps |
 | `mcp_server/app.yaml`, `requirements.txt` | Databricks Apps config; `SRU_VOLUME_DIR` points at the saved SRU responses volume |
+| `demo/` | Offline single-file copy of the demo page (no account or network needed) and its build script |
 | `agent/README.md` | `agent-erratum-annotator` configuration: tools, endpoint and the instructions in use, with steps to recreate it |
 | `eval/databricks/` | MLflow evaluation of the `agent-erratum-annotator` Supervisor Agent and the [PDF report](eval/databricks/doc/agent-erratum-annotator-evaluation-report.pdf) |
 
@@ -35,6 +36,7 @@ review, no original in Alma, already annotated). **See all saved notices at once
 table. The page is served by the same app and code as the MCP tools (`GET /`, `GET /api/examples`,
 `POST /api/annotate`, `GET /api/annotate-all`); it only reads the saved responses. Steps for librarians:
 [`LIBRARIAN_QUICKSTART.md`, Part 1](../submission/LIBRARIAN_QUICKSTART.md#part-1-erratum-annotator-add-the-erratum-note-to-the-original-title).
+For people without a Databricks account, [`demo/`](demo/README.md) has an offline, single-file copy of the page.
 
 ## MCP tools
 
