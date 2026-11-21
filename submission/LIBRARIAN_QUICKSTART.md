@@ -109,9 +109,13 @@ response.
 
 # Part 2: SRU search URL from a correction title
 
-Paste an erratum/correction notice title (for example `Correction: Effects of drought stress on maize
-grain yield and quality`) and get the NAL Alma production SRU searchRetrieve URL for the original
-article. Open the URL in a browser to see the matching Alma record.
+Paste an erratum/correction notice title (for example `Correction: Zinc Amendment Prompts Phytotoxic to Beneficial Effects in Safflower Growth and Physiological Functions Under Calcareous Soil and Saline Water Conditions`) and get the NAL Alma production SRU
+searchRetrieve URL for the original article. Open the URL in a browser to see the matching Alma record.
+
+Two more examples to try:
+
+* `Correction to: From Concept to Curriculum and Competencies: Results of a Survey on Teaching of Integrative Forest Management at Higher Education Institutions Across Europe`
+* `Correction: Comparison of manual and automated methods in the hematological evaluation of a frugivorous bat captured in urban green areas`
 
 Every option below uses the same rules (the Unity Catalog function `users.amanda_xu.build_sru_url`),
 so the same title always gives the same URL. Pick by how many titles you have:
@@ -177,7 +181,7 @@ listed, ask the project owner for `CAN USE` on it.
 
 Then ask in plain language, for example:
 
-> Get the SRU search URL for "Correction to: Identification of JAZ1-MYC2 Complex in Lotus corniculatus".
+> Get the SRU search URL for "Correction to: From Concept to Curriculum and Competencies: Results of a Survey on Teaching of Integrative Forest Management at Higher Education Institutions Across Europe".
 
 Genie Code calls the `build_sru_search_url` tool and shows the URL. The app must be in the same
 workspace (it is). Other MCP clients that support OAuth can connect to
@@ -237,7 +241,7 @@ Expected: `{"status":"ok"}`. Without `jq`, run `databricks auth token --profile 
 curl -s -X POST https://mcp-sru-syntax-7474654188777746.aws.databricksapps.com/invocations \
   -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json" \
   --max-time 300 \
-  -d '{"input": "Correction: Effects of drought stress on maize grain yield and quality"}'
+  -d '{"input": "Correction: Zinc Amendment Prompts Phytotoxic to Beneficial Effects in Safflower Growth and Physiological Functions Under Calcareous Soil and Saline Water Conditions"}'
 ```
 
 To get only the URL as JSON (the endpoint the browser page uses), send one title to `/api/sru-url`:
@@ -245,7 +249,7 @@ To get only the URL as JSON (the endpoint the browser page uses), send one title
 ```bash
 curl -s -X POST https://mcp-sru-syntax-7474654188777746.aws.databricksapps.com/api/sru-url \
   -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json" --max-time 300 \
-  -d '{"title": "Correction: Effects of drought stress on maize grain yield and quality"}'
+  -d '{"title": "Correction: Zinc Amendment Prompts Phytotoxic to Beneficial Effects in Safflower Growth and Physiological Functions Under Calcareous Soil and Saline Water Conditions"}'
 ```
 
 The reply is `{"text": "<reply>", "urls": ["https://nal.alma.exlibrisgroup.com/view/sru/..."], "source": "function"}`
@@ -266,7 +270,7 @@ Reply (shortened):
   "output": [{
     "type": "message", "role": "assistant",
     "content": [{"type": "output_text",
-      "text": "https://nal.alma.exlibrisgroup.com/view/sru/01NAL_INST?version=1.2&operation=searchRetrieve&recordSchema=mods&query=alma.title%3D%22Effects%20of%20drought%20stress%20on%20maize%20grain%20yield%20and%20quality%22%20and%20alma.local_field_912%3D%22Article%22"}]
+      "text": "https://nal.alma.exlibrisgroup.com/view/sru/01NAL_INST?version=1.2&operation=searchRetrieve&recordSchema=mods&query=alma.title%3D%22Zinc%20Amendment%20Prompts%20Phytotoxic%20to%20Beneficial%20Effects%20in%20Safflower%20Growth%20and%20Physiological%20Functions%20Under%20Calcareous%20Soil%20and%20Saline%20Water%20Conditions%22%20and%20alma.local_field_912%3D%22Article%22"}]
   }]
 }
 ```
@@ -276,14 +280,14 @@ The URL is in `output[0].content[0].text`. To print only that text, add
 
 ### Several titles in one request
 
-Put one title per line in the string (`\n` between titles). The reply text lists one URL per title as
-bullets (`- https://...`), in the same order. Two titles took about 35 seconds in testing. Keep
+Put one title per line in the string (`\n` between titles). The reply text lists each title in bold with
+its URL on the next line, in the same order. Two titles took about 12 seconds in testing. Keep
 requests to a few titles; for lists use option 4.
 
 ```bash
 curl -s -X POST https://mcp-sru-syntax-7474654188777746.aws.databricksapps.com/invocations \
   -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json" --max-time 300 \
-  -d '{"input": "Correction: Effects of drought stress on maize grain yield and quality\nCorrection to: Identification of JAZ1-MYC2 Complex in Lotus corniculatus"}' \
+  -d '{"input": "Correction to: From Concept to Curriculum and Competencies: Results of a Survey on Teaching of Integrative Forest Management at Higher Education Institutions Across Europe\nCorrection: Comparison of manual and automated methods in the hematological evaluation of a frugivorous bat captured in urban green areas"}' \
   | jq -r '.output[0].content[0].text'
 ```
 
@@ -298,7 +302,7 @@ token = json.loads(subprocess.check_output(
 
 r = requests.post(f"{APP}/invocations", timeout=300,
                   headers={"Authorization": f"Bearer {token}"},
-                  json={"input": "Correction: Effects of drought stress on maize grain yield and quality"})
+                  json={"input": "Correction: Zinc Amendment Prompts Phytotoxic to Beneficial Effects in Safflower Growth and Physiological Functions Under Calcareous Soil and Saline Water Conditions"})
 r.raise_for_status()
 print(r.json()["output"][0]["content"][0]["text"])
 ```
@@ -326,7 +330,7 @@ issue-level notices.
 One title, in the **SQL editor** or a notebook:
 
 ```sql
-SELECT users.amanda_xu.build_sru_url('Correction: Effects of drought stress on maize grain yield and quality') AS sru_url;
+SELECT users.amanda_xu.build_sru_url('Correction: Zinc Amendment Prompts Phytotoxic to Beneficial Effects in Safflower Growth and Physiological Functions Under Calcareous Soil and Saline Water Conditions') AS sru_url;
 ```
 
 A list: upload a CSV or Excel file with a `Title` column to the volume
