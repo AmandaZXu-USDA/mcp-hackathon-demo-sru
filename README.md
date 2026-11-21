@@ -59,6 +59,95 @@ Annotated original title (original MMS ID 9917168304707426, needs_review = false
   "DNMT3A/TET2-mediated epigenetic alteration in Type-1 diabetes dysregulates the haematopoiesis [Erratum: Dec. 2026, v. 53, no. 1, 1310, 10.1007/s11033-026-12468-5]"
 ```
 
+## How the system works
+
+Short answers to common design questions. Details are in each project's README.
+
+**What data does it ingest, and how?**
+
+* Correction notice records exported from Alma as a spreadsheet (`Title`, `MMS ID`). They are processed by
+  the Part 1 script, or in SQL with the UC function `users.amanda_xu.build_sru_url`.
+* Single correction notice titles typed by a librarian or sent by an agent to the MCP tool
+  `build_sru_search_url`, the demo page or `/invocations`.
+* SRU search responses (MODS XML) from NAL Alma. The SRU search is not run automatically. A librarian runs it
+  and either saves the response in the volume `/Volumes/users/amanda_xu/erratum_files/sru_responses` or pastes
+  it into the erratum annotator.
+
+**How does it store and retrieve knowledge?**
+
+* The domain knowledge is deterministic rules, not a vector index or a trained model. The title extraction
+  and URL rules live in `build_sru_url`. The SRU parsing, matching and note rules live in
+  `erratum-annotator/mcp_server/erratum_annotator.py`, which also becomes the UC function
+  `process_sru_response`. Both are versioned in Git.
+* Data lives in Unity Catalog: saved SRU responses in the volume `users.amanda_xu.erratum_files`, which
+  `list_sru_files` and `process_sru_file` read through the Files API, and agent traces in the
+  `users.amanda_xu.sru_syntax_agent_otel_*` tables.
+* Catalog records stay in Alma and are looked up through SRU; the system does not keep its own copy.
+
+**How are multiple components or agents coordinated?**
+
+* There are two steps: correction title, then SRU URL (Project 1), then annotated original title (Project 2).
+  A librarian runs the SRU search in Alma between the two steps.
+* In each project, a Supervisor Agent routes the request to tools. `agent-sru-syntax` calls `build_sru_url`.
+  `agent-erratum-annotator` calls the `mcp-erratum-note` MCP server for saved files and the UC function for
+  pasted XML.
+* `mcp-sru-syntax` runs the UC function on a SQL warehouse first and asks the Supervisor Agent only if that
+  call fails.
+* The MCP tools and the UC functions run the same code, so every path gives the same answer.
+
+**What reasoning does it perform?**
+
+* Rule-based, deterministic steps: strip notice wording and citations from the correction title,
+  percent-encode a CQL query, parse MODS records, and pick the original article. Picking the original
+  excludes correction records, scores title similarity and gives a cited DOI the win outright. A weak or tied
+  match is flagged `needs_review`. Finally the steps format the `[Erratum: ...]` note and add it to the title.
+* The LLM agents choose tools, check inputs (for example, 16-digit MMS IDs) and explain results. Their
+  instructions forbid them from writing URLs, erratum notes or titles themselves.
+
+**What external tools or APIs does it call?**
+
+* Databricks SQL Statement Execution API, on a SQL warehouse, to run `build_sru_url`.
+* Model Serving endpoints for the Supervisor Agents (`mas-c8629507-endpoint`, `mas-c341c0aa-endpoint`) and for
+  the model behind the `/invocations` agent.
+* The Unity Catalog Files API, to read the saved SRU responses.
+* MLflow, for tracing and evaluation, and the Databricks-managed MCP server for Unity Catalog functions.
+
+**What other systems, agencies or protocols must it connect to?**
+
+* NAL's Alma catalog (Ex Libris), through SRU 1.2 `searchRetrieve` with CQL queries and the MODS record
+  schema. Alma is the source of the correction records and the original article records for PubAg.
+* Model Context Protocol (streamable HTTP at `/mcp`), so any MCP client or agent can use the tools.
+* Databricks OAuth for the apps (personal access tokens are rejected) and Unity Catalog permissions for
+  functions, volumes and traces. Running SRU searches live from the apps would also need USDA eAuth access to
+  Alma, which is not yet in place.
+
+**How does it detect and recover from errors?**
+
+* Inputs are checked before any tool runs: empty or too-long text, 16-digit MMS IDs, bare `.xml` file names,
+  XML that is cut off or not SRU, and Alma SRU diagnostics.
+* Each error returns a stable category (for example `invalid_input`, `not_well_formed`, `timeout`,
+  `unavailable`, `permission_denied`, `empty_reply`) and an error ID. The message says what to do next. Logs
+  record the ID and category, never titles or XML.
+* Results carry a `status` (`ready`, `needs_review`, `no_original`, `no_records`, `no_note` and others) and
+  `warnings`, so an empty result is never taken for a good one. The agent instructions map each category to
+  one action: ask for complete XML, retry once, or report the error ID.
+* Tests (`erratum-annotator/tests/`) and MLflow evaluations of both agents catch regressions before and after
+  a deploy.
+
+**What keeps it working during disruptions?**
+
+* Fallbacks: if the SQL warehouse call fails, `mcp-sru-syntax` asks the Supervisor Agent. If
+  `mcp-erratum-note` is unavailable twice, the agent uses the UC function for pasted XML. For bulk work, the UC
+  functions run in SQL without either app.
+* Short, bounded retries: a busy (429) or unavailable (502/503) agent is retried once after its Retry-After
+  time, capped at 10 s, and timeouts are not retried. Volume reads are retried once.
+* Start-up warm-up of the UC function and `health` checks on both apps, including access to the saved
+  responses.
+* The `/invocations` agent's model is set by configuration (`AGENT_MODEL`), so it can move to a
+  Databricks-hosted model when the default model service fails.
+* Deployment as code, with updates in place: apps are updated, not recreated. An offline demo page
+  ([`erratum-annotator/demo/`](erratum-annotator/demo/README.md)) works with no account or network.
+
 ## Repository layout
 
 | Folder | What it is |
