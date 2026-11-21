@@ -420,7 +420,8 @@ permission grants only.
 
 * **Unity Catalog permissions.** Callers need `USE CATALOG`, `USE SCHEMA` and `EXECUTE` on the function. The
   app's service principal gets only the resources declared in the bundle: `CAN_QUERY` on the Supervisor Agent
-  endpoint, `EXECUTE` on the model service, `CAN_EDIT` on the experiment and `MODIFY` on the trace tables.
+  endpoint, `CAN_USE` on the SQL warehouse, `EXECUTE` on `users.amanda_xu.build_sru_url`, `EXECUTE` on the
+  model service, `CAN_EDIT` on the experiment and `MODIFY` on the trace tables.
 * **Deployment as code.** The app, its resources and permissions are defined in a Declarative Automation
   Bundle ([`databricks.yml`](databricks.yml)).
 * **Tracing in Unity Catalog.** MLflow traces every agent, model and tool call into
@@ -476,7 +477,7 @@ The two projects deploy independently: neither deploy touches the other app, age
 | | `mcp-sru-syntax` | `mcp-erratum-note` |
 | --- | --- | --- |
 | How | Bundle `sru_syntax` from the repo root (see [Deploy](#deploy)) | `databricks apps deploy mcp-erratum-note --source-code-path <repo>/erratum-annotator/mcp_server` |
-| App service principal gets | `CAN_QUERY` on `mas-c8629507-endpoint`, `EXECUTE` on the model service, `CAN_EDIT` on the experiment, `MODIFY` on the trace tables | `READ VOLUME` on `users.amanda_xu.erratum_files` only |
+| App service principal gets | `CAN_QUERY` on `mas-c8629507-endpoint`, `CAN_USE` on the SQL warehouse, `EXECUTE` on `build_sru_url` and on the model service, `CAN_EDIT` on the experiment, `MODIFY` on the trace tables | `READ VOLUME` on `users.amanda_xu.erratum_files` only |
 | Check after deploy | [`eval/databricks/inspector_gadget_mcp_test.py`](eval/databricks/inspector_gadget_mcp_test.py) | `erratum-annotator/eval/databricks/mcp-erratum-note Inspector Gadget Test` (expect 0 errors, 46/48, 48/48) |
 
 * **Update in place, never recreate.** The workspace is at its 100-app limit and both apps already exist. Run
