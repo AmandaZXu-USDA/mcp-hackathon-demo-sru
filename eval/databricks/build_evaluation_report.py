@@ -57,7 +57,7 @@ story += [
     p('SRU Syntax MCP Server - Evaluation Report', ParagraphStyle('T', parent=H1, fontSize=19, spaceAfter=4)),
     p('NAL Alma SRU URL builder for erratum/correction notices &nbsp;|&nbsp; Report date: November 18, 2026 (updated November 21, 2026)', SMALL),
     Spacer(1, 8),
-    p('This report covers four evaluations, a per-step latency analysis, live testing on November 19, 2026 (section 6), and lessons learned and recommendations (section 7), and an offline evaluation re-run on November 21, 2026 (section 8) of the <b>mcp-sru-syntax</b> Databricks App, a custom MCP server '
+    p('This report covers four evaluations, a per-step latency analysis, live testing on November 19, 2026 (section 6), and lessons learned and recommendations (section 7), and re-runs of the offline evaluation and the 142-title MCP test on November 21, 2026 (section 8) of the <b>mcp-sru-syntax</b> Databricks App, a custom MCP server '
       '(streamable HTTP at <font face="Courier">/mcp</font>) exposing one tool, '
       '<font face="Courier">build_sru_search_url</font>. The tool sends an erratum/correction notice title to the '
       'agent-sru-syntax Supervisor Agent (serving endpoint <font face="Courier">mas-c8629507-endpoint</font>) and '
@@ -73,7 +73,7 @@ story += [
         ['5. Agent latency per step', 'Analyzed', '174 requests: those that call the tool take p50 22.5 s (tool about 69% of the time); 35 answered without the tool take p50 2.7 s. 1 error in 176 model calls.'],
         ['6. Live testing (November 19)', 'Passed; retry did not help', 'Page, page API, MCP and agent routes pass as Inspector Gadget. About 18 titles/min at 10 at a time. Every URL the agent returned matched the rules function. The empty-reply retry recovered 0 of 10 titles.'],
         ['7. Lessons learned and recommendations', 'Summary', '20 lessons across access, MCP naming and client, agent, evaluation, performance and engineering; 10 recommendations, starting with an independent, librarian-confirmed ground truth.'],
-        ['8. Offline evaluation re-run (November 21)', 'Completed', 'Function-first tool and databricks-gpt-5-6-luna agent: sru_url_match 1.00 (41/41), correctness 1.00, safety 1.00; median 6.9 s per title on /invocations.'],
+        ['8. Re-runs (November 21)', 'Completed', 'Function-first tool and databricks-gpt-5-6-luna agent: sru_url_match 1.00 (41/41), correctness 1.00, safety 1.00; median 6.9 s per title on /invocations. 142-title MCP test 142/142 in 79 s (about 108 titles/min).'],
     ], [2.0, 1.1, 4.0]),
     Spacer(1, 6),
     table([
@@ -486,9 +486,9 @@ story += [
     ], [0.35, 4.75, 2.0])]),
     # ---- Section 8: Offline evaluation re-run on November 21, 2026 ----
     PageBreak(),
-    p('8. Offline evaluation re-run on November 21, 2026: function-first tool, new agent model', H1),
+    p('8. Re-runs on November 21, 2026: function-first tool, new agent model', H1),
     p("<b>Purpose:</b> re-score the deployed agent after two changes on November 21, 2026, with the same 41-row "
-      "dataset and the same five scorers as section 2."),
+      "dataset and the same five scorers as section 2, and re-run the 142-title MCP test of section 6.2 (8.4)."),
     p('8.1 What changed', H2),
     table([
         ['Change', 'Detail'],
@@ -528,12 +528,35 @@ story += [
         ['POST /invocations (app agent), 2 titles', '200; correct SRU URL', '6.6 s, 10.1 s'],
         ['POST /invocations, "Corrigendum"', '200; names no article, no URL', '1.1 s'],
     ], [2.6, 3.3, 1.2])]),
+    KeepTogether([p('8.4 142-title MCP test re-run', H2),
+    table([
+        ['Run', 'Correct', 'Empty replies', 'Per title', 'Whole run'],
+        ['November 19 (agent path; sections 6.2, 6.3)', '135/142', '7', 'median 27.0 s, max 70.4 s', 'at least 7.8 min (not recorded)'],
+        ['November 20, run 20261120T025204 (agent path, with retry)', '135/142', '7', 'median 30.5 s, max 76.1 s', 'not recorded'],
+        ['November 21, run 20261121T041852 (function first)', '142/142', '0', 'median 5.2 s, p90 6.1 s, max 9.2 s', '79 s, about 108 titles/min'],
+    ], [2.5, 0.75, 0.85, 1.75, 1.25])]),
+    Spacer(1, 4),
+    p('Same test as section 6.2: the 142 Sample3 titles through the deployed MCP tool build_sru_search_url as '
+      'Inspector Gadget, 10 at a time, results appended to users.amanda_xu.sample3_mcp_offline_test. On November 21: '
+      '138 EXACT and 4 BARE_NOTICE_NO_URL, 0 errors, and all 142 answered by the rules function (none needed the '
+      'agent fallback).'),
+    *bullets([
+        "<b>All misses of the earlier runs are fixed.</b> The 12 titles that were not exact on November 20 "
+        "(7 empty replies, 5 correct URLs with extra text) are all exact now.",
+        "<b>Checked a second way:</b> a SQL query extracted the SRU URL from every stored reply and compared it with "
+        "users.amanda_xu.build_sru_url recomputed for the title: 138 equal, the 4 bare notices blank in both, 0 different.",
+        "<b>The test now records its run.</b> It stores run_seconds, concurrency and answered_by (function or agent), "
+        "so titles per minute is measured (recommendation 6). Its classifier compares the URL in the reply, because "
+        "function-first replies put a label line before the URL.",
+        "<b>Same caveat as 8.2:</b> the expected URLs also come from the rules function, so 142/142 shows the tool "
+        "passes the function's URL through unchanged, not that each URL finds the right Alma record.",
+    ]),
     PageBreak(),
     KeepTogether([p('Next steps', H1),
     *bullets([
         'Investigate the empty Supervisor Agent replies (10 titles across both datasets; the only agent misses, and not '
         'fixed by the retry): review their Supervisor traces for a guardrail or tool error (section 6.4). Users no longer see them: the tool calls the rules function first (section 8).',
-        'Make the 142-title MCP test record its total run time, so titles per minute is measured rather than bounded.',
+        'Done November 21, 2026: the 142-title MCP test records its total run time and concurrency, so titles per minute is measured (section 8.4).',
         'Tighten the relevant_to_notice and no_invented_urls guideline wording to remove judge false negatives on title-only and issue-level notices.',
         'Confirm the online scorer identity and permissions with the workspace admin, then start both scorers at a 0.1 sample rate.',
         'Provision the dedicated eval service principal (sp-sru-syntax-eval) so offline runs target the deployed app rather than a local server copy.',
@@ -550,7 +573,8 @@ story += [
       f'users.amanda_xu.sru_syntax_agent_otel_spans; section 6 from Inspector Gadget runs against the deployed app '
       f'on November 19, 2026, users.amanda_xu.sample3_mcp_offline_test, and the app logs; section 7 from sections 1-6 '
       f'and the deployment and access work on the app; section 8 from MLflow run 3bd980fb57ec4b769ba66036c91091ee '
-      f'(experiment 131270370350843) and Inspector Gadget calls to the deployed app on November 21, 2026.', SMALL),
+      f'(experiment 131270370350843), Inspector Gadget calls to the deployed app on November 21, 2026, and runs '
+      f'20261120T025204 and 20261121T041852 in users.amanda_xu.sample3_mcp_offline_test.', SMALL),
 ]
 
 def footer(canvas, doc):
@@ -589,7 +613,7 @@ for check in ['1. Inspector Gadget testing', '2. Databricks offline MLflow evalu
               '7. Lessons learned and recommendations', '7.1 Lessons learned', '7.2 Recommendations',
               'independent ground truth', 'lessons learned and recommendations (section 7)', 'warm-up title',
               'named with the mcp- prefix', '20 lessons',
-              '8. Offline evaluation re-run on November 21, 2026', '1.00 (41/41)', 'databricks-gpt-5-6-luna',
+              '8. Re-runs on November 21, 2026', '8.4 142-title MCP test re-run', '20261121T041852', 'about 108 titles/min', '0 different', '1.00 (41/41)', 'databricks-gpt-5-6-luna',
               '3bd980fb57ec4b769ba66036c91091ee', '8.3 Live response times', 'Response time: done November 21, 2026']:
     print('OK  ' if check in flat else 'MISSING  ', check)
 
