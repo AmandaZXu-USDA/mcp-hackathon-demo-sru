@@ -63,6 +63,55 @@ Annotated original title (original MMS ID 9917168304707426, needs_review = false
 
 Short answers to common design questions. Details are in each project's README.
 
+**Components.** Solid arrows are calls; dotted arrows are manual steps by the librarian.
+
+```mermaid
+flowchart LR
+    user["Librarian or MCP client"]
+
+    subgraph alma["NAL Alma (Ex Libris)"]
+        sru["SRU 1.2 searchRetrieve<br/>CQL query, MODS records"]
+    end
+
+    subgraph p1["Project 1: SRU syntax"]
+        app1["Databricks App mcp-sru-syntax<br/>MCP tool build_sru_search_url,<br/>demo page, /invocations agent"]
+        agent1["Supervisor Agent agent-sru-syntax<br/>mas-c8629507-endpoint"]
+        model["Model serving<br/>(model for /invocations)"]
+    end
+
+    subgraph p2["Project 2: Erratum annotator"]
+        agent2["Supervisor Agent agent-erratum-annotator<br/>mas-c341c0aa-endpoint"]
+        app2["Databricks App mcp-erratum-note<br/>7 MCP tools, demo page"]
+    end
+
+    subgraph uc["Unity Catalog (users.amanda_xu)"]
+        wh["SQL warehouse"]
+        f1["UC function build_sru_url"]
+        f2["UC function process_sru_response"]
+        vol[("Volume erratum_files/sru_responses<br/>saved SRU responses")]
+        traces[("Trace tables<br/>sru_syntax_agent_otel_*")]
+        mmcp["Databricks-managed MCP<br/>for UC functions"]
+    end
+
+    user -->|"correction title"| app1
+    user -->|"correction title"| mmcp
+    mmcp --> f1
+    app1 -->|"1. function first"| wh --> f1
+    app1 -.->|"2. fallback if the call fails"| agent1
+    agent1 --> f1
+    app1 --> model
+    app1 --> traces
+    app1 -->|"SRU search URL"| user
+    user -.->|"run the SRU URL"| sru
+    sru -.->|"MODS XML, saved or pasted"| vol
+    user -->|"row, MMS ID or pasted XML"| agent2
+    user -->|"MCP tools, demo page"| app2
+    agent2 -->|"saved files"| app2
+    agent2 -->|"pasted XML"| f2
+    app2 -->|"Files API, read only"| vol
+    app2 -->|"annotated title, status"| user
+```
+
 **What data does it ingest, and how?**
 
 * Correction notice records exported from Alma as a spreadsheet (`Title`, `MMS ID`). They are processed by
