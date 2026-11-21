@@ -175,9 +175,9 @@ curl -X POST "https://<app-url>/invocations" \
 ```
 
 Apps require an OAuth token (`databricks auth token`); personal access tokens
-are not accepted. The tool answers in about 4 seconds (SQL function first);
-this agent adds its own model calls on top (18-38 seconds per title in earlier
-traces, when the tool still went through the Supervisor Agent).
+are not accepted. A title takes about 7-10 seconds: about 4 seconds for the
+tool (SQL function first) plus the agent's own model calls. The agent uses the
+Databricks-hosted endpoint `databricks-gpt-5-6-luna` (`AGENT_MODEL` in app.yaml).
 
 ---
 

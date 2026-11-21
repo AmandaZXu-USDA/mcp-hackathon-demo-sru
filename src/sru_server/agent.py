@@ -10,13 +10,20 @@ from agents.mcp import MCPServerStreamableHttp
 from agents.tracing import set_trace_processors
 from databricks_openai import AsyncDatabricksOpenAI
 
-set_default_openai_client(AsyncDatabricksOpenAI(use_ai_gateway=True))
+MODEL_SERVICE = os.environ.get("MODEL_SERVICE", "")
+# AGENT_MODEL, if set, is a Databricks-hosted foundation model serving endpoint (for
+# example databricks-gpt-5-6-luna) used instead of the Unity Gateway model service.
+# Added 2026-11-21: the OpenAI key behind the models.ai model services expired.
+AGENT_MODEL = os.environ.get("AGENT_MODEL", "").strip()
+MODEL = AGENT_MODEL or MODEL_SERVICE
+
+# A serving endpoint, or a model service through Unity Gateway
+set_default_openai_client(AsyncDatabricksOpenAI(use_ai_gateway=not AGENT_MODEL))
 set_default_openai_api("responses")
 set_trace_processors([])
 mlflow.set_tracking_uri("databricks")
 mlflow.openai.autolog()
 
-MODEL_SERVICE = os.environ.get("MODEL_SERVICE", "")
 if os.environ.get("MLFLOW_EXPERIMENT_ID"):
     mlflow.set_experiment(experiment_id=os.environ["MLFLOW_EXPERIMENT_ID"])
 
@@ -48,7 +55,7 @@ def preprocess(messages):
 @mlflow.trace(name="sru_syntax_agent_run", span_type="AGENT")
 async def run_agent(messages):
     mlflow.update_current_trace(
-        tags={"agent_name": "SRU Syntax Agent", "model_service": MODEL_SERVICE}
+        tags={"agent_name": "SRU Syntax Agent", "model_service": MODEL}
     )
     with mlflow.start_span(name="preprocessing") as span:
         span.set_inputs({"raw": messages})
@@ -66,7 +73,7 @@ async def run_agent(messages):
         agent = Agent(
             name="SRU Syntax Agent",
             instructions=INSTRUCTIONS,
-            model=MODEL_SERVICE,
+            model=MODEL,
             mcp_servers=[mcp_server],
         )
         result = await Runner.run(agent, cleaned)

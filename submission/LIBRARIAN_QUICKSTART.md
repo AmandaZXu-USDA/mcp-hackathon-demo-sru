@@ -121,7 +121,7 @@ so the same title always gives the same URL. Pick by how many titles you have:
 | [Browser page](#browser-page-no-setup) | One title, nothing to install | about 4 s (SQL function first; up to a minute only if it falls back to the agent) | A user account in the Databricks workspace and `CAN USE` on app `mcp-sru-syntax` |
 | [1. Chat with the Supervisor Agent](#option-1-chat-with-the-supervisor-agent) | One title, no setup | about 15-25 s | `CAN QUERY` on endpoint `mas-c8629507-endpoint` |
 | [2. Genie Code with the MCP tool](#option-2-genie-code-with-the-mcp-tool) | Titles while you work in Databricks | about 4 s for the tool, plus Genie Code's own time | `CAN USE` on app `mcp-sru-syntax` |
-| [3. Call the app's agent](#option-3-call-the-apps-agent-scripts) | Scripts and other tools | about 15-45 s | `CAN USE` on app `mcp-sru-syntax` |
+| [3. Call the app's agent](#option-3-call-the-apps-agent-scripts) | Scripts and other tools | about 7-10 s | `CAN USE` on app `mcp-sru-syntax` |
 | [4. SQL function, no agent](#option-4-sql-function-no-agent-lists-of-titles) | Lists of titles (tens to thousands) | seconds for a whole list (up to a minute more if the SQL warehouse is starting) | `EXECUTE` on `users.amanda_xu.build_sru_url`, `USE CATALOG` on `users`, `USE SCHEMA` on `users.amanda_xu`, a SQL warehouse; for lists, also `READ VOLUME` and `WRITE VOLUME` on `users.amanda_xu.erratum_files` |
 
 **What to expect from options 1-3 (the agent):**
@@ -248,12 +248,13 @@ curl -s -X POST https://mcp-sru-syntax-7474654188777746.aws.databricksapps.com/a
   -d '{"title": "Correction: Effects of drought stress on maize grain yield and quality"}'
 ```
 
-The reply is `{"text": "<agent reply>", "urls": ["https://nal.alma.exlibrisgroup.com/view/sru/..."]}`.
+The reply is `{"text": "<reply>", "urls": ["https://nal.alma.exlibrisgroup.com/view/sru/..."], "source": "function"}`
+(about 4 s). `source` is `function` or `agent` (the fallback); add `"use_agent": true` to ask the agent directly.
 `urls` is empty when the reply has no SRU URL. Titles are limited to 1,000 characters.
 
 For `/invocations`, `input` is either the title as a string or a chat-style list:
 `{"input": [{"role": "user", "content": "Correction: <title>"}]}`. Keep `--max-time 300`: replies
-usually take 15-45 seconds. If the title contains an apostrophe (`'`), write it as `'\''` inside the
+usually take 7-10 seconds, longer only if the tool has to fall back to the Supervisor Agent. If the title contains an apostrophe (`'`), write it as `'\''` inside the
 single-quoted `-d` text.
 
 Reply (shortened):

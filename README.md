@@ -203,8 +203,9 @@ curl -X POST "https://mcp-sru-syntax-7474654188777746.aws.databricksapps.com/inv
 ```
 
 Apps require an OAuth token (`databricks auth token`); personal access tokens are not accepted.
-The tool itself answers in about 4 seconds (SQL function first); this agent adds its own model calls on
-top. In earlier traces, when the tool still went through the Supervisor Agent, it took 18-38 seconds per title.
+The tool itself answers in about 4 seconds (SQL function first); with the agent's own model calls a title
+takes about 7-10 seconds (live test 2026-11-21: 6.6-10.1 s), and a bare or issue-level notice about 1 second.
+The agent uses the Databricks-hosted model endpoint `databricks-gpt-5-6-luna` (`AGENT_MODEL` in `app.yaml`).
 
 ### App resources
 
