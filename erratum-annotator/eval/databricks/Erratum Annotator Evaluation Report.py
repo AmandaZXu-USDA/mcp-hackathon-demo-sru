@@ -19,7 +19,8 @@ RUN_DATE = "November 21, 2026"
 r = pd.read_csv(RESULTS_CSV, keep_default_na=False)
 BOOL = ["truncated", "annotated_title_exact", "erratum_note_exact", "original_mms_id_match", "called_tool",
         "correctness", "no_fabrication"]
-for c in BOOL:
+TOOL_COL = "tool_annotated_title_exact"  # added November 21, 2026; not in the November 20 export
+for c in BOOL + [TOOL_COL]:
     r[c] = r[c].astype(str) == "True"
 runs = json.load(open(RUNS_JSON))
 prev = pd.read_csv(PREV_CSV, keep_default_na=False)
@@ -48,6 +49,7 @@ M = {
     "erratum_note_exact": count("erratum_note_exact"),
     "original_mms_id_match": count("original_mms_id_match", has_original),
     "called_tool": count("called_tool", has_file),
+    TOOL_COL: count(TOOL_COL),
     "correctness": count("correctness"),
     "no_fabrication": count("no_fabrication"),
 }
@@ -106,8 +108,8 @@ rows_of = lambda mask: sorted(r.loc[mask, "row_num"].tolist())
 # Explanations of every failing row, from reading the replies and judge rationales of this run.
 # The asserts stop the build if a rerun produces a different set of failures.
 DET_FAIL = {
-    34: "Erratum note correct, but the agent replaced the curly apostrophe (U+2019) in the catalog title with a straight one.",
-    40: "Erratum note correct, but the agent replaced the curly apostrophe (U+2019) in the catalog title with a straight one.",
+    34: "Erratum note correct, but the agent replaced the curly apostrophe (U+2019) in the catalog title with a straight one; the tool's annotated_title was exact.",
+    40: "Erratum note correct, but the agent replaced the curly apostrophe (U+2019) in the catalog title with a straight one; the tool's annotated_title was exact.",
 }
 assert set(rows_of(~r.annotated_title_exact | ~r.erratum_note_exact | ~r.original_mms_id_match)) == set(DET_FAIL), \
     "Deterministic failures changed: update DET_FAIL"
@@ -134,8 +136,10 @@ story += [p("1. Summary", H1),
           p(f"The agent was evaluated on all {N} rows of the librarian-checked Sample1 spreadsheet. It returned the exact "
             f"annotated original title on {frac('annotated_title_exact')} rows and the correct original MMS ID on "
             f"{frac('original_mms_id_match')} rows that have one. It used a saved-response tool on every row with an SRU "
-            f"file ({frac('called_tool')}). Both exact-match failures are real agent errors: titles where the model retyped a "
-            "curly apostrophe. There were no Supervisor Agent timeouts, endpoint errors or unfinished approval loops. "
+            f"file ({frac('called_tool')}). Both exact-match failures (rows 34 and 40) come from a limitation of the "
+            "Supervisor Agent: it cannot output the curly apostrophe (U+2019) and writes a straight one. The tool result "
+            f"the reply is built from has the exact catalog title on every row ({frac(TOOL_COL)}, "
+            "tool_annotated_title_exact). There were no Supervisor Agent timeouts, endpoint errors or unfinished approval loops. "
             "On the 5 notices with no saved SRU response, 4 replies say the notice needs manual review and one (row 9) "
             "still asks for SRU XML. All 11 no_fabrication failures are judge errors."),
           table([["Scorer", "Kind", "Rows scored", "Result"],
@@ -143,6 +147,7 @@ story += [p("1. Summary", H1),
                  ["erratum_note_exact", "Deterministic", "all rows", frac("erratum_note_exact")],
                  ["original_mms_id_match", "Deterministic", "rows with an original", frac("original_mms_id_match")],
                  ["called_tool", "Deterministic", "rows with an SRU file", frac("called_tool")],
+                 ["tool_annotated_title_exact", "Deterministic", "all rows", frac(TOOL_COL)],
                  ["correctness", "LLM judge", "all rows", frac("correctness")],
                  ["no_fabrication", "LLM guideline", "all rows", frac("no_fabrication")]],
                 [2.3, 1.2, 1.6, 1.4])]
@@ -251,8 +256,11 @@ story += [p("6. Latency and tool use", H1),
 # 7. Findings and recommendations
 story += [p("7. Findings and recommendations", H1),
           *bullets([
-              "<b>Copy the tool's annotated_title verbatim.</b> Add to the agent instructions: return the annotated_title "
-              "field exactly as the tool returns it, without retyping quotes, apostrophes or hyphens (rows 34 and 40, in both runs).",
+              "<b>Take the catalog title from the tool result, not the reply.</b> The Supervisor Agent cannot output the "
+              "curly apostrophe U+2019: given d’I in a plain message, it reports the character as U+0027. A stronger "
+              "instruction (worked example, character check, title in a code block) gave 0 of 6 exact on rows 34 and 40, "
+              "the same as before, so it was reverted. The tool's annotated_title is exact on all rows; librarians should "
+              "copy it from the tool result, and tool_annotated_title_exact now scores it.",
               "<b>Finish the no-file rule.</b> Rows 6, 16, 19 and 39 now say manual review instead of asking for XML (all 5 "
               "asked on November 20). Row 9 still asks for SRU XML, and row 39 says manual review where the ground truth "
               "is 'no original in Alma'. Add a deterministic scorer that checks for that wording.",
@@ -344,7 +352,7 @@ checks = ["1. Summary", "2. System under test", "3. Evaluation dataset", "4. Met
           frac("annotated_title_exact"), frac("erratum_note_exact"), frac("original_mms_id_match"), frac("called_tool"),
           frac("correctness"), frac("no_fabrication"), runs["full_run_id"], runs["rescore_run_id"], runs["experiment_id"],
           runs["endpoint"], "U+2019", "48 to 50/53", "40 to 52/53", f"max {lat.max():.1f} s",
-          "5.4 Compared with the November 20 run", "November 21, 2026", "row 13"]
+          "5.4 Compared with the November 20 run", "November 21, 2026", "row 13", "tool_annotated_title_exact", "U+0027"]
 missing = [c for c in checks if c not in flat]
 for c in checks:
     print("OK  " if c not in missing else "MISSING  ", c)

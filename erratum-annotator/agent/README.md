@@ -69,10 +69,31 @@ is saved; check those replies by hand. Offline evaluation after the change (53 r
 `flawless-shrike-232`, November 21, 2026): annotated_title_exact 51/53 (November 20: 50/53), erratum_note_exact
 53/53, original_mms_id_match 1.00, correctness 0.96, no_fabrication 0.79 (unchanged).
 
+## Known limitation: curly apostrophes
+
+The Supervisor Agent cannot write the curly apostrophe ’ (U+2019) in its replies; it writes the straight
+apostrophe ' (U+0027) instead. The tools are not affected: `process_sru_file`, `process_sru_response` and the UC
+function return the exact catalog title. **Copy the annotated title from the tool result**, not from the agent's reply, when the title contains ’ or “ ”.
+
+Checked on November 21, 2026:
+
+| Check | Result |
+| --- | --- |
+| Tool output for Sample1 rows 34 and 40 | Contains ’ (`Côte d’Ivoire`, `minnows’`) |
+| Agent reply, current instructions (rows 34 and 40, 3 runs each) | 0 of 6 exact: ’ written as ' |
+| Agent reply with a stronger rule (worked example, character-by-character check, title in a code block) | 0 of 6 exact; the reply did follow the new format and kept ô. Rule reverted |
+| Agent asked to name the characters in d’I (no tools) | Reports APOSTROPHE (U+0027) |
+| All 53 replies of the November 21 evaluation run | None contains a curly quote |
+
+Because the character is lost inside the agent, not in the instructions or the tools, the evaluation now also
+scores the tool result: `tool_annotated_title_exact` is 53/53, while `annotated_title_exact` (the reply) is 51/53
+([`../eval/databricks/README.md`](../eval/databricks/README.md)).
+
 ## Recreate
 
 1. Deploy `mcp-erratum-note` first (see `../README.md`).
 2. In Agent Bricks, create a Supervisor Agent named `agent-erratum-annotator`.
 3. Add the `mcp-erratum-note` app as an MCP server tool and `users.amanda_xu.process_sru_response` as a UC
    function tool, and paste the instructions above.
-4. Check it with the evaluation notebook in `../eval/databricks/` (expect annotated_title_exact about 51/53).
+4. Check it with the evaluation notebook in `../eval/databricks/` (expect annotated_title_exact about 51/53 and
+   tool_annotated_title_exact 53/53).

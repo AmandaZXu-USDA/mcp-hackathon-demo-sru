@@ -4,7 +4,7 @@ Offline MLflow evaluation of the `agent-erratum-annotator` Supervisor Agent (end
 tools: MCP app `mcp-erratum-note` and UC function `users.amanda_xu.process_sru_response`) on the 53-row,
 librarian-checked Sample1 spreadsheet.
 
-**Report (PDF, November 21, 2026 run, with a comparison to November 20):** [`doc/agent-erratum-annotator-evaluation-report.pdf`](doc/agent-erratum-annotator-evaluation-report.pdf)
+**Report (PDF, November 21, 2026 run, with the new tool-title scorer and a comparison to November 20):** [`doc/agent-erratum-annotator-evaluation-report.pdf`](doc/agent-erratum-annotator-evaluation-report.pdf)
 (on GitHub, use the download icon at the top right of the preview). The same file is in the Databricks volume at
 `/Volumes/users/amanda_xu/erratum_files/reports/agent-erratum-annotator-evaluation-report.pdf`
 (Catalog Explorer, then Download).
@@ -14,15 +14,17 @@ librarian-checked Sample1 spreadsheet.
 New full run of `Erratum Annotator Agent Evaluation` on all 53 rows, with the current agent instructions and
 `mcp-erratum-note` deployment. MLflow experiment `/Users/amanda.xu@usda.gov/agent-erratum-annotator-eval`
 (ID `1982416510445692`): smoke run `youthful-foal-70` (3 rows), full run `rogue-conch-731`
-(`c0161188c6714e7cbdcb4984215c2e38`), rescore run `upset-loon-503`. Scorer self-check against the ground truth
+(`c0161188c6714e7cbdcb4984215c2e38`), rescore run `sneaky-doe-82` (deterministic scorers, including
+`tool_annotated_title_exact`, reapplied to the saved replies without calling the agent again). Scorer self-check against the ground truth
 passed before the run. 0 endpoint errors, 0 truncated replies; latency median 11.8 s, max 312.1 s.
 
 | Scorer | Result | Notes |
 | --- | --- | --- |
-| annotated_title_exact (primary) | 51/53 | Rows 34 and 40: the agent retyped the curly apostrophe (U+2019) in the title as a straight one |
+| annotated_title_exact (primary) | 51/53 | Rows 34 and 40: the reply has a straight apostrophe where the catalog title has a curly one (U+2019); see [known limitation](../../agent/README.md#known-limitation-curly-apostrophes) |
 | erratum_note_exact | 53/53 | |
 | original_mms_id_match (rows with an original) | 46/46 | |
 | called_tool (rows with an SRU file) | 48/48 | |
+| tool_annotated_title_exact (new) | 53/53 | The tool result's `annotated_title`, the title a librarian copies into Alma, is exact on every row, including rows 34 and 40 |
 | correctness (LLM judge) | 51/53 | Row 9: says no SRU response is saved instead of "no original in Alma". Row 4: the judge's own rationale supports the reply |
 | no_fabrication (LLM guideline) | 42/53 | All 11 failures are judge errors: in 10 the judge expected the original MMS ID to equal the correction's MMS ID (the IDs match ground truth); in row 31 it missed the sentence saying the title is already annotated |
 

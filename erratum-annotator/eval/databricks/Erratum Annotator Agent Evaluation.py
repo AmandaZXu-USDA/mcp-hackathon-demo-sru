@@ -121,6 +121,8 @@ display(pd.DataFrame([{**r["tags"], "request": r["inputs"]["request"],
 # COMMAND ----------
 
 # DBTITLE 1,Scorers and self-check against ground truth
+import json
+
 from mlflow.entities import Feedback
 from mlflow.genai.scorers import Correctness, Guidelines, scorer
 
@@ -221,11 +223,48 @@ def called_tool(outputs, expectations) -> Feedback:
     return Feedback(value=ok, rationale=f"Tools called: {names or 'none'}")
 
 
+def _tool_results(outputs) -> list:
+    """JSON results of process_sru_file / process_sru_response calls, in call order (approval requests skipped)."""
+    found = []
+    for t in _tool_calls(outputs):
+        if "process_sru" not in (t.get("name") or ""):
+            continue
+        try:
+            d = json.loads(t.get("output") or "")
+        except (TypeError, ValueError):
+            continue
+        if isinstance(d, dict):
+            found.append(d)
+    return found
+
+
+@scorer
+def tool_annotated_title_exact(outputs, expectations) -> Feedback:
+    """The catalog title a librarian copies: the tool's annotated_title field, compared exactly (NFC only).
+
+    The Supervisor Agent cannot output the curly apostrophe U+2019 (it writes U+0027), so the reply text can
+    differ from the catalog title even when the tool is right; this scorer checks the tool result itself.
+    Uses the last process_sru* result. When no annotation is expected, passes unless a tool result reports an
+    original record (original_id) with an annotated title.
+    """
+    exp = unicodedata.normalize("NFC", expectations["expected_annotated_title"] or "").strip()
+    res = _tool_results(outputs)
+    if not exp:
+        bad = [d for d in res if d.get("original_id") and d.get("annotated_title")]
+        return Feedback(value=not bad, rationale="No annotation expected; " + (
+            f"tool reported original {bad[-1]['original_id']} with a title" if bad else "no original record in tool results"))
+    if not res:
+        return Feedback(value=False, rationale="No process_sru_file / process_sru_response result")
+    got = unicodedata.normalize("NFC", res[-1].get("annotated_title") or "").strip()
+    return Feedback(value=got == exp, rationale="Tool annotated_title matches" if got == exp else f"Tool returned: {got}")
+
+
 SCORERS = [
     annotated_title_exact,  # primary
     erratum_note_exact,
     original_mms_id_match,
     called_tool,
+    tool_annotated_title_exact,  # catalog title from the tool result (reply can lose U+2019)
     Correctness(),  # LLM judge on expected_facts
     Guidelines(
         name="no_fabrication",
@@ -239,12 +278,14 @@ SCORERS = [
 ]
 
 # --- Self-check: the deterministic scorers must pass on the ground truth itself and fail on a corrupted note.
-DET = [annotated_title_exact, erratum_note_exact, original_mms_id_match, called_tool]
+DET = [annotated_title_exact, erratum_note_exact, original_mms_id_match, called_tool, tool_annotated_title_exact]
 fails, caught = [], 0
 for r in eval_dataset:
     e = r["expectations"]
     perfect = {"response": e["expected_annotated_title"] or "No annotated title: needs manual review.",
-               "tool_calls": [{"name": "process_sru_file", "output": e["expected_original_mms_id"]}]}
+               "tool_calls": [{"name": "process_sru_file", "output": json.dumps(
+                   {"original_id": e["expected_original_mms_id"], "annotated_title": e["expected_annotated_title"]},
+                   ensure_ascii=False)}]}
     for s in DET:
         if s(outputs=perfect, expectations=e).value is not True:
             fails.append((r["tags"]["row_num"], s.name))
@@ -285,7 +326,22 @@ assert annotated_title_exact(outputs=prose, expectations=e).value is True
 assert erratum_note_exact(outputs=prose, expectations=e).value is True
 assert annotated_title_exact(outputs=attached, expectations=e).value is False
 assert erratum_note_exact(outputs=attached, expectations=e).value is False
-print("Regression checks passed")
+# tool_annotated_title_exact: a straight apostrophe in the tool's title must fail; a straight apostrophe in the
+# reply alone (rows 34 and 40) must not affect it.
+curly = [r for r in eval_dataset if "\u2019" in r["expectations"]["expected_annotated_title"]]
+for r in curly:
+    e = r["expectations"]
+    tool = lambda title: [{"name": "process_sru_file", "output": json.dumps(
+        {"original_id": e["expected_original_mms_id"], "annotated_title": title}, ensure_ascii=False)}]
+    straight = e["expected_annotated_title"].replace("\u2019", "'")
+    assert tool_annotated_title_exact(outputs={"response": straight, "tool_calls": tool(straight)}, expectations=e).value is False
+    assert tool_annotated_title_exact(outputs={"response": straight, "tool_calls": tool(e["expected_annotated_title"])},
+                                      expectations=e).value is True
+    assert annotated_title_exact(outputs={"response": straight, "tool_calls": []}, expectations=e).value is False
+no_tool = next(r for r in eval_dataset if r["expectations"]["expected_annotated_title"])["expectations"]
+assert tool_annotated_title_exact(outputs={"response": no_tool["expected_annotated_title"], "tool_calls": []},
+                                  expectations=no_tool).value is False
+print(f"Regression checks passed (tool title: {len(curly)} rows with U+2019)")
 
 # COMMAND ----------
 
@@ -444,7 +500,11 @@ rd_val = lambda name: next(c for c in rd.columns if c.startswith(name) and c.end
 rd_ok = lambda name: rd[rd_val(name)].astype(str) == "True"
 
 for s in DET:
-    print(f"{s.name:25s} before {passed(val(s.name)).sum():>2}/{len(df)}  after {rd_ok(s.name).sum():>2}/{len(rd)}")
+    try:
+        before = f"{passed(val(s.name)).sum():>2}/{len(df)}"
+    except StopIteration:  # scorer added after the full run
+        before = "   -"
+    print(f"{s.name:27s} before {before}  after {rd_ok(s.name).sum():>2}/{len(rd)}")
 m = rrows.map(lambda r: bool(r["expectations"]["expected_original_mms_id"]))
 print(f"original_mms_id_match (applicable rows): {rd_ok('original_mms_id_match')[m].sum()}/{m.sum()}")
 print("\nannotated_title_exact by case:")
