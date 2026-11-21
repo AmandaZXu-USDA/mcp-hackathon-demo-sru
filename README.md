@@ -197,6 +197,26 @@ flowchart LR
 * Deployment as code, with updates in place: apps are updated, not recreated. An offline demo page
   ([`erratum-annotator/demo/`](erratum-annotator/demo/README.md)) works with no account or network.
 
+### How it meets multi-agent system requirements
+
+A single agent asked to read a notice, write a CQL query, parse MODS XML and format a note would have to hold
+the whole workflow in one long prompt, and would make up URLs or notes when unsure. This system splits the work
+into two specialised agents, two MCP apps and deterministic functions. Each agent does one short task and leaves
+the exact work to tools. It is a small, two-stage system, not an open-ended agent swarm.
+
+| Requirement | How the MCP apps and the two agents meet it |
+| --- | --- |
+| Specialisation | `agent-sru-syntax` only turns a correction title into an SRU URL. `agent-erratum-annotator` only turns an SRU response into an annotated title. Each has a narrow set of instructions and its own tools. |
+| Orchestration | Each Supervisor Agent (Agent Bricks) chooses which tool to call. `mcp-sru-syntax` orchestrates in code: the UC function first, the Supervisor Agent only if that call fails. Between the two stages, a librarian runs the SRU search in Alma, so a person checks each handoff. |
+| Coordination | The stages share no state. They are linked by data: the SRU URL from stage 1 and the saved SRU response used by stage 2, keyed by the correction's MMS ID. Both tool paths in each project run the same code (the MCP tools and the UC functions), so agents and SQL users always agree. |
+| Communication | Model Context Protocol over streamable HTTP (`/mcp`) between agents and tools; the Responses API format at `/invocations`; Databricks OAuth on every call. Tool results are structured (URL, `status`, `warnings`, error category and ID), not free text. |
+| Distributed computation | The work runs on separate managed services: two Databricks Apps, Model Serving endpoints for the agents, a SQL warehouse for the UC functions and a Unity Catalog volume for the saved responses. Each can scale or fail on its own. |
+| Scalability | The tools keep no state between calls (`mcp-sru-syntax` runs stateless streamable HTTP), so requests run in parallel. 142 titles sent 10 at a time to the MCP tool finished in 79 s, all answered by the function. Bulk work skips the agents: the UC function processes the 1,494-record sample in SQL. |
+| Fault tolerance | Fallbacks (function to agent; MCP app to UC function), one short retry for temporary errors, health checks, a warm-up call at start-up, and stable error categories with error IDs. See the two answers above on errors and disruptions. |
+| Decision-making | The decisions that must be exact are made by deterministic rules: title extraction, URL encoding, choosing the original record (cited DOI, then title similarity), and flagging weak or tied matches as `needs_review`. The agents decide only which tool to call, whether an input is usable (for example a 16-digit MMS ID), and how to explain the result or the error. |
+| Memory | The system has no conversational long-term memory. Its knowledge is the rules, versioned in Git and governed as UC functions. Its working data is in Unity Catalog: the volume of saved responses, the trace tables for every agent and tool call, and the MLflow evaluation runs. Each request carries everything the agent needs, so no long-horizon reasoning is required. |
+| Security | OAuth-only apps (callers need `CAN USE`), least-privilege service principals declared as resources, read-only tools, bare file names only, `allow_redirects=False` on outbound calls, no secrets in Git, and logs that record error IDs but never titles or XML. The erratum agent's MCP calls require approval in the chat. |
+
 ## Repository layout
 
 | Folder | What it is |
