@@ -18,6 +18,7 @@ production SRU URL for the original article, or no URL when the notice names no 
 | File | What it is |
 |------|------------|
 | `agent_eval_offline.py` | The eval script. Runs `mlflow.genai.evaluate` over the dataset with a `predict_fn` that calls the agent. |
+| `agent_eval_deployed.py` | Same dataset and scorers, but `predict_fn` calls the **deployed** app's agent (`POST /invocations`) as Inspector Gadget, so it scores what users get (the app's model and the function-first tool). Needs no agent copy and no model access. |
 | `eval_auth.py` | Auth shim. Patches the agent's `ws` client and `mcp_url()` at runtime so it reaches the OAuth-gated app as a service principal. `agent/agent_server/agent.py` stays unmodified. |
 | `inspector_gadget_mcp_test.py` | Notebook source. Calls the deployed app as the Inspector Gadget service principal: lists tools, calls `build_sru_search_url`, tests every tool, tests the browser page and `/api/sru-url`, and runs the 142-title MCP test. See [Testing the deployed MCP server](#testing-the-deployed-mcp-server-inspector-gadget). |
 | `build_evaluation_report.py` | Notebook source. Builds the evaluation report PDF ([`doc/sru-syntax-mcp-evaluation-report.pdf`](doc/sru-syntax-mcp-evaluation-report.pdf), 13 pages, ending with lessons learned and recommendations) with `reportlab` and checks its text with `pypdf`. |
@@ -150,6 +151,31 @@ What the new rows exposed (before the change):
 * **Judge false negatives:** `relevant_to_notice` failed two correct URL answers for title-only notices
   ("AAFP and ISFM Guidelines ...", "p21-Activated Kinase 1 ..."), apparently because the request has no
   notice wording.
+
+### Deployed app agent on `databricks-gpt-5-6-luna`, function-first tool (2026-11-21)
+
+`agent_eval_deployed.py`, 41 rows, 3 at a time, 212 s in total (MLflow run `3bd980fb57ec4b769ba66036c91091ee` in experiment
+`131270370350843`). The app's agent had moved from `models.ai.gpt-5-6-luna`, whose OpenAI key expired, to the
+Databricks-hosted `databricks-gpt-5-6-luna`; the tool now runs the SQL function first.
+
+| Metric | 2026-11-18 (Supervisor Agent tool, `models.ai`) | 2026-11-21 (function first, `databricks-gpt-5-6-luna`) |
+|---|---|---|
+| `sru_url_match` | 0.93 (38/41) | **1.00 (41/41)** |
+| `correctness` | 0.90 | 1.00 |
+| `relevant_to_notice` | 0.85 | 0.90 |
+| `no_invented_urls` | 0.93 | 0.90 |
+| `safety` | 1.00 | 1.00 |
+
+Per title: median 6.9 s, p90 7.3 s, max 7.5 s; bare and issue-level notices about 1 s.
+
+* **All 41 replies are right.** The 3 titles that got empty Supervisor Agent replies on 2026-11-18 now get the
+  correct URL, because the tool no longer goes through the Supervisor Agent.
+* **The 7 judge failures are judge strictness, not agent errors** (each reply checked by hand):
+  `relevant_to_notice` failed the issue-level rows `Errata to taxon 59(5)` and `Taxon 61(6)`, and two correct
+  URL answers for title-only notices ("AAFP and ISFM Guidelines ...", "Monographic Revision of the American
+  Genus Euphoria ..."), as before. `no_invented_urls` failed the two Data Papers rows (explanation counted as
+  commentary, as before) and two correct URL answers, because this script sees only the HTTP reply: the judge
+  cannot see the tool call, so it cannot confirm the URL came from the tool.
 
 ## Dataset
 
