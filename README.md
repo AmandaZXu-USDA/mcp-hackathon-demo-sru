@@ -40,8 +40,7 @@ Original article title
   "DNMT3A/TET2-mediated epigenetic alteration in Type-1 diabetes dysregulates the haematopoiesis"
         |
         v  SRU URL builder (Part 2, mcp-sru-syntax)
-https://nal.alma.exlibrisgroup.com/view/sru/01NAL_INST?version=1.2&operation=searchRetrieve
-  &recordSchema=mods&query=alma.title%3D%22DNMT3A%2FTET2-mediated%20epigenetic%20alteration%20in%20Type-1%20diabetes%20dysregulates%20the%20haematopoiesis%22%20and%20alma.local_field_912%3D%22Article%22
+https://nal.alma.exlibrisgroup.com/view/sru/01NAL_INST?version=1.2&operation=searchRetrieve&recordSchema=mods&query=alma.title%3D%22DNMT3A%2FTET2-mediated%20epigenetic%20alteration%20in%20Type-1%20diabetes%20dysregulates%20the%20haematopoiesis%22%20and%20alma.local_field_912%3D%22Article%22
         |
         v  run the SRU search in Alma; save the response (MODS XML) to the volume, or paste it
 SRU searchRetrieveResponse (MODS XML): 2 records
@@ -121,9 +120,16 @@ The full rule table, with an example and rule name for each case, is in
 
 ### SRU URL format
 
+Template (one line, no spaces or line breaks; replace `<title>` with the percent-encoded title):
+
 ```
-https://nal.alma.exlibrisgroup.com/view/sru/01NAL_INST?version=1.2&operation=searchRetrieve&recordSchema=mods
-  &query=alma.title%3D%22<title>%22%20and%20alma.local_field_912%3D%22Article%22
+https://nal.alma.exlibrisgroup.com/view/sru/01NAL_INST?version=1.2&operation=searchRetrieve&recordSchema=mods&query=alma.title%3D%22<title>%22%20and%20alma.local_field_912%3D%22Article%22
+```
+
+Working example, for the title "The cardiovascular effects of shechita in cattle: a systematic review shows the fallacies that vertebral artery will preserve cerebral blood flow and false aneurysms occur in severed carotid arteries":
+
+```
+https://nal.alma.exlibrisgroup.com/view/sru/01NAL_INST?version=1.2&operation=searchRetrieve&recordSchema=mods&query=alma.title%3D%22The%20cardiovascular%20effects%20of%20shechita%20in%20cattle%3A%20a%20systematic%20review%20shows%20the%20fallacies%20that%20vertebral%20artery%20will%20preserve%20cerebral%20blood%20flow%20and%20false%20aneurysms%20occur%20in%20severed%20carotid%20arteries%22%20and%20alma.local_field_912%3D%22Article%22
 ```
 
 * Production Alma (`nal.alma...`). The sandbox (`nal-psb.alma...`) does not hold the production records.
