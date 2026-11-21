@@ -116,7 +116,8 @@ assert set(rows_of(~r.annotated_title_exact | ~r.erratum_note_exact | ~r.origina
 CORR_FAIL = {
     4: "Judge error: the reply says Alma has only the correction notice and gives no annotated title, as expected; the judge "
        "failed it because the tool output names search_title as the lookup source.",
-    9: "No SRU file: the agent says it cannot produce a title and asks for the SRU XML instead of saying the original is not in Alma.",
+    9: "No SRU file: the reply says no annotated title can be produced and does not ask for XML. The expected facts say the "
+       "original is not in Alma, which the agent cannot know: the request only says no SRU response is saved.",
 }
 assert set(rows_of(~r.correctness)) == set(CORR_FAIL), "Correctness failures changed: update CORR_FAIL"
 FAB_GROUPS = [
@@ -140,8 +141,8 @@ story += [p("1. Summary", H1),
             "Supervisor Agent: it cannot output the curly apostrophe (U+2019) and writes a straight one. The tool result "
             f"the reply is built from has the exact catalog title on every row ({frac(TOOL_COL)}, "
             "tool_annotated_title_exact). There were no Supervisor Agent timeouts, endpoint errors or unfinished approval loops. "
-            "On the 5 notices with no saved SRU response, 4 replies say the notice needs manual review and one (row 9) "
-            "still asks for SRU XML. All 11 no_fabrication failures are judge errors."),
+            "On the 5 notices with no saved SRU response, none asks for SRU XML: 4 replies say the notice needs manual "
+            "review and row 9 says no annotated title can be produced without one. All 11 no_fabrication failures are judge errors."),
           table([["Scorer", "Kind", "Rows scored", "Result"],
                  ["annotated_title_exact (primary)", "Deterministic", "all rows", frac("annotated_title_exact")],
                  ["erratum_note_exact", "Deterministic", "all rows", frac("erratum_note_exact")],
@@ -261,9 +262,10 @@ story += [p("7. Findings and recommendations", H1),
               "instruction (worked example, character check, title in a code block) gave 0 of 6 exact on rows 34 and 40, "
               "the same as before, so it was reverted. The tool's annotated_title is exact on all rows; librarians should "
               "copy it from the tool result, and tool_annotated_title_exact now scores it.",
-              "<b>Finish the no-file rule.</b> Rows 6, 16, 19 and 39 now say manual review instead of asking for XML (all 5 "
-              "asked on November 20). Row 9 still asks for SRU XML, and row 39 says manual review where the ground truth "
-              "is 'no original in Alma'. Add a deterministic scorer that checks for that wording.",
+              "<b>Decide what the agent should say with no SRU file.</b> None of the 5 no-file replies asks for XML (all 5 did "
+              "on November 20). Rows 9 and 39 are 'no original in Alma' in the ground truth, but the request only says "
+              "no SRU response is saved, so the agent cannot tell that the original is missing. Either pass the librarian's "
+              "Alma search result in the request, or change the expected facts for these rows.",
               "<b>Track Supervisor latency and timeouts.</b> No timeouts in this run (1/53 on November 20), but row 13 took "
               f"{lat.max():.0f} s against a median of {lat.median():.1f} s. Detect a 'Request Time Out' reply in the "
               "predict function and retry once.",
