@@ -1,0 +1,249 @@
+<searchRetrieveResponse xmlns="http://www.loc.gov/zing/srw/">
+<version>1.2</version>
+<numberOfRecords>2</numberOfRecords>
+<records>
+<record>
+<recordSchema>mods</recordSchema>
+<recordPacking>xml</recordPacking>
+<recordData>
+<mods xmlns="http://www.loc.gov/mods/v3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="3.5" xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-5.xsd">
+<titleInfo>
+<title>Correction to “Developing epidemiological preparedness for a plant disease invasion: Modelling citrus huánglóngbìng in the European Union”</title>
+</titleInfo>
+<typeOfResource>text</typeOfResource>
+<originInfo>
+<place>
+<placeTerm authority="marccountry" type="code">xx#</placeTerm>
+</place>
+<dateIssued encoding="marc">2026</dateIssued>
+<issuance>serial</issuance>
+</originInfo>
+<language>
+<languageTerm authority="iso639-2b" type="code">eng</languageTerm>
+</language>
+<physicalDescription>
+<extent>p. 2306-2312</extent>
+</physicalDescription>
+<note>ERRATUM</note>
+<location>
+<url displayLabel="Available from publisher's website" usage="primary display">https://doi.org/10.1002/ppp3.70207</url>
+</location>
+<relatedItem type="host">
+<titleInfo>
+<title>Plants, People, Planet</title>
+</titleInfo>
+<originInfo>
+<publisher>John Wiley & Sons, Ltd</publisher>
+</originInfo>
+<identifier>10.1002/(ISSN)2572-2611</identifier>
+<identifier type="issn">2572-2611</identifier>
+<identifier type="local">Journal:27661</identifier>
+<part>
+<text>2026 Nov., v. 8, no. 6 p. 2306-2312</text>
+</part>
+</relatedItem>
+<identifier type="doi">10.1002/ppp3.70207</identifier>
+<recordInfo>
+<descriptionStandard>aacr</descriptionStandard>
+<recordContentSource authority="marcorg">AGL</recordContentSource>
+<recordCreationDate encoding="marc">261021</recordCreationDate>
+<recordIdentifier>9917226153507426</recordIdentifier>
+<recordOrigin>Converted from MARCXML to MODS version 3.5 using MARC21slim2MODS3-5.xsl (Revision 1.112 2018/06/21)</recordOrigin>
+<languageOfCataloging>
+<languageTerm authority="iso639-2b" type="code">eng</languageTerm>
+</languageOfCataloging>
+</recordInfo>
+</mods>
+</recordData>
+<recordIdentifier>9917226153507426</recordIdentifier>
+<recordPosition>1</recordPosition>
+</record>
+<record>
+<recordSchema>mods</recordSchema>
+<recordPacking>xml</recordPacking>
+<recordData>
+<mods xmlns="http://www.loc.gov/mods/v3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="3.5" xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-5.xsd">
+<titleInfo>
+<title>Developing epidemiological preparedness for a plant disease invasion: Modelling citrus huánglóngbìng in the European Union</title>
+</titleInfo>
+<name type="personal" usage="primary">
+<namePart>Ellis, John</namePart>
+<affiliation>Department of Plant Sciences, University of Cambridge, Cambridge, UK ``School of Public Health, Imperial College London, White City Campus, London, UK</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>Lázaro, Elena</namePart>
+<affiliation>Institut Valencià d'Investigacions Agràries (IVIA), Centre de Protecció Vegetal i Biotecnologia, Valencia, Spain ``Departament d'Estadística i Investigació Operativa, Universitat de Valéncia, Valencia, Spain</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>Duarte, Beatriz</namePart>
+<affiliation>MED ‐ Mediterranean Institute for Agriculture, Environment and Development & CHANGE ‐ Global Change and Sustainability Institute, Universidade do Algarve, Campus Gambelas, Faro, Portugal</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>Magalhães, Tomás</namePart>
+<affiliation>MED ‐ Mediterranean Institute for Agriculture, Environment and Development & CHANGE ‐ Global Change and Sustainability Institute, Universidade do Algarve, Campus Gambelas, Faro, Portugal</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>Duarte, Amílcar</namePart>
+<affiliation>MED ‐ Mediterranean Institute for Agriculture, Environment and Development & CHANGE ‐ Global Change and Sustainability Institute, Universidade do Algarve, Campus Gambelas, Faro, Portugal</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>Benhadi‐Marín, Jacinto</namePart>
+<affiliation>CIMO, SusTEC, Instituto Politécnico de Bragança. Campus de Santa Apolónia, Bragança, Portugal</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>Pereira, José Alberto</namePart>
+<affiliation>CIMO, SusTEC, Instituto Politécnico de Bragança. Campus de Santa Apolónia, Bragança, Portugal</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>Vicent, Antonio</namePart>
+<affiliation>Institut Valencià d'Investigacions Agràries (IVIA), Centre de Protecció Vegetal i Biotecnologia, Valencia, Spain</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>Parnell, Stephen</namePart>
+<affiliation>Warwick Crop Centre, University of Warwick, Wellesbourne Campus, Warwick, UK ``The Zeeman Institute for Systems Biology and Infectious Disease Epidemiology Research, University of Warwick, Coventry, UK</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>Cunniffe, Nik J.</namePart>
+<affiliation>Department of Plant Sciences, University of Cambridge, Cambridge, UK</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<typeOfResource>text</typeOfResource>
+<originInfo>
+<place>
+<placeTerm authority="marccountry" type="code">xx</placeTerm>
+</place>
+<dateIssued encoding="marc">2025</dateIssued>
+<issuance>serial</issuance>
+</originInfo>
+<language>
+<languageTerm authority="iso639-2b" type="code">eng</languageTerm>
+</language>
+<physicalDescription>
+<extent>p. 1403-1423.</extent>
+</physicalDescription>
+<abstract type="Summary">SOCIETAL IMPACT STATEMENT: Huánglóngbìng (HLB) is a bacterial disease of citrus that has significantly impacted Brazil and the United States, although citrus production in the Mediterranean Basin remains unaffected. By developing a mathematical model of spread in Spain, we tested surveillance and control strategies before any future HLB entry in the EU. We found while some citrus production might be maintained by roguing, this requires extensive surveillance and significant chemical control, perhaps also including testing of psyllids (which spread the pathogen) for bacterial DNA. Our work highlights the key importance of early detection (including asymptomatic infection) and vector control for HLB management. SUMMARY: Huánglóngbìng (HLB; citrus greening) is the most damaging disease of citrus worldwide. While citrus production in the United States and Brazil have been affected for decades, HLB has not been reported in the European Union (EU). However, a HLB vector, the African citrus psyllid, is already in Portugal and Spain. In 2023, the major vector, the Asian citrus psyllid, was first reported in Cyprus. We develop a landscape‐scale, epidemiological model, accounting for heterogeneous citrus cultivation and vector dispersal, as well as climate and disease management. We use our model to predict HLB dynamics for an epidemic vectored by the African citrus psyllid in high‐density citrus areas in Spain, assessing detection and control strategies. Without disease management, we predict large areas infected within 10–20 years. Even with significant visual surveillance, any epidemic will be widespread on first detection, making eradication unlikely. Nevertheless, increased inspection and roguing following first detection, particularly if coupled with intensive insecticide use, could sustain some citriculture for a decade or more, albeit with reduced production. However, effective control may require chemical application rates and/or active substances no longer authorised in the EU. Strategies targeting asymptomatic infection will be more successful. Detection of bacteriliferous vectors—sometimes possible long before plants show symptoms—could reduce lags before disease management commences. If detection of HLB‐positive vectors were followed by intensive insecticide sprays, this may greatly improve outcomes. Our work highlights modelling as a key component of developing epidemiological preparedness for a pathogen invasion that is, at least somewhat, predictable in advance.</abstract>
+<note>JOURNAL ARTICLE</note>
+<subject authority="nal">
+<topic>Citrus</topic>
+</subject>
+<subject authority="nal">
+<topic>Cyprus</topic>
+</subject>
+<subject authority="nal">
+<topic>DNA</topic>
+</subject>
+<subject authority="nal">
+<topic>Diaphorina citri</topic>
+</subject>
+<subject authority="nal">
+<topic>European Union</topic>
+</subject>
+<subject authority="nal">
+<topic>Psyllidae</topic>
+</subject>
+<subject authority="nal">
+<topic>chemical control</topic>
+</subject>
+<subject authority="nal">
+<topic>citriculture</topic>
+</subject>
+<subject authority="nal">
+<topic>climate</topic>
+</subject>
+<subject authority="nal">
+<topic>disease control</topic>
+</subject>
+<subject authority="nal">
+<topic>insecticides</topic>
+</subject>
+<subject authority="nal">
+<topic>mathematical models</topic>
+</subject>
+<subject authority="nal">
+<topic>monitoring</topic>
+</subject>
+<subject authority="nal">
+<topic>pathogens</topic>
+</subject>
+<subject authority="nal">
+<topic>vector control</topic>
+</subject>
+<subject authority="nal">
+<geographic>Brazil</geographic>
+</subject>
+<subject authority="nal">
+<geographic>Mediterranean region</geographic>
+</subject>
+<subject authority="nal">
+<geographic>Portugal</geographic>
+</subject>
+<subject authority="nal">
+<geographic>Spain</geographic>
+</subject>
+<location>
+<url displayLabel="electronic resource" usage="primary display">https://dx.doi.org/10.1002/ppp3.10643</url>
+</location>
+<relatedItem type="host">
+<titleInfo>
+<title>Plants, People, Planet</title>
+</titleInfo>
+<originInfo>
+<publisher>John Wiley & Sons, Ltd</publisher>
+</originInfo>
+<identifier type="issn">2572-2611</identifier>
+<identifier type="local">9916338196507426</identifier>
+<identifier type="local">Journal:27661</identifier>
+<part>
+<text>2025 Sept., v. 7, no. 5 p.1403-1423</text>
+</part>
+</relatedItem>
+<identifier type="doi">10.1002/ppp3.10643</identifier>
+<recordInfo>
+<recordContentSource authority="marcorg">AGL</recordContentSource>
+<recordCreationDate encoding="marc">250826</recordCreationDate>
+<recordIdentifier>9916961039907426</recordIdentifier>
+<recordOrigin>Converted from MARCXML to MODS version 3.5 using MARC21slim2MODS3-5.xsl (Revision 1.112 2018/06/21)</recordOrigin>
+<languageOfCataloging>
+<languageTerm authority="iso639-2b" type="code">eng</languageTerm>
+</languageOfCataloging>
+</recordInfo>
+</mods>
+</recordData>
+<recordIdentifier>9916961039907426</recordIdentifier>
+<recordPosition>2</recordPosition>
+</record>
+</records>
+<extraResponseData xmlns:xb="http://www.exlibris.com/repository/search/xmlbeans/">
+<xb:exact>true</xb:exact>
+<xb:responseDate>2026-11-21T17:43:50-0500</xb:responseDate>
+</extraResponseData>
+</searchRetrieveResponse>

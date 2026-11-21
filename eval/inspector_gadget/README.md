@@ -34,7 +34,10 @@ gt = pd.read_csv("/Volumes/users/amanda_xu/erratum_files/Correction-Sample1-53-a
 clean = lambda v: v.strip().lstrip("=").strip('"') if isinstance(v, str) else ""
 truth = {}
 for f in sorted(os.listdir("/Volumes/users/amanda_xu/erratum_files/sru_responses")):
-    row = gt[gt.row_num == re.match(r"Sample1-Row(\d+)-", f).group(1)].iloc[0]
+    m = re.match(r"Sample1-Row(\d+)-", f)
+    if not m:  # other samples (e.g. Sample2-Row3-...) have no librarian-checked ground truth here
+        continue
+    row = gt[gt.row_num == m.group(1)].iloc[0]
     oid = clean(row.original_mms_id)
     truth[f] = {"original_mms_id": oid, "annotated_title": row.annotated_title if oid else ""}
 

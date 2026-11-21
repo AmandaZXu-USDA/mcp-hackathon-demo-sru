@@ -5,8 +5,8 @@ one self-contained file, for NAL staff and sponsors who have no Databricks accou
 the file, then **Download raw file**) and open it in any browser. It needs no sign-in and no network, and sends
 nothing anywhere.
 
-It contains the results for all 48 saved Sample1 SRU responses, computed by the same code as the live app
-(`../mcp_server/erratum_annotator.py`), and checked equal to the live app's output for all 48. It has the
+It contains the results for all 49 saved SRU responses (48 from Sample 1 and Sample 2 row 3), computed by the same
+code as the live app (`../mcp_server/erratum_annotator.py`), and checked equal to the live app's output for all 49. It has the
 quick examples, the list of notices and **See all saved notices at once**. It cannot annotate pasted SRU XML;
 for that, use the live page <https://mcp-erratum-note-7474654188777746.aws.databricksapps.com> (needs a NAL
 Databricks account with `CAN USE` on the app). The **View record** links open Alma's SRU XML and need network

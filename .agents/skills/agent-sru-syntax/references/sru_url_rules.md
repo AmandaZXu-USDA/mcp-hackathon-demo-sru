@@ -44,7 +44,8 @@ https://nal.alma.exlibrisgroup.com/view/sru/01NAL_INST?version=1.2&operation=sea
 Recognised prefixes (case-insensitive, optional `First/Second/Third` and `Publisher('s)`/`Author(s)'`):
 `Correction(s)`, `Corrigendum/Corrigenda`, `Erratum/Errata`, `Addendum/Addenda`, `Addition`,
 `(Editorial) Expression of Concern`, `Corrected and Republished`, `Correspondence`, optionally followed by
-`to | of | for | in | on | from` and `Supplement`. Repeated prefixes (`Correction: Correction: <title>`) are all removed.
+`to | of | for | in | on | from` and `Supplement`. Repeated prefixes (`Correction: Correction: <title>`, `Correction to Correction to “<title>”`) are all removed;
+each repeat must pass the same false-positive guard as the first.
 
 Guard against false positives: a prefix is stripped only if it is followed by `:`, a dash, a quote, `[`, the end
 of the string, or the connector `to`/`for`. So a real title such as `Correction of hypocalcemia in ...` is kept.

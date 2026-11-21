@@ -148,11 +148,23 @@ def extract_with_rule(s):
         if t != s:
             return clean(t), "notice suffix removed"
         return s, "no correction prefix (kept as is)"
-    while True:  # repeated prefixes, e.g. "Correction: Correction: Title"
+    # repeated prefixes: "Correction: Correction: T",
+    # "Correction to Correction to" + quoted T
+    while True:
         m2 = PREFIX.match(rest)
-        if not (m2 and ":" in m2["sep"] and rest[m2.end() :].strip()):
+        after = rest[m2.end() :].strip() if m2 else ""
+        if not (
+            m2
+            and after
+            and (
+                ":" in m2["sep"]
+                or after[:1] in QUOTES
+                or after[:1] == "["
+                or (m2["conn"] or "").lower() in ("to", "for")
+            )
+        ):
             break
-        rest = rest[m2.end() :].strip()
+        rest, conn = after, (m2["conn"] or "").lower()
     if not rest:
         return "", "bare notice (no title)"
     if ISSUE.match(rest):

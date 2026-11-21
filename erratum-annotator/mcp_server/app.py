@@ -354,12 +354,18 @@ def _row_number(name: str) -> int:
     return int(m.group(1)) if m else 10_000
 
 
+def _sample_number(name: str) -> int:
+    """Sample spreadsheet a saved response comes from: 'Sample2-Row3-...' -> 2 (default 1)."""
+    m = re.match(r"Sample(\d+)-", name)
+    return int(m.group(1)) if m else 1
+
+
 def _load_examples() -> list:
-    """Read every saved SRU response once and keep it in memory (48 small files)."""
+    """Read every saved SRU response once and keep it in memory (about 50 small files)."""
     with _cache_lock:
         if _cache["examples"] is not None:
             return _cache["examples"]
-        names = sorted(_list_xml_names(), key=lambda n: (_row_number(n), n))
+        names = sorted(_list_xml_names(), key=lambda n: (_sample_number(n), _row_number(n), n))
         examples = []
         for name in names:
             xml = _read_volume_file(_safe_path(name))
@@ -369,8 +375,9 @@ def _load_examples() -> list:
             recs = _parse(xml)
             corr = next((r for r in recs if r.is_correction and r.record_id == cid), None) or next(
                 (r for r in recs if r.is_correction), None)
-            examples.append({"file_name": name, "row": _row_number(name), "correction_id": cid,
-                             "correction_title": corr.title if corr else ""})
+            sample, row = _sample_number(name), _row_number(name)
+            examples.append({"file_name": name, "sample": sample, "row": row, "label": f"Sample {sample}, row {row}",
+                             "correction_id": cid, "correction_title": corr.title if corr else ""})
         _cache["examples"] = examples
         return examples
 
@@ -483,7 +490,8 @@ async def api_annotate_all(request: Request) -> JSONResponse:
         rows = []
         for ex in examples:
             r = _explain(_cache["xml"][ex["file_name"]], "", ex["correction_id"])
-            rows.append({"row": ex["row"], "file_name": ex["file_name"], "status": r["status"],
+            rows.append({"sample": ex["sample"], "row": ex["row"], "label": ex["label"], "file_name": ex["file_name"],
+                         "status": r["status"],
                          "correction_title": r["correction_title"], "annotated_title": r["annotated_title"],
                          "original_id": r.get("original_id") or "", "correction_id": r.get("correction_id") or ""})
         return JSONResponse({"count": len(rows), "elapsed_ms": round((time.perf_counter() - started) * 1000, 1),
@@ -566,10 +574,11 @@ DEMO_PAGE = """<!doctype html>
 <h2>1. Pick a correction notice</h2>
 <div class="card">
   <div class="picks" id="picks">Quick examples:
-    <button type="button" data-row="43">Typical correction</button>
-    <button type="button" data-row="41">Two corrections in one response</button>
-    <button type="button" data-row="40">Title with a curly apostrophe</button>
-    <button type="button" data-row="4">No original article in Alma</button>
+    <button type="button" data-row="1-43">Typical correction</button>
+    <button type="button" data-row="1-41">Two corrections in one response</button>
+    <button type="button" data-row="1-40">Title with a curly apostrophe</button>
+    <button type="button" data-row="2-3">Correction title in curly double quotes</button>
+    <button type="button" data-row="1-4">No original article in Alma</button>
   </div>
   <label for="pick">Or choose any of the saved notices:</label>
   <div class="row"><div class="grow"><select id="pick"><option value="">Loading saved notices...</option></select></div>
@@ -698,9 +707,9 @@ DEMO_PAGE = """<!doctype html>
       var d = await call("api/annotate-all");
       var counts = {}; d.rows.forEach(function (r) { counts[r.status] = (counts[r.status] || 0) + 1; });
       var summary = d.count + " notices in " + d.elapsed_ms + " ms: " + Object.keys(counts).map(function (k) { return counts[k] + " " + (LABELS[k] || k).split(":")[0].toLowerCase(); }).join(", ") + ".";
-      var tbl = el("table"); var h = el("tr"); ["Row", "Status", "Correction notice", "Annotated title"].forEach(function (x) { h.append(el("th", null, x)); }); tbl.append(h);
+      var tbl = el("table"); var h = el("tr"); ["Notice", "Status", "Correction notice", "Annotated title"].forEach(function (x) { h.append(el("th", null, x)); }); tbl.append(h);
       d.rows.forEach(function (r) {
-        var tr = el("tr"); tr.append(el("td", null, String(r.row)));
+        var tr = el("tr"); tr.append(el("td", null, r.label || String(r.row)));
         var st = el("td"); st.append(el("span", "badge b-" + r.status, (LABELS[r.status] || r.status).split(":")[0])); tr.append(st);
         tr.append(el("td", null, r.correction_title)); tr.append(el("td", null, r.status === "no_original" ? "(none)" : r.annotated_title)); tbl.append(tr);
       });
@@ -710,8 +719,8 @@ DEMO_PAGE = """<!doctype html>
   call("api/examples").then(function (d) {
     pick.replaceChildren(el("option", null, "Choose a saved notice (" + d.examples.length + ")")); pick.firstChild.value = "";
     d.examples.forEach(function (x) {
-      var o = el("option", null, "Row " + x.row + " - " + (x.correction_title || x.file_name).slice(0, 110)); o.value = x.file_name;
-      pick.append(o); byRow[String(x.row)] = x.file_name;
+      var o = el("option", null, (x.label || ("Row " + x.row)) + " - " + (x.correction_title || x.file_name).slice(0, 110)); o.value = x.file_name;
+      pick.append(o); byRow[(x.sample || 1) + "-" + x.row] = x.file_name;
     });
   }).catch(function (e) { pick.replaceChildren(el("option", null, "Could not load saved notices")); statusEl.textContent = e.message; });
 })();

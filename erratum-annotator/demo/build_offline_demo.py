@@ -36,7 +36,8 @@ def build(out_path: str) -> dict:
     examples = app._load_examples()
     results = {ex["file_name"]: app._explain(app._cache["xml"][ex["file_name"]], "", ex["correction_id"])
                for ex in examples}
-    rows = [{"row": ex["row"], "file_name": ex["file_name"], "status": results[ex["file_name"]]["status"],
+    rows = [{"sample": ex["sample"], "row": ex["row"], "label": ex["label"], "file_name": ex["file_name"],
+             "status": results[ex["file_name"]]["status"],
              "correction_title": results[ex["file_name"]]["correction_title"],
              "annotated_title": results[ex["file_name"]]["annotated_title"]} for ex in examples]
     data = {"folder": app.SRU_DIR, "examples": examples, "results": results,
