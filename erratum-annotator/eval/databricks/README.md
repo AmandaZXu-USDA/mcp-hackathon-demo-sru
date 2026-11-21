@@ -9,6 +9,28 @@ librarian-checked Sample1 spreadsheet.
 `/Volumes/users/amanda_xu/erratum_files/reports/agent-erratum-annotator-evaluation-report.pdf`
 (Catalog Explorer, then Download).
 
+## MLflow evaluation run, November 21, 2026 (latest)
+
+New full run of `Erratum Annotator Agent Evaluation` on all 53 rows, with the current agent instructions and
+`mcp-erratum-note` deployment. MLflow experiment `/Users/amanda.xu@usda.gov/agent-erratum-annotator-eval`
+(ID `1982416510445692`): smoke run `youthful-foal-70` (3 rows), full run `rogue-conch-731`
+(`c0161188c6714e7cbdcb4984215c2e38`), rescore run `upset-loon-503`. Scorer self-check against the ground truth
+passed before the run. 0 endpoint errors, 0 truncated replies; latency median 11.8 s, max 312.1 s.
+
+| Scorer | Result | Notes |
+| --- | --- | --- |
+| annotated_title_exact (primary) | 51/53 | Rows 34 and 40: the agent retyped the curly apostrophe (U+2019) in the title as a straight one |
+| erratum_note_exact | 53/53 | |
+| original_mms_id_match (rows with an original) | 46/46 | |
+| called_tool (rows with an SRU file) | 48/48 | |
+| correctness (LLM judge) | 51/53 | Row 9: says no SRU response is saved instead of "no original in Alma". Row 4: the judge's own rationale supports the reply |
+| no_fabrication (LLM guideline) | 42/53 | All 11 failures are judge errors: in 10 the judge expected the original MMS ID to equal the correction's MMS ID (the IDs match ground truth); in row 31 it missed the sentence saying the title is already annotated |
+
+By case, annotated_title_exact: annotated 31/32, already annotated 13/14, manual review 3/3, file but no
+original 2/2, no file and no original 2/2. Per-row results:
+[`doc/agent-erratum-annotator-eval-results-20261121.csv`](doc/agent-erratum-annotator-eval-results-20261121.csv);
+run IDs: [`doc/agent-erratum-annotator-eval-runs-20261121.json`](doc/agent-erratum-annotator-eval-runs-20261121.json).
+
 ## Results (November 20, 2026)
 
 | Scorer | Result |
@@ -68,6 +90,8 @@ still builds a title from the search title with `needs_review` false. Every run 
 | `mcp-erratum-note Inspector Gadget Test` | Live MCP server test as the Inspector Gadget service principal; appends to the results table and exports a per-row CSV |
 | `doc/agent-erratum-annotator-eval-results-20261120.csv` | Per-row scores, latency, tools, rationales and replies |
 | `doc/agent-erratum-annotator-eval-runs-20261120.json` | MLflow experiment and run IDs |
+| `doc/agent-erratum-annotator-eval-results-20261121.csv` | Per-row scores, latency, tools, rationales and replies (latest run) |
+| `doc/agent-erratum-annotator-eval-runs-20261121.json` | MLflow experiment and run IDs (latest run) |
 | `doc/mcp-erratum-note-inspector-test-20261121.csv` | Inspector Gadget per-file results (run 2026-11-21 01:08:59 UTC) |
 
 The notebooks read and write paths under `/Workspace/Users/amanda.xu@usda.gov/erratum-annotator/eval`; edit
