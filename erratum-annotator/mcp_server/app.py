@@ -5,15 +5,22 @@ Endpoint: https://<app-url>/mcp
 Demo page for librarians: https://<app-url>/ (same code, read-only).
 """
 import asyncio
+import functools
 import os
 import posixpath
 import re
+import secrets
+import time
+import xml.etree.ElementTree as ET
 
 from databricks.sdk import WorkspaceClient
+from databricks.sdk import errors as dberr
 from mcp.server.fastmcp import FastMCP
+from mcp.server.fastmcp.exceptions import ToolError
 
 from erratum_annotator import (
     ModsRecord,
+    clean_xml,
     enhance_title as _enhance,
     extract_erratum_note as _extract_note,
     parse_sru_response as _parse,
@@ -45,24 +52,174 @@ def _safe_path(file_name: str) -> str:
     return f"{SRU_DIR}/{name}"
 
 
+# ---- Error handling (MCP tools and demo page) ----
+# Every tool error comes back as a short message that says what to do, ending with
+# "[error <category>, id <error id>]". Categories: invalid_input, not_well_formed, not_sru, sru_diagnostic,
+# not_found, permission_denied, unavailable, bad_file, internal. Logs carry the error id, category, tool and
+# exception type only, never XML, titles or file contents. Temporary volume errors are retried once.
+MAX_XML_CHARS = 2_000_000
+MAX_TEXT_CHARS = 2_000
+SRW_DIAG = "{http://www.loc.gov/zing/srw/diagnostic/}"
+_TEMPORARY = (dberr.TemporarilyUnavailable, dberr.DeadlineExceeded, dberr.InternalError, dberr.TooManyRequests,
+              dberr.ResourceExhausted, ConnectionError, TimeoutError)
+
+
+class ErratumError(Exception):
+    """An error with a stable category and a message the caller can act on."""
+
+    def __init__(self, category: str, message: str):
+        super().__init__(message)
+        self.category, self.message, self.error_id = category, message, secrets.token_hex(4)
+
+    def client_message(self) -> str:
+        return f"{self.message} [error {self.category}, id {self.error_id}]"
+
+
+def _log_error(err: ErratumError, where: str, exc: BaseException | None = None) -> None:
+    print(f"tool_error error_id={err.error_id} category={err.category} where={where}"
+          + (f" exception={type(exc).__name__}" if exc is not None else ""), flush=True)
+
+
+def _check_text(name: str, value, limit: int = MAX_TEXT_CHARS, required: bool = False) -> str:
+    if value is None:
+        value = ""
+    if not isinstance(value, str):
+        raise ErratumError("invalid_input", f"{name} must be text.")
+    if required and not value.strip():
+        raise ErratumError("invalid_input", f"{name} is empty.")
+    if len(value) > limit:
+        raise ErratumError("invalid_input", f"{name} is too long (limit {limit:,} characters).")
+    return value
+
+
+def _check_correction_id(correction_id) -> str:
+    cid = _check_text("correction_id", correction_id, 50).strip()
+    if cid and not re.fullmatch(r"\d{16}", cid):
+        raise ErratumError("invalid_input", "correction_id must be the 16-digit erratum MMS ID, or empty.")
+    return cid
+
+
+def _check_xml(xml) -> str:
+    """Reject input that is not a well-formed SRU searchRetrieveResponse, with a message saying why."""
+    xml = _check_text("xml", xml, MAX_XML_CHARS, required=True)
+    try:
+        root = ET.fromstring(clean_xml(xml))
+    except ET.ParseError as e:
+        line, col = getattr(e, "position", (0, 0))
+        raise ErratumError("not_well_formed", f"The XML is not well-formed (line {line}, column {col}). Paste the "
+                           "complete SRU searchRetrieveResponse, from its first line to its last.") from None
+    if not root.tag.endswith("searchRetrieveResponse"):
+        tag = root.tag.rsplit("}", 1)[-1][:60]
+        raise ErratumError("not_sru", f"This XML is not an SRU searchRetrieveResponse (its root element is <{tag}>). "
+                           "Use the response of an NAL Alma SRU searchRetrieve request with recordSchema=mods.")
+    diag = root.find(f".//{SRW_DIAG}diagnostic")
+    if diag is not None and not list(root.iter("{http://www.loc.gov/zing/srw/}record")):
+        text = " ".join(t.strip() for t in (diag.findtext(f"{SRW_DIAG}message") or "",
+                                             diag.findtext(f"{SRW_DIAG}details") or "") if t.strip())
+        raise ErratumError("sru_diagnostic", "The SRU response reports an error instead of records"
+                           + (f": {text[:200]}" if text else "") + ". Check the SRU search URL and run it again.")
+    return xml
+
+
+def _volume_call(fn, *args):
+    """Call the Files API; retry once after a temporary error; map errors to categories."""
+    for attempt in (1, 2):
+        try:
+            return fn(*args)
+        except _TEMPORARY:
+            if attempt == 2:
+                raise ErratumError("unavailable", "The saved SRU responses could not be read just now (tried twice). "
+                                   "Try again in a minute.") from None
+            time.sleep(1)
+        except (dberr.PermissionDenied, dberr.Unauthenticated):
+            raise ErratumError("permission_denied", "The app cannot read the saved SRU responses (permission denied). "
+                               "Ask the app owner to grant the app READ VOLUME on users.amanda_xu.erratum_files.") from None
+
+
 def _read_volume_file(path: str) -> str:
-    resp = _client().files.download(path)
-    return resp.contents.read().decode("utf-8")
+    try:
+        data = _volume_call(lambda p: _client().files.download(p).contents.read(), path)
+    except dberr.NotFound:
+        raise ErratumError("not_found", f"No saved SRU response named '{posixpath.basename(path)}'. Call "
+                           "list_sru_files to see the saved file names.") from None
+    try:
+        return data.decode("utf-8")
+    except UnicodeDecodeError:
+        raise ErratumError("bad_file", f"The saved file '{posixpath.basename(path)}' is not UTF-8 text. "
+                           "Save the SRU response again as UTF-8 XML.") from None
+
+
+def _list_xml_names() -> list:
+    try:
+        entries = _volume_call(lambda d: list(_client().files.list_directory_contents(d)), SRU_DIR)
+    except dberr.NotFound:
+        raise ErratumError("not_found", "The saved SRU responses folder does not exist. Ask the app owner to check "
+                           "SRU_VOLUME_DIR in app.yaml.") from None
+    return [e.name for e in entries if not e.is_directory and e.name.lower().endswith(".xml")]
+
+
+def _handled(fn):
+    """Turn any error in a tool into a clear, categorized ToolError; never expose internal exception text."""
+    @functools.wraps(fn)
+    def wrapper(*args, **kwargs):
+        try:
+            return fn(*args, **kwargs)
+        except ErratumError as err:
+            _log_error(err, fn.__name__)
+            raise ToolError(err.client_message()) from None
+        except Exception as exc:
+            err = ErratumError("internal", "Unexpected error in mcp-erratum-note. Try again; if it repeats, send the "
+                               "error id to the app owner.")
+            _log_error(err, fn.__name__, exc)
+            raise ToolError(err.client_message()) from None
+    return wrapper
+
+
+def _with_status(result: dict, correction_id: str) -> dict:
+    """Add status and warnings, so a caller can tell a usable annotation from an empty one."""
+    warnings = []
+    if not result.get("num_records"):
+        status = "no_records"
+    elif not result.get("num_corrections"):
+        status = "no_correction"
+    elif result.get("already_annotated"):
+        status = "already_annotated"
+    elif not result.get("erratum_note"):
+        status = "no_note"
+        warnings.append("The correction record has no part text or DOI, so no erratum note could be made.")
+    else:
+        status = _status(result)
+    used = result.get("correction_id")
+    if correction_id and used and used != correction_id:
+        warnings.append(f"correction_id {correction_id} is not in this response; used the first correction record "
+                        f"({used}) instead.")
+    elif not correction_id and (result.get("num_corrections") or 0) > 1:
+        warnings.append(f"This response has {result['num_corrections']} correction records; used the first ({used}). "
+                        "Pass correction_id to choose another.")
+    return {**result, "status": status, "warnings": warnings}
 
 
 @mcp.tool()
+@_handled
 def health() -> str:
-    """Check that the erratum annotator server is running."""
-    return "mcp-erratum-note is running"
+    """Check that the erratum annotator server is running and can read the saved SRU responses."""
+    try:
+        count = len(_list_xml_names())
+    except ErratumError as err:
+        _log_error(err, "health")
+        return f"mcp-erratum-note is running, but it cannot read the saved SRU responses: {err.client_message()}"
+    return f"mcp-erratum-note is running; {count} saved SRU responses are readable."
 
 
 @mcp.tool()
+@_handled
 def parse_sru_response(xml: str) -> dict:
     """Parse an SRU searchRetrieveResponse XML string into classified records.
 
     Returns {num_records, records: [{title, record_id, part_text, doi, is_correction}]}.
+    Errors (bad or non-SRU XML) end with [error <category>, id <id>].
     """
-    records = _parse(xml)
+    records = _parse(_check_xml(xml))
     return {
         "num_records": len(records),
         "records": [
@@ -74,57 +231,67 @@ def parse_sru_response(xml: str) -> dict:
 
 
 @mcp.tool()
+@_handled
 def extract_erratum_note(part_text: str, doi: str) -> str:
     """Format an erratum note from a correction record's <part><text> and DOI.
 
     Returns '[Erratum: Mon. YYYY, v. V, no. N, page, doi]' or '' if inputs are missing.
     """
+    part_text = _check_text("part_text", part_text, 500)
+    doi = _check_text("doi", doi, 500)
     rec = ModsRecord(title="Correction", record_id="", part_text=part_text,
                      doi=doi, is_correction=True)
     return _extract_note(rec) or ""
 
 
 @mcp.tool()
+@_handled
 def enhance_title(original_title: str, erratum_note: str) -> dict:
     """Append an erratum note to the end of the original title.
 
     Skips if the title already contains '[Erratum:'.
     Returns {annotated_title, already_annotated}.
     """
+    original_title = _check_text("original_title", original_title)
+    erratum_note = _check_text("erratum_note", erratum_note)
     already = "[Erratum:" in (original_title or "")
     return {"annotated_title": _enhance(original_title, erratum_note),
             "already_annotated": already}
 
 
 @mcp.tool()
+@_handled
 def process_sru_response(xml: str, search_title: str = "", correction_id: str = "") -> dict:
     """Full pipeline: parse SRU XML, match correction to original, annotate the title.
 
     Uses search_title as the fallback when no original record is in the response.
-    Pass correction_id (the erratum MMS ID) when a response may contain several
+    Pass correction_id (the 16-digit erratum MMS ID) when a response may contain several
     correction records, so the right one supplies the note.
-    Returns {annotated_title, erratum_note, correction_id, original_id,
-             original_source, already_annotated, num_records, num_corrections}.
+    Returns {annotated_title, erratum_note, correction_id, original_id, original_source,
+             already_annotated, num_records, num_corrections, status, warnings}.
+    status: ready, needs_review, no_original, already_annotated, no_records, no_correction or no_note.
+    Errors (bad or non-SRU XML, bad correction_id) end with [error <category>, id <id>].
     """
-    return _process(xml, search_title, correction_id)
+    search_title = _check_text("search_title", search_title).strip()
+    correction_id = _check_correction_id(correction_id)
+    return _with_status(_process(_check_xml(xml), search_title, correction_id), correction_id)
 
 
 @mcp.tool()
+@_handled
 def list_sru_files(contains: str = "") -> dict:
     """List saved SRU response XML files in the erratum volume folder.
 
     Optional `contains` filters file names by substring (case-insensitive),
     e.g. 'Row41' or an MMS ID. Returns {folder, count, files}.
     """
-    names = sorted(
-        e.name for e in _client().files.list_directory_contents(SRU_DIR)
-        if not e.is_directory and e.name.lower().endswith(".xml")
-        and contains.lower() in e.name.lower()
-    )
+    contains = _check_text("contains", contains, 200).strip()
+    names = sorted(n for n in _list_xml_names() if contains.lower() in n.lower())
     return {"folder": SRU_DIR, "count": len(names), "files": names}
 
 
 @mcp.tool()
+@_handled
 def process_sru_file(file_name: str, search_title: str = "", correction_id: str = "") -> dict:
     """Read a saved SRU response from the erratum volume folder and annotate the title.
 
@@ -132,12 +299,25 @@ def process_sru_file(file_name: str, search_title: str = "", correction_id: str 
     If correction_id is empty, the 16-digit MMS ID at the end of the file name is used
     (falls back to the first correction record if it does not match any record).
     Returns the same fields as process_sru_response plus {file_name, correction_id_requested}.
+    Errors (no such file, unreadable file, bad XML) end with [error <category>, id <id>].
     """
-    path = _safe_path(file_name)
+    file_name = _check_text("file_name", file_name, 200, required=True)
+    try:
+        path = _safe_path(file_name)
+    except ValueError:
+        raise ErratumError("invalid_input", "file_name must be a bare .xml file name from list_sru_files, "
+                           "with no folder.") from None
+    search_title = _check_text("search_title", search_title).strip()
+    correction_id = _check_correction_id(correction_id)
     if not correction_id:
         m = re.search(r"(\d{16})\.xml$", file_name, re.I)
         correction_id = m.group(1) if m else ""
-    result = _process(_read_volume_file(path), search_title, correction_id)
+    xml = _read_volume_file(path)
+    try:
+        xml = _check_xml(xml)
+    except ErratumError as err:
+        raise ErratumError("bad_file", f"The saved file '{file_name}' is not a usable SRU response: {err.message}") from None
+    result = _with_status(_process(xml, search_title, correction_id), correction_id)
     return {"file_name": file_name, "correction_id_requested": correction_id, **result}
 
 
@@ -148,14 +328,11 @@ def process_sru_file(file_name: str, search_title: str = "", correction_id: str 
 # GET  /api/annotate-all  every saved notice, annotated (about a second in total)
 # The page calls the same code as the MCP tools; nothing is written anywhere.
 import json
-import secrets
 import threading
-import time
 
 from starlette.requests import Request
 from starlette.responses import HTMLResponse, JSONResponse
 
-MAX_XML_CHARS = 2_000_000
 SRU_RECORD_URL = (
     "https://nal.alma.exlibrisgroup.com/view/sru/01NAL_INST?version=1.2&operation=searchRetrieve"
     "&recordSchema=mods&query=alma.mms_id%3D"
@@ -174,11 +351,7 @@ def _load_examples() -> list:
     with _cache_lock:
         if _cache["examples"] is not None:
             return _cache["examples"]
-        names = sorted(
-            (e.name for e in _client().files.list_directory_contents(SRU_DIR)
-             if not e.is_directory and e.name.lower().endswith(".xml")),
-            key=lambda n: (_row_number(n), n),
-        )
+        names = sorted(_list_xml_names(), key=lambda n: (_row_number(n), n))
         examples = []
         for name in names:
             xml = _read_volume_file(_safe_path(name))
@@ -242,6 +415,9 @@ def _err(message: str, status: int = 400) -> JSONResponse:
 async def api_examples(request: Request) -> JSONResponse:
     try:
         return JSONResponse({"folder": SRU_DIR, "examples": await asyncio.to_thread(_load_examples)})
+    except ErratumError as err:
+        _log_error(err, "page_examples")
+        return _err(f"{err.message} (error id {err.error_id})", 502)
     except Exception as e:
         print(f"demo_error where=examples exception={type(e).__name__}")
         return _err("Could not read the saved SRU responses. Try again in a minute.", 502)
@@ -277,7 +453,12 @@ async def api_annotate(request: Request) -> JSONResponse:
                 return _err("Pick a saved notice, or paste an SRU response (XML).")
             if len(xml) > MAX_XML_CHARS:
                 return _err("The XML is too long (limit 2 MB).")
+            xml = _check_xml(xml)  # well-formed SRU searchRetrieveResponse, or a clear ErratumError
         result = await asyncio.to_thread(_explain, xml, search_title.strip(), correction_id.strip())
+    except ErratumError as err:
+        _log_error(err, "page_annotate")
+        server_side = err.category in ("permission_denied", "unavailable", "internal")
+        return _err(f"{err.message} (error id {err.error_id})", 502 if server_side else 400)
     except (ValueError, SyntaxError):  # bad file name, or XML that does not parse (ParseError)
         return _err("That does not look like an SRU response, or the file name is not allowed.")
     except Exception as e:

@@ -23,6 +23,22 @@ librarian-checked Sample1 spreadsheet.
 Failures: row 28 hit the Supervisor Agent's 290 s limit; rows 34 and 40 retyped a curly apostrophe in the title.
 Notices with no saved SRU response get a request for SRU XML instead of a manual-review / no-original answer.
 
+## Results after error handling (November 21, 2026)
+
+Re-run of the same notebook after the error handling in `mcp-erratum-note` and the new agent rules
+([`../../agent/README.md`](../../agent/README.md#error-handling)); MLflow run `flawless-shrike-232`, 53 rows.
+
+| Scorer | November 20 | November 21 |
+| --- | --- | --- |
+| annotated_title_exact (primary) | 50/53 | 51/53 |
+| erratum_note_exact | 52/53 | 53/53 |
+| original_mms_id_match | 45/46 | 1.00 |
+| called_tool | 48/48 | 1.00 |
+| correctness (LLM judge) | 50/53 | 51/53 |
+
+The notebook's `%pip` line now also installs `httpx`, which the Databricks SDK's OpenAI client needs; without it
+the notebook failed before running any row.
+
 ## MCP server test as Inspector Gadget (November 21, 2026)
 
 The `mcp-erratum-note` app was also tested directly, without the agent, as the Inspector Gadget service

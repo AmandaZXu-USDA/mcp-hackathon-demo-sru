@@ -22,6 +22,7 @@ catalog title.
 | `mcp_server/erratum_annotator.py` | Core logic: parse SRU MODS XML, pick the original record, build the erratum note, enhance the title |
 | `mcp_server/app.py` | MCP server `mcp-erratum-note` (FastMCP, streamable HTTP at `/mcp`) for Databricks Apps |
 | `mcp_server/app.yaml`, `requirements.txt` | Databricks Apps config; `SRU_VOLUME_DIR` points at the saved SRU responses volume |
+| `tests/` | Tests of the tools' error handling (`test_tool_errors.py`) and a saved SRU response they use |
 | `uc_functions/` | Unity Catalog function definitions (`.sql`) and the script that generates them from `erratum_annotator.py` |
 | `demo/` | Offline single-file copy of the demo page (no account or network needed) and its build script |
 | `agent/README.md` | `agent-erratum-annotator` configuration: tools, endpoint and the instructions in use, with steps to recreate it |
@@ -45,20 +46,59 @@ All code is in Git, at the same paths in both repos
 ([AmandaZXu-USDA/NAL](https://github.com/AmandaZXu-USDA/NAL/tree/add-mcp-servers/erratum-annotator), branch
 `add-mcp-servers`, and [AmandaZXu-USDA/mcp-hackathon-demo-sru](https://github.com/AmandaZXu-USDA/mcp-hackathon-demo-sru/tree/main/erratum-annotator)).
 The 7 tools of `mcp-erratum-note` (at `/mcp`) are defined in `mcp_server/app.py` and call the logic in
-`mcp_server/erratum_annotator.py`. All are read-only: none writes anything.
+`mcp_server/erratum_annotator.py`. All are read-only: none writes anything. Errors are described in [Error handling](#error-handling).
 
 | Tool | Input | What it does |
 | --- | --- | --- |
-| `health` | none | Checks that the server is running |
+| `health` | none | Checks that the server is running and can read the saved SRU responses |
 | `parse_sru_response` | `xml` | Parses an SRU searchRetrieveResponse (MODS XML) into records: title, MMS ID, part text, DOI and whether it is a correction |
 | `extract_erratum_note` | `part_text`, `doi` | Formats the erratum note `[Erratum: Mon. YYYY, v. V, no. N, page, DOI]` from a correction record's `<part><text>` and DOI; empty if either is missing |
 | `enhance_title` | `original_title`, `erratum_note` | Appends the note to the end of the original title; leaves a title that already has `[Erratum:` unchanged |
-| `process_sru_response` | `xml`, `search_title` (optional), `correction_id` (optional) | Full pipeline: parses the XML, matches the correction record (the one with MMS ID `correction_id`, if given) to its original article (falling back to `search_title`) and returns the annotated title, the erratum note, both MMS IDs, review flags and record counts |
+| `process_sru_response` | `xml`, `search_title` (optional), `correction_id` (optional) | Full pipeline: parses the XML, matches the correction record (the one with MMS ID `correction_id`, if given) to its original article (falling back to `search_title`) and returns the annotated title, the erratum note, both MMS IDs, review flags, record counts, `status` and `warnings` |
 | `list_sru_files` | `contains` (optional) | Lists the saved SRU response files in `SRU_VOLUME_DIR`, filtered by a substring such as `Row43` or an MMS ID |
 | `process_sru_file` | `file_name`, `search_title` (optional), `correction_id` (optional) | Reads one saved response by bare file name (no paths) and runs `process_sru_response`; takes the MMS ID from the end of the file name when `correction_id` is empty |
 
 The demo page routes (`GET /`, `GET /api/examples`, `POST /api/annotate`, `GET /api/annotate-all`) are in the
 same `app.py` and call the same code.
+
+## Error handling
+
+Every tool checks its input before it runs and returns a short message that says what to do, ending with
+`[error <category>, id <error id>]`. The app log records the error id, category and tool, never the XML, titles or
+file contents, so an error a user reports can be found in the logs by its id.
+
+| Category | When | Message tells the caller to |
+| --- | --- | --- |
+| `invalid_input` | Empty or too long input (XML over 2,000,000 characters, text over 2,000), `correction_id` not 16 digits, `file_name` with a folder or not `.xml` | Fix the named input |
+| `not_well_formed` | The XML does not parse (gives line and column); usually it was cut off when pasted | Paste the complete SRU response |
+| `not_sru` | Well-formed XML, but not an SRU `searchRetrieveResponse` | Use the response of an NAL Alma SRU search with `recordSchema=mods` |
+| `sru_diagnostic` | The SRU response holds a diagnostic (an Alma error) and no records | Check the SRU search URL and run it again |
+| `not_found` | No saved SRU response with that file name | Call `list_sru_files` for the exact name |
+| `bad_file` | A saved file is not UTF-8 or not a usable SRU response | Save the SRU response again |
+| `permission_denied` | The app cannot read the volume | Ask the app owner to grant `READ VOLUME` |
+| `unavailable` | The volume could not be read, also after one automatic retry | Try again in a minute |
+| `internal` | Anything else (details are not shown) | Send the error id to the app owner |
+
+`process_sru_response` and `process_sru_file` also return `status` and `warnings`, so an empty result is never
+mistaken for a good one:
+
+| `status` | Meaning |
+| --- | --- |
+| `ready`, `needs_review`, `no_original`, `already_annotated` | As on the demo page |
+| `no_records` | The SRU response has no records (the search found nothing) |
+| `no_correction` | No correction record, so there is no erratum note |
+| `no_note` | The correction record has no part text or DOI; needs manual review |
+
+`warnings` lists, for example, a `correction_id` that is not in the response (the first correction record was
+used) or a response with several correction records and no `correction_id`. `health` also checks that the saved
+SRU responses can be read. The demo page uses the same checks, so pasted XML that is cut off or not SRU gets the
+same message. Arguments of the wrong type, or missing ones, are rejected by the MCP library before a tool runs and
+keep the library's message.
+
+The agent `agent-erratum-annotator` has matching rules (see [`agent/README.md`](agent/README.md#error-handling)).
+
+Tests: `tests/test_tool_errors.py` (28 tests, no workspace access needed; run `python -m pytest tests -q` from this
+folder with the app's requirements and `pytest` installed).
 
 ## Unity Catalog functions
 
@@ -100,6 +140,7 @@ The deployed app runs from this repo folder: `/Workspace/Users/amanda.xu@usda.go
   `users.amanda_xu.erratum_files`; callers need CAN USE on the app. Tools are read-only; `process_sru_file`
   accepts only a bare `.xml` file name inside `SRU_VOLUME_DIR` (no paths).
 * **No secrets in Git.** Test credentials (Inspector Gadget) stay in the UC secret `models.ai/inspector-gadget`.
+* **Test before every deploy.** Run `python -m pytest tests -q` in this folder (28 tests).
 * **Check after every deploy.** Run `eval/databricks/mcp-erratum-note Inspector Gadget Test` (expect 0 errors,
   annotated_title 46/48, MMS ID 48/48) and, after changing `erratum_annotator.py`, regenerate the UC functions
   with `uc_functions/build_uc_functions.py` and run the changed `.sql` files.

@@ -25,7 +25,7 @@
 # COMMAND ----------
 
 # DBTITLE 1,Install libraries
-# MAGIC %pip install -q -U "mlflow[databricks]>=3.4" openai
+# MAGIC %pip install -q -U "mlflow[databricks]>=3.4" openai httpx
 # MAGIC dbutils.library.restartPython()
 
 # COMMAND ----------

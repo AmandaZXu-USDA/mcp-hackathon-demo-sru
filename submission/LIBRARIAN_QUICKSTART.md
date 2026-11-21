@@ -40,6 +40,10 @@ What the result means:
 | No original article in Alma | The response holds only the correction notice (Sample1 rows 4 and 24) | Nothing to annotate yet; no title is shown |
 | Already annotated | The original title already has an `[Erratum: ...]` note | No change needed |
 
+If something goes wrong, the page, the tools and the agent say what happened and what to do, with an error id
+(for example: the pasted XML is cut off, it is not an SRU response, or there is no saved file with that name).
+Send the error id to the project owner if the message does not help.
+
 The tools only read saved SRU responses in `/Volumes/users/amanda_xu/erratum_files/sru_responses`; they
 never change Alma or any file.
 
@@ -73,8 +77,8 @@ notices with their results, needs no sign-in or network, but cannot annotate pas
    If the chat asks you to approve a tool call, approve it.
 
 The agent finds the saved SRU response, runs the same tools as the page, and returns the annotated title
-with the original and correction MMS IDs. In the evaluation it returned the exact title for 50 of 53
-notices; for the final check, use the page or the SQL function.
+with the original and correction MMS IDs. In the evaluation it returned the exact title for 51 of 53
+notices (November 21, 2026); for the final check, use the page or the SQL function.
 
 ## Erratum annotator: Genie Code with the MCP tools
 
