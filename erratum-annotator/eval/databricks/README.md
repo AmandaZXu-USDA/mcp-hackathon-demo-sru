@@ -4,7 +4,7 @@ Offline MLflow evaluation of the `agent-erratum-annotator` Supervisor Agent (end
 tools: MCP app `mcp-erratum-note` and UC function `users.amanda_xu.process_sru_response`) on the 53-row,
 librarian-checked Sample1 spreadsheet.
 
-**Report (PDF):** [`doc/agent-erratum-annotator-evaluation-report.pdf`](doc/agent-erratum-annotator-evaluation-report.pdf)
+**Report (PDF, November 21, 2026 run, with a comparison to November 20):** [`doc/agent-erratum-annotator-evaluation-report.pdf`](doc/agent-erratum-annotator-evaluation-report.pdf)
 (on GitHub, use the download icon at the top right of the preview). The same file is in the Databricks volume at
 `/Volumes/users/amanda_xu/erratum_files/reports/agent-erratum-annotator-evaluation-report.pdf`
 (Catalog Explorer, then Download).

@@ -9,11 +9,12 @@
 import json
 import pandas as pd
 
-DOC = "/Workspace/Users/amanda.xu@usda.gov/erratum-annotator/eval/doc"
-RESULTS_CSV = f"{DOC}/agent-erratum-annotator-eval-results-20261120.csv"
-RUNS_JSON = f"{DOC}/agent-erratum-annotator-eval-runs-20261120.json"
+DOC = "/Workspace/Users/amanda.xu@usda.gov/NAL/erratum-annotator/eval/databricks/doc"
+RESULTS_CSV = f"{DOC}/agent-erratum-annotator-eval-results-20261121.csv"
+PREV_CSV = f"{DOC}/agent-erratum-annotator-eval-results-20261120.csv"  # November 20 run, for comparison
+RUNS_JSON = f"{DOC}/agent-erratum-annotator-eval-runs-20261121.json"
 OUTPUT_PATH = f"{DOC}/agent-erratum-annotator-evaluation-report.pdf"
-RUN_DATE = "November 20, 2026"
+RUN_DATE = "November 21, 2026"
 
 r = pd.read_csv(RESULTS_CSV, keep_default_na=False)
 BOOL = ["truncated", "annotated_title_exact", "erratum_note_exact", "original_mms_id_match", "called_tool",
@@ -21,6 +22,9 @@ BOOL = ["truncated", "annotated_title_exact", "erratum_note_exact", "original_mm
 for c in BOOL:
     r[c] = r[c].astype(str) == "True"
 runs = json.load(open(RUNS_JSON))
+prev = pd.read_csv(PREV_CSV, keep_default_na=False)
+for c in BOOL:
+    prev[c] = prev[c].astype(str) == "True"
 
 # Direct MCP server test as the Inspector Gadget service principal (notebook "mcp-erratum-note Inspector Gadget Test")
 IG_CSV = f"{DOC}/mcp-erratum-note-inspector-test-20261121.csv"
@@ -102,26 +106,21 @@ rows_of = lambda mask: sorted(r.loc[mask, "row_num"].tolist())
 # Explanations of every failing row, from reading the replies and judge rationales of this run.
 # The asserts stop the build if a rerun produces a different set of failures.
 DET_FAIL = {
-    28: "Supervisor Agent hit its 290 s request limit and asked whether to continue; no title, note or MMS ID returned.",
     34: "Erratum note correct, but the agent replaced the curly apostrophe (U+2019) in the catalog title with a straight one.",
     40: "Erratum note correct, but the agent replaced the curly apostrophe (U+2019) in the catalog title with a straight one.",
 }
 assert set(rows_of(~r.annotated_title_exact | ~r.erratum_note_exact | ~r.original_mms_id_match)) == set(DET_FAIL), \
     "Deterministic failures changed: update DET_FAIL"
 CORR_FAIL = {
-    16: "No SRU file: the agent asked the user to paste SRU XML instead of saying the generic 'Correction' title needs manual review.",
-    28: "Timeout (see above).",
-    39: "No SRU file: the agent asked the user to paste SRU XML instead of saying the original is not in Alma.",
+    4: "Judge error: the reply says Alma has only the correction notice and gives no annotated title, as expected; the judge "
+       "failed it because the tool output names search_title as the lookup source.",
+    9: "No SRU file: the agent says it cannot produce a title and asks for the SRU XML instead of saying the original is not in Alma.",
 }
 assert set(rows_of(~r.correctness)) == set(CORR_FAIL), "Correctness failures changed: update CORR_FAIL"
 FAB_GROUPS = [
-    ("Judge error: says the original MMS ID did not come from the tools. It did (process_sru_file returns original_id) "
-     "and matches the ground truth.", [14, 22, 47, 52, 53]),
-    ("Judge error: applies the 'say plainly when no title can be produced' rule to replies that did produce the title.",
-     [25, 33, 35, 40, 43]),
-    ("Real gap: no SRU file, and the agent asks the user for SRU XML instead of stating manual review / no original.",
-     [6, 9, 16, 19, 39]),
-    ("Timeout reply.", [28]),
+    ("Judge error: expects the original article's MMS ID to equal the correction notice's MMS ID. The reported original "
+     "MMS ID comes from process_sru_file (original_id) and matches the ground truth.", [3, 11, 13, 18, 21, 22, 35, 42, 44, 47]),
+    ("Judge error: says the reply does not state that the title already carries a note; its first sentence says so.", [31]),
 ]
 assert sorted(sum((g for _, g in FAB_GROUPS), [])) == rows_of(~r.no_fabrication), "no_fabrication failures changed"
 assert r.loc[r.row_num.isin(FAB_GROUPS[0][1]), "original_mms_id_match"].all()
@@ -135,10 +134,10 @@ story += [p("1. Summary", H1),
           p(f"The agent was evaluated on all {N} rows of the librarian-checked Sample1 spreadsheet. It returned the exact "
             f"annotated original title on {frac('annotated_title_exact')} rows and the correct original MMS ID on "
             f"{frac('original_mms_id_match')} rows that have one. It used a saved-response tool on every row with an SRU "
-            f"file ({frac('called_tool')}). All {M['annotated_title_exact'][1] - M['annotated_title_exact'][0]} exact-match "
-            "failures are real agent errors: one Supervisor Agent timeout and two titles where the model retyped a curly "
-            "apostrophe. The main behavior gap is on notices with no saved SRU response: the agent asks the user for "
-            "SRU XML instead of saying the notice needs manual review or has no original in Alma."),
+            f"file ({frac('called_tool')}). Both exact-match failures are real agent errors: titles where the model retyped a "
+            "curly apostrophe. There were no Supervisor Agent timeouts, endpoint errors or unfinished approval loops. "
+            "On the 5 notices with no saved SRU response, 4 replies say the notice needs manual review and one (row 9) "
+            "still asks for SRU XML. All 11 no_fabrication failures are judge errors."),
           table([["Scorer", "Kind", "Rows scored", "Result"],
                  ["annotated_title_exact (primary)", "Deterministic", "all rows", frac("annotated_title_exact")],
                  ["erratum_note_exact", "Deterministic", "all rows", frac("erratum_note_exact")],
@@ -189,9 +188,9 @@ story += [p("4. Method", H1),
               "label (e.g. under Details) and placeholders such as [Erratum: ...] in prose are ignored.",
               "Before any agent call, a self-check scores the ground truth itself (must pass), plus corrupted notes, "
               "doubled notes and markdown-formatted titles (46/46 each), and regression cases from this run.",
-              "A 3-row smoke test (rows 4, 41, 43) preceded the full run with 3 parallel workers.",
+              "A 3-row smoke test (rows 4, 41, 43) preceded the full run, which used 4 parallel workers.",
           ]),
-          p("Scorer revisions during the evaluation", H2),
+          p("Scorer revisions (made during the November 20 run; unchanged since)", H2),
           *bullets([
               "Smoke test: the first scorers counted notes, so a correct reply that restated its note in a Details list "
               "failed (0/3). Changed to count only notes attached to a title.",
@@ -217,11 +216,24 @@ story += [p("5. Results", H1), p("5.1 By case", H2),
           table([["Row", "Case", "Reason"]] +
                 [[n, r.loc[r.row_num == n, "case"].iloc[0], t] for n, t in sorted(CORR_FAIL.items())], [0.5, 1.4, 4.6]),
           Spacer(1, 6),
-          p(f"<b>no_fabrication</b> {frac('no_fabrication')}. Reading the 16 rationales: 10 are judge errors, 5 are the "
-            "no-file behavior gap and 1 is the timeout. No reply invented a title, note, DOI or MMS ID."),
+          p(f"<b>no_fabrication</b> {frac('no_fabrication')}. Reading the 11 rationales: all are judge errors. The "
+            "deterministic scorers found no invented title, note or MMS ID."),
           table([["Group", "Rows"]] + [[g, ", ".join(map(str, rows))] for g, rows in FAB_GROUPS], [5.0, 1.5]),
           p("Rows 6, 9, 16, 19 and 39 pass the deterministic scorers only because they give no annotation; the "
-            "deterministic scorers do not check that the reply explains why.", SMALL)]
+            "deterministic scorers do not check that the reply explains why.", SMALL),
+          p("5.4 Compared with the November 20 run", H2),
+          table([["Scorer", "November 20", "November 21"]] +
+                [[k, f"{int(prev.loc[pm, k].sum())}/{int(pm.sum())}", f"{M[k][0]}/{M[k][1]}"]
+                 for k, pm in [("annotated_title_exact", prev.index == prev.index),
+                               ("erratum_note_exact", prev.index == prev.index),
+                               ("original_mms_id_match", prev["case"].isin(["annotated", "already_annotated"])),
+                               ("called_tool", ~prev["case"].isin(["manual_review", "no_file_no_original"])),
+                               ("correctness", prev.index == prev.index),
+                               ("no_fabrication", prev.index == prev.index)]] +
+                [["Median latency", f"{prev.latency_s.median():.1f} s", f"{lat.median():.1f} s"]],
+                [2.5, 2.0, 2.0]),
+          p("Between the runs, mcp-erratum-note gained error handling and the agent instructions were updated "
+            "(erratum-annotator/agent/README.md, instructions in use since November 21, 2026).", SMALL)]
 
 # 6. Latency and tool use
 tools = r["tools"].replace("", "(none)").value_counts()
@@ -231,7 +243,7 @@ story += [p("6. Latency and tool use", H1),
                                                   f"p90 {lat.quantile(0.9):.1f} s, max {lat.max():.1f} s"],
                  ["Rows with an SRU file", f"median {r.loc[has_file, 'latency_s'].median():.1f} s (one tool call, one approval)"],
                  ["Rows without an SRU file", f"median {r.loc[~has_file, 'latency_s'].median():.1f} s (mostly no tool call)"],
-                 ["Timeout row 28", f"{r.loc[r.row_num == 28, 'latency_s'].iloc[0]:.1f} s"],
+                 ["Slowest row", f"row {int(r.loc[lat.idxmax(), 'row_num'])}: {lat.max():.1f} s (reply correct)"],
                  ["Endpoint errors / truncated loops", f"{int((r.error != '').sum())} / {int(r.truncated.sum())}"]] +
                 [[f"Tools used: {k}", f"{v} rows"] for k, v in tools.items()],
                 [2.4, 4.1])]
@@ -240,13 +252,15 @@ story += [p("6. Latency and tool use", H1),
 story += [p("7. Findings and recommendations", H1),
           *bullets([
               "<b>Copy the tool's annotated_title verbatim.</b> Add to the agent instructions: return the annotated_title "
-              "field exactly as the tool returns it, without retyping quotes, apostrophes or hyphens (rows 34, 40).",
-              "<b>Handle no-file notices without asking for XML.</b> Instruct the agent: a bare 'Correction' title needs "
-              "manual review; when no SRU response is saved, say so and stop (rows 6, 9, 16, 19, 39). Then add a "
-              "deterministic scorer that checks for that wording.",
-              "<b>Treat Supervisor timeouts as errors.</b> Detect the 'Request Time Out' reply in the predict function and "
-              "retry once; track the rate across runs (1/53 here, 314 s).",
-              "<b>Replace or ground the no_fabrication judge.</b> 10 of its 16 failures are judge errors. Either pass the "
+              "field exactly as the tool returns it, without retyping quotes, apostrophes or hyphens (rows 34 and 40, in both runs).",
+              "<b>Finish the no-file rule.</b> Rows 6, 16, 19 and 39 now say manual review instead of asking for XML (all 5 "
+              "asked on November 20). Row 9 still asks for SRU XML, and row 39 says manual review where the ground truth "
+              "is 'no original in Alma'. Add a deterministic scorer that checks for that wording.",
+              "<b>Track Supervisor latency and timeouts.</b> No timeouts in this run (1/53 on November 20), but row 13 took "
+              f"{lat.max():.0f} s against a median of {lat.median():.1f} s. Detect a 'Request Time Out' reply in the "
+              "predict function and retry once.",
+              "<b>Replace or ground the no_fabrication judge.</b> All 11 of its failures here are judge errors (10 of 16 on "
+              "November 20). Either pass the "
               "tool outputs to the judge as context, or use a deterministic check that every MMS ID and DOI in the reply "
               "appears in a tool output.",
               "<b>Validate scorers on real replies.</b> Synthetic self-checks passed, but real replies restated notes "
@@ -285,8 +299,8 @@ story += [p("8. MCP server test (Inspector Gadget)", H1),
 # 9. Artifacts
 story += [p("9. Artifacts and reproduction", H1),
           table([["Item", "Location"],
-                 ["Evaluation notebook", "/Users/amanda.xu@usda.gov/erratum-annotator/eval/Erratum Annotator Agent Evaluation"],
-                 ["Report notebook", "/Users/amanda.xu@usda.gov/erratum-annotator/eval/Erratum Annotator Evaluation Report"],
+                 ["Evaluation notebook", "/Users/amanda.xu@usda.gov/NAL/erratum-annotator/eval/databricks/Erratum Annotator Agent Evaluation"],
+                 ["Report notebook", "/Users/amanda.xu@usda.gov/NAL/erratum-annotator/eval/databricks/Erratum Annotator Evaluation Report"],
                  ["MLflow experiment", f"{runs['experiment']} (id {runs['experiment_id']})"],
                  ["Full run", runs["full_run_id"]], ["Rescore run", runs["rescore_run_id"]],
                  ["Smoke run", runs["smoke_run_id"]],
@@ -329,7 +343,8 @@ checks = ["1. Summary", "2. System under test", "3. Evaluation dataset", "4. Met
           f"median {ig.latency_sec.median():.2f} s",
           frac("annotated_title_exact"), frac("erratum_note_exact"), frac("original_mms_id_match"), frac("called_tool"),
           frac("correctness"), frac("no_fabrication"), runs["full_run_id"], runs["rescore_run_id"], runs["experiment_id"],
-          runs["endpoint"], "U+2019", "290 s", "48 to 50/53", "40 to 52/53", f"max {lat.max():.1f} s"]
+          runs["endpoint"], "U+2019", "48 to 50/53", "40 to 52/53", f"max {lat.max():.1f} s",
+          "5.4 Compared with the November 20 run", "November 21, 2026", "row 13"]
 missing = [c for c in checks if c not in flat]
 for c in checks:
     print("OK  " if c not in missing else "MISSING  ", c)
