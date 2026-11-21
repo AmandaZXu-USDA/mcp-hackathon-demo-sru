@@ -25,6 +25,17 @@ catalog title.
 | `agent/README.md` | `agent-erratum-annotator` configuration: tools, endpoint and the instructions in use, with steps to recreate it |
 | `eval/databricks/` | MLflow evaluation of the `agent-erratum-annotator` Supervisor Agent and the [PDF report](eval/databricks/doc/agent-erratum-annotator-evaluation-report.pdf) |
 
+
+## Demo web page
+
+<https://mcp-erratum-note-7474654188777746.aws.databricksapps.com> (sign in with a workspace account; needs
+`CAN USE` on the app). Pick one of the 48 saved correction notices, or paste SRU XML, and see the correction
+notice, the original article found, the erratum note and the annotated title, with a status (ready, needs
+review, no original in Alma, already annotated). **See all saved notices at once** annotates all 48 in one
+table. The page is served by the same app and code as the MCP tools (`GET /`, `GET /api/examples`,
+`POST /api/annotate`, `GET /api/annotate-all`); it only reads the saved responses. Steps for librarians:
+[`LIBRARIAN_QUICKSTART.md`, Part 1](../submission/LIBRARIAN_QUICKSTART.md#part-1-erratum-annotator-add-the-erratum-note-to-the-original-title).
+
 ## MCP tools
 
 `health`, `parse_sru_response`, `extract_erratum_note`, `enhance_title`, `process_sru_response`,

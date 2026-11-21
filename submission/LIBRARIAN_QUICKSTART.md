@@ -1,4 +1,108 @@
-# Librarian quick-start: get an SRU search URL from a correction title
+# Librarian quick-start: correction notices in the NAL catalog
+
+Two tools, one for each step of linking a publisher's correction notice to the article it corrects:
+
+| Step | Tool | You give it | You get |
+|---|---|---|---|
+| 1 | [SRU search URL](#part-2-sru-search-url-from-a-correction-title) (`mcp-sru-syntax`) | A correction notice title | The NAL Alma SRU search URL for the original article |
+| 2 | [Erratum annotator](#part-1-erratum-annotator-add-the-erratum-note-to-the-original-title) (`mcp-erratum-note`) | The SRU response for that search | The original article's title with an `[Erratum: ...]` note, ready for the catalog |
+
+Start with Part 1 if you want to see the result: its demo web page needs no setup and answers in about a
+second.
+
+# Part 1: Erratum annotator (add the erratum note to the original title)
+
+The annotator reads the Alma SRU response, finds the original article's record (the one whose DOI the
+notice cites, otherwise the closest title), and adds the correction's date, volume, issue, pages and DOI to
+the end of the original title. For example (Sample1 row 43):
+
+* **Correction notice:** Publisher Correction: DNMT3A/TET2-mediated epigenetic alteration in Type-1 diabetes
+  dysregulates the haematopoiesis
+* **Annotated title for the original record (MMS ID 9917168304707426):** DNMT3A/TET2-mediated epigenetic
+  alteration in Type-1 diabetes dysregulates the haematopoiesis
+  [Erratum: Dec. 2026, v. 53, no. 1, 1310, 10.1007/s11033-026-12468-5]
+
+Every option uses the same code, so the same SRU response always gives the same title:
+
+| Option | Best for | Time | Access you need (ask the project owner) |
+|---|---|---|---|
+| [Demo web page](#erratum-annotator-demo-web-page) | Anyone; demos for staff and sponsors | under a second per notice | A user account in the workspace and `CAN USE` on app `mcp-erratum-note` |
+| [Chat with the agent](#erratum-annotator-chat-with-the-agent) | Asking in plain language | slower: the agent plans its tool calls | `CAN QUERY` on endpoint `mas-c341c0aa-endpoint` |
+| [Genie Code with the MCP tools](#erratum-annotator-genie-code-with-the-mcp-tools) | While you work in Databricks | a few seconds plus Genie Code's own time | `CAN USE` on app `mcp-erratum-note` |
+| [SQL function](#erratum-annotator-sql-function-lists) | Many saved SRU responses at once | about 20 s for all 48 saved responses | `EXECUTE` on `users.amanda_xu.process_sru_response`, `READ VOLUME` on `users.amanda_xu.erratum_files`, a SQL warehouse |
+
+What the result means:
+
+| Status on the page | Meaning | What to do |
+|---|---|---|
+| Ready for the catalog | One original article was found and the note was added | Copy the annotated title to the original record |
+| Needs review | The match to the original is uncertain (for example, several possible original records) | Check the original by hand before you copy anything |
+| No original article in Alma | The response holds only the correction notice (Sample1 rows 4 and 24) | Nothing to annotate yet; no title is shown |
+| Already annotated | The original title already has an `[Erratum: ...]` note | No change needed |
+
+The tools only read saved SRU responses in `/Volumes/users/amanda_xu/erratum_files/sru_responses`; they
+never change Alma or any file.
+
+## Erratum annotator: demo web page
+
+1. Open <https://mcp-erratum-note-7474654188777746.aws.databricksapps.com> in your browser and sign in with
+   your Databricks workspace account if asked. The first time, approve the app's request to know who you
+   are.
+2. Click a quick example: **Typical correction**, **Two corrections in one response**, **Title with a curly
+   apostrophe** or **No original article in Alma**. Or choose any of the 48 saved notices from the list and
+   click **Annotate this notice**.
+3. Read the result from top to bottom: the correction notice, the original article found, the erratum
+   note, and the annotated title with the note highlighted. **View record** opens the record's SRU XML in
+   Alma; **Copy annotated title** copies the title.
+4. Optional: **See all saved notices at once** annotates all 48 in one table (32 ready, 14 already
+   annotated, 2 with no original in Alma). **Paste your own SRU response** accepts any SRU MODS XML.
+
+If the page says you do not have access, ask the project owner for `CAN USE` on the app. If you see "Your
+sign-in may have expired", reload the page.
+
+## Erratum annotator: chat with the agent
+
+1. In Databricks, open **Agents** and select **agent-erratum-annotator**.
+2. Click **Endpoint**, then **Open in playground**.
+3. Ask, for example: `Annotate the original title for Sample1 row 43, correction MMS ID 9917175550407426.`
+   If the chat asks you to approve a tool call, approve it.
+
+The agent finds the saved SRU response, runs the same tools as the page, and returns the annotated title
+with the original and correction MMS IDs. In the evaluation it returned the exact title for 50 of 53
+notices; for the final check, use the page or the SQL function.
+
+## Erratum annotator: Genie Code with the MCP tools
+
+Add the Databricks App **mcp-erratum-note** as a custom MCP server, the same way as in
+[Part 2, option 2](#option-2-genie-code-with-the-mcp-tool), and enable its tools. Then ask, for example:
+`List the saved SRU files for Row41 and annotate the title.` Genie Code calls `list_sru_files` and
+`process_sru_file`.
+
+*Status: the tools are tested from a notebook (Inspector Gadget, 48 files, 0 errors); the Genie Code
+connection has not been tested with a librarian account yet.*
+
+## Erratum annotator: SQL function (lists)
+
+Run in the **SQL editor** or a notebook. This annotates every saved SRU response in the folder; the
+correction MMS ID is taken from the end of each file name:
+
+```sql
+SELECT regexp_extract(_metadata.file_name, '(Row[0-9]+)', 1) AS row_label,
+       r.annotated_title, r.erratum_note, r.original_id, r.correction_id, r.needs_review
+FROM (
+  SELECT _metadata,
+         users.amanda_xu.process_sru_response(
+           value, '', regexp_extract(_metadata.file_name, '([0-9]{16})\\.xml$', 1)) AS r
+  FROM read_files('/Volumes/users/amanda_xu/erratum_files/sru_responses/', format => 'text', wholeText => true)
+)
+ORDER BY CAST(regexp_extract(_metadata.file_name, 'Row([0-9]+)', 1) AS INT);
+```
+
+Pass `''` for an argument you do not know (the function has no default values). Click **Download** on the
+result to save it as CSV or Excel. A blank `original_id` means there is no original article in the
+response.
+
+# Part 2: SRU search URL from a correction title
 
 Paste an erratum/correction notice title (for example `Correction: Effects of drought stress on maize
 grain yield and quality`) and get the NAL Alma production SRU searchRetrieve URL for the original
