@@ -175,8 +175,9 @@ curl -X POST "https://<app-url>/invocations" \
 ```
 
 Apps require an OAuth token (`databricks auth token`); personal access tokens
-are not accepted. Each title can take 60-90 seconds because the Supervisor
-Agent does the lookup.
+are not accepted. The tool answers in about 4 seconds (SQL function first);
+this agent adds its own model calls on top (18-38 seconds per title in earlier
+traces, when the tool still went through the Supervisor Agent).
 
 ---
 

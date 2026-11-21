@@ -128,12 +128,14 @@ https://nal.alma.exlibrisgroup.com/view/sru/01NAL_INST?version=1.2&operation=sea
 | --- | --- |
 | Unity Catalog function `users.amanda_xu.build_sru_url(correction_title)` | Python UDF with the Part 1 rules. Deterministic; the source of truth for SRU URLs. Use it for bulk processing in SQL. |
 | Supervisor Agent `agent-sru-syntax` (endpoint `mas-c8629507-endpoint`) | Agent Bricks agent that calls the function as a tool. |
-| Databricks App `mcp-sru-syntax` | Custom MCP server with one read-only tool, `build_sru_search_url`, that calls the Supervisor Agent. The same app serves an OpenAI Agents SDK agent at `/invocations` that uses the tool. See [`deploy/databricks/README.md`](deploy/databricks/README.md). |
+| Databricks App `mcp-sru-syntax` | Custom MCP server with one read-only tool, `build_sru_search_url`, that runs the function on a SQL warehouse first (about 4 s) and asks the Supervisor Agent only if that call fails. The same app serves an OpenAI Agents SDK agent at `/invocations` that uses the tool. See [`deploy/databricks/README.md`](deploy/databricks/README.md). |
 | Agent skill `agent-sru-syntax` | Instructions and rules for coding agents working on this project ([`SKILL.md`](.agents/skills/agent-sru-syntax/SKILL.md)). |
 | Offline evaluation | MLflow GenAI evaluation over labelled notices ([`eval/databricks/`](eval/databricks/README.md)). |
 
-For bulk work, call the function from SQL. The agent takes about 20 seconds per title, so it suits
-interactive use rather than thousands of rows.
+For bulk work, call the function from SQL. The MCP tool and the browser page answer in about 4 seconds
+per title (live test 2026-11-21: 3.9-4.7 s), because they run the function first; the Supervisor Agent
+(about 20 seconds per title) is only the fallback. Either way they suit interactive use rather than
+thousands of rows.
 
 ### The MCP server (`src/sru_server/`)
 
@@ -142,12 +144,15 @@ is at its 100-app limit, so the MCP server and the agent share the `mcp-sru-synt
 
 | Endpoint | Code | What it does |
 | --- | --- | --- |
-| `/mcp` | `src/sru_server/app.py` | MCP server (streamable HTTP) with one tool, `build_sru_search_url`, that calls the agent-sru-syntax Supervisor Agent endpoint `mas-c8629507-endpoint` |
+| `/mcp` | `src/sru_server/app.py` | MCP server (streamable HTTP) with one tool, `build_sru_search_url`: runs `users.amanda_xu.build_sru_url` on a SQL warehouse first (about 4 s) and falls back to the agent-sru-syntax Supervisor Agent endpoint `mas-c8629507-endpoint` |
 | `POST /invocations`, `POST /responses` | `src/sru_server/agent.py` | OpenAI Agents SDK agent that uses the `/mcp` tool over localhost |
 | `GET /health` | `src/sru_server/app.py` | Liveness check |
 
 The tool implementation is in [`src/sru_server/tools/build_sru_url.py`](src/sru_server/tools/build_sru_url.py).
-It sends the correction title to the Supervisor Agent, returns the SRU URL, and handles errors with stable
+It runs the governed function `users.amanda_xu.build_sru_url` on the SQL warehouse in `SQL_WAREHOUSE_ID`
+first (title as a bound parameter; about 4 s). If the function finds no single original article, the tool
+says so at once. Only if the function call fails does it send the title to the Supervisor Agent. It returns
+the SRU URL and handles agent errors with stable
 categories (`invalid_input`, `timeout`, `unavailable`, `rate_limited`, `permission_denied`, `not_found`,
 `bad_request`, `bad_response`, `empty_reply`, `internal`) and an error ID instead of leaking upstream response
 bodies. Each message says what to do next. An empty reply, a busy agent (429) or a temporary outage
@@ -198,7 +203,8 @@ curl -X POST "https://mcp-sru-syntax-7474654188777746.aws.databricksapps.com/inv
 ```
 
 Apps require an OAuth token (`databricks auth token`); personal access tokens are not accepted.
-Each title can take 60-90 seconds because the Supervisor Agent does the lookup.
+The tool itself answers in about 4 seconds (SQL function first); this agent adds its own model calls on
+top. In earlier traces, when the tool still went through the Supervisor Agent, it took 18-38 seconds per title.
 
 ### App resources
 
