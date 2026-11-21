@@ -5,12 +5,16 @@ Source of truth: the Unity Catalog Python function `users.amanda_xu.build_sru_ur
 
 ## 1. URL format
 
+Template (one line, no spaces or line breaks; replace `<title>` with the percent-encoded title):
+
 ```
-https://nal.alma.exlibrisgroup.com/view/sru/01NAL_INST
-  ?version=1.2
-  &operation=searchRetrieve
-  &recordSchema=mods
-  &query=alma.title%3D%22<title>%22%20and%20alma.local_field_912%3D%22Article%22
+https://nal.alma.exlibrisgroup.com/view/sru/01NAL_INST?version=1.2&operation=searchRetrieve&recordSchema=mods&query=alma.title%3D%22<title>%22%20and%20alma.local_field_912%3D%22Article%22
+```
+
+Working example, for the title "The cardiovascular effects of shechita in cattle: a systematic review shows the fallacies that vertebral artery will preserve cerebral blood flow and false aneurysms occur in severed carotid arteries":
+
+```
+https://nal.alma.exlibrisgroup.com/view/sru/01NAL_INST?version=1.2&operation=searchRetrieve&recordSchema=mods&query=alma.title%3D%22The%20cardiovascular%20effects%20of%20shechita%20in%20cattle%3A%20a%20systematic%20review%20shows%20the%20fallacies%20that%20vertebral%20artery%20will%20preserve%20cerebral%20blood%20flow%20and%20false%20aneurysms%20occur%20in%20severed%20carotid%20arteries%22%20and%20alma.local_field_912%3D%22Article%22
 ```
 
 * Base is **production** (`nal.alma...`). The sandbox base `nal-psb.alma...` was replaced on 2026-11-18.
