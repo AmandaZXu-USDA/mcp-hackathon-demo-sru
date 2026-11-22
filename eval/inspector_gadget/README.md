@@ -9,7 +9,7 @@ described in [`../EVALUATION_FRAMEWORK.md`](../EVALUATION_FRAMEWORK.md#1-mcp-ser
 In a Databricks notebook (serverless), from a clone of this repository:
 
 ```python
-%pip install -q databricks-mcp databricks-sdk nest_asyncio
+%pip install -q databricks-mcp databricks-sdk nest_asyncio httpx2 "mcp==2.3.0"
 %restart_python
 ```
 
@@ -47,6 +47,10 @@ ig.run_all(gadget, repo, sru_rows, truth, tester="Inspector Gadget (service prin
 
 `sru-eval-0.csv` is at `sru-syntax-mcp/eval/databricks/datasets/` in AmandaZXu-USDA/NAL and at
 `eval/databricks/datasets/` in AmandaZXu-USDA/mcp-hackathon-demo-sru.
+
+The suite uses the MCP 2.x client (`mcp.Client` over `httpx2`), so it needs `mcp` 2.x and `httpx2`; with
+`mcp` 1.x it fails with `cannot import name 'Client' from 'mcp'`. Tested with `mcp==2.3.0` and `httpx2` 2.16.2
+(2026-11-22). The apps themselves still run `mcp` 1.x.
 
 Requirements: Inspector Gadget needs `CAN USE` on both apps. A run takes about 2 minutes and calls only
 read-only tools. Each run adds a folder `results/runs/<UTC start>_<app>_<run id>/` and rewrites

@@ -5,6 +5,21 @@ demo replay. Every file is hashed in [`INDEX.json`](INDEX.json). The writer refu
 it holds a credential. Identifiers that are not credentials are kept: app URLs, the Inspector Gadget service
 principal ID and MMS IDs are already public in this repository.
 
+## Runs on November 22, 2026 UTC, after MLflow tracing of tool calls (commit `7bd5058` of AmandaZXu-USDA/NAL)
+
+Both apps redeployed with every MCP tool call traced to MLflow: `mcp-sru-syntax` from the hackathon repo's
+`prod` bundle target (fork commit `2ca0356`), `mcp-erratum-note` as deployment `01f1e633c0941da69749ad75c6eae07a`.
+Same ground truth as below. The runs produced 46 `build_sru_search_url` traces in experiment `131270370350843` and
+65 tool traces in `mcp-erratum-note-traces` (`1982416510480315`); the 10 erratum ERROR traces are the error and
+security cases and record only the client message. The two slowest `mcp-sru-syntax` calls (13.9 s and 12.9 s in
+their traces) were spent in the SQL function, which answered both; the `0054Z` run below, before tracing, had a
+similar 12.67 s maximum.
+
+| Run | App | Result | By suite | Functional latency (new session per call) |
+| --- | --- | --- | --- | --- |
+| [`20261122T0533Z_mcp-sru-syntax_7e90195a`](runs/20261122T0533Z_mcp-sru-syntax_7e90195a/report.log) | `mcp-sru-syntax` | **55/55 pass** | smoke 1/1, contract 3/3, functional 41/41, errors 3/3, security 3/3, determinism 2/2, auth 2/2 | p50 4.30 s, p95 6.48 s, max 14.41 s (41 calls, 5 at a time) |
+| [`20261122T0534Z_mcp-erratum-note_58b25c5e`](runs/20261122T0534Z_mcp-erratum-note_58b25c5e/report.log) | `mcp-erratum-note` | **89/89 pass** | smoke 3/3, contract 21/21, functional 51/51, errors 7/7, security 3/3, determinism 2/2, auth 2/2 | p50 2.39 s, p95 2.71 s, max 2.74 s (51 calls, 8 at a time) |
+
 ## Runs on November 22, 2026 UTC, after the prod bundle deploy (commit `f9813a4` of AmandaZXu-USDA/mcp-hackathon-demo-sru)
 
 `mcp-sru-syntax` redeployed from the hackathon repo's `prod` bundle target (deployment

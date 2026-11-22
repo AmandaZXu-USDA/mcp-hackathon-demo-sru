@@ -114,6 +114,36 @@
       "path": "runs/20261122T0202Z_mcp-erratum-note_b9d44718/run.json",
       "bytes": 1002,
       "sha256": "48e1fb5c4643612e9891e2f0994746b3ceae95a95a74bc352ccb2c2de983e58d"
+    },
+    {
+      "path": "runs/20261122T0533Z_mcp-sru-syntax_7e90195a/cases.jsonl",
+      "bytes": 49119,
+      "sha256": "382b71c49cd2ee7b3c3bfc3ba42df8bbc07274f3f01a6f2772c4ca0231d41fbd"
+    },
+    {
+      "path": "runs/20261122T0533Z_mcp-sru-syntax_7e90195a/report.log",
+      "bytes": 4564,
+      "sha256": "8f435c5081bbb9b09eeb4800a8c3a470ab97e108c83a67d792dda7149298a66d"
+    },
+    {
+      "path": "runs/20261122T0533Z_mcp-sru-syntax_7e90195a/run.json",
+      "bytes": 971,
+      "sha256": "55ad929b6cbcef276af81a0a6cad7356033ccb64c169a779d453ebe3a96489d8"
+    },
+    {
+      "path": "runs/20261122T0534Z_mcp-erratum-note_58b25c5e/cases.jsonl",
+      "bytes": 80694,
+      "sha256": "17c9ebd40215f417f135a8fe0c649f3e3400ecc59c58c380a84a94ce086eed34"
+    },
+    {
+      "path": "runs/20261122T0534Z_mcp-erratum-note_58b25c5e/report.log",
+      "bytes": 6526,
+      "sha256": "e5c5d3f619e8ab342d67f0802fef274a5269714d3a2a75827d6afd99ccd4d193"
+    },
+    {
+      "path": "runs/20261122T0534Z_mcp-erratum-note_58b25c5e/run.json",
+      "bytes": 976,
+      "sha256": "383ffd2b13a18cca542d539743e4741bdbcb39a592e4e3e94bf950563c94bf25"
     }
   ]
 }
