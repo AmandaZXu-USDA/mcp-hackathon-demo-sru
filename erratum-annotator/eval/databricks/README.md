@@ -9,6 +9,42 @@ librarian-checked Sample1 spreadsheet.
 `/Volumes/users/amanda_xu/erratum_files/reports/agent-erratum-annotator-evaluation-report.pdf`
 (Catalog Explorer, then Download).
 
+## MLflow evaluation run with traces in Unity Catalog, November 22, 2026
+
+Same 53 rows, scorers and ground truth as the run below, now in a new experiment whose traces are stored in Unity
+Catalog: `/Users/amanda.xu@usda.gov/agent-erratum-annotator-eval-uc` (ID `1982416510487747`), trace tables
+`users.amanda_xu.agent_erratum_eval_otel_spans`, `_otel_logs` and `_otel_annotations` (written through SQL warehouse
+`50d2bd4ddf65e0f5`). The earlier experiment `1982416510445692` keeps its runs and traces in experiment storage; a new experiment
+keeps the two apart (a Unity Catalog trace location, once bound, cannot be changed).
+
+`predict` now asks the Supervisor Agent to return its own trace (`databricks_options.return_trace`) and attaches it
+with `mlflow.add_trace`, so each evaluation trace has the agent's `CHAT_MODEL` spans with token usage and `TOOL`
+spans for `process_sru_file`. The experiment's overview (tool calls, latency, token usage, quality) is computed from
+these spans. Smoke run `big-fish-133`, full run `fearless-grub-772` (`5e437af7cd8348af82afcac1bd3d3a24`), rescore run
+`amusing-wren-737`; per-row results in
+[`doc/agent-erratum-annotator-eval-results-20261122-uc.csv`](doc/agent-erratum-annotator-eval-results-20261122-uc.csv).
+The experiment also holds 1 probe trace from the setup check, with no run.
+
+| Scorer | Result |
+| --- | --- |
+| annotated_title_exact | 51/53 (rows 34 and 40, curly apostrophe limitation) |
+| erratum_note_exact | 53/53 |
+| original_mms_id_match | 46/46 |
+| called_tool | 48/48 |
+| tool_annotated_title_exact | 53/53 |
+| correctness (LLM judge) | 52/53 (row 4: the judge wanted the reply to say it gives no search_title fallback; the reply is right) |
+| no_fabrication (LLM judge) | 45/53 (rows 8, 39, 42, 43, 44, 51, 52, 53: judge errors, mostly expecting the original MMS ID to equal the correction's) |
+
+Trace statistics for the 53 full-run traces (all `OK`, 0 endpoint errors, 0 truncated replies):
+
+| Metric | Value |
+| --- | --- |
+| Latency per request | p50 17.2 s, p90 18.7 s, p95 19.6 s, p99 20.6 s, max 20.7 s (the run below, without the returned trace: median 11.3 s) |
+| Tool calls | 48 `process_sru_file` calls, one per row with an SRU file, 0 errors; p50 643 ms, p95 945 ms, max 1125 ms. The 5 rows without a file call no tool |
+| LLM calls | 202 (about 3.8 per request); p50 3.4 s, p95 8.3 s |
+| Tokens per request | input median 13,467, mean 12,826; output median 294, mean 282 |
+| Tokens, whole run | 679,830 input + 14,981 output = 694,811 |
+
 ## MLflow evaluation run, November 22, 2026 (after all Sample 4 files)
 
 Re-run of `Erratum Annotator Agent Evaluation` on all 53 Sample 1 rows after the Sample 4 work, with the updated
