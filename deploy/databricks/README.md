@@ -157,6 +157,37 @@ databricks bundle deploy -t dev --var model_service=models.ai.gpt-5-6-sol
 
 The first deploy builds the container and can take a few minutes.
 
+### Production target (`prod`)
+
+`-t dev` (the default) is development mode: jobs get a `[dev <user>]` prefix and their
+schedules are paused. `-t prod` is production mode:
+
+* one fixed copy at `/Workspace/Users/amanda.xu@usda.gov/.bundle/sru_syntax/prod`;
+* deploys only from the `main` branch;
+* runs as amanda.xu@usda.gov, who has CAN_MANAGE on every resource;
+* real resource names, with the `check_live` job's schedule active (07:00 US Eastern).
+
+The prod target has not been deployed. Two resources it defines already exist and are
+managed elsewhere, so a first `bundle deploy -t prod` would try to create duplicates:
+
+| Bundle resource | Existing resource | Managed now by |
+| --- | --- | --- |
+| `sru_syntax_mcp` (app) | `mcp-sru-syntax` | the `sru_syntax` bundle in AmandaZXu-USDA/NAL (`sru-syntax-mcp/`) |
+| `check_live` (job) | "NAL MCP apps daily live check", job 531572408825586 | created in the UI; runs `scripts/check_live.py` from the NAL clone |
+
+To make this repo's prod target the owner, bind both, then deploy:
+
+```bash
+databricks bundle validate --strict -t prod
+databricks bundle deployment bind sru_syntax_mcp mcp-sru-syntax -t prod
+databricks bundle deployment bind check_live 531572408825586 -t prod
+databricks bundle deploy -t prod
+```
+
+After that, the app source and the job's script come from this repo's `main`, not from
+NAL. Deploy from NAL's bundle afterwards only if you unbind the app here first, or the
+two bundles will overwrite each other's deployments.
+
 ### Smoke-test
 
 ```bash
@@ -242,6 +273,9 @@ databricks bundle destroy -t dev
 | `model_service` | `models.ai.gpt-5-6-luna` | Unity Gateway model service |
 | `trace_experiment_id` | `131270370350843` | Unity Catalog-backed MLflow experiment |
 | `trace_table_prefix` | `users.amanda_xu.sru_syntax_agent` | Prefix for UC trace tables |
+| `warehouse_id` | `50d2bd4ddf65e0f5` | SQL warehouse for `build_sru_url` and the `check_live` job |
+| `sru_function` | `users.amanda_xu.build_sru_url` | Governed Unity Catalog function with the title rules |
+| `check_live_secret` | `models.ai.inspector-gadget` | UC secret with the Inspector Gadget OAuth credentials for the `check_live` job |
 
 ---
 

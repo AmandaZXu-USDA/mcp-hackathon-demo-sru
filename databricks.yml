@@ -95,3 +95,20 @@ targets:
   dev:
     mode: development
     default: true
+
+  # Production: one fixed copy, deployed only from main. Resources keep their real names
+  # and the check_live schedule is active. Before the first prod deploy, bind the
+  # resources that already exist (the mcp-sru-syntax app, the daily job) so the deploy
+  # updates them instead of trying to create duplicates; see deploy/databricks/README.md.
+  prod:
+    mode: production
+    git:
+      branch: main
+    workspace:
+      host: https://dbc-aae0ba16-8727.cloud.databricks.com
+      root_path: /Workspace/Users/amanda.xu@usda.gov/.bundle/${bundle.name}/${bundle.target}
+    run_as:
+      user_name: amanda.xu@usda.gov
+    permissions:
+      - user_name: amanda.xu@usda.gov
+        level: CAN_MANAGE
