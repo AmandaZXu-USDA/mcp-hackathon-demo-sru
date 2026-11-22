@@ -252,7 +252,9 @@ def process_sru_response(xml: str, search_title: str = "", correction_id: str = 
     """Full pipeline: parse, match correction -> original, build annotated title.
 
     search_title only ranks the original records in the response. When the response has
-    no original record, annotated_title is blank (""): there is no record to annotate.
+    no original record, annotated_title is blank (""): there is no record to annotate. It is also
+    blank when the response has no correction record (e.g. only the original is in Alma), since
+    there is no erratum note to add.
     When a response holds several correction records, pass correction_id (the
     row's erratum MMS ID) to pick the right one; otherwise the first is used.
     When it holds two or more corrections of one original article, all their
@@ -269,7 +271,7 @@ def process_sru_response(xml: str, search_title: str = "", correction_id: str = 
     notes = [n for n in (extract_erratum_note(c) for c in used) if n]
     note = " ".join(notes) or None
     already = "[Erratum:" in (base or "")
-    annotated = (enhance_title(base, note) if note else base) if original else ""
+    annotated = (enhance_title(base, note) if note else base) if original and correction else ""
     return {
         "num_records": len(records),
         "num_corrections": len(corrections),

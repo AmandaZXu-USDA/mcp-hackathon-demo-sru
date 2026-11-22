@@ -245,6 +245,12 @@ def _with_status(result: dict, correction_id: str) -> dict:
         status = "no_records"
     elif not result.get("num_corrections"):
         status = "no_correction"
+        missing = (f"Correction notice {correction_id} is not in this response (not in Alma)." if correction_id
+                   else "This response has no correction record.")
+        found = (f" The original article ({result['original_id']}) is here, but" if result.get("original_id")
+                 else " So")
+        warnings.append(f"{missing}{found} there is no erratum note to add, so annotated_title is blank. "
+                        "Manual review: find the correction notice and add the note by hand.")
     elif result.get("already_annotated"):
         status = "already_annotated"
     elif not result.get("erratum_note"):
@@ -336,7 +342,8 @@ def process_sru_response(xml: str, search_title: str = "", correction_id: str = 
     """Full pipeline: parse SRU XML, match correction to original, annotate the title.
 
     search_title only ranks the original records in the response. When the response has no original
-    record (status no_original), annotated_title is blank (""): there is nothing to annotate.
+    record (status no_original) or no correction record (status no_correction, e.g. only the original is in
+    Alma), annotated_title is blank (""): there is nothing to annotate, or no note to add.
     Pass correction_id (the 16-digit erratum MMS ID) when a response may contain several
     correction records, so the right one supplies the note.
     When the response holds two or more corrections of one original article, all their notes go into
@@ -468,14 +475,13 @@ def _status(result: dict) -> str:
 def _explain(xml: str, search_title: str, correction_id: str) -> dict:
     """Annotate, and add the correction and original records so the page can show before and after."""
     started = time.perf_counter()
-    result = _process(xml, search_title, correction_id)
+    result = _with_status(_process(xml, search_title, correction_id), correction_id)
     elapsed_ms = round((time.perf_counter() - started) * 1000, 1)
     recs = {r.record_id: r for r in _parse(xml)}
     corr = recs.get(str(result.get("correction_id") or ""))
     orig = recs.get(str(result.get("original_id") or ""))
     return {
         **result,
-        "status": _status(result),
         "elapsed_ms": elapsed_ms,
         "correction_title": corr.title if corr else "",
         "original_title": orig.title if orig else "",
@@ -626,6 +632,7 @@ DEMO_PAGE = """<!doctype html>
   .badge { display: inline-block; padding: .15rem .6rem; border-radius: 999px; font-weight: 600; font-size: .9rem; }
   .b-ready { background: #e4f3e1; color: #145a10; } .b-needs_review { background: #fff1d6; color: #7a4b00; }
   .b-no_original { background: #fde4e4; color: #8a1414; } .b-already_annotated { background: #e3eef8; color: #0b4a75; }
+  .b-no_correction, .b-no_note, .b-no_records { background: #fff1d6; color: #7a4b00; }
   .error { color: #b50909; font-weight: 600; }
   details { margin: .75rem 0; } summary { cursor: pointer; font-weight: 600; }
   table { border-collapse: collapse; width: 100%; font-size: .88rem; background: #fff; }
@@ -704,7 +711,11 @@ DEMO_PAGE = """<!doctype html>
 (function () {
   var RECORD_URL = __RECORD_URL__;
   var LABELS = { ready: "Ready for the catalog", needs_review: "Needs review: original match is uncertain",
-    no_original: "No original article in Alma: correction notice only", already_annotated: "Already annotated: no change needed" };
+    no_original: "No original article in Alma: correction notice only", already_annotated: "Already annotated: no change needed",
+    no_correction: "No correction notice in Alma: manual review", no_note: "No erratum note: manual review",
+    no_records: "No records: manual review" };
+  var NONE = { no_original: "None: there is no original article record to annotate.",
+    no_correction: "None: the correction notice is not in Alma, so there is no erratum note to add. Review manually." };
   var pick = document.getElementById("pick"), statusEl = document.getElementById("status"), out = document.getElementById("result");
   var byRow = {};
   function el(tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
@@ -739,8 +750,8 @@ DEMO_PAGE = """<!doctype html>
     steps.append(step("Original article found", d.original_id ? d.original_title : "Not in this SRU response",
       d.original_id ? link(d.original_id) : null));
     steps.append(step("Erratum note", d.erratum_note));
-    if (d.status === "no_original") {
-      steps.append(step("Annotated title", "None: there is no original article record to annotate.", null, "final"));
+    if (!d.annotated_title) {
+      steps.append(step("Annotated title", NONE[d.status] || "None: review manually.", null, "final"));
     } else {
       var actions = el("span"); var c = el("button", "secondary", "Copy annotated title"); c.type = "button";
       c.addEventListener("click", function () { navigator.clipboard.writeText(d.annotated_title).then(function () { c.textContent = "Copied"; }); });
@@ -748,6 +759,7 @@ DEMO_PAGE = """<!doctype html>
       steps.append(step("Annotated title for the original record", annotated(d.annotated_title, d.erratum_note), actions, "final"));
     }
     card.append(steps);
+    (d.warnings || []).forEach(function (w) { card.append(el("p", "meta", "Note: " + w)); });
     card.append(el("p", "meta", "Done in " + d.elapsed_ms + " ms by the same code as the MCP server and the SQL function. Records in this response: "
       + d.num_records + " (" + d.num_corrections + " correction" + (d.num_corrections === 1 ? "" : "s") + ")."));
     out.append(card);
@@ -785,7 +797,7 @@ DEMO_PAGE = """<!doctype html>
       d.rows.forEach(function (r) {
         var tr = el("tr"); tr.append(el("td", null, r.label || String(r.row)));
         var st = el("td"); st.append(el("span", "badge b-" + r.status, (LABELS[r.status] || r.status).split(":")[0])); tr.append(st);
-        tr.append(el("td", null, r.correction_title)); tr.append(el("td", null, r.status === "no_original" ? "(none)" : r.annotated_title)); tbl.append(tr);
+        tr.append(el("td", null, r.correction_title)); tr.append(el("td", null, r.annotated_title || "(none)")); tbl.append(tr);
       });
       box.replaceChildren(el("p", null, summary), tbl);
     } catch (e) { box.replaceChildren(el("p", "error", e.message)); }
