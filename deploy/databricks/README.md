@@ -184,6 +184,12 @@ databricks bundle deployment bind check_live 531572408825586 -t prod
 databricks bundle deploy -t prod
 ```
 
+Status (2026-11-22): both are bound to `prod`; `prod` has not been deployed.
+`databricks bundle plan -t prod` shows what the first deploy would do: update the app and
+the job, add CAN_MANAGE permissions on both, and create the experiment
+`/Users/amanda.xu@usda.gov/sru-syntax-agent-experiment` (it does not exist yet; the app
+writes traces to the Unity Catalog-backed experiment `131270370350843` either way).
+
 After that, the app source and the job's script come from this repo's `main`, not from
 NAL. Deploy from NAL's bundle afterwards only if you unbind the app here first, or the
 two bundles will overwrite each other's deployments.
