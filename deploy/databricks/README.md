@@ -201,9 +201,11 @@ Checked after the deploy: Inspector Gadget suite 55/55 (`mcp-sru-syntax`) and 89
 
 The app and job now come from this repo's `main`. The prod target overrides the app's
 `source_code_path` with `./sru-syntax-mcp/mcp_server`, because `./mcp_server` has only
-`app.yaml` and `requirements.txt` and cannot run alone. The app is still bound to NAL's
-bundle (`dev`) as well: deploy it from one bundle only, or unbind it from the other
-first, or the two will overwrite each other's deployments.
+`app.yaml` and `requirements.txt` and cannot run alone. The app was then unbound from
+NAL's bundle (`dev`), so this `prod` target is the only bundle that manages it. To ship
+a change: edit in AmandaZXu-USDA/NAL, copy it here with `scripts/sync_to_fork.py`, commit
+to `main`, then `bundle plan -t prod` (must say `update`, not `create`, for the app),
+`bundle deploy -t prod` and `bundle run sru_syntax_mcp -t prod`.
 
 ### Smoke-test
 

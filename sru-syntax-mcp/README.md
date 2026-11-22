@@ -1,7 +1,9 @@
 # sru-syntax-mcp (deployed source)
 
 Copy of the source the live `mcp-sru-syntax` app is deployed from (AmandaZXu-USDA/NAL, `sru-syntax-mcp/`),
-kept byte-identical for the code deposit. The live app is deployed from the NAL repo; change code there first.
+kept byte-identical for the code deposit. Change code in the NAL repo first and copy it here with
+`scripts/sync_to_fork.py`. Since 2026-11-22 the live app is deployed from this folder by this repo's `prod`
+bundle target (see [`../deploy/databricks/README.md`](../deploy/databricks/README.md#production-target-prod)).
 
 | Path | What it is |
 | --- | --- |

@@ -395,20 +395,21 @@ full deployment instructions.
 
 ### Deploy
 
-Run from the repo root (the bundle root):
+The live app and the daily `check_live` job are deployed from this repo's `prod` target,
+the only bundle that manages them (the app was unbound from the NAL repo's bundle on
+2026-11-22). Run from the repo root (the bundle root), on `main`:
 
 ```bash
-databricks bundle validate --strict -t dev
-
-# Only if this bundle does not track the app yet (e.g. a different user or a fresh bundle state):
-# the mcp-sru-syntax app already exists, so bind it instead of creating it
-databricks bundle deployment bind sru_syntax_mcp mcp-sru-syntax -t dev
-
-databricks bundle deploy -t dev
-databricks bundle run sru_syntax_mcp -t dev
+databricks bundle validate --strict -t prod
+databricks bundle plan -t prod        # must say "update apps.sru_syntax_mcp", never "create"
+databricks bundle deploy -t prod
+databricks bundle run sru_syntax_mcp -t prod   # deploys the app code
 ```
 
-Override any variable with `--var`, for example `--var model_service=models.ai.gpt-5-6-sol`.
+Do not `bundle deploy -t dev` here for the live app: the `dev` target does not track it
+and would try to create a second `mcp-sru-syntax` app. Override any variable with
+`--var`, for example `--var model_service=models.ai.gpt-5-6-sol`. Details:
+[`deploy/databricks/README.md`](deploy/databricks/README.md#production-target-prod).
 
 ### Test the agent
 
@@ -498,14 +499,14 @@ The two projects deploy independently: neither deploy touches the other app, age
 
 | | `mcp-sru-syntax` | `mcp-erratum-note` |
 | --- | --- | --- |
-| How | Bundle `sru_syntax` from the repo root (see [Deploy](#deploy)) | `databricks apps deploy mcp-erratum-note --source-code-path <repo>/erratum-annotator/mcp_server` |
+| How | Bundle `sru_syntax`, target `prod`, from the repo root (see [Deploy](#deploy)) | `databricks apps deploy mcp-erratum-note --source-code-path <repo>/erratum-annotator/mcp_server` |
 | App service principal gets | `CAN_QUERY` on `mas-c8629507-endpoint`, `CAN_USE` on the SQL warehouse, `EXECUTE` on `build_sru_url` and on the model service, `CAN_EDIT` on the experiment, `MODIFY` on the trace tables | `READ VOLUME` on `users.amanda_xu.erratum_files` only |
 | Check after deploy | [`eval/databricks/inspector_gadget_mcp_test.py`](eval/databricks/inspector_gadget_mcp_test.py) | `erratum-annotator/eval/databricks/mcp-erratum-note Inspector Gadget Test` (expect 0 errors, 46/48, 48/48) |
 
 * **Update in place, never recreate.** The workspace is at its 100-app limit and both apps already exist. Run
-  `databricks bundle validate` first; if the bundle state does not track `mcp-sru-syntax`, bind it
-  (`bundle deployment bind`) instead of creating it. Never rename the bundle resource key `sru_syntax_mcp`
-  without unbinding and rebinding, or the next deploy would delete the app.
+  `databricks bundle plan -t prod` first: it must say `update apps.sru_syntax_mcp`, never `create`. Only this
+  repo's `prod` target manages the app; do not bind it to another bundle or target. Never rename the bundle
+  resource key `sru_syntax_mcp` without unbinding and rebinding, or the next deploy would delete the app.
 * **Callers need CAN USE.** Both apps are OAuth-gated by Databricks Apps. The test service principal
   (Inspector Gadget) has CAN USE on both; its credentials stay in the Unity Catalog secret
   `models.ai/inspector-gadget`, never in Git.
