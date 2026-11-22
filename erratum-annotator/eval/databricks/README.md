@@ -4,7 +4,7 @@ Offline MLflow evaluation of the `agent-erratum-annotator` Supervisor Agent (end
 tools: MCP app `mcp-erratum-note` and UC function `users.amanda_xu.process_sru_response`) on the 53-row,
 librarian-checked Sample1 spreadsheet.
 
-**Report (PDF, November 21, 2026 run, with the new tool-title scorer and a comparison to November 20):** [`doc/agent-erratum-annotator-evaluation-report.pdf`](doc/agent-erratum-annotator-evaluation-report.pdf)
+**Report (PDF, November 22, 2026 run with traces in Unity Catalog: tool calls, latency percentiles, token usage, and a comparison to November 21 and 22):** [`doc/agent-erratum-annotator-evaluation-report.pdf`](doc/agent-erratum-annotator-evaluation-report.pdf)
 (on GitHub, use the download icon at the top right of the preview). The same file is in the Databricks volume at
 `/Volumes/users/amanda_xu/erratum_files/reports/agent-erratum-annotator-evaluation-report.pdf`
 (Catalog Explorer, then Download).
@@ -102,7 +102,7 @@ Full run `capricious-hound-768` (`cfbf93c778a74563915c1a52878dae9b`), smoke run 
 | no_fabrication (LLM judge) | 42/53 | 42/53 |
 
 Only rows 4, 9, 24 and 39 say `no original in Alma`, the four rows with that ground-truth status. The PDF report
-still describes the earlier November 21 run.
+describes the run with traces in Unity Catalog (section above).
 
 ## MLflow evaluation run, November 21, 2026
 
