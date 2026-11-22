@@ -361,13 +361,19 @@ def _sample_number(name: str) -> int:
 
 
 def _load_examples() -> list:
-    """Read every saved SRU response once and keep it in memory (about 50 small files)."""
+    """Saved SRU responses, kept in memory (about 50 small files). The folder is listed on every call, so a newly
+    saved response appears without restarting the app; only files not read before are downloaded."""
     with _cache_lock:
-        if _cache["examples"] is not None:
-            return _cache["examples"]
         names = sorted(_list_xml_names(), key=lambda n: (_sample_number(n), _row_number(n), n))
+        if _cache["examples"] is not None and _cache.get("names") == names:
+            return _cache["examples"]
+        old = {e["file_name"]: e for e in (_cache["examples"] or [])}
+        _cache["xml"] = {n: x for n, x in _cache["xml"].items() if n in names}
         examples = []
         for name in names:
+            if name in old and name in _cache["xml"]:
+                examples.append(old[name])
+                continue
             xml = _read_volume_file(_safe_path(name))
             _cache["xml"][name] = xml
             m = re.search(r"(\d{16})\.xml$", name, re.I)
@@ -378,7 +384,7 @@ def _load_examples() -> list:
             sample, row = _sample_number(name), _row_number(name)
             examples.append({"file_name": name, "sample": sample, "row": row, "label": f"Sample {sample}, row {row}",
                              "correction_id": cid, "correction_title": corr.title if corr else ""})
-        _cache["examples"] = examples
+        _cache["examples"], _cache["names"] = examples, names
         return examples
 
 

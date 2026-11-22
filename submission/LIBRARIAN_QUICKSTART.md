@@ -54,7 +54,7 @@ never change Alma or any file.
    are.
 2. Click a quick example: **Typical correction**, **Two corrections in one response**, **Title with a curly
    apostrophe**, **Correction title in curly double quotes** or **No original article in Alma**. Or choose
-   any of the 49 saved notices from the list and
+   any of the 50 saved notices from the list and
    click **Annotate this notice**.
 3. Read the result from top to bottom: the correction notice, the original article found, the erratum
    note, and the annotated title with the note highlighted. **View record** opens the record's SRU XML in
@@ -67,7 +67,7 @@ sign-in may have expired", reload the page.
 
 **No Databricks account?** Open the offline copy instead: download
 [`erratum-annotator-demo-offline.html`](erratum-annotator-demo-offline.html) (in this folder, and in
-`erratum-annotator/demo/`) and open it in your browser. It has the same quick examples and all 49 saved
+`erratum-annotator/demo/`) and open it in your browser. It has the same quick examples and all 50 saved
 notices with their results, needs no sign-in or network, but cannot annotate pasted XML.
 
 ## Erratum annotator: chat with the agent

@@ -68,3 +68,33 @@ def test_other_sample_files_get_their_own_label(monkeypatch):
     assert [(e["sample"], e["row"], e["label"]) for e in ex] == [(1, 3, "Sample 1, row 3"), (2, 3, "Sample 2, row 3")]
     r = call("process_sru_file", file_name=FIXTURE)
     assert r["correction_id_requested"] == CID and r["original_id"] == OID
+
+
+ROW14 = (HERE / "fixtures" / "Sample2-Row14-9917224359507426.xml").read_text(encoding="utf-8")
+
+
+def test_sample2_row14_curly_quotes_and_unicode_hyphen():
+    # Correction to “Natural haplotype variation in OsGSK3 fine‐tunes ...”; the title uses U+2010 hyphens.
+    r = call("process_sru_response", xml=ROW14, correction_id="9917224359507426")
+    assert (r["status"], r["original_id"]) == ("ready", "9917193984707426")
+    assert r["erratum_note"] == "[Erratum: Sept. 2026, v. 127, no. 6, e71126, 10.1111/tpj.71126]"
+    assert r["annotated_title"] == ("Natural haplotype variation in OsGSK3 fine\u2010tunes grain length via phosphorylating "
+                                    "and stabilizing OsRanBP1 in rice " + r["erratum_note"])
+
+
+def test_new_saved_file_appears_without_restart(monkeypatch):
+    names = {FIXTURE: XML}
+
+    class Files:
+        def list_directory_contents(self, folder):
+            return [SimpleNamespace(name=n, is_directory=False) for n in names]
+
+        def download(self, path):
+            import io
+            return SimpleNamespace(contents=io.BytesIO(names[path.rsplit("/", 1)[-1]].encode()))
+
+    monkeypatch.setattr(app, "_client", lambda: SimpleNamespace(files=Files()))
+    monkeypatch.setitem(app._cache, "examples", None)
+    assert len(app._load_examples()) == 1
+    names["Sample2-Row14-9917224359507426.xml"] = ROW14
+    assert [e["row"] for e in app._load_examples()] == [3, 14]

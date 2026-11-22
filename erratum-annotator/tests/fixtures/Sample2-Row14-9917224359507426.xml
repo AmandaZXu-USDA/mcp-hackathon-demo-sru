@@ -1,0 +1,221 @@
+<searchRetrieveResponse xmlns="http://www.loc.gov/zing/srw/">
+<version>1.2</version>
+<numberOfRecords>2</numberOfRecords>
+<records>
+<record>
+<recordSchema>mods</recordSchema>
+<recordPacking>xml</recordPacking>
+<recordData>
+<mods xmlns="http://www.loc.gov/mods/v3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="3.5" xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-5.xsd">
+<titleInfo>
+<title>Correction to “Natural haplotype variation in OsGSK3 fine‐tunes grain length via phosphorylating and stabilizing OsRanBP1 in rice”</title>
+</titleInfo>
+<typeOfResource>text</typeOfResource>
+<originInfo>
+<place>
+<placeTerm authority="marccountry" type="code">xx#</placeTerm>
+</place>
+<dateIssued encoding="marc">2026</dateIssued>
+<issuance>serial</issuance>
+</originInfo>
+<language>
+<languageTerm authority="iso639-2b" type="code">eng</languageTerm>
+</language>
+<physicalDescription>
+<extent>e71126</extent>
+</physicalDescription>
+<note>ERRATUM</note>
+<location>
+<url displayLabel="Available from publisher's website" usage="primary display">https://doi.org/10.1111/tpj.71126</url>
+</location>
+<relatedItem type="host">
+<titleInfo>
+<title>The Plant Journal</title>
+</titleInfo>
+<originInfo>
+<publisher>John Wiley & Sons, Ltd</publisher>
+</originInfo>
+<identifier>10.1111/(ISSN)1365-313X</identifier>
+<identifier type="issn">0960-7412</identifier>
+<identifier type="local">Journal:jnl47643</identifier>
+<part>
+<text>2026 Sept., v. 127, no. 6, e71126</text>
+</part>
+</relatedItem>
+<identifier type="doi">10.1111/tpj.71126</identifier>
+<recordInfo>
+<descriptionStandard>aacr</descriptionStandard>
+<recordContentSource authority="marcorg">AGL</recordContentSource>
+<recordCreationDate encoding="marc">261017</recordCreationDate>
+<recordIdentifier>9917224359507426</recordIdentifier>
+<recordOrigin>Converted from MARCXML to MODS version 3.5 using MARC21slim2MODS3-5.xsl (Revision 1.112 2018/06/21)</recordOrigin>
+<languageOfCataloging>
+<languageTerm authority="iso639-2b" type="code">eng</languageTerm>
+</languageOfCataloging>
+</recordInfo>
+</mods>
+</recordData>
+<recordIdentifier>9917224359507426</recordIdentifier>
+<recordPosition>1</recordPosition>
+</record>
+<record>
+<recordSchema>mods</recordSchema>
+<recordPacking>xml</recordPacking>
+<recordData>
+<mods xmlns="http://www.loc.gov/mods/v3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="3.5" xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-5.xsd">
+<titleInfo>
+<title>Natural haplotype variation in OsGSK3 fine‐tunes grain length via phosphorylating and stabilizing OsRanBP1 in rice</title>
+</titleInfo>
+<name type="personal" usage="primary">
+<namePart>Wei, Xianglei</namePart>
+<affiliation>State Key Laboratory of Crop Genetics & Germplasm Enhancement and Utilization, College of Agriculture, Nanjing Agricultural University, Nanjing, 210095, China ``Jiangsu Provincial Engineering Research Center of Seed Industry Science and Technology, Nanjing, 210095, China</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>Du, Huaying</namePart>
+<affiliation>State Key Laboratory of Crop Genetics & Germplasm Enhancement and Utilization, College of Agriculture, Nanjing Agricultural University, Nanjing, 210095, China ``Jiangsu Provincial Engineering Research Center of Seed Industry Science and Technology, Nanjing, 210095, China ``State Key Laboratory of Agricultural and Forestry Biosecurity, Key Laboratory of Ministry of Education for Genetics, Breeding and Multiple Utilization of Crops, College of Agriculture, Fujian Agriculture and Forestry University, Fuzhou, 350002, China</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>Yin, Jing</namePart>
+<affiliation>State Key Laboratory of Crop Genetics & Germplasm Enhancement and Utilization, College of Agriculture, Nanjing Agricultural University, Nanjing, 210095, China ``Jiangsu Provincial Engineering Research Center of Seed Industry Science and Technology, Nanjing, 210095, China</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>Zhan, Xiangyun</namePart>
+<affiliation>State Key Laboratory of Crop Genetics & Germplasm Enhancement and Utilization, College of Agriculture, Nanjing Agricultural University, Nanjing, 210095, China ``Jiangsu Provincial Engineering Research Center of Seed Industry Science and Technology, Nanjing, 210095, China</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>Zhang, Chenhui</namePart>
+<affiliation>State Key Laboratory of Crop Genetics & Germplasm Enhancement and Utilization, College of Agriculture, Nanjing Agricultural University, Nanjing, 210095, China ``Jiangsu Provincial Engineering Research Center of Seed Industry Science and Technology, Nanjing, 210095, China</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>Zhang, Jiaqi</namePart>
+<affiliation>State Key Laboratory of Crop Genetics & Germplasm Enhancement and Utilization, College of Agriculture, Nanjing Agricultural University, Nanjing, 210095, China ``Jiangsu Provincial Engineering Research Center of Seed Industry Science and Technology, Nanjing, 210095, China</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>Zhang, Sijia</namePart>
+<affiliation>State Key Laboratory of Crop Genetics & Germplasm Enhancement and Utilization, College of Agriculture, Nanjing Agricultural University, Nanjing, 210095, China ``Jiangsu Provincial Engineering Research Center of Seed Industry Science and Technology, Nanjing, 210095, China</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>Li, Jianbo</namePart>
+<affiliation>State Key Laboratory of Crop Genetics & Germplasm Enhancement and Utilization, College of Agriculture, Nanjing Agricultural University, Nanjing, 210095, China ``Jiangsu Provincial Engineering Research Center of Seed Industry Science and Technology, Nanjing, 210095, China</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>Mu, Rong</namePart>
+<affiliation>State Key Laboratory of Crop Genetics & Germplasm Enhancement and Utilization, College of Agriculture, Nanjing Agricultural University, Nanjing, 210095, China ``Jiangsu Provincial Engineering Research Center of Seed Industry Science and Technology, Nanjing, 210095, China</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>Gao, Xiuying</namePart>
+<affiliation>State Key Laboratory of Crop Genetics & Germplasm Enhancement and Utilization, College of Agriculture, Nanjing Agricultural University, Nanjing, 210095, China ``Jiangsu Provincial Engineering Research Center of Seed Industry Science and Technology, Nanjing, 210095, China</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>Huang, Ji</namePart>
+<affiliation>State Key Laboratory of Crop Genetics & Germplasm Enhancement and Utilization, College of Agriculture, Nanjing Agricultural University, Nanjing, 210095, China ``Jiangsu Provincial Engineering Research Center of Seed Industry Science and Technology, Nanjing, 210095, China</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<typeOfResource>text</typeOfResource>
+<originInfo>
+<place>
+<placeTerm authority="marccountry" type="code">xx#</placeTerm>
+</place>
+<dateIssued encoding="marc">2026</dateIssued>
+<issuance>serial</issuance>
+</originInfo>
+<language>
+<languageTerm authority="iso639-2b" type="code">eng</languageTerm>
+</language>
+<physicalDescription>
+<extent>e71079</extent>
+</physicalDescription>
+<abstract type="Summary">Rice (Oryza sativa L.) is a staple cereal crop whose grain size substantially influences yield. The kinase OsGSK3, a known negative regulator of brassinosteroid (BR) signaling, was previously shown to modulate grain length. Here, we characterize the functional divergence between its two major haplotypes, OsGSK3ᴴᵃᵖ³ and OsGSK3ᴴᵃᵖ⁵. A single‐nucleotide polymorphism in OsGSK3ᴴᵃᵖ⁵ extends the OsGSK3 open reading frame, adding 13 C‐terminal amino acids and correlating with longer grains, whereas OsGSK3ᴴᵃᵖ³ is associated with shorter grains. Consistently, overexpression of OsGSK3ᴴᵃᵖ³ reduced grain size, while overexpression of OsGSK3ᴴᵃᵖ⁵ or knockout of OsGSK3ᴴᵃᵖ³ increased it. Both haplotypes physically interact with OsRanBP1, a positive regulator of grain length. Biochemical analyses demonstrated that OsGSK3ᴴᵃᵖ³ possesses stronger kinase activity than OsGSK3ᴴᵃᵖ⁵ and more efficiently phosphorylates OsRanBP1, triggering its degradation and thereby suppressing grain length. Conversely, the weaker kinase activity of OsGSK3ᴴᵃᵖ⁵ results in attenuated OsRanBP1 phosphorylation and accumulation, promoting longer grains. Genetic and physiological evidence further demonstrates that OsGSK3 regulates rice grain development within the BR signaling pathway in an OsRanBP1‐dependent manner. Our findings reveal that natural variation in OsGSK3 differentially fine‐tunes grain size by modulating OsRanBP1 protein stability via phosphorylation, thereby providing a molecular mechanism underlying grain size diversity in rice.</abstract>
+<note>JOURNAL ARTICLE</note>
+<subject authority="nal">
+<topic>haplotypes</topic>
+</subject>
+<subject authority="nal">
+<topic>rice</topic>
+</subject>
+<subject authority="nal">
+<topic>Oryza sativa</topic>
+</subject>
+<subject authority="nal">
+<topic>brassinosteroids</topic>
+</subject>
+<subject authority="nal">
+<topic>single nucleotide polymorphism</topic>
+</subject>
+<subject authority="nal">
+<topic>phosphorylation</topic>
+</subject>
+<subject authority="nal">
+<topic>seed development</topic>
+</subject>
+<location>
+<url displayLabel="Available from publisher's website" usage="primary display">https://doi.org/10.1111/tpj.71079</url>
+</location>
+<relatedItem type="host">
+<titleInfo>
+<title>The Plant Journal</title>
+</titleInfo>
+<originInfo>
+<publisher>John Wiley & Sons, Ltd</publisher>
+</originInfo>
+<identifier>10.1111/(ISSN)1365-313X</identifier>
+<identifier type="issn">0960-7412</identifier>
+<identifier type="local">Journal:jnl47643</identifier>
+<part>
+<text>2026 Aug., v. 127, no. 3, e71079</text>
+</part>
+</relatedItem>
+<identifier type="doi">10.1111/tpj.71079</identifier>
+<recordInfo>
+<descriptionStandard>aacr</descriptionStandard>
+<recordContentSource authority="marcorg">AGL</recordContentSource>
+<recordCreationDate encoding="marc">260816</recordCreationDate>
+<recordIdentifier>9917193984707426</recordIdentifier>
+<recordOrigin>Converted from MARCXML to MODS version 3.5 using MARC21slim2MODS3-5.xsl (Revision 1.112 2018/06/21)</recordOrigin>
+<languageOfCataloging>
+<languageTerm authority="iso639-2b" type="code">eng</languageTerm>
+</languageOfCataloging>
+</recordInfo>
+</mods>
+</recordData>
+<recordIdentifier>9917193984707426</recordIdentifier>
+<recordPosition>2</recordPosition>
+</record>
+</records>
+<extraResponseData xmlns:xb="http://www.exlibris.com/repository/search/xmlbeans/">
+<xb:exact>true</xb:exact>
+<xb:responseDate>2026-11-21T18:22:46-0500</xb:responseDate>
+</extraResponseData>
+</searchRetrieveResponse>

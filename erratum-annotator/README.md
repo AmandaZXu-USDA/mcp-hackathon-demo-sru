@@ -32,8 +32,8 @@ catalog title.
 ## Demo web page
 
 <https://mcp-erratum-note-7474654188777746.aws.databricksapps.com> (sign in with a workspace account; needs
-`CAN USE` on the app). Pick one of the 49 saved correction notices (48 from Sample 1, plus Sample 2 row 3,
-whose correction title is in curly double quotes), or paste SRU XML, and see the correction
+`CAN USE` on the app). Pick one of the 50 saved correction notices (48 from Sample 1, plus Sample 2 rows 3 and 14,
+whose correction titles are in curly double quotes), or paste SRU XML, and see the correction
 notice, the original article found, the erratum note and the annotated title, with a status (ready, needs
 review, no original in Alma, already annotated). **See all saved notices at once** annotates all 48 in one
 table. The page is served by the same app and code as the MCP tools (`GET /`, `GET /api/examples`,
