@@ -47,7 +47,12 @@ jobs:
 
       - name: Report the end of the test log
         if: failure()
-        run: tail -n 40 pytest.log | sed 's/^/::warning title=pytest::/'
+        # GitHub keeps only 10 annotations per step, so send two multi-line ones:
+        # the last tests started, and the start of faulthandler's stack dump.
+        run: |
+          enc() { sed -e 's/%/%25/g' | awk '{printf "%s%%0A", $0}'; }
+          echo "::warning title=last tests::$(grep -E '^tests/.*::' pytest.log | tail -n 5 | enc)"
+          echo "::warning title=stack dump::$(grep -m1 -A 60 'Timeout (' pytest.log | enc)"
 
   # Separate job so lint/format findings never block the tests.
   lint:
