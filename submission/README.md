@@ -13,7 +13,7 @@ take a publisher's correction notice to the original article's catalog record:
 | File | What it is |
 |------|------------|
 | [`GSA-MCP-Hackathon-mcp-sru-syntax.pptx`](GSA-MCP-Hackathon-mcp-sru-syntax.pptx) | Hackathon presentation (17 slides, with speaker notes): challenge, solution, `mcp-sru-syntax` design and key decisions, demo, evaluation, security, lessons learned, the second MCP server `mcp-erratum-note` and its evaluation (slides 13-14), how the MCP apps and two agents meet multi-agent system requirements (slide 15), and next steps |
-| [`sru-syntax-mcp-evaluation-report.pdf`](sru-syntax-mcp-evaluation-report.pdf) | Step 1 evaluation report (15 pages, November 18, 2026; updated November 21, 2026), including lessons learned, recommendations and the November 21 re-run (41/41) |
+| [`sru-syntax-mcp-evaluation-report.pdf`](sru-syntax-mcp-evaluation-report.pdf) | Step 1 evaluation report (16 pages, November 18, 2026; updated November 22, 2026), including lessons learned, recommendations, the November 21 re-run (41/41) and the November 22 Phoenix evaluation (section 9) |
 | [`agent-erratum-annotator-evaluation-report.pdf`](agent-erratum-annotator-evaluation-report.pdf) | Step 2 evaluation report (4 pages, November 20, 2026; updated November 21, 2026): MLflow evaluation of `agent-erratum-annotator` and the Inspector Gadget test of `mcp-erratum-note` |
 | [`LIBRARIAN_QUICKSTART.md`](LIBRARIAN_QUICKSTART.md) | Librarian quick-start: four ways to get an SRU URL from a correction title (Supervisor Agent chat, Genie Code with the MCP tool, the app's agent endpoint, the SQL function for lists), with access needed and errors |
 

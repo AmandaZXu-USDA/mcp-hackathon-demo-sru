@@ -55,9 +55,9 @@ story = []
 # ---- Title and summary ----
 story += [
     p('SRU Syntax MCP Server - Evaluation Report', ParagraphStyle('T', parent=H1, fontSize=19, spaceAfter=4)),
-    p('NAL Alma SRU URL builder for erratum/correction notices &nbsp;|&nbsp; Report date: November 18, 2026 (updated November 21, 2026)', SMALL),
+    p('NAL Alma SRU URL builder for erratum/correction notices &nbsp;|&nbsp; Report date: November 18, 2026 (updated November 22, 2026)', SMALL),
     Spacer(1, 8),
-    p('This report covers four evaluations, a per-step latency analysis, live testing on November 19, 2026 (section 6), and lessons learned and recommendations (section 7), and re-runs of the offline evaluation and the 142-title MCP test on November 21, 2026 (section 8) of the <b>mcp-sru-syntax</b> Databricks App, a custom MCP server '
+    p('This report covers four evaluations, a per-step latency analysis, live testing on November 19, 2026 (section 6), and lessons learned and recommendations (section 7), and re-runs of the offline evaluation and the 142-title MCP test on November 21, 2026 (section 8), and a Phoenix evaluation of an agent that uses the MCP tool on November 22, 2026 (section 9) of the <b>mcp-sru-syntax</b> Databricks App, a custom MCP server '
       '(streamable HTTP at <font face="Courier">/mcp</font>) exposing one tool, '
       '<font face="Courier">build_sru_search_url</font>. The tool sends an erratum/correction notice title to the '
       'agent-sru-syntax Supervisor Agent (serving endpoint <font face="Courier">mas-c8629507-endpoint</font>) and '
@@ -74,6 +74,7 @@ story += [
         ['6. Live testing (November 19)', 'Passed; retry did not help', 'Page, page API, MCP and agent routes pass as Inspector Gadget. About 18 titles/min at 10 at a time. Every URL the agent returned matched the rules function. The empty-reply retry recovered 0 of 10 titles.'],
         ['7. Lessons learned and recommendations', 'Summary', '20 lessons across access, MCP naming and client, agent, evaluation, performance and engineering; 10 recommendations, starting with an independent, librarian-confirmed ground truth.'],
         ['8. Re-runs (November 21)', 'Completed', 'Function-first tool and databricks-gpt-5-6-luna agent: sru_url_match 1.00 (41/41), correctness 1.00, safety 1.00; median 6.9 s per title on /invocations. 142-title MCP test 142/142 in 79 s (about 108 titles/min).'],
+        ['9. Phoenix evaluation (November 22)', 'Completed', 'mcp-eval harness: a LangChain agent whose only tool is the MCP server. 10 gold questions: 10/10 on all three evaluators with both prompts. 4 out-of-scope requests: 1/4 handled correctly with prompt v1, 3/4 with v2.'],
     ], [2.0, 1.1, 4.0]),
     Spacer(1, 6),
     table([
@@ -551,6 +552,46 @@ story += [
         "<b>Same caveat as 8.2:</b> the expected URLs also come from the rules function, so 142/142 shows the tool "
         "passes the function's URL through unchanged, not that each URL finds the right Alma record.",
     ]),
+    # ---- Section 9: Phoenix evaluation on November 22, 2026 ----
+    PageBreak(),
+    p('9. Phoenix evaluation on November 22, 2026: an agent using the MCP tool', H1),
+    p("<b>Purpose:</b> score what an LLM agent does when its only tool is this MCP server: whether it relays the "
+      "tool's SRU URL exactly, and whether it stays within scope when asked for something the server cannot do. "
+      "Sections 2 and 8 score the Supervisor Agent and the app's /invocations agent; this section scores a separate "
+      "client agent through the MCP interface, with every answer traced in Arize Phoenix."),
+    p('9.1 Harness', H2),
+    table([
+        ['Part', 'Detail'],
+        ['Harness', 'eval/phoenix/ in both repos, built with the mcp-eval skill (fork commit d2f6b1d; NAL commit c2bccc4, byte-identical). It runs from the fork, where the server is the src/sru_server package launched over stdio; its tool calls users.amanda_xu.build_sru_url (about 4 s).'],
+        ['Agent under test', 'LangChain agent on databricks-gpt-5-6-luna, temperature 0, reasoning_effort none. Its only tool is build_sru_search_url from the MCP server.'],
+        ['System prompts', 'v1: tool-use rules only (pass the title unchanged, relay the URL unchanged, say No SRU URL when the tool does, report errors). v2: v1 plus a scope paragraph listing what to decline.'],
+        ['Evaluators', 'url_exact_match: code, no LLM; the reply must contain exactly the reference URL, or no URL. match_expected_response: LLM judge, correct or incorrect against the reference. check_answer_scope: LLM judge, within or out of scope. Both judges use databricks-claude-sonnet-4-6, a different model family from the agent.'],
+        ['Datasets', 'sru-mcp-eval-0: 10 gold questions, one per title-cleaning rule of sru-eval-0 (9 exact SRU URLs; 1 No SRU URL, an issue-level notice). sru-mcp-scope-0: 4 out-of-scope requests (a DOI lookup, running the search and counting records, a subscription recommendation, a MARC 245 field); each answer starts with Decline:.'],
+        ['Phoenix', 'Local Phoenix 19.17. Experiments RXhwZXJpbWVudDox (gold, v1), RXhwZXJpbWVudDoy (gold, v2), RXhwZXJpbWVudDoz (scope, v1), RXhwZXJpbWVudDo0 (scope, v2).'],
+    ], [1.3, 5.8]),
+    KeepTogether([p('9.2 Results', H2),
+    table([
+        ['Dataset', 'Prompt', 'url_exact_match', 'match_expected_response', 'check_answer_scope'],
+        ['sru-mcp-eval-0 (10 gold)', 'v1', '10/10', '10/10', '10/10'],
+        ['sru-mcp-eval-0 (10 gold)', 'v2', '10/10', '10/10', '10/10'],
+        ['sru-mcp-scope-0 (4 out of scope)', 'v1', 'n/a', '1/4', '1/4'],
+        ['sru-mcp-scope-0 (4 out of scope)', 'v2', 'n/a', '3/4', '3/4'],
+    ], [1.95, 0.55, 1.2, 1.8, 1.6])]),
+    Spacer(1, 4),
+    *bullets([
+        "<b>Gold questions: no misses.</b> With either prompt the agent relayed the exact URL for all 9 URL questions "
+        "and gave no URL for the issue-level notice. The code check and the LLM correctness judge agree on all 20 answers.",
+        "<b>Prompt v1 overreaches.</b> Asked to run the search, it made up a record count; asked about the "
+        "subscription, it gave advice. The server can do neither.",
+        "<b>The two judges disagreed on two v1 answers:</b> the subscription advice (scope: out of scope; correctness: "
+        "correct) and a bare SRU URL in reply to the DOI question (scope: within scope; correctness: incorrect). Both "
+        "score 1/4, but on different rows, so each judge catches failures the other misses.",
+        "<b>Prompt v2 fixes the record count and the advice</b> without changing any gold result. Its one remaining "
+        "miss: asked for a MARC 245 field, it returns only the SRU URL without saying it cannot write MARC.",
+        "<b>Caveats:</b> the gold URLs come from users.amanda_xu.build_sru_url, which the tool also calls (same caveat "
+        "as 8.2); the scope set has only 4 questions and each configuration ran once; the server ran locally over "
+        "stdio from the fork, not as the deployed app.",
+    ]),
     PageBreak(),
     KeepTogether([p('Next steps', H1),
     *bullets([
@@ -564,6 +605,8 @@ story += [
         'parse error and an unsupported verdict), then re-run it on a larger trace sample before starting online monitoring.',
         'Response time: done November 21, 2026. The tool now calls users.amanda_xu.build_sru_url first (about 4 s instead of '
         '15-25 s); the Supervisor Agent is only the fallback (section 8).',
+        'Phoenix (section 9): add a rule for catalog records and MARC fields to prompt v2 and more out-of-scope '
+        'questions to sru-mcp-scope-0, then re-run both datasets after any change to the prompt or the tool.',
     ])]),
     Spacer(1, 10),
     p(f'Sources: Inspector Gadget results from the test notebook runs on November 18, 2026; offline and online '
@@ -574,7 +617,9 @@ story += [
       f'on November 19, 2026, users.amanda_xu.sample3_mcp_offline_test, and the app logs; section 7 from sections 1-6 '
       f'and the deployment and access work on the app; section 8 from MLflow run 3bd980fb57ec4b769ba66036c91091ee '
       f'(experiment 131270370350843), Inspector Gadget calls to the deployed app on November 21, 2026, and runs '
-      f'20261120T025204 and 20261121T041852 in users.amanda_xu.sample3_mcp_offline_test.', SMALL),
+      f'20261120T025204 and 20261121T041852 in users.amanda_xu.sample3_mcp_offline_test; section 9 from the '
+      f'eval/phoenix harness (fork commit d2f6b1d) and its Phoenix experiments RXhwZXJpbWVudDox to RXhwZXJpbWVudDo0 '
+      f'on November 22, 2026.', SMALL),
 ]
 
 def footer(canvas, doc):
@@ -607,14 +652,17 @@ for check in ['1. Inspector Gadget testing', '2. Databricks offline MLflow evalu
               'kindly-lamb-651', 'tr-49f67341cc640c67a33da696d5cecdd0', '4. Evaluation run',
               '5. Agent latency per step', '18.62', '15.06', '68.9%', '53.77', 'about 69%', '2. Databricks offline MLflow evaluation: mcp-sru-syntax',
               'Granted CAN USE on mcp-sru-syntax', 'deployed mcp-sru-syntax MCP server',
-              '6. Live testing on November 19, 2026', 'updated November 21, 2026', '6.2 Titles per minute',
+              '6. Live testing on November 19, 2026', 'updated November 22, 2026', '6.2 Titles per minute',
               '4,706 s', 'at least 7.8 min', '10.6 (231 s in total)', '30/33', '142/142', '6.4 Empty-reply retry',
               'recovered 0 of 10', '7/7 still empty', 'Test the browser page and /api/sru-url', 'POST /api/sru-url',
               '7. Lessons learned and recommendations', '7.1 Lessons learned', '7.2 Recommendations',
               'independent ground truth', 'lessons learned and recommendations (section 7)', 'warm-up title',
               'named with the mcp- prefix', '20 lessons',
               '8. Re-runs on November 21, 2026', '8.4 142-title MCP test re-run', '20261121T041852', 'about 108 titles/min', '0 different', '1.00 (41/41)', 'databricks-gpt-5-6-luna',
-              '3bd980fb57ec4b769ba66036c91091ee', '8.3 Live response times', 'Response time: done November 21, 2026']:
+              '3bd980fb57ec4b769ba66036c91091ee', '8.3 Live response times', 'Response time: done November 21, 2026',
+              '9. Phoenix evaluation on November 22, 2026', '9. Phoenix evaluation (November 22)', 'Phoenix evaluation of an agent',
+              '9.1 Harness', '9.2 Results', 'url_exact_match', 'match_expected_response', 'check_answer_scope',
+              'databricks-claude-sonnet-4-6', 'RXhwZXJpbWVudDo0', 'Phoenix (section 9)', 'section 9 from the']:
     print('OK  ' if check in flat else 'MISSING  ', check)
 
 # The server is named mcp-sru-syntax throughout. The only allowed old-name text is the
