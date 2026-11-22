@@ -5,7 +5,9 @@ Endpoint: https://<app-url>/mcp
 Demo page for librarians: https://<app-url>/ (same code, read-only).
 """
 import asyncio
+import contextlib
 import functools
+import inspect
 import os
 import posixpath
 import re
@@ -159,20 +161,80 @@ def _list_xml_names() -> list:
     return [e.name for e in entries if not e.is_directory and e.name.lower().endswith(".xml")]
 
 
+# ---- MLflow tracing of every tool call (for online evaluation) ----
+# Each tool call becomes one trace in the experiment MLFLOW_EXPERIMENT_ID (app.yaml), with the tool's
+# arguments as inputs, its result as outputs, and tags app and tool. Strings longer than MAX_TRACE_CHARS
+# (an SRU XML response can be 2 MB) are cut, with their full length noted. A failed call records only the
+# ToolError message the client also gets, never internal exception text. Tracing is best effort: it is set
+# up only when the app starts (not on import, so tests stay offline), and if MLflow cannot be set up the
+# app runs untraced. MCP_TRACING=off turns it off.
+TRACE_EXPERIMENT_ID = os.environ.get("MLFLOW_EXPERIMENT_ID", "").strip()
+MAX_TRACE_CHARS = 4_000
+_mlflow = None  # the mlflow module once tracing is on
+
+
+def _init_tracing() -> None:
+    global _mlflow
+    if not TRACE_EXPERIMENT_ID or os.environ.get("MCP_TRACING", "on").strip().lower() == "off":
+        print("tracing_off reason=not_configured", flush=True)
+        return
+    try:
+        import mlflow
+
+        mlflow.set_tracking_uri("databricks")
+        mlflow.set_experiment(experiment_id=TRACE_EXPERIMENT_ID)
+        _mlflow = mlflow
+        print("tracing_on", flush=True)
+    except Exception as exc:  # never stop the app because tracing could not start
+        print(f"tracing_off exception={type(exc).__name__}", flush=True)
+
+
+def _short(value):
+    """A copy of value for a trace, with long strings cut to MAX_TRACE_CHARS."""
+    if isinstance(value, str) and len(value) > MAX_TRACE_CHARS:
+        return f"{value[:MAX_TRACE_CHARS]}... [cut; {len(value):,} characters in total]"
+    if isinstance(value, dict):
+        return {k: _short(v) for k, v in value.items()}
+    if isinstance(value, (list, tuple)):
+        return [_short(v) for v in value]
+    return value
+
+
+@contextlib.contextmanager
+def _tool_span(fn, args, kwargs):
+    """One MLflow trace for a tool call; yields the span, or None when tracing is off."""
+    if _mlflow is None:
+        yield None
+        return
+    with _mlflow.start_span(name=fn.__name__, span_type="TOOL") as span:
+        try:
+            inputs = dict(inspect.signature(fn).bind_partial(*args, **kwargs).arguments)
+        except TypeError:
+            inputs = dict(kwargs)
+        span.set_inputs(_short(inputs))
+        _mlflow.update_current_trace(tags={"app": "mcp-erratum-note", "tool": fn.__name__})
+        yield span
+
+
 def _handled(fn):
-    """Turn any error in a tool into a clear, categorized ToolError; never expose internal exception text."""
+    """Turn any error in a tool into a clear, categorized ToolError; never expose internal exception text.
+    Each call is also traced to MLflow when tracing is on."""
     @functools.wraps(fn)
     def wrapper(*args, **kwargs):
-        try:
-            return fn(*args, **kwargs)
-        except ErratumError as err:
-            _log_error(err, fn.__name__)
-            raise ToolError(err.client_message()) from None
-        except Exception as exc:
-            err = ErratumError("internal", "Unexpected error in mcp-erratum-note. Try again; if it repeats, send the "
-                               "error id to the app owner.")
-            _log_error(err, fn.__name__, exc)
-            raise ToolError(err.client_message()) from None
+        with _tool_span(fn, args, kwargs) as span:
+            try:
+                result = fn(*args, **kwargs)
+            except ErratumError as err:
+                _log_error(err, fn.__name__)
+                raise ToolError(err.client_message()) from None
+            except Exception as exc:
+                err = ErratumError("internal", "Unexpected error in mcp-erratum-note. Try again; if it repeats, send "
+                                   "the error id to the app owner.")
+                _log_error(err, fn.__name__, exc)
+                raise ToolError(err.client_message()) from None
+            if span is not None:
+                span.set_outputs(_short(result))
+            return result
     return wrapper
 
 
@@ -737,5 +799,6 @@ DEMO_PAGE = """<!doctype html>
 
 
 if __name__ == "__main__":
+    _init_tracing()
     threading.Thread(target=_warm_cache, daemon=True).start()
     mcp.run(transport="streamable-http")

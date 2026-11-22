@@ -4,3 +4,9 @@ command:
 env:
   - name: SRU_VOLUME_DIR
     value: /Volumes/users/amanda_xu/erratum_files/sru_responses
+  # MLflow experiment /Users/amanda.xu@usda.gov/mcp-erratum-note-traces, traces stored in Unity Catalog
+  # (users.amanda_xu.mcp_erratum_note_otel_*). Every MCP tool call is traced there for online evaluation.
+  # The app's service principal has CAN EDIT on the experiment and SELECT + MODIFY on the four otel tables
+  # (granted directly, 2026-11-22). Set MCP_TRACING to off to stop tracing.
+  - name: MLFLOW_EXPERIMENT_ID
+    value: "1982416510480315"

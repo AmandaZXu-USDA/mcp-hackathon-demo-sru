@@ -283,6 +283,47 @@ def _sru_lookup(title: str, use_agent: bool = False) -> dict:
     return {"source": "agent", "text": _call_agent_with_retry(title)}
 
 
+# ---- MLflow tracing of every tool and page lookup (for online evaluation) ----
+# Each lookup becomes one trace in the app's experiment (MLFLOW_EXPERIMENT_ID, the app-experiment resource),
+# with the title as input, the reply text as output, and tags channel (mcp or page) and answered_by
+# (function or agent). Calls from the app's own agent (/invocations) reach the tool over /mcp, so they are
+# traced here too, as channel mcp, in addition to the agent's own trace. Tracing is best effort: it is set up
+# only when the app starts (not on import, so tests stay offline), and if MLflow cannot be set up the app
+# runs untraced. MCP_TRACING=off turns it off.
+TRACE_EXPERIMENT_ID = os.environ.get("MLFLOW_EXPERIMENT_ID", "").strip()
+_mlflow = None  # the mlflow module once tracing is on
+
+
+def _init_tracing() -> None:
+    global _mlflow
+    if not TRACE_EXPERIMENT_ID or os.environ.get("MCP_TRACING", "on").strip().lower() == "off":
+        log.info("tracing_off reason=not_configured")
+        return
+    try:
+        import mlflow
+
+        mlflow.set_tracking_uri("databricks")
+        mlflow.set_experiment(experiment_id=TRACE_EXPERIMENT_ID)
+        _mlflow = mlflow
+        log.info("tracing_on")
+    except Exception as e:  # never stop the app because tracing could not start
+        log.warning("tracing_off exception=%s", type(e).__name__)
+
+
+def _traced_lookup(title: str, use_agent: bool, channel: str) -> dict:
+    """_sru_lookup, recorded as one MLflow trace when tracing is on."""
+    if _mlflow is None:
+        return _sru_lookup(title, use_agent)
+    with _mlflow.start_span(name="build_sru_search_url", span_type="TOOL") as span:
+        span.set_inputs({"correction_title": title, "use_agent": use_agent})
+        _mlflow.update_current_trace(tags={"app": "mcp-sru-syntax", "channel": channel})
+        found = _sru_lookup(title, use_agent)  # an UpstreamError is recorded on the span, then re-raised
+        text = _checked_reply(found["text"])
+        span.set_outputs({"text": text, "answered_by": found["source"]})
+        _mlflow.update_current_trace(tags={"answered_by": found["source"]})
+        return found
+
+
 def _warm_up() -> None:
     """Run the function once at start-up, so the first librarian does not wait for a cold Python UDF."""
     try:
@@ -329,7 +370,7 @@ async def build_sru_search_url(correction_title: str) -> str:
     temporary outage is retried once; timeouts are not."""
     try:
         _check_title(correction_title)
-        text = (await asyncio.to_thread(_sru_lookup, correction_title))["text"]
+        text = (await asyncio.to_thread(_traced_lookup, correction_title, False, "mcp"))["text"]
     except UpstreamError as e:
         log.warning(
             "tool_error error_id=%s category=%s status=%s retried=%s", e.error_id, e.category, e.status_code, e.retried
@@ -559,7 +600,7 @@ async def sru_url_api(request: Request) -> JSONResponse:
     if len(title) > MAX_TITLE_CHARS:
         return JSONResponse({"error": f"Title is longer than {MAX_TITLE_CHARS} characters"}, status_code=400)
     try:
-        found = await asyncio.to_thread(_sru_lookup, title.strip(), use_agent)
+        found = await asyncio.to_thread(_traced_lookup, title.strip(), use_agent, "page")
     except UpstreamError as e:
         log.warning(
             "page_error error_id=%s category=%s status=%s retried=%s", e.error_id, e.category, e.status_code, e.retried
@@ -592,6 +633,7 @@ app.add_route("/invocations", invocations, methods=["POST"])
 app.add_route("/responses", invocations, methods=["POST"])
 
 if __name__ == "__main__":
+    _init_tracing()
     if WAREHOUSE_ID:
         threading.Thread(target=_warm_up, daemon=True).start()
     uvicorn.run(app, host="0.0.0.0", port=int(os.environ.get("DATABRICKS_APP_PORT", "8000")))
