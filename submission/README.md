@@ -14,7 +14,7 @@ take a publisher's correction notice to the original article's catalog record:
 |------|------------|
 | [`GSA-MCP-Hackathon-mcp-sru-syntax.pptx`](GSA-MCP-Hackathon-mcp-sru-syntax.pptx) | Hackathon presentation (17 slides, with speaker notes): challenge, solution, `mcp-sru-syntax` design and key decisions, demo, evaluation, security, lessons learned, the second MCP server `mcp-erratum-note` and its evaluation (slides 13-14), how the MCP apps and two agents meet multi-agent system requirements (slide 15), and next steps |
 | [`sru-syntax-mcp-evaluation-report.pdf`](sru-syntax-mcp-evaluation-report.pdf) | Step 1 evaluation report (16 pages, November 18, 2026; updated November 22, 2026), including lessons learned, recommendations, the November 21 re-run (41/41) and the November 22 Phoenix evaluation (section 9) |
-| [`agent-erratum-annotator-evaluation-report.pdf`](agent-erratum-annotator-evaluation-report.pdf) | Step 2 evaluation report (6 pages, November 20, 2026; updated November 22, 2026): MLflow evaluation of `agent-erratum-annotator` with traces in Unity Catalog (tool calls, latency percentiles, token usage), two corrections in one original title, and the Inspector Gadget test of `mcp-erratum-note` |
+| [`agent-erratum-annotator-evaluation-report.pdf`](agent-erratum-annotator-evaluation-report.pdf) | Step 2 evaluation report (6 pages, November 20, 2026; updated November 22, 2026): MLflow evaluation of `agent-erratum-annotator` on 82 notices (Sample 1 and Sample 4, results per sample) with traces in Unity Catalog (tool calls, latency percentiles, token usage), two corrections in one original title, and the Inspector Gadget test of `mcp-erratum-note` |
 | [`LIBRARIAN_QUICKSTART.md`](LIBRARIAN_QUICKSTART.md) | Librarian quick-start: four ways to get an SRU URL from a correction title (Supervisor Agent chat, Genie Code with the MCP tool, the app's agent endpoint, the SQL function for lists), with access needed and errors |
 
 ## How it works: step 1, `mcp-sru-syntax`
@@ -55,7 +55,7 @@ take a publisher's correction notice to the original article's catalog record:
 
 | Evaluation | Result |
 |---|---|
-| 1. Offline MLflow evaluation of `agent-erratum-annotator` (53 librarian-checked notices) | annotated_title_exact 50/53, erratum_note_exact 52/53, original MMS ID 45/46, called a tool 48/48, correctness 50/53. Misses: one 290 s agent timeout and two titles where the agent retyped a curly apostrophe. |
+| 1. Offline MLflow evaluation of `agent-erratum-annotator` (82 notices: 53 librarian-checked from Sample 1, 29 from Sample 4) | annotated_title_exact 77/82 (Sample 1 51/53, Sample 4 26/29), erratum_note_exact 81/82, original MMS ID 67/68, called a tool 73/73, tool's annotated title exact 81/82, correctness 80/82. Misses: four titles where the agent retyped a curly apostrophe (the tool's title was exact) and one 290 s agent timeout (Sample 4 row 26). Sample 4's expected titles were drafted from the tool output and approved as drafted, not re-checked against Alma, so they test that the agent passes the tool's title through. |
 | 2. Inspector Gadget test of `mcp-erratum-note` (OAuth M2M service principal, no agent) | 7/7 tools listed; `process_sru_file` on 48 saved responses: 0 errors, 48/48 original MMS IDs, 46/48 titles (the 2 differences are notices with no original in Alma), median 0.28 s per call. |
 
 See the PDFs for method, per-scorer results, findings and next steps.
