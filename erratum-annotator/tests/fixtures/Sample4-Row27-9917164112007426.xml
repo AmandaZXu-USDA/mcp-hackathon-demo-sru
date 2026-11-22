@@ -1,0 +1,233 @@
+<searchRetrieveResponse xmlns="http://www.loc.gov/zing/srw/">
+<version>1.2</version>
+<numberOfRecords>2</numberOfRecords>
+<records>
+<record>
+<recordSchema>mods</recordSchema>
+<recordPacking>xml</recordPacking>
+<recordData>
+<mods xmlns="http://www.loc.gov/mods/v3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="3.5" xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-5.xsd">
+<titleInfo>
+<title>Erratum to: Extraction of Microplastics from River Water in a Rotating Coiled Column Using a Water–Oil System</title>
+</titleInfo>
+<name type="personal" usage="primary">
+<namePart>Ermolin, M.</namePart>
+<affiliation>Vernadsky Institute of Geochemistry and Analytical Chemistry, Russian Academy of Sciences, 110001, Moscow, Russia. ermolin@geokhi.ru</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>Ivaneev, A.</namePart>
+<affiliation>Vernadsky Institute of Geochemistry and Analytical Chemistry, Russian Academy of Sciences, 110001, Moscow, Russia</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>Savonina, E.</namePart>
+<affiliation>Vernadsky Institute of Geochemistry and Analytical Chemistry, Russian Academy of Sciences, 110001, Moscow, Russia</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>Dzhenloda, R.</namePart>
+<affiliation>Vernadsky Institute of Geochemistry and Analytical Chemistry, Russian Academy of Sciences, 110001, Moscow, Russia</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<typeOfResource>text</typeOfResource>
+<originInfo>
+<place>
+<placeTerm authority="marccountry" type="code">xx#</placeTerm>
+</place>
+<dateIssued encoding="marc">2025</dateIssued>
+<issuance>serial</issuance>
+</originInfo>
+<language>
+<languageTerm authority="iso639-2b" type="code">eng</languageTerm>
+</language>
+<physicalDescription>
+<extent>p. 2309-2309</extent>
+</physicalDescription>
+<note>ERRATUM</note>
+<location>
+<url displayLabel="Available from publisher's website" usage="primary display">https://doi.org/10.1134/S1061934825020042</url>
+</location>
+<relatedItem type="host">
+<titleInfo>
+<title>Journal of analytical chemistry</title>
+</titleInfo>
+<originInfo>
+<publisher>Pleiades Publishing</publisher>
+</originInfo>
+<identifier type="issn">1061-9348</identifier>
+<identifier type="local">Journal:J000000418</identifier>
+<part>
+<text>2025 Dec., v. 80, no. 14 p. 2309-2309</text>
+</part>
+</relatedItem>
+<identifier type="doi">10.1134/S1061934825020042</identifier>
+<recordInfo>
+<descriptionStandard>aacr</descriptionStandard>
+<recordContentSource authority="marcorg">AGL</recordContentSource>
+<recordCreationDate encoding="marc">260717</recordCreationDate>
+<recordIdentifier>9917164112007426</recordIdentifier>
+<recordOrigin>Converted from MARCXML to MODS version 3.5 using MARC21slim2MODS3-5.xsl (Revision 1.112 2018/06/21)</recordOrigin>
+<languageOfCataloging>
+<languageTerm authority="iso639-2b" type="code">eng</languageTerm>
+</languageOfCataloging>
+</recordInfo>
+</mods>
+</recordData>
+<recordIdentifier>9917164112007426</recordIdentifier>
+<recordPosition>1</recordPosition>
+</record>
+<record>
+<recordSchema>mods</recordSchema>
+<recordPacking>xml</recordPacking>
+<recordData>
+<mods xmlns="http://www.loc.gov/mods/v3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="3.5" xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-5.xsd">
+<titleInfo>
+<title>Extraction of Microplastics from River Water in a Rotating Coiled Column Using a Water–Oil System</title>
+</titleInfo>
+<name type="personal" usage="primary">
+<namePart>Ermolin, M. S.</namePart>
+<affiliation>Vernadsky Institute of Geochemistry and Analytical Chemistry, Russian Academy of Sciences, 110001, Moscow, Russia. ermolin@geokhi.ru</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>Ivaneev, A. I.</namePart>
+<affiliation>Vernadsky Institute of Geochemistry and Analytical Chemistry, Russian Academy of Sciences, 110001, Moscow, Russia</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>Savonina, E. Yu.</namePart>
+<affiliation>Vernadsky Institute of Geochemistry and Analytical Chemistry, Russian Academy of Sciences, 110001, Moscow, Russia</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>Dzhenloda, R. Kh.</namePart>
+<affiliation>Vernadsky Institute of Geochemistry and Analytical Chemistry, Russian Academy of Sciences, 110001, Moscow, Russia</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<typeOfResource>text</typeOfResource>
+<originInfo>
+<place>
+<placeTerm authority="marccountry" type="code">xx</placeTerm>
+</place>
+<dateIssued encoding="marc">2025</dateIssued>
+<issuance>serial</issuance>
+</originInfo>
+<language>
+<languageTerm authority="iso639-2b" type="code">eng</languageTerm>
+</language>
+<physicalDescription>
+<extent>p. 432-441.</extent>
+</physicalDescription>
+<abstract type="Summary">Determination of the microplastics content of natural waters is an important task in assessing the degree of water body pollution, identifying pollution sources, and evaluating potential risks for aquatic ecosystem inhabitants and water consumers. Solving this problem primarily falls within the realm of analytical chemistry, with separation methods for particles playing a crucial role. This work for the first time presents a potential application of the method of continuous-flow microplastic separation in a rotating coiled column using a water–oil system for assessing the microplastics content in river water. Microplastics in the extracted particle samples were determined by pyrolytic gas chromatography with mass spectrometric detection (pyro-GC–MS). A water sample from the Moskva River was analyzed. Using a water–castor oil system, 1.8 mg/L of suspended particles were extracted from the river water. A procedure for the digestion of the organic matter of the sample (30% H₂O₂) reduced the mass of the extracted particles to 0.4 mg/L. The residual fraction was analyzed by optical microscopy. According to the pyro-GC–MS data, the total microplastics content in the test water sample was 109 µg/L, accounting for 1.4% of the total suspended particle content of the sample. Five types of microplastics were identified: polyethylene, polypropylene, acrylonitrile butadiene styrene, acryl–butadiene rubber, and polyethylene terephthalate, with polyethylene being the predominant type (97 µg/L). The proposed method offers promise for assessing the microplastics content in natural waters.</abstract>
+<subject authority="nal">
+<topic>analytical chemistry</topic>
+</subject>
+<subject authority="nal">
+<topic>aquatic ecosystems</topic>
+</subject>
+<subject authority="nal">
+<topic>digestion</topic>
+</subject>
+<subject authority="nal">
+<topic>domain</topic>
+</subject>
+<subject authority="nal">
+<topic>gas chromatography</topic>
+</subject>
+<subject authority="nal">
+<topic>light microscopy</topic>
+</subject>
+<subject authority="nal">
+<topic>mass spectrometry</topic>
+</subject>
+<subject authority="nal">
+<topic>microplastics</topic>
+</subject>
+<subject authority="nal">
+<topic>oils</topic>
+</subject>
+<subject authority="nal">
+<topic>organic matter</topic>
+</subject>
+<subject authority="nal">
+<topic>pollution</topic>
+</subject>
+<subject authority="nal">
+<topic>polyethylene</topic>
+</subject>
+<subject authority="nal">
+<topic>polyethylene terephthalates</topic>
+</subject>
+<subject authority="nal">
+<topic>polypropylenes</topic>
+</subject>
+<subject authority="nal">
+<topic>river water</topic>
+</subject>
+<subject authority="nal">
+<topic>rivers</topic>
+</subject>
+<subject authority="nal">
+<topic>rubber</topic>
+</subject>
+<subject authority="nal">
+<topic>styrene</topic>
+</subject>
+<subject authority="nal">
+<topic>surface water</topic>
+</subject>
+<location>
+<url displayLabel="electronic resource" usage="primary display">https://dx.doi.org/10.1134/S1061934824701909</url>
+</location>
+<relatedItem type="host">
+<titleInfo>
+<title>J Anal Chem</title>
+</titleInfo>
+<originInfo>
+<publisher>Pleiades Publishing</publisher>
+</originInfo>
+<identifier type="issn">1061-9348</identifier>
+<identifier type="local">9916339143907426</identifier>
+<identifier type="local">Journal:J000000418</identifier>
+<part>
+<text>2025 Mar., v. 80, no. 3 p.432-441</text>
+</part>
+</relatedItem>
+<identifier type="doi">10.1134/S1061934824701909</identifier>
+<recordInfo>
+<recordContentSource authority="marcorg">AGL</recordContentSource>
+<recordCreationDate encoding="marc">260220</recordCreationDate>
+<recordIdentifier>9916836293907426</recordIdentifier>
+<recordOrigin>Converted from MARCXML to MODS version 3.5 using MARC21slim2MODS3-5.xsl (Revision 1.112 2018/06/21)</recordOrigin>
+<languageOfCataloging>
+<languageTerm authority="iso639-2b" type="code">eng</languageTerm>
+</languageOfCataloging>
+</recordInfo>
+</mods>
+</recordData>
+<recordIdentifier>9916836293907426</recordIdentifier>
+<recordPosition>2</recordPosition>
+</record>
+</records>
+<extraResponseData xmlns:xb="http://www.exlibris.com/repository/search/xmlbeans/">
+<xb:exact>true</xb:exact>
+<xb:responseDate>2026-11-22T11:08:15-0500</xb:responseDate>
+</extraResponseData>
+</searchRetrieveResponse>

@@ -1,0 +1,354 @@
+<searchRetrieveResponse xmlns="http://www.loc.gov/zing/srw/">
+<version>1.2</version>
+<numberOfRecords>2</numberOfRecords>
+<records>
+<record>
+<recordSchema>mods</recordSchema>
+<recordPacking>xml</recordPacking>
+<recordData>
+<mods xmlns="http://www.loc.gov/mods/v3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="3.5" xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-5.xsd">
+<titleInfo>
+<title>Correction: Ecological drivers of malaria vector habitat and transmission over 1 year of long-lasting insecticidal net intervention in Côte d’Ivoire</title>
+</titleInfo>
+<name type="personal" usage="primary">
+<namePart>Talbot, Benoit</namePart>
+<affiliation>School of Epidemiology and Public Health, University of Ottawa, Ottawa, ON, Canada. benoit.talbot@uottawa.ca</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>Alou, Ludovic</namePart>
+<affiliation>Institut Pierre Richet (IPR)/Institut National de Santé Publique (INSP), Bouaké, Côte d’Ivoire ``Vector Control Product Evaluation Centre (VCPEC-IPR/INSP), Bouaké, Côte d’Ivoire</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>Koffi, Alphonsine</namePart>
+<affiliation>Institut Pierre Richet (IPR)/Institut National de Santé Publique (INSP), Bouaké, Côte d’Ivoire ``Vector Control Product Evaluation Centre (VCPEC-IPR/INSP), Bouaké, Côte d’Ivoire</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>Sih, Colette</namePart>
+<affiliation>Faculty of Epidemiology and Population Health, Department of Infectious Disease Epidemiology, London School of Hygiene and Tropical Medicine, London, UK</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>Dangbenon, Edouard</namePart>
+<affiliation>Vector Control Product Evaluation Centre (VCPEC-IPR/INSP), Bouaké, Côte d’Ivoire</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>Zoh, Marius</namePart>
+<affiliation>Vector Control Product Evaluation Centre (VCPEC-IPR/INSP), Bouaké, Côte d’Ivoire ``Centre d’Entomologie Médicale et Vétérinaire, Université Alassane Ouattara (CEMV-UAO), Bouaké, Côte d’Ivoire</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>Camara, Soromane</namePart>
+<affiliation>Institut Pierre Richet (IPR)/Institut National de Santé Publique (INSP), Bouaké, Côte d’Ivoire ``Vector Control Product Evaluation Centre (VCPEC-IPR/INSP), Bouaké, Côte d’Ivoire</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>Assi, Serge</namePart>
+<affiliation>Institut Pierre Richet (IPR)/Institut National de Santé Publique (INSP), Bouaké, Côte d’Ivoire</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>N’Guessan, Raphael</namePart>
+<affiliation>Vector Control Product Evaluation Centre (VCPEC-IPR/INSP), Bouaké, Côte d’Ivoire ``Faculty of Infectious and Tropical Diseases, Disease Control Department, London School of Hygiene and Tropical Medicine, London, UK</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>Messenger, Louisa</namePart>
+<affiliation>Faculty of Infectious and Tropical Diseases, Disease Control Department, London School of Hygiene and Tropical Medicine, London, UK ``Department of Environmental and Global Health, School of Public Health, University of Nevada, Las Vegas, NV, USA</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>Protopopoff, Natacha</namePart>
+<affiliation>Department of Epidemiology and Public Health, Swiss Tropical & Public Health Institute, Allschwill, Switzerland ``University of Basel, Basel, Switzerland</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>Cook, J. (Jackie)</namePart>
+<affiliation>Faculty of Epidemiology and Population Health, Department of Infectious Disease Epidemiology, London School of Hygiene and Tropical Medicine, London, UK ``International Statistics and Epidemiology Group, London School of Hygiene and Tropical Medicine, London, UK</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>Kulkarni, Manisha</namePart>
+<affiliation>School of Epidemiology and Public Health, University of Ottawa, Ottawa, ON, Canada</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<typeOfResource>text</typeOfResource>
+<originInfo>
+<place>
+<placeTerm authority="marccountry" type="code">xx#</placeTerm>
+</place>
+<dateIssued encoding="marc">2025</dateIssued>
+<issuance>serial</issuance>
+</originInfo>
+<language>
+<languageTerm authority="iso639-2b" type="code">eng</languageTerm>
+</language>
+<physicalDescription>
+<extent>369</extent>
+</physicalDescription>
+<note>ERRATUM</note>
+<location>
+<url displayLabel="electronic resource" usage="primary display">https://dx.doi.org/10.1186/s13071-025-07023-3</url>
+</location>
+<relatedItem type="host">
+<titleInfo>
+<title>Parasites & vectors</title>
+</titleInfo>
+<originInfo>
+<publisher>BioMed Central</publisher>
+</originInfo>
+<identifier type="issn">1756-3305</identifier>
+<identifier type="local">Journal:jnl4347486</identifier>
+<part>
+<text>2025 Dec., v. 18, no. 1, 369</text>
+</part>
+</relatedItem>
+<identifier type="doi">10.1186/s13071-025-07023-3</identifier>
+<recordInfo>
+<descriptionStandard>aacr</descriptionStandard>
+<recordContentSource authority="marcorg">AGL</recordContentSource>
+<recordCreationDate encoding="marc">260807</recordCreationDate>
+<recordIdentifier>9916991253207426</recordIdentifier>
+<recordOrigin>Converted from MARCXML to MODS version 3.5 using MARC21slim2MODS3-5.xsl (Revision 1.112 2018/06/21)</recordOrigin>
+<languageOfCataloging>
+<languageTerm authority="iso639-2b" type="code">eng</languageTerm>
+</languageOfCataloging>
+</recordInfo>
+</mods>
+</recordData>
+<recordIdentifier>9916991253207426</recordIdentifier>
+<recordPosition>1</recordPosition>
+</record>
+<record>
+<recordSchema>mods</recordSchema>
+<recordPacking>xml</recordPacking>
+<recordData>
+<mods xmlns="http://www.loc.gov/mods/v3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="3.5" xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-5.xsd">
+<titleInfo>
+<title>Ecological drivers of malaria vector habitat and transmission over 1 year of long-lasting insecticidal net intervention in Côte d’Ivoire</title>
+</titleInfo>
+<name type="personal" usage="primary">
+<namePart>Talbot, Benoit</namePart>
+<affiliation>School of Epidemiology and Public Health, University of Ottawa, Ottawa, ON, Canada. benoit.talbot@uottawa.ca</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>Alou, Ludovic</namePart>
+<affiliation>Institut Pierre Richet (IPR)/Institut National de Santé Publique (INSP), Bouaké, Côte d’Ivoire ``Vector Control Product Evaluation Centre (VCPEC-IPR/INSP), Bouaké, Côte d’Ivoire</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>Koffi, Alphonsine</namePart>
+<affiliation>Institut Pierre Richet (IPR)/Institut National de Santé Publique (INSP), Bouaké, Côte d’Ivoire ``Vector Control Product Evaluation Centre (VCPEC-IPR/INSP), Bouaké, Côte d’Ivoire</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>Sih, Colette</namePart>
+<affiliation>Faculty of Epidemiology and Population Health, Department of Infectious Disease Epidemiology, London School of Hygiene and Tropical Medicine, London, UK</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>Dangbenon, Edouard</namePart>
+<affiliation>Vector Control Product Evaluation Centre (VCPEC-IPR/INSP), Bouaké, Côte d’Ivoire</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>Zoh, Marius</namePart>
+<affiliation>Vector Control Product Evaluation Centre (VCPEC-IPR/INSP), Bouaké, Côte d’Ivoire ``Centre d’Entomologie Médicale et Vétérinaire, Université Alassane Ouattara (CEMV-UAO), Bouaké, Côte d’Ivoire</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>Camara, Soromane</namePart>
+<affiliation>Institut Pierre Richet (IPR)/Institut National de Santé Publique (INSP), Bouaké, Côte d’Ivoire ``Vector Control Product Evaluation Centre (VCPEC-IPR/INSP), Bouaké, Côte d’Ivoire</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>Assi, Serge</namePart>
+<affiliation>Institut Pierre Richet (IPR)/Institut National de Santé Publique (INSP), Bouaké, Côte d’Ivoire</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>N’Guessan, Raphael</namePart>
+<affiliation>Vector Control Product Evaluation Centre (VCPEC-IPR/INSP), Bouaké, Côte d’Ivoire ``Faculty of Infectious and Tropical Diseases, Disease Control Department, London School of Hygiene and Tropical Medicine, London, UK</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>Messenger, Louisa</namePart>
+<affiliation>Faculty of Infectious and Tropical Diseases, Disease Control Department, London School of Hygiene and Tropical Medicine, London, UK ``Department of Environmental and Global Health, School of Public Health, University of Nevada, Las Vegas, NV, USA</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>Protopopoff, Natacha</namePart>
+<affiliation>Department of Epidemiology and Public Health, Swiss Tropical & Public Health Institute, Allschwill, Switzerland ``University of Basel, Basel, Switzerland</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>Cook, J. (Jackie)</namePart>
+<affiliation>Faculty of Epidemiology and Population Health, Department of Infectious Disease Epidemiology, London School of Hygiene and Tropical Medicine, London, UK ``International Statistics and Epidemiology Group, London School of Hygiene and Tropical Medicine, London, UK</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>Kulkarni, Manisha</namePart>
+<affiliation>School of Epidemiology and Public Health, University of Ottawa, Ottawa, ON, Canada</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<typeOfResource>text</typeOfResource>
+<originInfo>
+<place>
+<placeTerm authority="marccountry" type="code">xx#</placeTerm>
+</place>
+<dateIssued encoding="marc">2025</dateIssued>
+<issuance>serial</issuance>
+</originInfo>
+<language>
+<languageTerm authority="iso639-2b" type="code">eng</languageTerm>
+</language>
+<physicalDescription>
+<extent>343</extent>
+</physicalDescription>
+<abstract type="Summary">BACKGROUND: Malaria is a mosquito-borne parasitic disease that causes significant morbidity and mortality in at-risk populations, especially in children in sub-Saharan Africa. Despite reductions in malaria burden owing to the scale-up of effective interventions, there are concerns that long-lasting insecticidal net (LLIN) effects may not be sustained owing to widespread insecticide resistance and differential impacts of LLIN on vector species. In this study, we aimed to test the effect of different LLIN products and other environmental factors on the ecological niche of three mosquito vector species using state-of-the-art ecological niche modelling approaches. METHODS: This study used data from a cluster randomized control trial that took place in Tiébissou, in Central Côte d’Ivoire. Anopheles mosquito density and Plasmodium falciparum vector infection data were available across 33 clusters. We used satellite remote sensing related to land cover, climate, topography and population density across the study area alongside vector species occurrence data to construct ecological niche models for An. coluzzi, An. gambiae s.s. and An. funestus s.s., and for P. falciparum-infected vectors, at baseline and 1-year post-LLIN intervention. We compared the projected habitat and habitat determinants for each species, and assessed the respective contributions of each intervention arm and environmental factors on the probability of species occurrence. RESULTS: Minimal to considerable overall reductions in suitable habitat across the study area were observed for the three mosquito vector species (less than 1% to more than 60%), and considerable overall reduction was observed for P. falciparum-infected vectors (more than 50%). We did not detect an effect of intervention arm on the probability of occurrence of any vector species, while we found strong significant effects of a combination of land cover, climate, topography and/or population density variables on each of the three mosquito vector species and malaria-infected vectors. Our results suggest environmental factors may have facilitated or restricted changes in the probability of occurrence of vector species and infected vectors in the context of vector control interventions. CONCLUSIONS: Our study highlights wide ecological differences across malaria vector species and supports the need to consider malaria vector species composition when deploying malaria vector control interventions in endemic settings.</abstract>
+<note>JOURNAL ARTICLE</note>
+<subject authority="nal">
+<topic>mosquito vectors</topic>
+</subject>
+<subject authority="nal">
+<topic>malaria</topic>
+</subject>
+<subject authority="nal">
+<topic>mortality</topic>
+</subject>
+<subject authority="nal">
+<topic>insecticide resistance</topic>
+</subject>
+<subject authority="nal">
+<topic>species</topic>
+</subject>
+<subject authority="nal">
+<topic>niches</topic>
+</subject>
+<subject authority="nal">
+<topic>Anopheles</topic>
+</subject>
+<subject authority="nal">
+<topic>Plasmodium falciparum</topic>
+</subject>
+<subject authority="nal">
+<topic>satellites</topic>
+</subject>
+<subject authority="nal">
+<topic>land cover</topic>
+</subject>
+<subject authority="nal">
+<topic>climate</topic>
+</subject>
+<subject authority="nal">
+<topic>topography</topic>
+</subject>
+<subject authority="nal">
+<topic>population density</topic>
+</subject>
+<subject authority="nal">
+<topic>probability</topic>
+</subject>
+<subject authority="nal">
+<topic>vector control</topic>
+</subject>
+<subject authority="nal">
+<topic>species diversity</topic>
+</subject>
+<subject authority="nal">
+<geographic>Cote d'Ivoire</geographic>
+</subject>
+<location>
+<url displayLabel="electronic resource" usage="primary display">https://dx.doi.org/10.1186/s13071-025-06984-9</url>
+</location>
+<relatedItem type="host">
+<titleInfo>
+<title>Parasites & vectors</title>
+</titleInfo>
+<originInfo>
+<publisher>BioMed Central</publisher>
+</originInfo>
+<identifier type="issn">1756-3305</identifier>
+<identifier type="local">Journal:jnl4347486</identifier>
+<part>
+<text>2025 Dec., v. 18, no. 1, 343</text>
+</part>
+</relatedItem>
+<identifier type="doi">10.1186/s13071-025-06984-9</identifier>
+<recordInfo>
+<descriptionStandard>aacr</descriptionStandard>
+<recordContentSource authority="marcorg">AGL</recordContentSource>
+<recordCreationDate encoding="marc">260807</recordCreationDate>
+<recordIdentifier>9916945788907426</recordIdentifier>
+<recordOrigin>Converted from MARCXML to MODS version 3.5 using MARC21slim2MODS3-5.xsl (Revision 1.112 2018/06/21)</recordOrigin>
+<languageOfCataloging>
+<languageTerm authority="iso639-2b" type="code">eng</languageTerm>
+</languageOfCataloging>
+</recordInfo>
+</mods>
+</recordData>
+<recordIdentifier>9916945788907426</recordIdentifier>
+<recordPosition>2</recordPosition>
+</record>
+</records>
+<extraResponseData xmlns:xb="http://www.exlibris.com/repository/search/xmlbeans/">
+<xb:exact>true</xb:exact>
+<xb:responseDate>2026-11-22T11:15:49-0500</xb:responseDate>
+</extraResponseData>
+</searchRetrieveResponse>

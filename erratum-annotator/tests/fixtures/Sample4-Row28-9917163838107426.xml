@@ -1,0 +1,218 @@
+<searchRetrieveResponse xmlns="http://www.loc.gov/zing/srw/">
+<version>1.2</version>
+<numberOfRecords>2</numberOfRecords>
+<records>
+<record>
+<recordSchema>mods</recordSchema>
+<recordPacking>xml</recordPacking>
+<recordData>
+<mods xmlns="http://www.loc.gov/mods/v3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="3.5" xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-5.xsd">
+<titleInfo>
+<title>Erratum to: Socioeconomic and Perceptual Drivers of Climate Change Impact Perceptions Among Peach Farmers: Evidence from Çanakkale, Türkiye</title>
+</titleInfo>
+<name type="personal" usage="primary">
+<namePart>Niyaz Altınok, Özge</namePart>
+<affiliation>Faculty of Agriculture, Department of Agricultural Economics, Çanakkale Onsekiz Mart University, Çanakkale, Türkiye</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>Yılmaz, Alptekin</namePart>
+<affiliation>Faculty of Agriculture, Department of Agricultural Economics, Kocaeli University, Kocaeli, Türkiye. alptekin.yilmaz@kocaeli.edu.tr</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>Delikara, Tekmila</namePart>
+<affiliation>Faculty of Agriculture, Department of Agricultural Economics, Çanakkale Onsekiz Mart University, Çanakkale, Türkiye</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>Gündoğan, Alper</namePart>
+<affiliation>Faculty of Agriculture, Department of Agricultural Economics, Çanakkale Onsekiz Mart University, Çanakkale, Türkiye</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>Palaska, Hasan</namePart>
+<affiliation>Faculty of Agriculture, Department of Agricultural Economics, Çanakkale Onsekiz Mart University, Çanakkale, Türkiye</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<typeOfResource>text</typeOfResource>
+<originInfo>
+<place>
+<placeTerm authority="marccountry" type="code">xx#</placeTerm>
+</place>
+<dateIssued encoding="marc">2026</dateIssued>
+<issuance>serial</issuance>
+</originInfo>
+<language>
+<languageTerm authority="iso639-2b" type="code">eng</languageTerm>
+</language>
+<physicalDescription>
+<extent>165</extent>
+</physicalDescription>
+<note>ERRATUM</note>
+<location>
+<url displayLabel="Available from publisher's website" usage="primary display">https://doi.org/10.1007/s10341-026-01878-1</url>
+</location>
+<relatedItem type="host">
+<titleInfo>
+<title>Applied fruit science</title>
+</titleInfo>
+<originInfo>
+<publisher>Springer Berlin Heidelberg</publisher>
+</originInfo>
+<identifier type="issn">2948-2623</identifier>
+<identifier type="local">Journal:9916592178407426</identifier>
+<part>
+<text>2026 June, v. 68, no. 3, 165</text>
+</part>
+</relatedItem>
+<identifier type="doi">10.1007/s10341-026-01878-1</identifier>
+<recordInfo>
+<descriptionStandard>aacr</descriptionStandard>
+<recordContentSource authority="marcorg">AGL</recordContentSource>
+<recordCreationDate encoding="marc">260812</recordCreationDate>
+<recordIdentifier>9917163838107426</recordIdentifier>
+<recordOrigin>Converted from MARCXML to MODS version 3.5 using MARC21slim2MODS3-5.xsl (Revision 1.112 2018/06/21)</recordOrigin>
+<languageOfCataloging>
+<languageTerm authority="iso639-2b" type="code">eng</languageTerm>
+</languageOfCataloging>
+</recordInfo>
+</mods>
+</recordData>
+<recordIdentifier>9917163838107426</recordIdentifier>
+<recordPosition>1</recordPosition>
+</record>
+<record>
+<recordSchema>mods</recordSchema>
+<recordPacking>xml</recordPacking>
+<recordData>
+<mods xmlns="http://www.loc.gov/mods/v3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="3.5" xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-5.xsd">
+<titleInfo>
+<title>Socioeconomic and Perceptual Drivers of Climate Change Impact Perceptions Among Peach Farmers: Evidence from Çanakkale, Türkiye</title>
+</titleInfo>
+<name type="personal" usage="primary">
+<namePart>Niyaz Altınok, Özge</namePart>
+<affiliation>Faculty of Agriculture, Department of Agricultural Economics, Çanakkale Onsekiz Mart University, Çanakkale, Türkiye</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>Yılmaz, Alptekin</namePart>
+<affiliation>Faculty of Agriculture, Department of Agricultural Economics, Kocaeli University, Kocaeli, Türkiye. alptekin.yilmaz@kocaeli.edu.tr</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>Delikara, Tekmila</namePart>
+<affiliation>Faculty of Agriculture, Department of Agricultural Economics, Çanakkale Onsekiz Mart University, Çanakkale, Türkiye</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>Gündoğan, Alper</namePart>
+<affiliation>Faculty of Agriculture, Department of Agricultural Economics, Çanakkale Onsekiz Mart University, Çanakkale, Türkiye</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>Palaska, Hasan</namePart>
+<affiliation>Faculty of Agriculture, Department of Agricultural Economics, Çanakkale Onsekiz Mart University, Çanakkale, Türkiye</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<typeOfResource>text</typeOfResource>
+<originInfo>
+<place>
+<placeTerm authority="marccountry" type="code">xx#</placeTerm>
+</place>
+<dateIssued encoding="marc">2026</dateIssued>
+<issuance>serial</issuance>
+</originInfo>
+<language>
+<languageTerm authority="iso639-2b" type="code">eng</languageTerm>
+</language>
+<physicalDescription>
+<extent>142</extent>
+</physicalDescription>
+<abstract type="Summary">Climate change poses significant challenges to fruit production, particularly in perennial crops such as peaches, which are highly sensitive to temperature fluctuations and extreme weather events. This study examines peach farmers’ perceptions of the negative impacts of climate change in Çanakkale province, Türkiye’s leading peach-producing region, and identifies the socioeconomic and perceptual factors influencing these perceptions. Primary data were collected through face-to-face surveys with 209 peach farmers, and binary logistic regression analysis was employed to assess the determinants of perceived negative impacts. Results indicate that age, organizational membership, and the source of climate change information significantly shape farmers’ perceptions. Older farmers were more likely to perceive negative impacts, suggesting that accumulated experience and exposure to climatic variability enhance risk awareness. Conversely, membership in agricultural cooperatives and producer organizations reduced the likelihood of perceiving adverse effects, possibly reflecting improved access to collective knowledge and adaptive strategies. Farmers who first learned about climate change through formal channels, such as television or institutional sources, demonstrated higher perception levels. Perceptual evaluations revealed that farmers predominantly attribute climate change to macro-level factors, such as industrial production, while attributing a limited role to agricultural activities. These findings underscore the importance of integrating farmers’ perceptions into climate adaptation policies. Targeted awareness-raising programs for younger and non-organized farmers, strengthening agricultural organizations, and delivering region-specific climate information through formal channels are recommended to enhance adaptive capacity. By combining socioeconomic insights with perceptual assessments, this study provides evidence-based guidance for developing effective, participatory climate adaptation strategies in fruit production systems.</abstract>
+<note>JOURNAL ARTICLE</note>
+<subject authority="nal">
+<topic>climate change</topic>
+</subject>
+<subject authority="nal">
+<topic>peaches</topic>
+</subject>
+<subject authority="nal">
+<topic>fruits</topic>
+</subject>
+<subject authority="nal">
+<topic>temperature</topic>
+</subject>
+<subject authority="nal">
+<topic>weather</topic>
+</subject>
+<subject authority="nal">
+<topic>regression analysis</topic>
+</subject>
+<subject authority="nal">
+<topic>risk</topic>
+</subject>
+<subject authority="nal">
+<topic>television</topic>
+</subject>
+<subject authority="nal">
+<topic>climate</topic>
+</subject>
+<location>
+<url displayLabel="Available from publisher's website" usage="primary display">https://doi.org/10.1007/s10341-026-01852-x</url>
+</location>
+<relatedItem type="host">
+<titleInfo>
+<title>Applied fruit science</title>
+</titleInfo>
+<originInfo>
+<publisher>Springer Berlin Heidelberg</publisher>
+</originInfo>
+<identifier type="issn">2948-2623</identifier>
+<identifier type="local">Journal:9916592178407426</identifier>
+<part>
+<text>2026 June, v. 68, no. 3, 142</text>
+</part>
+</relatedItem>
+<identifier type="doi">10.1007/s10341-026-01852-x</identifier>
+<recordInfo>
+<descriptionStandard>aacr</descriptionStandard>
+<recordContentSource authority="marcorg">AGL</recordContentSource>
+<recordCreationDate encoding="marc">260812</recordCreationDate>
+<recordIdentifier>9917163931807426</recordIdentifier>
+<recordOrigin>Converted from MARCXML to MODS version 3.5 using MARC21slim2MODS3-5.xsl (Revision 1.112 2018/06/21)</recordOrigin>
+<languageOfCataloging>
+<languageTerm authority="iso639-2b" type="code">eng</languageTerm>
+</languageOfCataloging>
+</recordInfo>
+</mods>
+</recordData>
+<recordIdentifier>9917163931807426</recordIdentifier>
+<recordPosition>2</recordPosition>
+</record>
+</records>
+<extraResponseData xmlns:xb="http://www.exlibris.com/repository/search/xmlbeans/">
+<xb:exact>true</xb:exact>
+<xb:responseDate>2026-11-22T11:10:12-0500</xb:responseDate>
+</extraResponseData>
+</searchRetrieveResponse>

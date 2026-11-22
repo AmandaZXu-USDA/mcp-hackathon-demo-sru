@@ -1,0 +1,183 @@
+<searchRetrieveResponse xmlns="http://www.loc.gov/zing/srw/">
+<version>1.2</version>
+<numberOfRecords>2</numberOfRecords>
+<records>
+<record>
+<recordSchema>mods</recordSchema>
+<recordPacking>xml</recordPacking>
+<recordData>
+<mods xmlns="http://www.loc.gov/mods/v3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="3.5" xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-5.xsd">
+<titleInfo>
+<title>Classical swine fever virus NS5A protein changed inflammatory cytokine secretion in porcine alveolar macrophages by inhibiting the NF-κB signaling pathway</title>
+</titleInfo>
+<name type="personal" usage="primary">
+<namePart>Dong, Xiao-Ying</namePart>
+<affiliation>College of Yingdong Agricultural Science and Engineering, Shaoguan University, Daxue Road, Zhenjiang District, Shaoguan, 512005, China ``North Guangdong Collaborative Innovation and Development Center for Swine Farming and Disease Control, Shaoguan, 512005, China</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>Tang, Sheng-Qiu</namePart>
+<affiliation>College of Yingdong Agricultural Science and Engineering, Shaoguan University, Daxue Road, Zhenjiang District, Shaoguan, 512005, China. willertang@163.com ``North Guangdong Collaborative Innovation and Development Center for Swine Farming and Disease Control, Shaoguan, 512005, China. willertang@163.com</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<typeOfResource>text</typeOfResource>
+<originInfo>
+<place>
+<placeTerm authority="marccountry" type="code">xx#</placeTerm>
+</place>
+<dateIssued encoding="marc">2016</dateIssued>
+<issuance>serial</issuance>
+</originInfo>
+<language>
+<languageTerm authority="iso639-2b" type="code">eng</languageTerm>
+</language>
+<physicalDescription>
+<extent>101</extent>
+</physicalDescription>
+<abstract type="Summary">BACKGROUND: Classical swine fever (CSF) caused by CSF virus (CSFV) is a highly contagious disease of the pigs. A number of studies have suggested that CSFV non-structural (NS) 5A protein is involved in CSFV-associated pathogenesis, but its mechanism is still uncertain. The aim of this study was to investigate the roles of NS5A protein in CSFV-associated pathogenesis in cultured porcine alveolar macrophages (PAMs). METHODS: After PAMs cultured in vitro were transfected with CSFV NS5A, the alterations in IL-1β, IL-6 and TNF-α expression were determined by ELISA, the RIG-I signaling activity related to inflammatory cytokine secretion was investigated by Western blot and Immunofluorescent staining. RESULTS: It was suggested that, the stable expressed CSFV NS5A solely had no influence on the expressions of inflammatory cytokines IL-1β, IL-6 and TNF-α in PAMs Moreover, NS5A protein could suppressed IL-1β, IL-6 and TNF-α expression induced by poly(I:C). It was also showed that NS5A protein did not impair the expressions of RIG-I, MDA5, IPS-1, NF-κB and IkBα in cells without poly(I:C) stimulation. Protein expressions of RIG-I, MDA5, IPS-1, NF-κB were not disrupted by NS5A protein in poly(I:C)-stimulated cells, while poly(I:C)-induced NF-κB nuclear translocation and activity was obviously suppressed by this protein. A suppression in poly(I:C)-induced IkBα degradation in NS5A-expressing cells was also observed. CONCLUSION: These data indicated that CSFV NS5A protein could inhibit the secretion of inflammatory cytokine induced by poly(I:C) through the suppression of the NF-κB signaling pathway, indicating the participation of CSFV NS5A protein in the pathogenesis of CSFV.</abstract>
+<accessCondition type="restriction on access">Open Access</accessCondition>
+<note>JOURNAL ARTICLE</note>
+<subject authority="nal">
+<topic>Classical swine fever virus</topic>
+</subject>
+<subject authority="nal">
+<topic>secretion</topic>
+</subject>
+<subject authority="nal">
+<topic>swine</topic>
+</subject>
+<subject authority="nal">
+<topic>macrophages</topic>
+</subject>
+<subject authority="nal">
+<topic>virology</topic>
+</subject>
+<subject authority="nal">
+<topic>hog cholera</topic>
+</subject>
+<subject authority="nal">
+<topic>viruses</topic>
+</subject>
+<subject authority="nal">
+<topic>pathogenesis</topic>
+</subject>
+<subject authority="nal">
+<topic>interleukin-6</topic>
+</subject>
+<subject authority="nal">
+<topic>Western blotting</topic>
+</subject>
+<location>
+<url displayLabel="Available from publisher's site" usage="primary display">http://dx.doi.org/10.1186/s12985-016-0545-z</url>
+</location>
+<relatedItem type="host">
+<titleInfo>
+<title>Virology journal</title>
+</titleInfo>
+<originInfo>
+<publisher>BioMed Central</publisher>
+</originInfo>
+<identifier type="issn">1743-422X</identifier>
+<identifier type="local">Journal:J000001738</identifier>
+<part>
+<text>2016 Dec., v. 13, no. 1, 101</text>
+</part>
+</relatedItem>
+<identifier type="doi">10.1186/s12985-016-0545-z</identifier>
+<identifier type="pmcid">PMC4907015</identifier>
+<identifier type="pmid">27296632</identifier>
+<recordInfo>
+<descriptionStandard>aacr</descriptionStandard>
+<recordContentSource authority="marcorg">AGL</recordContentSource>
+<recordCreationDate encoding="marc">260710</recordCreationDate>
+<recordChangeDate encoding="iso8601">20260515224548.0</recordChangeDate>
+<recordIdentifier>9915614049107426</recordIdentifier>
+<recordOrigin>Converted from MARCXML to MODS version 3.5 using MARC21slim2MODS3-5.xsl (Revision 1.112 2018/06/21)</recordOrigin>
+<languageOfCataloging>
+<languageTerm authority="iso639-2b" type="code">eng</languageTerm>
+</languageOfCataloging>
+</recordInfo>
+</mods>
+</recordData>
+<recordIdentifier>9915614049107426</recordIdentifier>
+<recordPosition>1</recordPosition>
+</record>
+<record>
+<recordSchema>mods</recordSchema>
+<recordPacking>xml</recordPacking>
+<recordData>
+<mods xmlns="http://www.loc.gov/mods/v3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="3.5" xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-5.xsd">
+<titleInfo>
+<title>Erratum to: Classical swine fever virus NS5A protein changed inflammatory cytokine secretion in porcine alveolar macrophages by inhibiting the NF-κB signaling pathway</title>
+</titleInfo>
+<name type="personal" usage="primary">
+<namePart>Dong, Xiao-Ying</namePart>
+<affiliation>College of Yingdong Agricultural Science and Engineering, Shaoguan University, Daxue Road, Zhenjiang District, Shaoguan, 512005, China ``North Guangdong Collaborative Innovation and Development Center for Swine Farming and Disease Control, Shaoguan, 512005, China</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>Tang, Sheng-Qiu</namePart>
+<affiliation>College of Yingdong Agricultural Science and Engineering, Shaoguan University, Daxue Road, Zhenjiang District, Shaoguan, 512005, China. willertang@163.com ``North Guangdong Collaborative Innovation and Development Center for Swine Farming and Disease Control, Shaoguan, 512005, China. willertang@163.com</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<typeOfResource>text</typeOfResource>
+<originInfo>
+<place>
+<placeTerm authority="marccountry" type="code">xx#</placeTerm>
+</place>
+<dateIssued encoding="marc">2016</dateIssued>
+<issuance>serial</issuance>
+</originInfo>
+<language>
+<languageTerm authority="iso639-2b" type="code">eng</languageTerm>
+</language>
+<physicalDescription>
+<extent>135</extent>
+</physicalDescription>
+<note>ERRATUM</note>
+<location>
+<url displayLabel="Available from publisher's website" usage="primary display">https://doi.org/10.1186/s12985-016-0582-7</url>
+</location>
+<relatedItem type="host">
+<titleInfo>
+<title>Virology journal</title>
+</titleInfo>
+<originInfo>
+<publisher>BioMed Central</publisher>
+</originInfo>
+<identifier type="issn">1743-422X</identifier>
+<identifier type="local">Journal:J000001738</identifier>
+<part>
+<text>2016 Dec., v. 13, no. 1, 135</text>
+</part>
+</relatedItem>
+<identifier type="doi">10.1186/s12985-016-0582-7</identifier>
+<recordInfo>
+<descriptionStandard>aacr</descriptionStandard>
+<recordContentSource authority="marcorg">AGL</recordContentSource>
+<recordCreationDate encoding="marc">260710</recordCreationDate>
+<recordIdentifier>9917155273707426</recordIdentifier>
+<recordOrigin>Converted from MARCXML to MODS version 3.5 using MARC21slim2MODS3-5.xsl (Revision 1.112 2018/06/21)</recordOrigin>
+<languageOfCataloging>
+<languageTerm authority="iso639-2b" type="code">eng</languageTerm>
+</languageOfCataloging>
+</recordInfo>
+</mods>
+</recordData>
+<recordIdentifier>9917155273707426</recordIdentifier>
+<recordPosition>2</recordPosition>
+</record>
+</records>
+<extraResponseData xmlns:xb="http://www.exlibris.com/repository/search/xmlbeans/">
+<xb:exact>true</xb:exact>
+<xb:responseDate>2026-11-22T11:17:16-0500</xb:responseDate>
+</extraResponseData>
+</searchRetrieveResponse>
