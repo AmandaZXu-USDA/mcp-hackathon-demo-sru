@@ -21,6 +21,9 @@ OAuth, so for `check_live.py` sign in with `databricks auth login` (or use a ser
 principal's `DATABRICKS_CLIENT_ID` / `DATABRICKS_CLIENT_SECRET`); a personal access token
 gets 401 from the apps. SQL warehouse used below: `50d2bd4ddf65e0f5`.
 
+Unit tests: `tests/test_scripts.py` in the hackathon repo (20 tests, run by its CI on
+every push; no Databricks credentials needed, workspace calls are faked).
+
 ## Add a new correction-notice sample
 
 Name the file `Sample<N>-Row<R>-<16-digit correction MMS ID>.xml`, then:

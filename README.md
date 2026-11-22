@@ -521,6 +521,7 @@ The two projects deploy independently: neither deploy touches the other app, age
 
 * [`tests/test_server.py`](tests/test_server.py) -- smoke tests: server import, name, default transport, tool registration, `build_sru_search_url` discoverability.
 * [`tests/test_http_security.py`](tests/test_http_security.py) -- SSRF hardening: `allow_redirects=False`, fixed endpoint URL (not user-controlled), user input in JSON body (not URL), error sanitization, stable error categories.
+* [`tests/test_scripts.py`](tests/test_scripts.py) -- the four [`scripts/`](scripts/README.md): sample checks and no-overwrite uploads, grant restore after a UC function recreate, safe NAL-to-fork copies (each status, on scratch git repos), and the live-app checks (MCP client and pass/fail reporting, with faked apps).
 
 ## Status and next steps
 
