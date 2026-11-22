@@ -131,7 +131,13 @@ The `databricks.yml` bundle defines one app (`sru_syntax_mcp`) that hosts both t
 MCP server (`/mcp`) and the SRU syntax agent (`/invocations`, `/responses`).
 The workspace is at its 100-app limit, so the agent shares this app.
 
-Run from the `sru-syntax-mcp/` folder (the bundle root):
+> **For the live app, use the `prod` target**, not the steps below: see
+> [Production target](#production-target-prod). Since 2026-11-22 only this repo's `prod`
+> target manages `mcp-sru-syntax`; the `dev` target does not track it, so
+> `bundle deploy -t dev` would try to create a second app. The steps below show how the
+> app was first deployed and are kept for reference.
+
+Run from the repo root (the bundle root):
 
 ```bash
 # 1. Validate the bundle configuration

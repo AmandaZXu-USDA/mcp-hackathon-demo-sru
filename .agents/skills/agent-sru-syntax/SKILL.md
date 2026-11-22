@@ -70,13 +70,17 @@ When comparing with a reference, compare the decoded `alma.title` term, not the 
 
 ## Operate
 
-Run bundle commands from `sru-syntax-mcp/` (the bundle root):
+The live app is deployed only from the `prod` target of the bundle in AmandaZXu-USDA/mcp-hackathon-demo-sru
+(repo root, branch `main`). The NAL repo's bundle no longer manages it: never bind `sru_syntax_mcp` there or
+run `bundle deploy -t dev` for the live app (with no binding it would try to create a second app; the workspace
+is at its 100-app limit). Edit code in NAL, copy it with `scripts/sync_to_fork.py`, then in the hackathon repo:
 
 ```bash
-databricks bundle validate --strict -t dev
-databricks bundle deploy -t dev
-databricks bundle run sru_syntax_mcp -t dev      # redeploys and restarts the app
-databricks apps logs mcp-sru-syntax              # first step when the app misbehaves
+databricks bundle validate --strict -t prod
+databricks bundle plan -t prod                    # must say "update apps.sru_syntax_mcp", never "create"
+databricks bundle deploy -t prod
+databricks bundle run sru_syntax_mcp -t prod      # deploys the app code and restarts the app
+databricks apps logs mcp-sru-syntax               # first step when the app misbehaves
 ```
 
 * The app's permissions come from app resources in `databricks.yml`: `serving-endpoint` (CAN_QUERY),
