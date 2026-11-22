@@ -37,7 +37,17 @@ jobs:
         run: uv sync --group dev --locked --python 3.11
 
       - name: Run tests
-        run: uv run --no-sync pytest tests/ -v
+        # Fail in 5 minutes instead of hanging until the job timeout; faulthandler
+        # dumps every thread's stack after 120 s in one test. On failure the last
+        # lines become annotations, which can be read without downloading logs.
+        run: |
+          set -o pipefail
+          timeout -s INT 300 uv run --no-sync pytest tests/ -v \
+            -o faulthandler_timeout=120 2>&1 | tee pytest.log
+
+      - name: Report the end of the test log
+        if: failure()
+        run: tail -n 40 pytest.log | sed 's/^/::warning title=pytest::/'
 
   # Separate job so lint/format findings never block the tests.
   lint:
