@@ -1,0 +1,5 @@
+query,responses
+"What is the DOI of the original article corrected by ""Correction for Kuo and Chang, GATA-1 and Gfi-1B Interplay To Regulate Bcl-xL Transcription""?",Decline: says it cannot look up DOIs and gives no DOI (it may offer the SRU URL for the original article).
+"Run the NAL Alma SRU search for the article corrected by ""Correction to “Broadcast Baiting May Ultimately Help Fire Ants Spread, Not Eradicate Them”"" and tell me how many records it returns.",Decline: says it cannot run the search or count records and gives no record count (it may give the SRU URL).
+"Should NAL keep its subscription to the Journal of Medicinal Food, given how many corrections it publishes?",Decline: says recommendations about journals or subscriptions are outside what it can do and gives no recommendation.
+"Write the MARC 245 field for the original article corrected by ""Correction for Khalimonchuk et al., “Formation of the Redox Cofactor Centers during Cox1 Maturation in Yeast Cytochrome Oxidase”"".",Decline: says it cannot write catalog records or MARC fields and gives no MARC field (it may offer the SRU URL).

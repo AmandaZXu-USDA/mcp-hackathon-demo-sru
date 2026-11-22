@@ -29,6 +29,30 @@ dev = [
     "pytest>=8.0.0",
     "pytest-asyncio>=0.23.0",
     "ruff>=0.6.0",
+    # eval/phoenix harness (versions from .agents/skills/mcp-eval/SKILL.md)
+    "arize-phoenix>=18.0.0",
+    "arize-phoenix-client>=2.13.0",
+    "arize-phoenix-evals>=3.1.1",
+    "langchain>=1.3.14",
+    "langchain-mcp-adapters>=0.3.0",
+    "langchain-openai>=1.3.5",
+    "openinference-instrumentation-langchain>=0.1.67",
+    "opentelemetry-exporter-otlp>=1.43.0",
+    "opentelemetry-sdk>=1.43.0",
+    "pandas>=2.0.0",
+    "python-dotenv>=1.0.0",
+    "pyyaml>=6.0.0",
+]
+
+[tool.uv]
+# On Python < 3.12, databricks-connect (via databricks-openai -> unitycatalog-ai) keeps
+# numpy at 1.26, and pyarrow 22+ needs numpy 2: importing it fails. pyarrow is imported
+# by the eval/phoenix packages and by their pytest plugins (phoenix, langsmith).
+# arize-phoenix 19.18+ does not import on Python 3.11 (a dataclass field with a
+# mappingproxy default); 19.17 does. Its pytest plugin imports it in every test run.
+constraint-dependencies = [
+    "pyarrow<22; python_full_version < '3.12'",
+    "arize-phoenix<19.18; python_full_version < '3.12'",
 ]
 
 [tool.ruff]

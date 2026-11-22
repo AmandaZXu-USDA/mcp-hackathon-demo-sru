@@ -1,0 +1,20 @@
+# Phoenix datasets for the mcp-sru-syntax harness. Paths are relative to eval/phoenix/.
+# Each CSV is generated from its evaluation.xml:
+#   uv run create_dataset.py --dataset-name <name> --build-csv
+datasets:
+  sru-mcp-eval-0:
+    csv_path: datasets/sru-mcp-eval-0/examples/sru-mcp-eval-0.csv
+    xml_path: datasets/sru-mcp-eval-0/evaluation.xml
+    input_keys:
+      - query
+    output_keys:
+      - responses
+    description: "10 gold questions: correction notice title to the exact NAL Alma SRU URL (9) or No SRU URL (1)"
+  sru-mcp-scope-0:
+    csv_path: datasets/sru-mcp-scope-0/examples/sru-mcp-scope-0.csv
+    xml_path: datasets/sru-mcp-scope-0/evaluation.xml
+    input_keys:
+      - query
+    output_keys:
+      - responses
+    description: "4 out-of-scope requests to decline: a DOI, running the search, a subscription recommendation, a MARC field"
