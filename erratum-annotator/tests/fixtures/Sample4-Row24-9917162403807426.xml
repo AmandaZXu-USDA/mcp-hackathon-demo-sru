@@ -1,0 +1,181 @@
+<searchRetrieveResponse xmlns="http://www.loc.gov/zing/srw/">
+<version>1.2</version>
+<numberOfRecords>2</numberOfRecords>
+<records>
+<record>
+<recordSchema>mods</recordSchema>
+<recordPacking>xml</recordPacking>
+<recordData>
+<mods xmlns="http://www.loc.gov/mods/v3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="3.5" xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-5.xsd">
+<titleInfo>
+<title>Corrigendum to "Taxonomic revision of Sargassum sect. Acanthocarpicae (Fucales, Phaeophyceae)" [Taxon 59: 896–904. 2010]</title>
+</titleInfo>
+<name type="personal" usage="primary">
+<namePart>Mattio, Lydiane</namePart>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<typeOfResource>text</typeOfResource>
+<originInfo>
+<place>
+<placeTerm authority="marccountry" type="code">xx#</placeTerm>
+</place>
+<dateIssued encoding="marc">2013</dateIssued>
+<issuance>serial</issuance>
+</originInfo>
+<language>
+<languageTerm authority="iso639-2b" type="code">eng</languageTerm>
+</language>
+<physicalDescription>
+<extent>p. 847-847</extent>
+</physicalDescription>
+<note>ERRATUM</note>
+<location>
+<url displayLabel="Available from publisher's website" usage="primary display">https://doi.org/10.12705/624.32</url>
+</location>
+<relatedItem type="host">
+<titleInfo>
+<title>TAXON</title>
+</titleInfo>
+<originInfo>
+<publisher>John Wiley & Sons, Ltd</publisher>
+</originInfo>
+<identifier>10.1002/(ISSN)1996-8175</identifier>
+<identifier type="issn">0040-0262</identifier>
+<identifier type="local">Journal:1964</identifier>
+<part>
+<text>2013 Aug., v. 62, no. 4 p. 847-847</text>
+</part>
+</relatedItem>
+<identifier type="doi">10.12705/624.32</identifier>
+<recordInfo>
+<descriptionStandard>aacr</descriptionStandard>
+<recordContentSource authority="marcorg">AGL</recordContentSource>
+<recordCreationDate encoding="marc">260716</recordCreationDate>
+<recordIdentifier>9917162403807426</recordIdentifier>
+<recordOrigin>Converted from MARCXML to MODS version 3.5 using MARC21slim2MODS3-5.xsl (Revision 1.112 2018/06/21)</recordOrigin>
+<languageOfCataloging>
+<languageTerm authority="iso639-2b" type="code">eng</languageTerm>
+</languageOfCataloging>
+</recordInfo>
+</mods>
+</recordData>
+<recordIdentifier>9917162403807426</recordIdentifier>
+<recordPosition>1</recordPosition>
+</record>
+<record>
+<recordSchema>mods</recordSchema>
+<recordPacking>xml</recordPacking>
+<recordData>
+<mods xmlns="http://www.loc.gov/mods/v3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="3.5" xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-5.xsd">
+<titleInfo>
+<title>Taxonomic revision of Sargassum sect. Acanthocarpicae (Fucales, Phaeophyceae)</title>
+</titleInfo>
+<name type="personal" usage="primary">
+<namePart>Mattio, Lydiane</namePart>
+<affiliation>Institut de Recherche pour le Développement, UR227 CoRéUs, BPA5,, Nouméa cedex, 98848, New Caledonia ``Université de la Méditerranée, UMR6540 DIMAR COM,, Marseille cedex 9, 13288, France</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>Payri, Claude E.</namePart>
+<affiliation>Institut de Recherche pour le Développement, UR227 CoRéUs, BPA5,, Nouméa cedex, 98848, New Caledonia</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>Verlaque, Marc</namePart>
+<affiliation>Université de la Méditerranée, UMR6540 DIMAR COM,, Marseille cedex 9, 13288, France</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>de Reviers, Bruno</namePart>
+<affiliation>Muséum national d'histoire naturelle, UMR7138 SAE,, Paris cedex 05, 75231, France</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<typeOfResource>text</typeOfResource>
+<originInfo>
+<place>
+<placeTerm authority="marccountry" type="code">xx#</placeTerm>
+</place>
+<dateIssued encoding="marc">2010</dateIssued>
+<issuance>serial</issuance>
+</originInfo>
+<language>
+<languageTerm authority="iso639-2b" type="code">eng</languageTerm>
+</language>
+<physicalDescription>
+<extent>p. 896-904</extent>
+</physicalDescription>
+<abstract type="Summary">Sargassum is one of the morphologically most complex phaeophyceaen genera, and is divided into subgenera, sections, subsections, series and species groups based on highly polymorphic characters. Recent DNA analyses have highlighted incongruities in the traditional classification of the genus and especially within Sargassum subg. Sargassum sect. Acanthocarpicae. Our goal was to re–assess the relationships among taxa currently attributed to this section in the Pacific basin. We undertook the taxonomic study in two main steps: (1) the morphological examination of large collections from inter–tropical Pacific islands and type specimens from worldwide localities; and (2) DNA analyses using a set of three markers (ITS–2, partial rbcLS–operon, cox3). Morphological and DNA analyses confirmed that S. sect. Acanthocarpicae is based on unsuitable morphological characters and is not monophyletic. On the basis of this study, we propose (1) abandoning subsections within S. sect. Acanthocarpicae; (2) synonymization of S. sect. Acanthocarpicae and sect. Malacocarpicae with sect. Sargassum; and (3) the elevation of S. ser. Ilicifoliae and ser. Binderianae to sectional rank as well as their re–description according to new sets of morphological characters.</abstract>
+<note>JOURNAL ARTICLE</note>
+<subject authority="nal">
+<topic>taxonomic revisions</topic>
+</subject>
+<subject authority="nal">
+<topic>Sargassum</topic>
+</subject>
+<subject authority="nal">
+<topic>species</topic>
+</subject>
+<subject authority="nal">
+<topic>DNA</topic>
+</subject>
+<subject authority="nal">
+<topic>genus</topic>
+</subject>
+<subject authority="nal">
+<topic>basins</topic>
+</subject>
+<subject authority="nal">
+<topic>monophyly</topic>
+</subject>
+<subject authority="nal">
+<topic>redescriptions</topic>
+</subject>
+<location>
+<url displayLabel="Available from publisher's website" usage="primary display">https://doi.org/10.1002/tax.593017</url>
+</location>
+<relatedItem type="host">
+<titleInfo>
+<title>TAXON</title>
+</titleInfo>
+<originInfo>
+<publisher>John Wiley & Sons, Ltd</publisher>
+</originInfo>
+<identifier>10.1002/(ISSN)1996-8175</identifier>
+<identifier type="issn">0040-0262</identifier>
+<identifier type="local">Journal:1964</identifier>
+<part>
+<text>2010 June, v. 59, no. 3 p. 896-904</text>
+</part>
+</relatedItem>
+<identifier type="doi">10.1002/tax.593017</identifier>
+<recordInfo>
+<descriptionStandard>aacr</descriptionStandard>
+<recordContentSource authority="marcorg">AGL</recordContentSource>
+<recordCreationDate encoding="marc">260716</recordCreationDate>
+<recordIdentifier>9917162105907426</recordIdentifier>
+<recordOrigin>Converted from MARCXML to MODS version 3.5 using MARC21slim2MODS3-5.xsl (Revision 1.112 2018/06/21)</recordOrigin>
+<languageOfCataloging>
+<languageTerm authority="iso639-2b" type="code">eng</languageTerm>
+</languageOfCataloging>
+</recordInfo>
+</mods>
+</recordData>
+<recordIdentifier>9917162105907426</recordIdentifier>
+<recordPosition>2</recordPosition>
+</record>
+</records>
+<extraResponseData xmlns:xb="http://www.exlibris.com/repository/search/xmlbeans/">
+<xb:exact>true</xb:exact>
+<xb:responseDate>2026-11-22T11:00:13-0500</xb:responseDate>
+</extraResponseData>
+</searchRetrieveResponse>

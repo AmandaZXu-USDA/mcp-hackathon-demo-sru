@@ -1,0 +1,65 @@
+<searchRetrieveResponse xmlns="http://www.loc.gov/zing/srw/">
+<version>1.2</version>
+<numberOfRecords>1</numberOfRecords>
+<records>
+<record>
+<recordSchema>mods</recordSchema>
+<recordPacking>xml</recordPacking>
+<recordData>
+<mods xmlns="http://www.loc.gov/mods/v3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="3.5" xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-5.xsd">
+<titleInfo>
+<title>Publisher Correction to: ISJ meeting, Shiga, 9–12 October 2026 and papers published in Japanese Journal of Ichthyology</title>
+</titleInfo>
+<typeOfResource>text</typeOfResource>
+<originInfo>
+<place>
+<placeTerm authority="marccountry" type="code">xx#</placeTerm>
+</place>
+<dateIssued encoding="marc">2026</dateIssued>
+<issuance>serial</issuance>
+</originInfo>
+<language>
+<languageTerm authority="iso639-2b" type="code">eng</languageTerm>
+</language>
+<physicalDescription>
+<extent>p. 295-295</extent>
+</physicalDescription>
+<note>ERRATUM</note>
+<location>
+<url displayLabel="Available from publisher's website" usage="primary display">https://doi.org/10.1007/s10228-026-01071-0</url>
+</location>
+<relatedItem type="host">
+<titleInfo>
+<title>Ichthyological research</title>
+</titleInfo>
+<originInfo>
+<publisher>Springer Japan</publisher>
+</originInfo>
+<identifier type="issn">1341-8998</identifier>
+<identifier type="local">Journal:jnl4124684</identifier>
+<part>
+<text>2026 Apr., v. 73, no. 2 p. 295-295</text>
+</part>
+</relatedItem>
+<identifier type="doi">10.1007/s10228-026-01071-0</identifier>
+<recordInfo>
+<descriptionStandard>aacr</descriptionStandard>
+<recordContentSource authority="marcorg">AGL</recordContentSource>
+<recordCreationDate encoding="marc">260718</recordCreationDate>
+<recordIdentifier>9917166931307426</recordIdentifier>
+<recordOrigin>Converted from MARCXML to MODS version 3.5 using MARC21slim2MODS3-5.xsl (Revision 1.112 2018/06/21)</recordOrigin>
+<languageOfCataloging>
+<languageTerm authority="iso639-2b" type="code">eng</languageTerm>
+</languageOfCataloging>
+</recordInfo>
+</mods>
+</recordData>
+<recordIdentifier>9917166931307426</recordIdentifier>
+<recordPosition>1</recordPosition>
+</record>
+</records>
+<extraResponseData xmlns:xb="http://www.exlibris.com/repository/search/xmlbeans/">
+<xb:exact>true</xb:exact>
+<xb:responseDate>2026-11-22T10:52:18-0500</xb:responseDate>
+</extraResponseData>
+</searchRetrieveResponse>

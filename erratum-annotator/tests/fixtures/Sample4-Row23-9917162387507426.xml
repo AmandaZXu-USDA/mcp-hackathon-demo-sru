@@ -1,0 +1,165 @@
+<searchRetrieveResponse xmlns="http://www.loc.gov/zing/srw/">
+<version>1.2</version>
+<numberOfRecords>2</numberOfRecords>
+<records>
+<record>
+<recordSchema>mods</recordSchema>
+<recordPacking>xml</recordPacking>
+<recordData>
+<mods xmlns="http://www.loc.gov/mods/v3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="3.5" xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-5.xsd">
+<titleInfo>
+<title>Correction to “Revisiting Masstige Marketing: A Structured Literature Review and Future Research Agenda Using SPAR‐4‐SLR and S‐O‐R Model”</title>
+</titleInfo>
+<typeOfResource>text</typeOfResource>
+<originInfo>
+<place>
+<placeTerm authority="marccountry" type="code">xx#</placeTerm>
+</place>
+<dateIssued encoding="marc">2026</dateIssued>
+<issuance>serial</issuance>
+</originInfo>
+<language>
+<languageTerm authority="iso639-2b" type="code">eng</languageTerm>
+</language>
+<physicalDescription>
+<extent>p. e70224</extent>
+</physicalDescription>
+<note>ERRATUM</note>
+<location>
+<url displayLabel="Available from publisher's website" usage="primary display">https://doi.org/10.1111/ijcs.70224</url>
+</location>
+<relatedItem type="host">
+<titleInfo>
+<title>International Journal of Consumer Studies</title>
+</titleInfo>
+<originInfo>
+<publisher>John Wiley & Sons, Ltd</publisher>
+</originInfo>
+<identifier>10.1111/(ISSN)1470-6431</identifier>
+<identifier type="issn">1470-6423</identifier>
+<identifier type="local">Journal:jnl69639</identifier>
+<part>
+<text>2026 May, v. 50, no. 3 p. e70224</text>
+</part>
+</relatedItem>
+<identifier type="doi">10.1111/ijcs.70224</identifier>
+<recordInfo>
+<descriptionStandard>aacr</descriptionStandard>
+<recordContentSource authority="marcorg">AGL</recordContentSource>
+<recordCreationDate encoding="marc">260716</recordCreationDate>
+<recordIdentifier>9917162387507426</recordIdentifier>
+<recordOrigin>Converted from MARCXML to MODS version 3.5 using MARC21slim2MODS3-5.xsl (Revision 1.112 2018/06/21)</recordOrigin>
+<languageOfCataloging>
+<languageTerm authority="iso639-2b" type="code">eng</languageTerm>
+</languageOfCataloging>
+</recordInfo>
+</mods>
+</recordData>
+<recordIdentifier>9917162387507426</recordIdentifier>
+<recordPosition>1</recordPosition>
+</record>
+<record>
+<recordSchema>mods</recordSchema>
+<recordPacking>xml</recordPacking>
+<recordData>
+<mods xmlns="http://www.loc.gov/mods/v3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="3.5" xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-5.xsd">
+<titleInfo>
+<title>Revisiting Masstige Marketing: A Structured Literature Review and Future Research Agenda Using SPAR‐4‐SLR and S‐O‐R Model</title>
+</titleInfo>
+<name type="personal" usage="primary">
+<namePart>Babitā Kumārī</namePart>
+<affiliation>Central University of Himachal Pradesh, Dharamshala, India</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>Sharma, Dipanker</namePart>
+<affiliation>Central University of Himachal Pradesh, Dharamshala, India</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>Bhardwaj, Bhawana</namePart>
+<affiliation>Central University of Himachal Pradesh, Dharamshala, India</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<typeOfResource>text</typeOfResource>
+<originInfo>
+<place>
+<placeTerm authority="marccountry" type="code">xx#</placeTerm>
+</place>
+<dateIssued encoding="marc">2026</dateIssued>
+<issuance>serial</issuance>
+</originInfo>
+<language>
+<languageTerm authority="iso639-2b" type="code">eng</languageTerm>
+</language>
+<physicalDescription>
+<extent>p. e70192</extent>
+</physicalDescription>
+<abstract type="Summary">Masstige has emerged as a form of luxury that successfully appeals to a larger market without compromising its luxury image. This study conducts a systematic literature review and bibliometric analysis of 75 Scopus‐indexed articles published between 2007 and April 2025. The review synthesizes prevailing trends, theoretical foundations, methodological approaches, and research gaps in masstige marketing. The study applies the SPAR‐4‐SLR to ensure the rigor of the review process while using Theory, Context, Characteristics, Methodology (TCCM) for structuring insight, and S‐O‐R is applied to frame the implications for future research. Findings reveal that although masstige marketing has gained global recognition, empirical research remains predominantly concentrated in developing markets, where expanding middle‐class aspirations provide a fertile context for affordable luxury consumption. There is limited exploration of service sectors and cross‐cultural or cross‐national contexts. This review outlines key theoretical perspectives, such as masstige theory, and highlights emerging contexts, including B2B markets, the metaverse, and virtual reality. We propose a scope of future research on consumer psychology in immersive digital contexts and advocate the use of mixed methods, cross‐cultural studies, and AI‐based tools. Grounded in the Stimulus‐Organism‐Response (S‐O‐R) model, this review provides a basis for future researchers to advance both theory and practice in masstige marketing.</abstract>
+<note>REVIEW</note>
+<subject authority="nal">
+<topic>models</topic>
+</subject>
+<subject authority="nal">
+<topic>markets</topic>
+</subject>
+<subject authority="nal">
+<topic>bibliometric analysis</topic>
+</subject>
+<subject authority="nal">
+<topic>empirical research</topic>
+</subject>
+<subject authority="nal">
+<topic>socioeconomic status</topic>
+</subject>
+<subject authority="nal">
+<topic>computer simulation</topic>
+</subject>
+<subject authority="nal">
+<topic>psychology</topic>
+</subject>
+<location>
+<url displayLabel="Available from publisher's website" usage="primary display">https://doi.org/10.1111/ijcs.70192</url>
+</location>
+<relatedItem type="host">
+<titleInfo>
+<title>International Journal of Consumer Studies</title>
+</titleInfo>
+<originInfo>
+<publisher>John Wiley & Sons, Ltd</publisher>
+</originInfo>
+<identifier>10.1111/(ISSN)1470-6431</identifier>
+<identifier type="issn">1470-6423</identifier>
+<identifier type="local">Journal:jnl69639</identifier>
+<part>
+<text>2026 Mar., v. 50, no. 2 p. e70192</text>
+</part>
+</relatedItem>
+<identifier type="doi">10.1111/ijcs.70192</identifier>
+<recordInfo>
+<descriptionStandard>aacr</descriptionStandard>
+<recordContentSource authority="marcorg">AGL</recordContentSource>
+<recordCreationDate encoding="marc">260529</recordCreationDate>
+<recordIdentifier>9917138970307426</recordIdentifier>
+<recordOrigin>Converted from MARCXML to MODS version 3.5 using MARC21slim2MODS3-5.xsl (Revision 1.112 2018/06/21)</recordOrigin>
+<languageOfCataloging>
+<languageTerm authority="iso639-2b" type="code">eng</languageTerm>
+</languageOfCataloging>
+</recordInfo>
+</mods>
+</recordData>
+<recordIdentifier>9917138970307426</recordIdentifier>
+<recordPosition>2</recordPosition>
+</record>
+</records>
+<extraResponseData xmlns:xb="http://www.exlibris.com/repository/search/xmlbeans/">
+<xb:exact>true</xb:exact>
+<xb:responseDate>2026-11-22T10:58:05-0500</xb:responseDate>
+</extraResponseData>
+</searchRetrieveResponse>
