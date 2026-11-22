@@ -4,6 +4,32 @@ Matches a correction (erratum) notice in the NAL Alma SRU catalog to its origina
 note to the original title, e.g. `<original title> [Erratum: Aug. 2026, v. 52, no. 4, 134, 10.1007/s10695-026-01767-0]`.
 Titles that already carry an `[Erratum: ...]` note are returned unchanged.
 
+## Correction categories
+
+How the annotated title is built depends on what the SRU response holds:
+
+| Category | SRU response holds | Annotated title | Example |
+| --- | --- | --- | --- |
+| One correction, one original | 1 correction record + 1 original article | `<original title> [Erratum: ...]` | Sample 4, rows 2, 3 and 5 |
+| **Two corrections in one original title** | 2 or more correction records of the **same** original article + 1 original article | `<original title> [Erratum: A] [Erratum: B]`: every correction's note, ordered by date (year, month, day), then volume, issue and page | Sample 4, row 4; Sample 1, row 41 |
+| Already annotated | An original whose title already contains `[Erratum:` | Unchanged | Sample 1 |
+| No original in Alma | Only the correction record | The correction notice only; no annotated original (status `no_original`) | Sample 1, rows 4 and 24 |
+
+Two corrections in one original title (project owner's rule, 2026-11-22): Sample 4, row 4 (correction
+`9917012079207426`) returns the original `9917011947507426` and two corrections from the same issue, so page
+decides the order:
+
+```text
+Characterization of the role of the antioxidant proteins metallothioneins 1 and 2 in an animal model of Alzheimer’s disease [Erratum: Dec. 2025, v. 82, no. 1, 416, 10.1007/s00018-025-05965-6] [Erratum: Dec. 2025, v. 82, no. 1, 429, 10.1007/s00018-025-05953-w]
+```
+
+In Sample 1, row 41 the two corrigenda have different dates, so the Nov. 13, 2025 note comes before the June 18,
+2026 note (until 2026-11-22 this row got only the June 18, 2026 note). The result is the same whichever of the
+corrections' MMS IDs is passed as `correction_id`. A correction counts as one of the original's when its title
+matches the original title (similarity at least 0.6). If the response has more than one possible original, only
+the selected correction's note is used. `erratum_note` holds all the notes joined by a space; `erratum_notes` and
+`note_correction_ids` list them in order. Tests: `tests/test_multiple_corrections.py`.
+
 This is **project 2** of the NAL MCP Hackathon submission. Project 1 (`mcp-sru-syntax` + `agent-sru-syntax`)
 builds the SRU search URL for a correction notice; this project takes the SRU response and produces the annotated
 catalog title.
@@ -22,7 +48,7 @@ catalog title.
 | `mcp_server/erratum_annotator.py` | Core logic: parse SRU MODS XML, pick the original record, build the erratum note, enhance the title |
 | `mcp_server/app.py` | MCP server `mcp-erratum-note` (FastMCP, streamable HTTP at `/mcp`) for Databricks Apps |
 | `mcp_server/app.yaml`, `requirements.txt` | Databricks Apps config; `SRU_VOLUME_DIR` points at the saved SRU responses volume |
-| `tests/` | Tests of the tools' error handling (`test_tool_errors.py`) and a saved SRU response they use |
+| `tests/` | Tests of the tools' error handling (`test_tool_errors.py`), curly quotes (`test_curly_quotes.py`), two corrections in one original title (`test_multiple_corrections.py`) and the saved SRU responses they use (`fixtures/`) |
 | `uc_functions/` | Unity Catalog function definitions (`.sql`) and the script that generates them from `erratum_annotator.py` |
 | `demo/` | Offline single-file copy of the demo page (no account or network needed) and its build script |
 | `agent/README.md` | `agent-erratum-annotator` configuration: tools, endpoint and the instructions in use, with steps to recreate it |
@@ -32,8 +58,9 @@ catalog title.
 ## Demo web page
 
 <https://mcp-erratum-note-7474654188777746.aws.databricksapps.com> (sign in with a workspace account; needs
-`CAN USE` on the app). Pick one of the 50 saved correction notices (48 from Sample 1, plus Sample 2 rows 3 and 14,
-whose correction titles are in curly double quotes), or paste SRU XML, and see the correction
+`CAN USE` on the app). Pick one of the 54 saved correction notices (48 from Sample 1, Sample 2 rows 3 and 14,
+whose correction titles are in curly double quotes, and Sample 4 rows 2 to 5, where row 4 has two corrections in
+one original title), or paste SRU XML, and see the correction
 notice, the original article found, the erratum note and the annotated title, with a status (ready, needs
 review, no original in Alma, already annotated). **See all saved notices at once** annotates all 48 in one
 table. The page is served by the same app and code as the MCP tools (`GET /`, `GET /api/examples`,
@@ -55,9 +82,9 @@ The 7 tools of `mcp-erratum-note` (at `/mcp`) are defined in `mcp_server/app.py`
 | `parse_sru_response` | `xml` | Parses an SRU searchRetrieveResponse (MODS XML) into records: title, MMS ID, part text, DOI and whether it is a correction |
 | `extract_erratum_note` | `part_text`, `doi` | Formats the erratum note `[Erratum: Mon. YYYY, v. V, no. N, page, DOI]` from a correction record's `<part><text>` and DOI; empty if either is missing |
 | `enhance_title` | `original_title`, `erratum_note` | Appends the note to the end of the original title; leaves a title that already has `[Erratum:` unchanged |
-| `process_sru_response` | `xml`, `search_title` (optional), `correction_id` (optional) | Full pipeline: parses the XML, matches the correction record (the one with MMS ID `correction_id`, if given) to its original article (falling back to `search_title`) and returns the annotated title, the erratum note, both MMS IDs, review flags, record counts, `status` and `warnings` |
+| `process_sru_response` | `xml`, `search_title` (optional), `correction_id` (optional) | Full pipeline: parses the XML, matches the correction record (the one with MMS ID `correction_id`, if given) to its original article (falling back to `search_title`) and returns the annotated title, the erratum note (all notes, in date/page order, when the response has two or more corrections of the same original), both MMS IDs, review flags, record counts, `status` and `warnings` |
 | `list_sru_files` | `contains` (optional) | Lists the saved SRU response files in `SRU_VOLUME_DIR`, filtered by a substring such as `Row43` or an MMS ID |
-| `process_sru_file` | `file_name`, `search_title` (optional), `correction_id` (optional) | Reads one saved response by bare file name (no paths) and runs `process_sru_response`; takes the MMS ID from the end of the file name when `correction_id` is empty |
+| `process_sru_file` | `file_name`, `search_title` (optional), `correction_id` (optional) | Reads one saved response by bare file name (no paths) and runs `process_sru_response`; takes the 16-digit MMS ID from the end of the file name (before an optional `-Label` suffix such as `-TwoCorrectionsInOneOriginalTitle`) when `correction_id` is empty |
 
 The demo page routes (`GET /`, `GET /api/examples`, `POST /api/annotate`, `GET /api/annotate-all`) are in the
 same `app.py` and call the same code.

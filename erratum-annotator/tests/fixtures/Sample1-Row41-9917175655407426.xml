@@ -1,0 +1,366 @@
+<searchRetrieveResponse xmlns="http://www.loc.gov/zing/srw/">
+<version>1.2</version>
+<numberOfRecords>3</numberOfRecords>
+<records>
+<record>
+<recordSchema>mods</recordSchema>
+<recordPacking>xml</recordPacking>
+<recordData>
+<mods xmlns="http://www.loc.gov/mods/v3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="3.5" xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-5.xsd">
+<titleInfo>
+<title>Corrigendum: Błaszkowski J, Goto BT, Zubek S, Milczarski P, Malinowski R, Niezgoda P, Błaszkowski T (2025) Paracorymbiglomus gen. nov., Diversispora conica sp. nov., and new combinations in Diversisporaceae (Glomeromycota). MycoKeys 117: 171–190. https://doi.org/10.3897/mycokeys.117.148052</title>
+</titleInfo>
+<name type="personal" usage="primary">
+<namePart>Błaszkowski, Janusz</namePart>
+<affiliation>Department of Environmental Management, West Pomeranian University of Technology in Szczecin, Słowackiego 17, PL–71434 Szczecin, Poland, Department of General and Oncological Surgery, Pomeranian Medical University in Szczecin, Szczecin, Poland, https://ror.org/01v1rak05</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>Goto, Bruno Tomio</namePart>
+<affiliation>Departamento de Botânica e Zoologia, Universidade Federal do Rio Grande do Norte, Campus Universitário, 59078–900, Natal, RN, Brazil, Institute of Botany, Faculty of Biology, Jagiellonian University, Kraków, Poland, https://ror.org/03bqmcz70</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>Zubek, Szymon</namePart>
+<affiliation>Institute of Botany, Faculty of Biology, Jagiellonian University, 30–387, Kraków, Poland, Departamento de Botânica e Zoologia, Universidade Federal do Rio Grande do Norte, Campus Universitário, Natal, Brazil, https://ror.org/04wn09761</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>Milczarski, Paweł</namePart>
+<affiliation>Department of Genetic, Plant Breeding & Biotechnology, West Pomeranian University of Technology in Szczecin, Słowackiego 17, PL–71434 Szczecin, Poland, Department of Environmental Management, West Pomeranian University of Technology in Szczecin, Szczecin, Poland, https://ror.org/0596m7f19</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>Malinowski, Ryszard</namePart>
+<affiliation>Department of Environmental Management, West Pomeranian University of Technology in Szczecin, Słowackiego 17, PL–71434 Szczecin, Poland, Department of General and Oncological Surgery, Pomeranian Medical University in Szczecin, Szczecin, Poland, https://ror.org/01v1rak05</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>Niezgoda, Piotr</namePart>
+<affiliation>Department of Environmental Management, West Pomeranian University of Technology in Szczecin, Słowackiego 17, PL–71434 Szczecin, Poland, Department of General and Oncological Surgery, Pomeranian Medical University in Szczecin, Szczecin, Poland, https://ror.org/01v1rak05</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>Błaszkowski, Tomasz</namePart>
+<affiliation>Department of General and Oncological Surgery, Pomeranian Medical University in Szczecin, Szczecin, Poland, Department of Genetic, Plant Breeding & Biotechnology, West Pomeranian University of Technology in Szczecin, Szczecin, Poland, https://ror.org/0596m7f19</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<typeOfResource>text</typeOfResource>
+<originInfo>
+<place>
+<placeTerm authority="marccountry" type="code">xx#</placeTerm>
+</place>
+<dateIssued encoding="marc">2026</dateIssued>
+<issuance>serial</issuance>
+</originInfo>
+<language>
+<languageTerm authority="iso639-2b" type="code">eng</languageTerm>
+</language>
+<physicalDescription>
+<extent>p. 247-248</extent>
+</physicalDescription>
+<accessCondition type="restriction on access">Open Access</accessCondition>
+<accessCondition type="use and reproduction">Creative Commons Attribution 4.0 Generic (CC BY 4.0)</accessCondition>
+<note>ERRATUM</note>
+<note type="funding">No funding was reported.</note>
+<subject>
+<topic>Fungi</topic>
+</subject>
+<subject>
+<topic>Diversisporales</topic>
+</subject>
+<subject>
+<topic>Diversisporaceae</topic>
+</subject>
+<location>
+<url displayLabel="Available from publisher's website" usage="primary display">https://doi.org/10.3897/mycokeys.134.198487</url>
+</location>
+<relatedItem type="host">
+<titleInfo>
+<title>MycoKeys</title>
+</titleInfo>
+<originInfo>
+<publisher>Pensoft Publishers</publisher>
+</originInfo>
+<identifier type="issn">1314-4049</identifier>
+<identifier type="local">Journal:2143</identifier>
+<part>
+<text>2026 June 18, v. 134 p. 247-248</text>
+</part>
+</relatedItem>
+<identifier type="doi">10.3897/mycokeys.134.198487</identifier>
+<recordInfo>
+<descriptionStandard>aacr</descriptionStandard>
+<recordContentSource authority="marcorg">AGL</recordContentSource>
+<recordCreationDate encoding="marc">260803</recordCreationDate>
+<recordIdentifier>9917175655407426</recordIdentifier>
+<recordOrigin>Converted from MARCXML to MODS version 3.5 using MARC21slim2MODS3-5.xsl (Revision 1.112 2018/06/21)</recordOrigin>
+<languageOfCataloging>
+<languageTerm authority="iso639-2b" type="code">eng</languageTerm>
+</languageOfCataloging>
+</recordInfo>
+</mods>
+</recordData>
+<recordIdentifier>9917175655407426</recordIdentifier>
+<recordPosition>1</recordPosition>
+</record>
+<record>
+<recordSchema>mods</recordSchema>
+<recordPacking>xml</recordPacking>
+<recordData>
+<mods xmlns="http://www.loc.gov/mods/v3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="3.5" xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-5.xsd">
+<titleInfo>
+<title>﻿Corrigendum: Błaszkowski J, Goto BT, Zubek Sz, Milczarski P, Malinowski R, Niezgoda P, Błaszkowski T (2025) Paracorymbiglomus gen. nov., Diversispora conica sp. nov., and new combinations in Diversisporaceae (Glomeromycota). MycoKeys 117: 171–190. https://doi.org/10.3897/mycokeys.117.148052</title>
+</titleInfo>
+<name type="personal" usage="primary">
+<namePart>Błaszkowski, Janusz</namePart>
+<affiliation>Department of Environmental Management, West Pomeranian University of Technology in Szczecin, Słowackiego 17, PL–71434 Szczecin, Poland</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>Goto, Bruno Tomio</namePart>
+<affiliation>Departamento de Botânica e Zoologia, Universidade Federal do Rio Grande do Norte, Campus Universitário, 59078–900, Natal, RN, Brazil</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>Zubek, Szymon</namePart>
+<affiliation>Institute of Botany, Faculty of Biology, Jagiellonian University, 30–387, Kraków, Poland</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>Milczarski, Paweł</namePart>
+<affiliation>Department of Environmental Management, West Pomeranian University of Technology in Szczecin, Słowackiego 17, PL–71434 Szczecin, Poland</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>Malinowski, Ryszard</namePart>
+<affiliation>Department of Environmental Management, West Pomeranian University of Technology in Szczecin, Słowackiego 17, PL–71434 Szczecin, Poland</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>Niezgoda, Piotr</namePart>
+<affiliation>Department of Environmental Management, West Pomeranian University of Technology in Szczecin, Słowackiego 17, PL–71434 Szczecin, Poland</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>Błaszkowski, Tomasz</namePart>
+<affiliation>Department of Genetic, Plant Breeding & Biotechnology, West Pomeranian University of Technology in Szczecin, Słowackiego 17, PL–71434 Szczecin, Poland</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<typeOfResource>text</typeOfResource>
+<originInfo>
+<place>
+<placeTerm authority="marccountry" type="code">xx</placeTerm>
+</place>
+<dateIssued encoding="marc">2025</dateIssued>
+<issuance>serial</issuance>
+</originInfo>
+<language>
+<languageTerm authority="iso639-2b" type="code">eng</languageTerm>
+</language>
+<accessCondition type="restriction on access">Open Access</accessCondition>
+<location>
+<url displayLabel="electronic resource" usage="primary display">https://dx.doi.org/10.3897/mycokeys.124.171105</url>
+</location>
+<relatedItem type="host">
+<titleInfo>
+<title>MycoKeys</title>
+</titleInfo>
+<originInfo>
+<publisher>Pensoft Publishers</publisher>
+</originInfo>
+<identifier type="issn">1314-4049</identifier>
+<identifier type="local">9916339320307426</identifier>
+<identifier type="local">Journal:2143</identifier>
+<part>
+<text>2025 Nov. 13, v. 124</text>
+</part>
+</relatedItem>
+<identifier type="doi">10.3897/mycokeys.124.171105</identifier>
+<recordInfo>
+<recordContentSource authority="marcorg">AGL</recordContentSource>
+<recordCreationDate encoding="marc">251122</recordCreationDate>
+<recordIdentifier>9917006526107426</recordIdentifier>
+<recordOrigin>Converted from MARCXML to MODS version 3.5 using MARC21slim2MODS3-5.xsl (Revision 1.112 2018/06/21)</recordOrigin>
+<languageOfCataloging>
+<languageTerm authority="iso639-2b" type="code">eng</languageTerm>
+</languageOfCataloging>
+</recordInfo>
+</mods>
+</recordData>
+<recordIdentifier>9917006526107426</recordIdentifier>
+<recordPosition>2</recordPosition>
+</record>
+<record>
+<recordSchema>mods</recordSchema>
+<recordPacking>xml</recordPacking>
+<recordData>
+<mods xmlns="http://www.loc.gov/mods/v3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="3.5" xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-5.xsd">
+<titleInfo>
+<title>﻿Paracorymbiglomus gen. nov., Diversispora conica sp. nov., and new combinations in Diversisporaceae (Glomeromycota)</title>
+</titleInfo>
+<name type="personal" usage="primary">
+<namePart>Błaszkowski, Janusz</namePart>
+<affiliation>Department of Environmental Management, West Pomeranian University of Technology in Szczecin, Słowackiego 17, PL-71434 Szczecin, Poland</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>Goto, Bruno Tomio</namePart>
+<affiliation>Departamento de Botânica e Zoologia, Universidade Federal do Rio Grande do Norte, Campus Universitário, 59078-900, Natal, RN, Brazil</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>Zubek, Szymon</namePart>
+<affiliation>Institute of Botany, Faculty of Biology, Jagiellonian University, 30-387, Kraków, Poland</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>Milczarski, Paweł</namePart>
+<affiliation>Department of Environmental Management, West Pomeranian University of Technology in Szczecin, Słowackiego 17, PL-71434 Szczecin, Poland</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>Malinowski, Ryszard</namePart>
+<affiliation>Department of Environmental Management, West Pomeranian University of Technology in Szczecin, Słowackiego 17, PL-71434 Szczecin, Poland</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>Niezgoda, Piotr</namePart>
+<affiliation>Department of Environmental Management, West Pomeranian University of Technology in Szczecin, Słowackiego 17, PL-71434 Szczecin, Poland</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>Błaszkowski, Tomasz</namePart>
+<affiliation>Department of Genetic, Plant Breeding & Biotechnology, West Pomeranian University of Technology in Szczecin, Słowackiego 17, PL-71434 Szczecin, Poland</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<typeOfResource>text</typeOfResource>
+<originInfo>
+<place>
+<placeTerm authority="marccountry" type="code">xx</placeTerm>
+</place>
+<dateIssued encoding="marc">2025</dateIssued>
+<issuance>serial</issuance>
+</originInfo>
+<language>
+<languageTerm authority="iso639-2b" type="code">eng</languageTerm>
+</language>
+<abstract type="Summary">﻿AbstractThe paper presents the results of morphological studies, as well as comparisons and phylogenetic analyses of sequences of the 45S (= 18S-ITS-28S) nuc rDNA region and the rpb1 gene (when available) of four arbuscular mycorrhizal fungi (AMF) of the phylum Glomeromycota. These fungi were (i) an informally named isolate 449, suspected of being an undescribed species of the genus Diversispora , and (ii) three Corymbiglomus species in the family Diversisporaceae. The studies confirmed the novelty of isolate 449 in Diversispora and showed that Corymbiglomus contains only C. corymbiforme , while C. globiferum and C. pacificum should be transferred to a separate genus sister to Corymbiglomus . Consequently, isolate 449 was described as Diversispora conica sp. nov., C. globiferum , and C. pacificum were placed in Paracorymbiglomus gen. nov. and renamed P. globiferum comb. nov. and P. pacificum comb. nov.</abstract>
+<accessCondition type="restriction on access">Open Access</accessCondition>
+<subject authority="nal">
+<topic>Diversispora</topic>
+</subject>
+<subject authority="nal">
+<topic>family</topic>
+</subject>
+<subject authority="nal">
+<topic>genes</topic>
+</subject>
+<subject authority="nal">
+<topic>genus</topic>
+</subject>
+<subject authority="nal">
+<topic>phylogeny</topic>
+</subject>
+<subject authority="nal">
+<topic>species</topic>
+</subject>
+<subject authority="nal">
+<topic>vesicular arbuscular mycorrhizae</topic>
+</subject>
+<subject>
+<topic>Arbuscular mycorrhizal fungi</topic>
+</subject>
+<subject>
+<topic>morphology</topic>
+</subject>
+<subject>
+<topic>nuc rDNA</topic>
+</subject>
+<subject>
+<topic>phylogenetic taxonomy</topic>
+</subject>
+<subject>
+<topic>rpb1</topic>
+</subject>
+<location>
+<url displayLabel="electronic resource" usage="primary display">https://dx.doi.org/10.3897/mycokeys.117.148052</url>
+</location>
+<relatedItem type="host">
+<titleInfo>
+<title>MycoKeys</title>
+</titleInfo>
+<originInfo>
+<publisher>Pensoft Publishers</publisher>
+</originInfo>
+<identifier type="issn">1314-4049</identifier>
+<identifier type="local">9916339320307426</identifier>
+<identifier type="local">Journal:2143</identifier>
+<part>
+<text>2025 May 05, v. 117</text>
+</part>
+</relatedItem>
+<identifier type="doi">10.3897/mycokeys.117.148052</identifier>
+<recordInfo>
+<recordContentSource authority="marcorg">AGL</recordContentSource>
+<recordCreationDate encoding="marc">250515</recordCreationDate>
+<recordChangeDate encoding="iso8601">20250528190027.0</recordChangeDate>
+<recordIdentifier>9916848606207426</recordIdentifier>
+<recordOrigin>Converted from MARCXML to MODS version 3.5 using MARC21slim2MODS3-5.xsl (Revision 1.112 2018/06/21)</recordOrigin>
+<languageOfCataloging>
+<languageTerm authority="iso639-2b" type="code">eng</languageTerm>
+</languageOfCataloging>
+</recordInfo>
+</mods>
+</recordData>
+<recordIdentifier>9916848606207426</recordIdentifier>
+<recordPosition>3</recordPosition>
+</record>
+</records>
+<extraResponseData xmlns:xb="http://www.exlibris.com/repository/search/xmlbeans/">
+<xb:exact>true</xb:exact>
+<xb:responseDate>2026-11-20T11:54:07-0500</xb:responseDate>
+</extraResponseData>
+</searchRetrieveResponse>

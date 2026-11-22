@@ -166,6 +166,53 @@ def enhance_title(original_title: str, erratum_note: str) -> str:
     return f"{original_title} {erratum_note}"
 
 
+_MONTHS = {m: i for i, m in enumerate(
+    ("jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"), 1)}
+
+
+def _num(s) -> int:
+    m = re.search(r"\d+", s or "")
+    return int(m.group()) if m else 0
+
+
+def note_sort_key(correction: ModsRecord) -> tuple:
+    """Order correction records by date (year, month, day), then volume, issue and page.
+
+    Reads the MODS <part><text>, e.g. '2025 Dec., v. 82, no. 1, 416' or '2026 June 18, v. 134 p. 247-248'.
+    Unparsed parts sort last; the MMS ID breaks ties so the order is stable.
+    """
+    s = (correction.part_text or "").strip()
+    m = re.match(r"(\d{4})(?:\s+([A-Za-z]+)\.?(?:\s+(\d{1,2}))?)?", s)
+    if not m:
+        return (9999, 99, 99, 0, 0, 0, correction.record_id)
+    year, month, day = int(m.group(1)), _MONTHS.get((m.group(2) or "")[:3].lower(), 0), int(m.group(3) or 0)
+    vol = re.search(r"(?<![A-Za-z])v\.\s*([^,\s]+)", s)  # not the 'v.' inside 'Nov.'
+    issue = re.search(r"(?<![A-Za-z])no\.\s*([^,\s]+)", s)
+    tail = s[vol.end():] if vol else s[m.end():]
+    if issue:
+        tail = s[issue.end():]
+    return (year, month, day, _num(vol.group(1) if vol else ""), _num(issue.group(1) if issue else ""),
+            _num(tail), correction.record_id)
+
+
+def _same_article_corrections(corrections, correction, original, candidates: int):
+    """Corrections whose notes all go into the original title, in date/page order.
+
+    Rule (user, 2026-11-22, Sample4 Row4): when the SRU response holds two or more correction
+    records and one original article, every correction of that article gets its note in the
+    single original title, ordered by date, then volume, issue and page. A correction counts as
+    'of that article' when its title matches the original title (similarity >= 0.6). Otherwise
+    only the selected correction is used.
+    """
+    if correction is None:
+        return []
+    if original is None or candidates != 1 or len(corrections) < 2:
+        return [correction]
+    same = [c for c in corrections
+            if c.record_id == correction.record_id or title_similarity(c.title, original.title) >= 0.6]
+    return sorted(same, key=note_sort_key)
+
+
 def _pick_original(records, correction, search_title: str = ""):
     """Choose the original article record; never an erratum/correction record.
 
@@ -202,6 +249,9 @@ def process_sru_response(xml: str, search_title: str = "", correction_id: str = 
     Falls back to search_title when the response has no original record.
     When a response holds several correction records, pass correction_id (the
     row's erratum MMS ID) to pick the right one; otherwise the first is used.
+    When it holds two or more corrections of one original article, all their
+    notes are appended in date/page order (erratum_note joins them with a space;
+    erratum_notes lists them).
     """
     records = parse_sru_response(xml)
     corrections = [r for r in records if r.is_correction]
@@ -209,7 +259,9 @@ def process_sru_response(xml: str, search_title: str = "", correction_id: str = 
                       corrections[0] if corrections else None)
     original, candidates, review = _pick_original(records, correction, search_title)
     base = original.title if original else search_title
-    note = extract_erratum_note(correction) if correction else None
+    used = _same_article_corrections(corrections, correction, original, candidates)
+    notes = [n for n in (extract_erratum_note(c) for c in used) if n]
+    note = " ".join(notes) or None
     already = "[Erratum:" in (base or "")
     annotated = enhance_title(base, note) if note else base
     return {
@@ -221,6 +273,8 @@ def process_sru_response(xml: str, search_title: str = "", correction_id: str = 
         "original_candidates": candidates,
         "needs_review": review,
         "erratum_note": note,
+        "erratum_notes": notes,
+        "note_correction_ids": [c.record_id for c in used if extract_erratum_note(c)],
         "already_annotated": already,
         "annotated_title": annotated,
     }

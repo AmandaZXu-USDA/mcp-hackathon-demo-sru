@@ -253,10 +253,11 @@ def _with_status(result: dict, correction_id: str) -> dict:
     else:
         status = _status(result)
     used = result.get("correction_id")
-    if correction_id and used and used != correction_id:
+    all_used = len(result.get("note_correction_ids") or []) > 1
+    if correction_id and used and used != correction_id and not all_used:
         warnings.append(f"correction_id {correction_id} is not in this response; used the first correction record "
                         f"({used}) instead.")
-    elif not correction_id and (result.get("num_corrections") or 0) > 1:
+    elif not correction_id and (result.get("num_corrections") or 0) > 1 and not all_used:
         warnings.append(f"This response has {result['num_corrections']} correction records; used the first ({used}). "
                         "Pass correction_id to choose another.")
     return {**result, "status": status, "warnings": warnings}
@@ -337,8 +338,11 @@ def process_sru_response(xml: str, search_title: str = "", correction_id: str = 
     Uses search_title as the fallback when no original record is in the response.
     Pass correction_id (the 16-digit erratum MMS ID) when a response may contain several
     correction records, so the right one supplies the note.
-    Returns {annotated_title, erratum_note, correction_id, original_id, original_source,
-             already_annotated, num_records, num_corrections, status, warnings}.
+    When the response holds two or more corrections of one original article, all their notes go into
+    the original title, ordered by date, then volume, issue and page (erratum_note joins them;
+    erratum_notes and note_correction_ids list them).
+    Returns {annotated_title, erratum_note, erratum_notes, note_correction_ids, correction_id, original_id,
+             original_source, already_annotated, num_records, num_corrections, status, warnings}.
     status: ready, needs_review, no_original, already_annotated, no_records, no_correction or no_note.
     Errors (bad or non-SRU XML, bad correction_id) end with [error <category>, id <id>].
     """
@@ -380,7 +384,7 @@ def process_sru_file(file_name: str, search_title: str = "", correction_id: str 
     search_title = _check_text("search_title", search_title).strip()
     correction_id = _check_correction_id(correction_id)
     if not correction_id:
-        m = re.search(r"(\d{16})\.xml$", file_name, re.I)
+        m = re.search(r"(\d{16})(?:-[A-Za-z][A-Za-z0-9]*)*\.xml$", file_name, re.I)
         correction_id = m.group(1) if m else ""
     xml = _read_volume_file(path)
     try:
@@ -438,7 +442,7 @@ def _load_examples() -> list:
                 continue
             xml = _read_volume_file(_safe_path(name))
             _cache["xml"][name] = xml
-            m = re.search(r"(\d{16})\.xml$", name, re.I)
+            m = re.search(r"(\d{16})(?:-[A-Za-z][A-Za-z0-9]*)*\.xml$", name, re.I)
             cid = m.group(1) if m else ""
             recs = _parse(xml)
             corr = next((r for r in recs if r.is_correction and r.record_id == cid), None) or next(
@@ -528,7 +532,7 @@ async def api_annotate(request: Request) -> JSONResponse:
             if xml is None:
                 return _err("No saved SRU response with that file name.", 404)
             if not correction_id:
-                m = re.search(r"(\d{16})\.xml$", name, re.I)
+                m = re.search(r"(\d{16})(?:-[A-Za-z][A-Za-z0-9]*)*\.xml$", name, re.I)
                 correction_id = m.group(1) if m else ""
         else:
             xml = body.get("xml")
@@ -644,6 +648,7 @@ DEMO_PAGE = """<!doctype html>
   <div class="picks" id="picks">Quick examples:
     <button type="button" data-row="1-43">Typical correction</button>
     <button type="button" data-row="1-41">Two corrections in one response</button>
+    <button type="button" data-row="4-4">Two corrections, one original: both notes</button>
     <button type="button" data-row="1-40">Title with a curly apostrophe</button>
     <button type="button" data-row="2-3">Correction title in curly double quotes</button>
     <button type="button" data-row="1-4">No original article in Alma</button>

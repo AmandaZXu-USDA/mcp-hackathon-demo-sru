@@ -1,0 +1,337 @@
+<searchRetrieveResponse xmlns="http://www.loc.gov/zing/srw/">
+<version>1.2</version>
+<numberOfRecords>3</numberOfRecords>
+<records>
+<record>
+<recordSchema>mods</recordSchema>
+<recordPacking>xml</recordPacking>
+<recordData>
+<mods xmlns="http://www.loc.gov/mods/v3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="3.5" xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-5.xsd">
+<titleInfo>
+<title>Characterization of the role of the antioxidant proteins metallothioneins 1 and 2 in an animal model of Alzheimer’s disease</title>
+</titleInfo>
+<name type="personal" usage="primary">
+<namePart>Manso, Yasmina</namePart>
+<affiliation>Animal Physiology Unit, Department of Cellular Biology, Physiology and Immunology, Faculty of Biosciences, Universitat Autònoma de Barcelona, Edificio C, Bellaterra, Barcelona, 08193, Spain ``Institute of Neurosciences, Universitat Autònoma de Barcelona, Bellaterra, Barcelona, 08193, Spain</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>Carrasco, Javier</namePart>
+<affiliation>Animal Physiology Unit, Department of Cellular Biology, Physiology and Immunology, Faculty of Biosciences, Universitat Autònoma de Barcelona, Edificio C, Bellaterra, Barcelona, 08193, Spain</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>Comes, Gemma</namePart>
+<affiliation>Animal Physiology Unit, Department of Cellular Biology, Physiology and Immunology, Faculty of Biosciences, Universitat Autònoma de Barcelona, Edificio C, Bellaterra, Barcelona, 08193, Spain ``Institute of Neurosciences, Universitat Autònoma de Barcelona, Bellaterra, Barcelona, 08193, Spain</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>Adlard, Paul A.</namePart>
+<affiliation>Oxidation Biology Laboratory, The Mental Health Research Institute, Parkville, The University of Melbourne, Victoria, 3052, Australia ``Synaptic Neurobiology Laboratory, The Mental Health Research Institute, Parkville, The University of Melbourne, Victoria, 3052, Australia</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>Bush, Ashley I.</namePart>
+<affiliation>Oxidation Biology Laboratory, The Mental Health Research Institute, Parkville, The University of Melbourne, Victoria, 3052, Australia</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>Hidalgo, Juan</namePart>
+<affiliation>Animal Physiology Unit, Department of Cellular Biology, Physiology and Immunology, Faculty of Biosciences, Universitat Autònoma de Barcelona, Edificio C, Bellaterra, Barcelona, 08193, Spain. juan.hidalgo@uab.es ``Institute of Neurosciences, Universitat Autònoma de Barcelona, Bellaterra, Barcelona, 08193, Spain. juan.hidalgo@uab.es</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<typeOfResource>text</typeOfResource>
+<originInfo>
+<place>
+<placeTerm authority="marccountry" type="code">xx</placeTerm>
+</place>
+<dateIssued encoding="marc">2012</dateIssued>
+<issuance>serial</issuance>
+</originInfo>
+<language>
+<languageTerm authority="iso639-2b" type="code">eng</languageTerm>
+</language>
+<physicalDescription>
+<extent>p. 3665-3681.</extent>
+</physicalDescription>
+<abstract type="Summary">Alzheimer’s disease (AD) is by far the most commonly diagnosed dementia, and despite multiple efforts, there are still no effective drugs available for its treatment. One strategy that deserves to be pursued is to alter the expression and/or physiological action of endogenous proteins instead of administering exogenous factors. In this study, we intend to characterize the roles of the antioxidant, anti-inflammatory, and heavy-metal binding proteins, metallothionein-1 + 2 (MT1 + 2), in a mouse model of Alzheimer’s disease, Tg2576 mice. Contrary to expectations, MT1 + 2-deficiency rescued partially the human amyloid precursor protein-induced changes in mortality and body weight in a gender-dependent manner. On the other hand, amyloid plaque burden was decreased in the cortex and hippocampus in both sexes, while the amyloid cascade, neuroinflammation, and behavior were affected in the absence of MT1 + 2 in a complex manner. These results highlight that the control of the endogenous production and/or action of MT1 + 2 could represent a powerful therapeutic target in AD.</abstract>
+<subject authority="nal">
+<topic>amyloid</topic>
+</subject>
+<subject authority="nal">
+<topic>animal models</topic>
+</subject>
+<subject authority="nal">
+<topic>antioxidants</topic>
+</subject>
+<subject authority="nal">
+<topic>body weight</topic>
+</subject>
+<subject authority="nal">
+<topic>cortex</topic>
+</subject>
+<subject authority="nal">
+<topic>dementia</topic>
+</subject>
+<subject authority="nal">
+<topic>heavy metals</topic>
+</subject>
+<subject authority="nal">
+<topic>hippocampus</topic>
+</subject>
+<subject authority="nal">
+<topic>humans</topic>
+</subject>
+<subject authority="nal">
+<topic>mice</topic>
+</subject>
+<subject authority="nal">
+<topic>mortality</topic>
+</subject>
+<subject authority="nal">
+<topic>therapeutics</topic>
+</subject>
+<location>
+<url displayLabel="electronic resource" usage="primary display">https://dx.doi.org/10.1007/s00018-012-1045-y</url>
+</location>
+<relatedItem type="host">
+<titleInfo>
+<title>Cell. Mol. Life Sci</title>
+</titleInfo>
+<originInfo>
+<publisher>Springer International Publishing</publisher>
+</originInfo>
+<identifier type="issn">1420-682X</identifier>
+<identifier type="local">9916339348107426</identifier>
+<identifier type="local">Journal:jnl55291</identifier>
+<part>
+<text>2012 Nov., v. 69, no. 21 p.3665-3681</text>
+</part>
+</relatedItem>
+<identifier type="doi">10.1007/s00018-012-1045-y</identifier>
+<recordInfo>
+<recordContentSource authority="marcorg">AGL</recordContentSource>
+<recordCreationDate encoding="marc">260218</recordCreationDate>
+<recordIdentifier>9917011947507426</recordIdentifier>
+<recordOrigin>Converted from MARCXML to MODS version 3.5 using MARC21slim2MODS3-5.xsl (Revision 1.112 2018/06/21)</recordOrigin>
+<languageOfCataloging>
+<languageTerm authority="iso639-2b" type="code">eng</languageTerm>
+</languageOfCataloging>
+</recordInfo>
+</mods>
+</recordData>
+<recordIdentifier>9917011947507426</recordIdentifier>
+<recordPosition>1</recordPosition>
+</record>
+<record>
+<recordSchema>mods</recordSchema>
+<recordPacking>xml</recordPacking>
+<recordData>
+<mods xmlns="http://www.loc.gov/mods/v3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="3.5" xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-5.xsd">
+<titleInfo>
+<title>Correction: Characterization of the role of the antioxidant proteins metallothioneins 1 and 2 in an animal model of Alzheimer’s disease</title>
+</titleInfo>
+<name type="personal" usage="primary">
+<namePart>Manso, Yasmina</namePart>
+<affiliation>Animal Physiology Unit, Department of Cellular Biology, Physiology and Immunology, Faculty of Biosciences, Universitat Autònoma de Barcelona, Edificio C, Bellaterra, Barcelona, 08193, Spain ``Institute of Neurosciences, Universitat Autònoma de Barcelona, Bellaterra, Barcelona, 08193, Spain</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>Carrasco, Javier</namePart>
+<affiliation>Animal Physiology Unit, Department of Cellular Biology, Physiology and Immunology, Faculty of Biosciences, Universitat Autònoma de Barcelona, Edificio C, Bellaterra, Barcelona, 08193, Spain</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>Comes, Gemma</namePart>
+<affiliation>Animal Physiology Unit, Department of Cellular Biology, Physiology and Immunology, Faculty of Biosciences, Universitat Autònoma de Barcelona, Edificio C, Bellaterra, Barcelona, 08193, Spain ``Institute of Neurosciences, Universitat Autònoma de Barcelona, Bellaterra, Barcelona, 08193, Spain</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>Adlard, Paul</namePart>
+<affiliation>Oxidation Biology Laboratory, The Mental Health Research Institute, Parkville, The University of Melbourne, Victoria, 3052, Australia ``Synaptic Neurobiology Laboratory, The Mental Health Research Institute, Parkville, The University of Melbourne, Victoria , 3052, Australia</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>Bush, Ashley</namePart>
+<affiliation>Oxidation Biology Laboratory, The Mental Health Research Institute, Parkville, The University of Melbourne, Victoria, 3052, Australia</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>Hidalgo, Juan</namePart>
+<affiliation>Animal Physiology Unit, Department of Cellular Biology, Physiology and Immunology, Faculty of Biosciences, Universitat Autònoma de Barcelona, Edificio C, Bellaterra, Barcelona, 08193, Spain. juan.hidalgo@uab.es ``Institute of Neurosciences, Universitat Autònoma de Barcelona, Bellaterra, Barcelona, 08193, Spain. juan.hidalgo@uab.es</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<typeOfResource>text</typeOfResource>
+<originInfo>
+<place>
+<placeTerm authority="marccountry" type="code">xx#</placeTerm>
+</place>
+<dateIssued encoding="marc">2025</dateIssued>
+<issuance>serial</issuance>
+</originInfo>
+<language>
+<languageTerm authority="iso639-2b" type="code">eng</languageTerm>
+</language>
+<physicalDescription>
+<extent>429</extent>
+</physicalDescription>
+<note>ERRATUM</note>
+<location>
+<url displayLabel="electronic resource" usage="primary display">https://dx.doi.org/10.1007/s00018-025-05953-w</url>
+</location>
+<relatedItem type="host">
+<titleInfo>
+<title>Cellular and molecular life sciences</title>
+</titleInfo>
+<originInfo>
+<publisher>Springer International Publishing</publisher>
+</originInfo>
+<identifier type="issn">1420-9071</identifier>
+<identifier type="local">Journal:jnl55291</identifier>
+<part>
+<text>2025 Dec., v. 82, no. 1, 429</text>
+</part>
+</relatedItem>
+<identifier type="doi">10.1007/s00018-025-05953-w</identifier>
+<recordInfo>
+<descriptionStandard>aacr</descriptionStandard>
+<recordContentSource authority="marcorg">AGL</recordContentSource>
+<recordCreationDate encoding="marc">260722</recordCreationDate>
+<recordIdentifier>9917011723907426</recordIdentifier>
+<recordOrigin>Converted from MARCXML to MODS version 3.5 using MARC21slim2MODS3-5.xsl (Revision 1.112 2018/06/21)</recordOrigin>
+<languageOfCataloging>
+<languageTerm authority="iso639-2b" type="code">eng</languageTerm>
+</languageOfCataloging>
+</recordInfo>
+</mods>
+</recordData>
+<recordIdentifier>9917011723907426</recordIdentifier>
+<recordPosition>2</recordPosition>
+</record>
+<record>
+<recordSchema>mods</recordSchema>
+<recordPacking>xml</recordPacking>
+<recordData>
+<mods xmlns="http://www.loc.gov/mods/v3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="3.5" xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-5.xsd">
+<titleInfo>
+<title>Correction: Characterization of the role of the antioxidant proteins Metallothioneins 1 and 2 in an animal model of alzheimer’s disease</title>
+</titleInfo>
+<name type="personal" usage="primary">
+<namePart>Manso, Yasmina</namePart>
+<affiliation>Animal Physiology Unit, Department of Cellular Biology, Physiology and Immunology, Faculty of Biosciences, Universitat Autònoma de Barcelona, Edificio C, Bellaterra, Barcelona, 08193, Spain ``Institute of Neurosciences, Universitat Autònoma de Barcelona, Bellaterra, Barcelona, 08193, Spain ``Department of Cell Biology, Physiology and Immunology, and Institute of Neurosciences, University of Barcelona, Barcelona, 08028, Spain ``Centro de Investigación Biomédica en Red sobre Enfermedades Neurodegenerativas (CIBER-CIBERNED), ISCIII, Madrid, 28031, Spain</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>Carrasco, Javier</namePart>
+<affiliation>Animal Physiology Unit, Department of Cellular Biology, Physiology and Immunology, Faculty of Biosciences, Universitat Autònoma de Barcelona, Edificio C, Bellaterra, Barcelona, 08193, Spain</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>Comes, Gemma</namePart>
+<affiliation>Animal Physiology Unit, Department of Cellular Biology, Physiology and Immunology, Faculty of Biosciences, Universitat Autònoma de Barcelona, Edificio C, Bellaterra, Barcelona, 08193, Spain ``Institute of Neurosciences, Universitat Autònoma de Barcelona, Bellaterra, Barcelona, 08193, Spain</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>Adlard, Paul</namePart>
+<affiliation>Oxidation Biology Laboratory, The Mental Health Research Institute, Parkville, The University of Melbourne, Victoria, 3052, Australia ``Synaptic Neurobiology Laboratory, The Mental Health Research, Institute, Parkville, The University of Melbourne, Victoria, 3052, Australia ``Synaptic Neurobiology Lab, Florey Institute of Neuroscience & Mental Health, The University of Melbourne, Parkville, Victoria , 3052 , Australia</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>Bush, Ashley</namePart>
+<affiliation>Oxidation Biology Laboratory, The Mental Health Research Institute, Parkville, The University of Melbourne, Victoria, 3052, Australia ``Oxidation Biology Group, Florey Institute of Neuroscience & Mental Health, The University of Melbourne, Parkville, Victoria, 3052, Australia</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>Hidalgo, Juan</namePart>
+<affiliation>Animal Physiology Unit, Department of Cellular Biology, Physiology and Immunology, Faculty of Biosciences, Universitat Autònoma de Barcelona, Edificio C, Bellaterra, Barcelona, 08193, Spain. juan.hidalgo@uab.es ``Institute of Neurosciences, Universitat Autònoma de Barcelona, Bellaterra, Barcelona, 08193, Spain. juan.hidalgo@uab.es ``Oxidation Biology Group, Florey Institute of Neuroscience & Mental Health, The University of Melbourne, Parkville, Victoria, 3052, Australia. juan.hidalgo@uab.es</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<typeOfResource>text</typeOfResource>
+<originInfo>
+<place>
+<placeTerm authority="marccountry" type="code">xx#</placeTerm>
+</place>
+<dateIssued encoding="marc">2025</dateIssued>
+<issuance>serial</issuance>
+</originInfo>
+<language>
+<languageTerm authority="iso639-2b" type="code">eng</languageTerm>
+</language>
+<physicalDescription>
+<extent>416</extent>
+</physicalDescription>
+<note>ERRATUM</note>
+<location>
+<url displayLabel="electronic resource" usage="primary display">https://dx.doi.org/10.1007/s00018-025-05965-6</url>
+</location>
+<relatedItem type="host">
+<titleInfo>
+<title>Cellular and molecular life sciences</title>
+</titleInfo>
+<originInfo>
+<publisher>Springer International Publishing</publisher>
+</originInfo>
+<identifier type="issn">1420-9071</identifier>
+<identifier type="local">Journal:jnl55291</identifier>
+<part>
+<text>2025 Dec., v. 82, no. 1, 416</text>
+</part>
+</relatedItem>
+<identifier type="doi">10.1007/s00018-025-05965-6</identifier>
+<recordInfo>
+<descriptionStandard>aacr</descriptionStandard>
+<recordContentSource authority="marcorg">AGL</recordContentSource>
+<recordCreationDate encoding="marc">260722</recordCreationDate>
+<recordIdentifier>9917012079207426</recordIdentifier>
+<recordOrigin>Converted from MARCXML to MODS version 3.5 using MARC21slim2MODS3-5.xsl (Revision 1.112 2018/06/21)</recordOrigin>
+<languageOfCataloging>
+<languageTerm authority="iso639-2b" type="code">eng</languageTerm>
+</languageOfCataloging>
+</recordInfo>
+</mods>
+</recordData>
+<recordIdentifier>9917012079207426</recordIdentifier>
+<recordPosition>3</recordPosition>
+</record>
+</records>
+<extraResponseData xmlns:xb="http://www.exlibris.com/repository/search/xmlbeans/">
+<xb:exact>true</xb:exact>
+<xb:responseDate>2026-11-22T10:16:59-0500</xb:responseDate>
+</extraResponseData>
+</searchRetrieveResponse>

@@ -92,6 +92,7 @@ class Mcp:
     def request(self, method: str, params: dict) -> dict:
         r = self._post(method, params)
         if r.headers.get("content-type", "").startswith("text/event-stream"):
+            r.encoding = "utf-8"  # SSE has no charset; requests would guess ISO-8859-1
             for line in r.text.splitlines():
                 if line.startswith("data:"):
                     msg = json.loads(line[5:])
