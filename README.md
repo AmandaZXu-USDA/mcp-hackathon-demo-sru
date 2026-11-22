@@ -25,7 +25,7 @@ This project is the initial stage of automating that workflow:
 | Agent | Supervisor Agent `agent-sru-syntax` (`mas-c8629507-endpoint`); the app also serves an OpenAI Agents SDK agent at `/invocations` | Supervisor Agent `agent-erratum-annotator` (`mas-c341c0aa-endpoint`), [configuration](erratum-annotator/agent/README.md) |
 | Deterministic rules | UC function `users.amanda_xu.build_sru_url` | UC function `users.amanda_xu.process_sru_response` |
 | Code | Repo root: [`src/sru_server/`](src/sru_server/), [`databricks.yml`](databricks.yml) | [`erratum-annotator/`](erratum-annotator/README.md) |
-| Evaluation | [`eval/databricks/`](eval/databricks/README.md), [report PDF](submission/sru-syntax-mcp-evaluation-report.pdf) | [`erratum-annotator/eval/databricks/`](erratum-annotator/eval/databricks/README.md), [report PDF](erratum-annotator/eval/databricks/doc/agent-erratum-annotator-evaluation-report.pdf) |
+| Evaluation | [`eval/`](eval/README.md): Inspector Gadget MCP tests, MLflow evaluation ([`databricks/`](eval/databricks/README.md)), Phoenix agent evaluation ([`phoenix/`](eval/phoenix/README.md)); [report PDF](submission/sru-syntax-mcp-evaluation-report.pdf) | [`erratum-annotator/eval/databricks/`](erratum-annotator/eval/databricks/README.md), [report PDF](erratum-annotator/eval/databricks/doc/agent-erratum-annotator-evaluation-report.pdf) |
 | Headline result | 135/142 correct replies via MCP, 0 wrong URLs | Agent: 50/53 exact annotated titles; MCP server alone: 0 errors, 48/48 original MMS IDs |
 | Deploy | Declarative Automation Bundle `sru_syntax` | `databricks apps deploy` from `erratum-annotator/mcp_server` |
 
@@ -225,7 +225,7 @@ the exact work to tools. It is a small, two-stage system, not an open-ended agen
 | [`sru-syntax-mcp/`](sru-syntax-mcp/README.md) | Part 2, as deployed: byte-identical copy of the live `mcp-sru-syntax` source (`mcp_server/`) and the UC function `build_sru_url` (`uc_functions/`). Tools and functions are listed in [`deploy/databricks/README.md`](deploy/databricks/README.md#tools-and-functions). |
 | [`title-extraction/`](title-extraction/README.md) | Part 1: `erratum_title_extractor.py`, the spreadsheet processing script. |
 | [`deploy/databricks/`](deploy/databricks/README.md) | Deployment runbook: how to deploy the MCP server as a Databricks App using a Declarative Automation Bundle. |
-| [`eval/databricks/`](eval/databricks/README.md) | Offline evaluation: MLflow GenAI evaluation over labelled notices with the `ToolCallEfficiency` scorer. |
+| [`eval/`](eval/README.md) | All evaluation methods, indexed in [`eval/README.md`](eval/README.md) with their status in [`EVALUATION_FRAMEWORK.md`](eval/EVALUATION_FRAMEWORK.md): the Inspector Gadget MCP test suite for both live apps (`inspector_gadget/`), MLflow GenAI evaluation over labelled notices (`databricks/`), the Phoenix harness that scores an agent using the MCP server (`phoenix/`), committed run results (`results/`), the demo runbook (`demo/`) and the usability review (`usability/`). |
 | [`tests/`](tests/) | Smoke tests and SSRF hardening regression tests for the MCP server. |
 | [`.agents/skills/agent-sru-syntax/`](.agents/skills/agent-sru-syntax/SKILL.md) | Coding-agent skill: instructions and SRU URL rules for agents working on this project. |
 | [`databricks.yml`](databricks.yml) | Declarative Automation Bundle: defines the app, its resources, and variables. |
@@ -317,7 +317,7 @@ https://nal.alma.exlibrisgroup.com/view/sru/01NAL_INST?version=1.2&operation=sea
 | Supervisor Agent `agent-sru-syntax` (endpoint `mas-c8629507-endpoint`) | Agent Bricks agent that calls the function as a tool. |
 | Databricks App `mcp-sru-syntax` | Custom MCP server with one read-only tool, `build_sru_search_url`, that runs the function on a SQL warehouse first (about 4 s) and asks the Supervisor Agent only if that call fails. The same app serves an OpenAI Agents SDK agent at `/invocations` that uses the tool. See [`deploy/databricks/README.md`](deploy/databricks/README.md). |
 | Agent skill `agent-sru-syntax` | Instructions and rules for coding agents working on this project ([`SKILL.md`](.agents/skills/agent-sru-syntax/SKILL.md)). |
-| Offline evaluation | MLflow GenAI evaluation over labelled notices ([`eval/databricks/`](eval/databricks/README.md)). |
+| Evaluation | Inspector Gadget MCP tests of the live app, MLflow GenAI evaluation over labelled notices, and a Phoenix evaluation of an agent that uses the MCP server ([`eval/`](eval/README.md)). |
 
 For bulk work, call the function from SQL. The MCP tool and the browser page answer in about 4 seconds
 per title (live test 2026-11-21: 3.9-4.7 s), because they run the function first; the Supervisor Agent
@@ -456,8 +456,10 @@ permission grants only.
   notices (5 scorers: `sru_url_match`, `correctness`, `relevant_to_notice`, `no_invented_urls`, `safety`).
   Online monitoring uses two registered custom scorers (`ToolCallEfficiency`, `ToolCallCorrectness`)
   that score live traces automatically when started. Both are currently stopped (0% sample rate).
-  See [`eval/databricks/`](eval/databricks/README.md) and the
-  [`eval/databricks/doc/`](eval/databricks/doc/) evaluation document.
+  A Phoenix harness ([`eval/phoenix/`](eval/phoenix/README.md)) scores a separate agent that uses only the
+  MCP server, with an exact URL check and two LLM judges, on 10 gold and 4 out-of-scope questions.
+  See [`eval/`](eval/README.md) for all evaluation methods and the
+  [evaluation report](submission/sru-syntax-mcp-evaluation-report.pdf).
 
 ### Tracing
 
