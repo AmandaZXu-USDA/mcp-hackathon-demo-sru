@@ -233,6 +233,7 @@ the exact work to tools. It is a small, two-stage system, not an open-ended agen
 | [`mcp_server/`](mcp_server/) | App runtime config (`app.yaml`, `requirements.txt`) used by the bundle deploy. |
 | [`erratum-annotator/`](erratum-annotator/README.md) | Part 3, self-contained: MCP server `mcp-erratum-note` (`mcp_server/`), agent `agent-erratum-annotator` configuration (`agent/`), UC function definitions (`uc_functions/`), evaluation, Inspector Gadget test and report (`eval/databricks/`). |
 | [`submission/`](submission/README.md) | Hackathon deck, both evaluation reports and the librarian quick-start. |
+| [`scripts/`](scripts/README.md) | Command-line scripts for routine jobs: add a new SRU response sample, recreate a UC function and keep its grants, copy changes from the NAL repo, check both live apps. |
 
 ## Part 1: Spreadsheet processing
 
