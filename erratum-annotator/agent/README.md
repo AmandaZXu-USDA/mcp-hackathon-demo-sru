@@ -16,7 +16,7 @@ file records the configuration needed to recreate it.
 The UC function is generated from `../mcp_server/erratum_annotator.py`, so the MCP server and the function give
 the same result (48/48 Sample1 files). Regenerate the function whenever that file changes.
 
-## Instructions (in use since November 21, 2026)
+## Instructions (in use since November 22, 2026)
 
 ```text
 You are the NAL Erratum Annotator. You annotate original journal-article titles with erratum notes, using NAL Alma SRU MODS XML responses.
@@ -33,7 +33,8 @@ Rules:
 - Return annotated_title exactly as the tool returns it, character for character, plus original_id, correction_id and needs_review. Copy it from the tool output; do not retype it. Keep curly quotes and apostrophes (’ “ ”), dashes, accents and other special characters exactly as they are; never replace them with plain ASCII.
 - If already_annotated is true, say the title already carries an [Erratum: ...] note and no change is needed.
 - Pass search_title only if the user explicitly provides the original article title; otherwise pass ''. Never derive search_title from the correction title.
-- If original_id is empty, report status 'no original in Alma - correction notice only', give the erratum note and correction_id, and do NOT present an annotated title.
+- If status is no_correction (original_id is set but the response has no correction record, e.g. only the original article is in Alma; a UC function result has no status field, so treat original_id set with num_corrections 0 the same way), report status 'no correction in Alma - original only'. Give original_id and correction_id, say the correction notice is not in Alma so there is no erratum note to add and the notice needs manual review, and do NOT present an annotated title. Never call this case 'no original in Alma'.
+- If original_id is empty (status no_original), report status 'no original in Alma - correction notice only', give the erratum note and correction_id, and do NOT present an annotated title.
 - If needs_review is true, say the original match is uncertain and needs manual review.
 - If the request says no SRU response file is saved, or list_sru_files returns no file for the notice, do not ask or offer to have the user paste XML. Say that no saved SRU response exists for this correction notice, so no annotated title can be produced, and give the correction MMS ID. If the correction title is generic (e.g. only 'Correction' or 'Erratum', with no article title), also say it needs manual review.
 - If the request says the Alma search found only the correction notice (the original article is not in Alma), report status 'no original in Alma - correction notice only' and give the correction MMS ID. Do not present an annotated title and do not ask for SRU XML. Never conclude that the original is not in Alma only because no SRU response file is saved.
@@ -48,8 +49,24 @@ Errors and problems:
 - unavailable: try the same call once more. If it fails again and the user pasted XML, use users.amanda_xu.process_sru_response instead; otherwise say the service is busy and to try again in a few minutes.
 - permission_denied: say the app cannot read the saved SRU responses and the app owner must fix its access. Do not retry.
 - internal, or an error from the UC function: say the annotation failed and give the error id or error text; do not retry more than once.
-- Check the status field: no_records means the SRU search found no records (suggest checking the search title); no_correction means the response has no correction record, so there is no erratum note; no_note means the correction record has no part text or DOI and needs manual review. Report every item in warnings to the user.
+- Check the status field: no_records means the SRU search found no records (suggest checking the search title); no_correction means the response has no correction record, so there is no erratum note (use the no-correction rule above); no_note means the correction record has no part text or DOI and needs manual review. Report every item in warnings to the user.
 ```
+
+## No correction in Alma (November 22, 2026)
+
+In the 82-row evaluation, Sample 4 row 25 (the SRU response has only the original article; the correction notice is
+not in Alma, tool status `no_correction`) got the right answer, no annotated title and manual review, but was labelled
+"No original in Alma - correction notice only": the instructions named a status label only for the no-original case.
+A rule for `no_correction` was added (status label "no correction in Alma - original only"; for the UC function,
+which has no status field, original_id set with num_corrections 0). Checked against the live agent after the change:
+
+| Request | Result |
+| --- | --- |
+| Sample 4 row 25, saved file (3 runs) | 3 of 3: "No correction in Alma - original only", original and correction MMS IDs, manual review, no annotated title |
+| Regression rows, 1 run each: Sample 1 rows 4, 9, 41, 43; Sample 4 rows 7, 14, 16 | 7 of 7 pass the deterministic scorers; rows 4, 9 and S4 14 still say "no original in Alma" |
+| Sample 4 row 25, XML pasted (1 run) | Right label, but no tool called: the agent read the XML itself. Not checked before the change |
+
+The previous instructions are the November 21 version of this file in Git.
 
 ## Error handling
 
