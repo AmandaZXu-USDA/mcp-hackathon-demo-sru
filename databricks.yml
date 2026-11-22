@@ -112,3 +112,15 @@ targets:
     permissions:
       - user_name: amanda.xu@usda.gov
         level: CAN_MANAGE
+    resources:
+      apps:
+        sru_syntax_mcp:
+          # The live app's code: sru-syntax-mcp/mcp_server is byte-identical to the
+          # source in AmandaZXu-USDA/NAL. ./mcp_server holds only app.yaml and
+          # requirements.txt for the template layout (src/), so it cannot run alone.
+          source_code_path: ./sru-syntax-mcp/mcp_server
+          # Bundle permissions replace the app's ACL: keep Inspector Gadget's CAN_USE
+          # (eval/inspector_gadget and the daily check_live job call the app as it).
+          permissions:
+            - service_principal_name: f22c554b-c019-4511-8774-079d9891c7d5
+              level: CAN_USE
