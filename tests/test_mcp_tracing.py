@@ -10,8 +10,10 @@ from __future__ import annotations
 import contextlib
 import importlib.util
 import sys
+import types
 from pathlib import Path
 
+import databricks.sdk
 import pytest
 from mcp.server.fastmcp.exceptions import ToolError
 
@@ -66,6 +68,15 @@ def sru(monkeypatch):
     monkeypatch.setenv("DATABRICKS_HOST", "https://example.cloud.databricks.com")
     monkeypatch.setenv("DATABRICKS_TOKEN", "dummy")
     monkeypatch.delenv("MLFLOW_EXPERIMENT_ID", raising=False)
+    # app.py creates a WorkspaceClient on import. A real one fetches host
+    # metadata over the network and keeps retrying when the dummy host does
+    # not answer (this hung CI for 15 minutes), so use a stand-in.
+    config = types.SimpleNamespace(host="https://example.cloud.databricks.com")
+    monkeypatch.setattr(
+        databricks.sdk,
+        "WorkspaceClient",
+        lambda *a, **k: types.SimpleNamespace(config=config),
+    )
     return _load("deployed_sru_app", SRU_APP)
 
 
