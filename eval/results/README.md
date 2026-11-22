@@ -5,6 +5,16 @@ demo replay. Every file is hashed in [`INDEX.json`](INDEX.json). The writer refu
 it holds a credential. Identifiers that are not credentials are kept: app URLs, the Inspector Gadget service
 principal ID and MMS IDs are already public in this repository.
 
+## Runs on November 22, 2026 UTC, after the prod bundle deploy (commit `f9813a4` of AmandaZXu-USDA/mcp-hackathon-demo-sru)
+
+`mcp-sru-syntax` redeployed from the hackathon repo's `prod` bundle target (deployment
+`01f1e61881a013a9a6bbc8f30764bc2d`, same files as before). Same ground truth as below.
+
+| Run | App | Result | By suite | Functional latency (new session per call) |
+| --- | --- | --- | --- | --- |
+| [`20261122T0201Z_mcp-sru-syntax_d0d6855f`](runs/20261122T0201Z_mcp-sru-syntax_d0d6855f/report.log) | `mcp-sru-syntax` | **55/55 pass** | smoke 1/1, contract 3/3, functional 41/41, errors 3/3, security 3/3, determinism 2/2, auth 2/2 | p50 4.36 s, p95 5.13 s, max 5.84 s (41 calls, 5 at a time) |
+| [`20261122T0202Z_mcp-erratum-note_b9d44718`](runs/20261122T0202Z_mcp-erratum-note_b9d44718/report.log) | `mcp-erratum-note` (unchanged) | **89/89 pass** | smoke 3/3, contract 21/21, functional 51/51, errors 7/7, security 3/3, determinism 2/2, auth 2/2 | p50 2.51 s, p95 2.96 s, max 3.13 s (51 calls, 8 at a time) |
+
 ## Runs on November 22, 2026 UTC (commit `e6eb71c` of AmandaZXu-USDA/NAL)
 
 Full suite on both apps after the Sample 2 files (50 saved responses) and the `build_sru_url` repeated-prefix fix.

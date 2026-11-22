@@ -167,10 +167,10 @@ schedules are paused. `-t prod` is production mode:
 * runs as amanda.xu@usda.gov, who has CAN_MANAGE on every resource;
 * real resource names, with the `check_live` job's schedule active (07:00 US Eastern).
 
-The prod target has not been deployed. Two resources it defines already exist and are
-managed elsewhere, so a first `bundle deploy -t prod` would try to create duplicates:
+Two resources it defines already existed and were managed elsewhere, so a first
+`bundle deploy -t prod` would have tried to create duplicates:
 
-| Bundle resource | Existing resource | Managed now by |
+| Bundle resource | Existing resource | Managed before the binding by |
 | --- | --- | --- |
 | `sru_syntax_mcp` (app) | `mcp-sru-syntax` | the `sru_syntax` bundle in AmandaZXu-USDA/NAL (`sru-syntax-mcp/`) |
 | `check_live` (job) | "NAL MCP apps daily live check", job 531572408825586 | created in the UI; runs `scripts/check_live.py` from the NAL clone |
@@ -184,15 +184,26 @@ databricks bundle deployment bind check_live 531572408825586 -t prod
 databricks bundle deploy -t prod
 ```
 
-Status (2026-11-22): both are bound to `prod`; `prod` has not been deployed.
-`databricks bundle plan -t prod` shows what the first deploy would do: update the app and
-the job, add CAN_MANAGE permissions on both, and create the experiment
-`/Users/amanda.xu@usda.gov/sru-syntax-agent-experiment` (it does not exist yet; the app
-writes traces to the Unity Catalog-backed experiment `131270370350843` either way).
+Status (2026-11-22): both are bound and `prod` is deployed (commit `f9813a4`), followed by
+`databricks bundle run sru_syntax_mcp -t prod` to deploy the app code:
 
-After that, the app source and the job's script come from this repo's `main`, not from
-NAL. Deploy from NAL's bundle afterwards only if you unbind the app here first, or the
-two bundles will overwrite each other's deployments.
+* app `mcp-sru-syntax`: deployment `01f1e61881a013a9a6bbc8f30764bc2d` from
+  `.bundle/sru_syntax/prod/files/sru-syntax-mcp/mcp_server` (the same files as the earlier
+  deployment from NAL); resources `sql-warehouse` and `sru-function` added, as declared;
+  ACL amanda.xu@usda.gov CAN_MANAGE, Inspector Gadget CAN_USE;
+* job 531572408825586: script from `.bundle/sru_syntax/prod/files/scripts/check_live.py`,
+  07:00 US Eastern, UI-locked (change it here and redeploy);
+* experiment `/Users/amanda.xu@usda.gov/sru-syntax-agent-experiment` created (empty; the
+  app writes traces to the Unity Catalog-backed experiment `131270370350843`).
+
+Checked after the deploy: Inspector Gadget suite 55/55 (`mcp-sru-syntax`) and 89/89
+(`mcp-erratum-note`); a manual job run passed 5/5.
+
+The app and job now come from this repo's `main`. The prod target overrides the app's
+`source_code_path` with `./sru-syntax-mcp/mcp_server`, because `./mcp_server` has only
+`app.yaml` and `requirements.txt` and cannot run alone. The app is still bound to NAL's
+bundle (`dev`) as well: deploy it from one bundle only, or unbind it from the other
+first, or the two will overwrite each other's deployments.
 
 ### Smoke-test
 

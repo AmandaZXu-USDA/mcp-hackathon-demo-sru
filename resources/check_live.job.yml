@@ -1,9 +1,8 @@
 # Daily read-only check of both live MCP apps (scripts/check_live.py, 5 checks).
-# The live copy of this job is "NAL MCP apps daily live check" (job 531572408825586),
-# created in the UI and run from the NAL workspace clone. The dev target creates a
-# separate "[dev <user>]" job with its schedule paused. The prod target uses the real
-# name and an active schedule: bind job 531572408825586 before the first prod deploy
-# (deploy/databricks/README.md#production-target-prod).
+# The prod target manages the live job "NAL MCP apps daily live check" (job
+# 531572408825586, bound and deployed 2026-11-22). The dev target creates a separate
+# "[dev <user>]" job with its schedule paused. See
+# deploy/databricks/README.md#production-target-prod.
 resources:
   jobs:
     check_live:

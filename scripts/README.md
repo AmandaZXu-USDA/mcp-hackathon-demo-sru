@@ -87,17 +87,17 @@ them they fail with the permission error. The Inspector Gadget service principal
 both.
 
 The Databricks job "NAL MCP apps daily live check" (job ID 531572408825586) runs this
-script every day at 07:00 US Eastern on serverless from the NAL workspace clone, signed
-in as Inspector Gadget:
+script every day at 07:00 US Eastern on serverless, signed in as Inspector Gadget:
 
     python scripts/check_live.py --warehouse-id 50d2bd4ddf65e0f5 \
         --uc-secret models.ai.inspector-gadget
 
 `--uc-secret` reads the service principal's OAuth credentials from that Unity Catalog
 secret with `dbutils`, so it works only on Databricks. The run fails, and emails
-amanda.xu@usda.gov, if any check fails. In the hackathon repo the same job is defined in
-the bundle, in `resources/check_live.job.yml`. Its `dev` target deploys a separate
-"[dev <user>]" copy with the schedule paused, so it does not replace the job above; its
-`prod` target needs the job bound first (see that repo's `deploy/databricks/README.md`).
+amanda.xu@usda.gov, if any check fails. The job is defined in the hackathon repo's
+bundle (`resources/check_live.job.yml`) and deployed by its `prod` target, which runs the
+script from the bundle's copy of that repo's `main`; change it there and redeploy (the
+job is locked in the UI). The `dev` target deploys a separate "[dev <user>]" copy with
+the schedule paused.
 
 The full test suites are in [`../eval/inspector_gadget/`](../eval/inspector_gadget/).
