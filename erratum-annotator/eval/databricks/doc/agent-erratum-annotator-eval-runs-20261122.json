@@ -1,0 +1,9 @@
+{
+  "experiment": "/Users/amanda.xu@usda.gov/agent-erratum-annotator-eval",
+  "experiment_id": "1982416510445692",
+  "full_run_id": "9eb0fc3ec06d4925a8d8b227d5af54ad",
+  "rescore_run_id": "48e8bd8773e247f2a656ad453b917595",
+  "smoke_run_id": "34e6bc7839484eca94595b1cb445bb62",
+  "endpoint": "mas-c341c0aa-endpoint",
+  "rows": 53
+}

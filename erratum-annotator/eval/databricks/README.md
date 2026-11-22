@@ -9,6 +9,34 @@ librarian-checked Sample1 spreadsheet.
 `/Volumes/users/amanda_xu/erratum_files/reports/agent-erratum-annotator-evaluation-report.pdf`
 (Catalog Explorer, then Download).
 
+## MLflow evaluation run, November 22, 2026 (after all Sample 4 files)
+
+Re-run of `Erratum Annotator Agent Evaluation` on all 53 Sample 1 rows after the Sample 4 work, with the updated
+ground truth (row 41 now expects two notes, Nov. 13, 2025 then June 18, 2026; backup
+`Correction-Sample1-53-annotated-before-20261122.csv`) and the current `mcp-erratum-note` deployment (blank
+`annotated_title` when the response has no original or no correction record). Sample 4 has no librarian ground
+truth yet, so it is not part of this evaluation; its 25 files are covered by the tests in `../../tests/`.
+
+Before the run, `expected_erratum_note` became every note in the expected title (joined by a space), and
+`erratum_note_exact` now compares the set of notes, so a reply with only one of row 41's two notes fails. The scorer
+self-check against the ground truth passed (46/46 corrupted and doubled notes caught). Experiment ID
+`1982416510445692`: smoke run `bouncy-kit-309`, full run `placid-roo-533` (`9eb0fc3ec06d4925a8d8b227d5af54ad`), rescore run
+`grandiose-croc-373`; per-row results in
+[`doc/agent-erratum-annotator-eval-results-20261122.csv`](doc/agent-erratum-annotator-eval-results-20261122.csv).
+0 endpoint errors, 0 truncated replies; latency median 11.3 s, max 17.8 s.
+
+| Scorer | Nov 21 (row 9) run | This run |
+| --- | --- | --- |
+| annotated_title_exact | 51/53 | 51/53 (rows 34 and 40, curly apostrophe limitation; row 41's two-note title passes) |
+| erratum_note_exact | 53/53 | 53/53 (row 41: both notes) |
+| original_mms_id_match | 46/46 | 46/46 |
+| called_tool | 48/48 | 48/48 |
+| tool_annotated_title_exact | 53/53 | 53/53 |
+| correctness (LLM judge) | 52/53 | 52/53 (row 24: same judge objection as before) |
+| no_fabrication (LLM judge) | 42/53 | 46/53; rows 3, 22, 44, 51 and 53: the judge expected the original MMS ID to equal the correction's; rows 33 and 39: the judge objected to restating the existing note or the correction's own title and DOI. All IDs, titles and notes match the ground truth |
+
+Only rows 4, 9, 24 and 39 say `no original in Alma`, the four rows with that ground-truth status.
+
 ## Row 9: "no original in Alma" (November 21, 2026, latest)
 
 Rows 9 and 39 have no saved SRU response, and the librarian's Alma search found only the correction notice
