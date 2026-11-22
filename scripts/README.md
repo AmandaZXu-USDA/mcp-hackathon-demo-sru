@@ -95,5 +95,8 @@ Gadget:
 
 `--uc-secret` reads the service principal's OAuth credentials from that Unity Catalog
 secret with `dbutils`, so it works only on Databricks. The run fails, and emails
-amanda.xu@usda.gov, if any check fails. The full test suites are in
-[`../eval/inspector_gadget/`](../eval/inspector_gadget/).
+amanda.xu@usda.gov, if any check fails. In the hackathon repo the same job is defined in
+the bundle, in `resources/check_live.job.yml`. Its `dev` target deploys a separate
+"[dev <user>]" copy with the trigger paused, so it does not replace the job above.
+
+The full test suites are in [`../eval/inspector_gadget/`](../eval/inspector_gadget/).

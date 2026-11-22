@@ -1,0 +1,43 @@
+# Daily read-only check of both live MCP apps (scripts/check_live.py, 5 checks).
+# The live copy of this job is "NAL MCP apps daily live check" (job 531572408825586),
+# created in the UI and run from the NAL workspace clone. Deploying this bundle does not
+# change it: the dev target creates a separate "[dev <user>]" job with its trigger
+# paused. See scripts/README.md.
+resources:
+  jobs:
+    check_live:
+      name: NAL MCP apps daily live check
+      description: >-
+        Daily read-only check of the live MCP apps mcp-erratum-note and mcp-sru-syntax
+        (scripts/check_live.py). Signs in as the Inspector Gadget service principal
+        from the UC secret ${var.check_live_secret}. Fails, and emails, if any of the
+        5 checks fails.
+      # No pause_status here: the dev target pauses the trigger; a production target
+      # leaves it unpaused (the default).
+      trigger:
+        periodic:
+          interval: 1
+          unit: DAYS
+      email_notifications:
+        on_failure:
+          - ${workspace.current_user.userName}
+      timeout_seconds: 1200
+      max_concurrent_runs: 1
+      environments:
+        - environment_key: default
+          spec:
+            client: "4"
+            dependencies:
+              - databricks-sdk==0.122.0
+              - requests>=2.31.0
+      tasks:
+        - task_key: check_live
+          environment_key: default
+          timeout_seconds: 900
+          spark_python_task:
+            python_file: ../scripts/check_live.py
+            parameters:
+              - --warehouse-id
+              - ${var.warehouse_id}
+              - --uc-secret
+              - ${var.check_live_secret}

@@ -229,6 +229,7 @@ the exact work to tools. It is a small, two-stage system, not an open-ended agen
 | [`tests/`](tests/) | Smoke tests and SSRF hardening regression tests for the MCP server. |
 | [`.agents/skills/agent-sru-syntax/`](.agents/skills/agent-sru-syntax/SKILL.md) | Coding-agent skill: instructions and SRU URL rules for agents working on this project. |
 | [`databricks.yml`](databricks.yml) | Declarative Automation Bundle: defines the app, its resources, and variables. |
+| [`resources/`](resources/check_live.job.yml) | Bundle job `check_live`: the daily read-only check of both live apps ([`scripts/check_live.py`](scripts/README.md#check-the-live-apps)). |
 | [`setup/`](setup/create_uc_backed_experiment.py) | One-time setup: create a Unity Catalog-backed MLflow experiment for trace storage. |
 | [`mcp_server/`](mcp_server/) | App runtime config (`app.yaml`, `requirements.txt`) used by the bundle deploy. |
 | [`erratum-annotator/`](erratum-annotator/README.md) | Part 3, self-contained: MCP server `mcp-erratum-note` (`mcp_server/`), agent `agent-erratum-annotator` configuration (`agent/`), UC function definitions (`uc_functions/`), evaluation, Inspector Gadget test and report (`eval/databricks/`). |

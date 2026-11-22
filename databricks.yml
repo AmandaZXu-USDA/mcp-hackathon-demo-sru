@@ -1,6 +1,9 @@
 bundle:
   name: sru_syntax
 
+include:
+  - resources/*.yml
+
 variables:
   mcp_app_name:
     description: "Name of the MCP server app (mcp- prefix so it is listed as a custom MCP server in Genie Code)"
@@ -23,6 +26,9 @@ variables:
   sru_function:
     description: "Governed Unity Catalog function with the title rules"
     default: users.amanda_xu.build_sru_url
+  check_live_secret:
+    description: "UC secret (catalog.schema.key) with the Inspector Gadget OAuth credentials used by the daily check_live job"
+    default: models.ai.inspector-gadget
 
 resources:
   experiments:
