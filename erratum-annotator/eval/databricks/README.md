@@ -9,6 +9,38 @@ librarian-checked Sample1 spreadsheet.
 `/Volumes/users/amanda_xu/erratum_files/reports/agent-erratum-annotator-evaluation-report.pdf`
 (Catalog Explorer, then Download).
 
+## MLflow evaluation run with Sample 4 added, November 22, 2026
+
+82 rows: the 53 Sample 1 rows plus the 29 Sample 4 rows (2 to 30) from
+`/Volumes/users/amanda_xu/erratum_files/Correction-Sample4-29-annotated.csv`. Sample 4's expected titles were drafted
+from the tool output (`Correction-Sample4-29-annotated-DRAFT-unreviewed.csv`, kept) and approved as drafted by the
+project owner on 2026-11-22, not re-checked record by record against Alma. Sample 4 row n is `row_num` 400 + n
+(columns `sample` and `sample_row` in the results). New case `file_but_no_correction` (row 25: only the original in
+Alma); rows 16, 19, 20 and 22 (no SRU response) expect a manual-review reply. The smoke test adds rows 404 and 425.
+The scorer self-check passed (67/67 corrupted and doubled notes caught).
+
+Experiment `/Users/amanda.xu@usda.gov/agent-erratum-annotator-eval-uc` (traces in Unity Catalog): smoke run
+`wistful-newt-32`, full run `bright-wolf-355` (`f4ca00e917804a619c7443ccc4109289`), rescore run `ambitious-hare-632`;
+per-row results in
+[`doc/agent-erratum-annotator-eval-results-20261122-s4.csv`](doc/agent-erratum-annotator-eval-results-20261122-s4.csv).
+0 endpoint errors, 0 truncated loops; latency median 17.0 s, max 302.2 s.
+
+| Scorer | Sample 1 | Sample 4 |
+| --- | --- | --- |
+| annotated_title_exact | 51/53 (rows 34, 40: curly apostrophe) | 26/29 (rows 4, 29: curly apostrophe; row 26: agent timeout) |
+| erratum_note_exact | 53/53 | 28/29 (row 26) |
+| original_mms_id_match | 46/46 | 21/22 (row 26) |
+| called_tool | 48/48 | 25/25 |
+| tool_annotated_title_exact | 53/53 | 28/29 (row 26) |
+| correctness (LLM judge) | 53/53 | 27/29 (rows 17, 26) |
+| no_fabrication (LLM judge) | 46/53 | 22/29 (rows 2, 5, 23, 24, 28: judge expected the original MMS ID to equal the correction's; 25; 26) |
+
+* Sample 4 row 4 (two corrections in one original): both notes, in order; fails only on the curly apostrophe.
+* Sample 4 row 26: the Supervisor Agent hit its 290 s limit (302.2 s) and replied with a continue / wrap up prompt.
+* Sample 4 row 25: the reply is right in substance (original present, correction not in Alma, no annotated title) but
+  labels the status "No original in Alma - correction notice only"; the agent instructions do not yet name the
+  no_correction case.
+
 ## MLflow evaluation run with traces in Unity Catalog, November 22, 2026
 
 Same 53 rows, scorers and ground truth as the run below, now in a new experiment whose traces are stored in Unity
