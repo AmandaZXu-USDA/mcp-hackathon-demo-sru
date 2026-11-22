@@ -385,3 +385,29 @@ def test_run_checks_counts_an_error_as_a_failure(monkeypatch, capsys):
     w.files.list_directory_contents = denied
     assert cl.run_checks(w, {}, None) == 1
     assert "PermissionError('no READ VOLUME')" in capsys.readouterr().out
+
+
+def test_client_signs_in_from_uc_secret(monkeypatch):
+    creds = {"client_id": "id", "client_secret": "s", "scopes": "all-apis"}
+    asked = {}
+
+    def get(catalog, schema, key):
+        asked.update(catalog=catalog, schema=schema, key=key)
+        return json.dumps(creds)
+
+    secrets = SimpleNamespace(get=get)
+    runtime = SimpleNamespace(dbutils=SimpleNamespace(secrets=secrets))
+    monkeypatch.setitem(sys.modules, "databricks.sdk.runtime", runtime)
+    made = []
+
+    class FakeClient:
+        def __init__(self, **kwargs):
+            made.append(kwargs)
+            self.config = SimpleNamespace(host="https://h")
+
+    monkeypatch.setattr(cl, "WorkspaceClient", FakeClient)
+    cl.client("models.ai.inspector-gadget")
+    assert asked == {"catalog": "models", "schema": "ai", "key": "inspector-gadget"}
+    assert made[-1] == {"host": "https://h", **creds}
+    cl.client(None)  # no secret: SDK default credentials
+    assert made[-1] == {}

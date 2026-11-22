@@ -2,8 +2,8 @@
   "files": [
     {
       "path": "README.md",
-      "bytes": 4506,
-      "sha256": "fc3ea5118920352ef8ff9a162f07413e512bcd40bbc6fa3172c02b392c5c14ca"
+      "bytes": 5592,
+      "sha256": "0fe2ecb63045045d348c79d06d5d9f524b5bc2590186d90d4582d7af8464fecc"
     },
     {
       "path": "demo/20261121T2058Z_demo_path_replay.json",
@@ -54,6 +54,36 @@
       "path": "runs/20261121T2244Z_mcp-erratum-note_92e3a211/run.json",
       "bytes": 1033,
       "sha256": "bbbdbf4855d51c21c3a6ac4bc8c9a2f85adcd77838def113355fe3d92a11f01c"
+    },
+    {
+      "path": "runs/20261122T0054Z_mcp-sru-syntax_ed14312e/cases.jsonl",
+      "bytes": 49116,
+      "sha256": "3774e27cc5a37bd08ece068eb876bb0a30cff6ab44daad98ea0f86a2a18eaf20"
+    },
+    {
+      "path": "runs/20261122T0054Z_mcp-sru-syntax_ed14312e/report.log",
+      "bytes": 4562,
+      "sha256": "11dd5fbb0b05bd1de9010de3377dddde22645c59c57f9041f96b781d42a68dfe"
+    },
+    {
+      "path": "runs/20261122T0054Z_mcp-sru-syntax_ed14312e/run.json",
+      "bytes": 972,
+      "sha256": "91ac19933ca581251ac79e679c7e50c09f52152aec435d3325e0809a51a4798f"
+    },
+    {
+      "path": "runs/20261122T0055Z_mcp-erratum-note_d6a3ab58/cases.jsonl",
+      "bytes": 80697,
+      "sha256": "ef8921220377b1086c59f2387bb2086a597783998b41f820a709644cc2e925cf"
+    },
+    {
+      "path": "runs/20261122T0055Z_mcp-erratum-note_d6a3ab58/report.log",
+      "bytes": 6529,
+      "sha256": "f3db91d79f03149835e5b61542955cbf06aad611eaab1e3ab261c8dbf322bde9"
+    },
+    {
+      "path": "runs/20261122T0055Z_mcp-erratum-note_d6a3ab58/run.json",
+      "bytes": 976,
+      "sha256": "529a0855160828a6999b13e93e767d473f9861a85ee4c833208d683208d151c2"
     }
   ]
 }

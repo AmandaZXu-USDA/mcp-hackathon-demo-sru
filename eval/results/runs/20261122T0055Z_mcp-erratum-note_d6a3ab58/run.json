@@ -1,0 +1,49 @@
+{
+  "run_id": "d6a3ab58",
+  "app": "mcp-erratum-note",
+  "server_url": "https://mcp-erratum-note-7474654188777746.aws.databricksapps.com/mcp",
+  "tester": "Inspector Gadget (service principal f22c554b-c019-4511-8774-079d9891c7d5)",
+  "git_commit": "e6eb71c",
+  "started_utc": "2026-11-22T00:55:06+00:00",
+  "finished_utc": "2026-11-22T00:55:24+00:00",
+  "status": "pass",
+  "cases": 89,
+  "passed": 89,
+  "suites": {
+    "smoke": {
+      "passed": 3,
+      "failed": 0
+    },
+    "contract": {
+      "passed": 21,
+      "failed": 0
+    },
+    "functional": {
+      "passed": 51,
+      "failed": 0
+    },
+    "errors": {
+      "passed": 7,
+      "failed": 0
+    },
+    "security": {
+      "passed": 3,
+      "failed": 0
+    },
+    "determinism": {
+      "passed": 2,
+      "failed": 0
+    },
+    "auth": {
+      "passed": 2,
+      "failed": 0
+    }
+  },
+  "latency_functional": {
+    "n": 51,
+    "p50_s": 2.39,
+    "p95_s": 2.69,
+    "max_s": 2.74
+  },
+  "failed_cases": []
+}

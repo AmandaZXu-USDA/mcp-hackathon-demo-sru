@@ -21,7 +21,7 @@ OAuth, so for `check_live.py` sign in with `databricks auth login` (or use a ser
 principal's `DATABRICKS_CLIENT_ID` / `DATABRICKS_CLIENT_SECRET`); a personal access token
 gets 401 from the apps. SQL warehouse used below: `50d2bd4ddf65e0f5`.
 
-Unit tests: `tests/test_scripts.py` in the hackathon repo (20 tests, run by its CI on
+Unit tests: `tests/test_scripts.py` in the hackathon repo (21 tests, run by its CI on
 every push; no Databricks credentials needed, workspace calls are faked).
 
 ## Add a new correction-notice sample
@@ -83,5 +83,17 @@ Five checks (about 30 seconds):
 
 The demo-page and UC-function checks also need READ VOLUME on
 `users.amanda_xu.erratum_files` and EXECUTE on `users.amanda_xu.build_sru_url`; without
-them they fail with the permission error. The full test suites are in
+them they fail with the permission error. The Inspector Gadget service principal has
+both.
+
+The Databricks job "NAL MCP apps daily live check" (job ID 531572408825586) runs this
+script once a day on serverless from the NAL workspace clone, signed in as Inspector
+Gadget:
+
+    python scripts/check_live.py --warehouse-id 50d2bd4ddf65e0f5 \
+        --uc-secret models.ai.inspector-gadget
+
+`--uc-secret` reads the service principal's OAuth credentials from that Unity Catalog
+secret with `dbutils`, so it works only on Databricks. The run fails, and emails
+amanda.xu@usda.gov, if any check fails. The full test suites are in
 [`../eval/inspector_gadget/`](../eval/inspector_gadget/).

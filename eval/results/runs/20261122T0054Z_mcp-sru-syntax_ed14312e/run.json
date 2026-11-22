@@ -1,0 +1,49 @@
+{
+  "run_id": "ed14312e",
+  "app": "mcp-sru-syntax",
+  "server_url": "https://mcp-sru-syntax-7474654188777746.aws.databricksapps.com/mcp",
+  "tester": "Inspector Gadget (service principal f22c554b-c019-4511-8774-079d9891c7d5)",
+  "git_commit": "e6eb71c",
+  "started_utc": "2026-11-22T00:54:15+00:00",
+  "finished_utc": "2026-11-22T00:55:06+00:00",
+  "status": "pass",
+  "cases": 55,
+  "passed": 55,
+  "suites": {
+    "smoke": {
+      "passed": 1,
+      "failed": 0
+    },
+    "contract": {
+      "passed": 3,
+      "failed": 0
+    },
+    "functional": {
+      "passed": 41,
+      "failed": 0
+    },
+    "errors": {
+      "passed": 3,
+      "failed": 0
+    },
+    "security": {
+      "passed": 3,
+      "failed": 0
+    },
+    "determinism": {
+      "passed": 2,
+      "failed": 0
+    },
+    "auth": {
+      "passed": 2,
+      "failed": 0
+    }
+  },
+  "latency_functional": {
+    "n": 41,
+    "p50_s": 4.29,
+    "p95_s": 5.88,
+    "max_s": 12.67
+  },
+  "failed_cases": []
+}

@@ -5,6 +5,11 @@ service principal's DATABRICKS_CLIENT_ID / DATABRICKS_CLIENT_SECRET; a personal
 access token is not accepted by Databricks Apps):
 
     python scripts/check_live.py [--warehouse-id <id>]
+                                 [--uc-secret <catalog.schema.key>]
+
+With --uc-secret (in a Databricks job or notebook), sign in as the service principal
+whose JSON credentials (client_id, client_secret, scopes) are in that Unity Catalog
+secret; the daily job uses models.ai.inspector-gadget.
 
 Checks, against known answers:
 
@@ -177,13 +182,34 @@ def run_checks(w: WorkspaceClient, auth: dict, warehouse: str | None) -> int:
     return 1 if failed else 0
 
 
+def client(uc_secret: str | None) -> WorkspaceClient:
+    """SDK default credentials, or a service principal's from a UC secret."""
+    if not uc_secret:
+        return WorkspaceClient()
+    from databricks.sdk.runtime import dbutils  # only available on Databricks
+
+    catalog, schema, key = uc_secret.split(".", 2)
+    p = json.loads(dbutils.secrets.get(catalog=catalog, schema=schema, key=key))
+    return WorkspaceClient(
+        host=WorkspaceClient().config.host,
+        client_id=p["client_id"],
+        client_secret=p["client_secret"],
+        scopes=p.get("scopes"),
+    )
+
+
 def main() -> int:
     p = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     p.add_argument("--warehouse-id", help="also compare with the UC function")
+    p.add_argument("--uc-secret", help="catalog.schema.key of OAuth M2M credentials")
     args = p.parse_args()
-    w = WorkspaceClient()
+    w = client(args.uc_secret)
+    print(f"signed in as {w.config.client_id or 'SDK default credentials'}")
     return run_checks(w, w.config.authenticate(), args.warehouse_id)
 
 
 if __name__ == "__main__":
-    sys.exit(main())
+    # Exit only on failure: a Databricks Python task runs under IPython, which reports
+    # even sys.exit(0) as a failed run.
+    if rc := main():
+        sys.exit(rc)
