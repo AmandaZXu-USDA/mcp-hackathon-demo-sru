@@ -9,6 +9,32 @@ librarian-checked Sample1 spreadsheet.
 `/Volumes/users/amanda_xu/erratum_files/reports/agent-erratum-annotator-evaluation-report.pdf`
 (Catalog Explorer, then Download).
 
+## MLflow evaluation run after the no_correction instruction rule, November 22, 2026
+
+Same 82 rows and scorers as the Sample 4 run below, after the agent's instructions gained a rule for the
+no_correction status ([`../../agent/README.md`](../../agent/README.md#no-correction-in-alma-november-22-2026)). Smoke run
+`industrious-eel-855`, full run `valuable-turtle-195`, rescore run `secretive-mule-359`; per-row results in
+[`doc/agent-erratum-annotator-eval-results-20261122-s4-nocorr.csv`](doc/agent-erratum-annotator-eval-results-20261122-s4-nocorr.csv).
+0 endpoint errors, 0 truncated loops, no timeouts; latency median 16.9 s, p95 18.7 s, max 26.3 s.
+
+| Scorer | Sample 1 | Sample 4 | Before the rule (S1 / S4) |
+| --- | --- | --- | --- |
+| annotated_title_exact | 51/53 (rows 34, 40) | 27/29 (rows 4, 29) | 51/53 / 26/29 |
+| erratum_note_exact | 53/53 | 29/29 | 53/53 / 28/29 |
+| original_mms_id_match | 46/46 | 22/22 | 46/46 / 21/22 |
+| called_tool | 48/48 | 25/25 | 48/48 / 25/25 |
+| tool_annotated_title_exact | 53/53 | 29/29 | 53/53 / 28/29 |
+| correctness (LLM judge) | 51/53 (rows 4, 41) | 29/29 | 53/53 / 27/29 |
+| no_fabrication (LLM judge) | 40/53 | 21/29 | 46/53 / 22/29 |
+
+* All four exact-title misses are the curly apostrophe (the tool's title is exact on 82/82).
+* Sample 4 row 25 is now labelled "no correction in Alma - original only"; the 7 no-original rows still say
+  "no original in Alma". Sample 4 row 26 (290 s timeout before) passes in 13 s.
+* Every judge failure is a judge error: correctness row 4 (no mention of the search_title fallback) and row 41
+  (says two identical MMS IDs differ); no_fabrication 17 rows with the MMS ID mistake and 4 (S1 rows 35, 48, 49, 50)
+  that apply the "no title can be produced" guideline to replies that gave one. The judges failed different rows in
+  the run before, so their results vary from run to run.
+
 ## MLflow evaluation run with Sample 4 added, November 22, 2026
 
 82 rows: the 53 Sample 1 rows plus the 29 Sample 4 rows (2 to 30) from

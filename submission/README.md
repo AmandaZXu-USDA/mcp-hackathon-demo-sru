@@ -55,7 +55,7 @@ take a publisher's correction notice to the original article's catalog record:
 
 | Evaluation | Result |
 |---|---|
-| 1. Offline MLflow evaluation of `agent-erratum-annotator` (82 notices: 53 librarian-checked from Sample 1, 29 from Sample 4) | annotated_title_exact 77/82 (Sample 1 51/53, Sample 4 26/29), erratum_note_exact 81/82, original MMS ID 67/68, called a tool 73/73, tool's annotated title exact 81/82, correctness 80/82. Misses: four titles where the agent retyped a curly apostrophe (the tool's title was exact) and one 290 s agent timeout (Sample 4 row 26). Sample 4's expected titles were drafted from the tool output and approved as drafted, not re-checked against Alma, so they test that the agent passes the tool's title through. |
+| 1. Offline MLflow evaluation of `agent-erratum-annotator` (82 notices: 53 librarian-checked from Sample 1, 29 from Sample 4) | annotated_title_exact 78/82 (Sample 1 51/53, Sample 4 27/29), erratum_note_exact 82/82, original MMS ID 68/68, called a tool 73/73, tool's annotated title exact 82/82, correctness 80/82 (both misses judge errors). The 4 misses are titles where the agent retyped a curly apostrophe (the tool's title was exact); no timeouts. Sample 4's expected titles were drafted from the tool output and approved as drafted, not re-checked against Alma, so they test that the agent passes the tool's title through. |
 | 2. Inspector Gadget test of `mcp-erratum-note` (OAuth M2M service principal, no agent) | 7/7 tools listed; `process_sru_file` on 48 saved responses: 0 errors, 48/48 original MMS IDs, 46/48 titles (the 2 differences are notices with no original in Alma), median 0.28 s per call. |
 
 See the PDFs for method, per-scorer results, findings and next steps.
