@@ -66,7 +66,7 @@ sign-in may have expired", reload the page.
 
 **No Databricks account?** Open the offline copy instead: download
 [`erratum-annotator-demo-offline.html`](../submission/erratum-annotator-demo-offline.html) (in `submission/`, and in
-`erratum-annotator/demo/`) and open it in your browser. It has the same quick examples and all 54 saved
+`erratum-annotator/demo/`) and open it in your browser. It has the same quick examples and all 59 saved
 notices with their results, needs no sign-in or network, but cannot annotate pasted XML.
 
 ## Erratum annotator: chat with the agent

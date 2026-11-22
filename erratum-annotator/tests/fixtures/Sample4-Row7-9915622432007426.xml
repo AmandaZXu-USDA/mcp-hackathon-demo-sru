@@ -1,0 +1,202 @@
+<searchRetrieveResponse xmlns="http://www.loc.gov/zing/srw/">
+<version>1.2</version>
+<numberOfRecords>2</numberOfRecords>
+<records>
+<record>
+<recordSchema>mods</recordSchema>
+<recordPacking>xml</recordPacking>
+<recordData>
+<mods xmlns="http://www.loc.gov/mods/v3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="3.5" xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-5.xsd">
+<titleInfo>
+<title>Correction to: PM2.5 exposure inducing ATP alteration links with NLRP3 inflammasome activation</title>
+</titleInfo>
+<name type="personal" usage="primary">
+<namePart>Zeng, Xiang</namePart>
+<affiliation>Laboratory of Environmental Medicine and Developmental Toxicology, Guangdong Key Laboratory of Environmental Pollution and Health, School of Environment, Jinan University, Guangzhou, 511443, Guangdong, China. zengxiang3044@163.com</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>Liu, Dongling</namePart>
+<affiliation>Xinxiang Medical University, 601 Jinsui Road, Xinxiang, 453003, China</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>Wu, Weidong</namePart>
+<affiliation>Xinxiang Medical University, 601 Jinsui Road, Xinxiang, 453003, China</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>Huo, Xia</namePart>
+<affiliation>Laboratory of Environmental Medicine and Developmental Toxicology, Guangdong Key Laboratory of Environmental Pollution and Health, School of Environment, Jinan University, Guangzhou, 511443, Guangdong, China. xhuo@jnu.edu.cn</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<typeOfResource>text</typeOfResource>
+<originInfo>
+<place>
+<placeTerm authority="marccountry" type="code">xx#</placeTerm>
+</place>
+<dateIssued encoding="marc">2022</dateIssued>
+<issuance>serial</issuance>
+</originInfo>
+<language>
+<languageTerm authority="iso639-2b" type="code">eng</languageTerm>
+</language>
+<physicalDescription>
+<extent>p. 24457-24457</extent>
+</physicalDescription>
+<note>ERRATUM</note>
+<location>
+<url displayLabel="Available from publisher's site" usage="primary display">https://dx.doi.org/10.1007/s11356-022-19090-5</url>
+</location>
+<relatedItem type="host">
+<titleInfo>
+<title>Environmental science and pollution research</title>
+</titleInfo>
+<originInfo>
+<publisher>Springer Berlin Heidelberg</publisher>
+</originInfo>
+<identifier type="issn">0944-1344</identifier>
+<identifier type="local">Journal:jnl4122550</identifier>
+<part>
+<text>2022 Apr., v. 29, no. 17 p. 24457-24457</text>
+</part>
+</relatedItem>
+<identifier type="doi">10.1007/s11356-022-19090-5</identifier>
+<recordInfo>
+<descriptionStandard>aacr</descriptionStandard>
+<recordContentSource authority="marcorg">AGL</recordContentSource>
+<recordCreationDate encoding="marc">260722</recordCreationDate>
+<recordChangeDate encoding="iso8601">20221119123601.0</recordChangeDate>
+<recordIdentifier>9915622432007426</recordIdentifier>
+<recordOrigin>Converted from MARCXML to MODS version 3.5 using MARC21slim2MODS3-5.xsl (Revision 1.112 2018/06/21)</recordOrigin>
+<languageOfCataloging>
+<languageTerm authority="iso639-2b" type="code">eng</languageTerm>
+</languageOfCataloging>
+</recordInfo>
+</mods>
+</recordData>
+<recordIdentifier>9915622432007426</recordIdentifier>
+<recordPosition>1</recordPosition>
+</record>
+<record>
+<recordSchema>mods</recordSchema>
+<recordPacking>xml</recordPacking>
+<recordData>
+<mods xmlns="http://www.loc.gov/mods/v3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="3.5" xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-5.xsd">
+<titleInfo>
+<title>PM2.5 exposure inducing ATP alteration links with NLRP3 inflammasome activation [Erratum: April 2022, v.29(17); p.24457]</title>
+</titleInfo>
+<name type="personal" usage="primary">
+<namePart>Zeng, Xiang</namePart>
+<affiliation>Laboratory of Environmental Medicine and Developmental Toxicology, Guangdong Key Laboratory of Environmental Pollution and Health, School of Environment, Jinan University, Guangzhou, 511443, Guangdong, China. zengxiang3044@163.com</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>Liu, Dongling</namePart>
+<affiliation>Xinxiang Medical University, 601 Jinsui Road, Xinxiang, 453003, China</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>Wu, Weidong</namePart>
+<affiliation>Xinxiang Medical University, 601 Jinsui Road, Xinxiang, 453003, China</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>Huo, Xia</namePart>
+<affiliation>Laboratory of Environmental Medicine and Developmental Toxicology, Guangdong Key Laboratory of Environmental Pollution and Health, School of Environment, Jinan University, Guangzhou, 511443, Guangdong, China. xhuo@jnu.edu.cn</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<typeOfResource>text</typeOfResource>
+<originInfo>
+<place>
+<placeTerm authority="marccountry" type="code">xx</placeTerm>
+</place>
+<dateIssued encoding="marc">2022</dateIssued>
+<issuance>serial</issuance>
+</originInfo>
+<language>
+<languageTerm authority="iso639-2b" type="code">eng</languageTerm>
+</language>
+<physicalDescription>
+<extent>p. 24445-24456.</extent>
+</physicalDescription>
+<abstract type="Summary">Fine particulate matter (PM₂.₅) has been the primary air pollutant and the fourth leading risk factor for disease and death in the world. Exposure to PM₂.₅ is related to activation of the NOD-like receptor family pyrin domain containing 3 (NLRP3) inflammasome, but the mechanism of PM₂.₅ affecting the NLRP3 inflammasome is still unclear. Previous studies have shown that PM₂.₅ can cause alterations in adenosine triphosphate (ATP), and an increase in extracellular ATP and a decrease in intracellular ATP can trigger the activation process of the NLRP3 inflammasome. Therefore, we emphasize that ATP changes may be the central link and key mechanism of PM₂.₅ exposure that activates the NLRP3 inflammasome. This review briefly elucidates and summarizes how PM₂.₅ acts on ATP and subsequently further impacts the NLRP3 inflammasome. Investigation of ATP changes due to exposure to PM₂.₅ may be essential to regulate NLRP3 inflammasome activation and treat inflammation-related diseases such as coronavirus disease 2019 (COVID-19).</abstract>
+<note>Review</note>
+<subject authority="nal">
+<topic>COVID-19 infection</topic>
+</subject>
+<subject authority="nal">
+<topic>adenosine triphosphate</topic>
+</subject>
+<subject authority="nal">
+<topic>air pollutants</topic>
+</subject>
+<subject authority="nal">
+<topic>death</topic>
+</subject>
+<subject authority="nal">
+<topic>inflammasomes</topic>
+</subject>
+<subject authority="nal">
+<topic>particulates</topic>
+</subject>
+<subject authority="nal">
+<topic>research</topic>
+</subject>
+<subject authority="nal">
+<topic>risk factors</topic>
+</subject>
+<location>
+<url displayLabel="Available from publisher's site" usage="primary display">http://dx.doi.org/10.1007/s11356-021-16405-w</url>
+</location>
+<relatedItem type="host">
+<titleInfo>
+<title>Environmental science and pollution research</title>
+</titleInfo>
+<originInfo>
+<publisher>Springer Berlin Heidelberg</publisher>
+</originInfo>
+<identifier type="issn">0944-1344</identifier>
+<identifier type="local">Journal:jnl4122550</identifier>
+<part>
+<text>2022 Apr., v. 29, no. 17 p.24445-24456</text>
+</part>
+</relatedItem>
+<identifier type="doi">10.1007/s11356-021-16405-w</identifier>
+<recordInfo>
+<recordContentSource authority="marcorg">AGL</recordContentSource>
+<recordCreationDate encoding="marc">220411</recordCreationDate>
+<recordChangeDate encoding="iso8601">20240620194633.0</recordChangeDate>
+<recordIdentifier>9915622429307426</recordIdentifier>
+<recordOrigin>Converted from MARCXML to MODS version 3.5 using MARC21slim2MODS3-5.xsl (Revision 1.112 2018/06/21)</recordOrigin>
+<languageOfCataloging>
+<languageTerm authority="iso639-2b" type="code">eng</languageTerm>
+</languageOfCataloging>
+</recordInfo>
+</mods>
+</recordData>
+<recordIdentifier>9915622429307426</recordIdentifier>
+<recordPosition>2</recordPosition>
+</record>
+</records>
+<extraResponseData xmlns:xb="http://www.exlibris.com/repository/search/xmlbeans/">
+<xb:exact>true</xb:exact>
+<xb:responseDate>2026-11-22T10:31:25-0500</xb:responseDate>
+</extraResponseData>
+</searchRetrieveResponse>

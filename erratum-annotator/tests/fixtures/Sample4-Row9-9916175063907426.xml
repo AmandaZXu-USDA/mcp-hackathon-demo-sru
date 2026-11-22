@@ -1,0 +1,198 @@
+<searchRetrieveResponse xmlns="http://www.loc.gov/zing/srw/">
+<version>1.2</version>
+<numberOfRecords>2</numberOfRecords>
+<records>
+<record>
+<recordSchema>mods</recordSchema>
+<recordPacking>xml</recordPacking>
+<recordData>
+<mods xmlns="http://www.loc.gov/mods/v3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="3.5" xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-5.xsd">
+<titleInfo>
+<title>Author Correction: SMURF-seq: efficient copy number profiling on long-read sequencers</title>
+</titleInfo>
+<name type="personal" usage="primary">
+<namePart>Prabakar, Rishvanth</namePart>
+<affiliation>Quantitative and Computational Biology Section, Department of Biological Sciences, University of Southern California, 1050 Childs Way, Los Angeles, 90089, USA</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>Xu, Liya</namePart>
+<affiliation>Michelson Center for Convergent Bioscience, University of Southern California, 1002 Childs Way, Los Angeles, 90089, USA</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>Hicks, James</namePart>
+<affiliation>Michelson Center for Convergent Bioscience, University of Southern California, 1002 Childs Way, Los Angeles, 90089, USA</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>Smith, Andrew</namePart>
+<affiliation>Quantitative and Computational Biology Section, Department of Biological Sciences, University of Southern California, 1050 Childs Way, Los Angeles, 90089, USA. andrewds@usc.edu</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<typeOfResource>text</typeOfResource>
+<originInfo>
+<place>
+<placeTerm authority="marccountry" type="code">xx#</placeTerm>
+</place>
+<dateIssued encoding="marc">2020</dateIssued>
+<issuance>serial</issuance>
+</originInfo>
+<language>
+<languageTerm authority="iso639-2b" type="code">eng</languageTerm>
+</language>
+<physicalDescription>
+<extent>214</extent>
+</physicalDescription>
+<abstract type="Summary">An amendment to this paper has been published and can be accessed via the original article.</abstract>
+<note>ERRATUM</note>
+<subject authority="nal">
+<topic>DNA</topic>
+</subject>
+<subject authority="nal">
+<topic>gene dosage</topic>
+</subject>
+<subject authority="nal">
+<topic>sequence analysis</topic>
+</subject>
+<location>
+<url displayLabel="Available from publisher's site" usage="primary display">https://dx.doi.org/10.1186/s13059-020-02149-2</url>
+</location>
+<relatedItem type="host">
+<titleInfo>
+<title>Genome biology</title>
+</titleInfo>
+<originInfo>
+<publisher>BioMed Central</publisher>
+</originInfo>
+<identifier type="issn">1474-760X</identifier>
+<identifier type="local">Journal:19127</identifier>
+<part>
+<text>2020 Dec., v. 21, no. 1, 214</text>
+</part>
+</relatedItem>
+<identifier type="doi">10.1186/s13059-020-02149-2</identifier>
+<recordInfo>
+<descriptionStandard>aacr</descriptionStandard>
+<recordContentSource authority="marcorg">AGL</recordContentSource>
+<recordCreationDate encoding="marc">260722</recordCreationDate>
+<recordChangeDate encoding="iso8601">20240622234406.0</recordChangeDate>
+<recordIdentifier>9916175063907426</recordIdentifier>
+<recordOrigin>Converted from MARCXML to MODS version 3.5 using MARC21slim2MODS3-5.xsl (Revision 1.112 2018/06/21)</recordOrigin>
+<languageOfCataloging>
+<languageTerm authority="iso639-2b" type="code">eng</languageTerm>
+</languageOfCataloging>
+</recordInfo>
+</mods>
+</recordData>
+<recordIdentifier>9916175063907426</recordIdentifier>
+<recordPosition>1</recordPosition>
+</record>
+<record>
+<recordSchema>mods</recordSchema>
+<recordPacking>xml</recordPacking>
+<recordData>
+<mods xmlns="http://www.loc.gov/mods/v3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="3.5" xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-5.xsd">
+<titleInfo>
+<title>SMURF-seq: efficient copy number profiling on long-read sequencers</title>
+</titleInfo>
+<name type="personal" usage="primary">
+<namePart>Prabakar, Rishvanth K.</namePart>
+<affiliation>Quantitative and Computational Biology Section, Department of Biological Sciences, University of Southern California, 1050 Childs Way, Los Angeles, 90089, USA</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>Xu, Liya</namePart>
+<affiliation>Michelson Center for Convergent Bioscience, University of Southern California, 1002 Childs Way, Los Angeles, 90089, USA</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>Hicks, James</namePart>
+<affiliation>Michelson Center for Convergent Bioscience, University of Southern California, 1002 Childs Way, Los Angeles, 90089, USA</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>Smith, Andrew D.</namePart>
+<affiliation>Quantitative and Computational Biology Section, Department of Biological Sciences, University of Southern California, 1050 Childs Way, Los Angeles, 90089, USA. andrewds@usc.edu</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<typeOfResource>text</typeOfResource>
+<originInfo>
+<place>
+<placeTerm authority="marccountry" type="code">xx</placeTerm>
+</place>
+<dateIssued encoding="marc">2019</dateIssued>
+<issuance>serial</issuance>
+</originInfo>
+<language>
+<languageTerm authority="iso639-2b" type="code">eng</languageTerm>
+</language>
+<physicalDescription>
+<extent>p. 134.</extent>
+</physicalDescription>
+<abstract type="Summary">We present SMURF-seq, a protocol to efficiently sequence short DNA molecules on a long-read sequencer by randomly ligating them to form long molecules. Applying SMURF-seq using the Oxford Nanopore MinION yields up to 30 fragments per read, providing an average of 6.2 and up to 7.5 million mappable fragments per run, increasing information throughput for read-counting applications. We apply SMURF-seq on the MinION to generate copy number profiles. A comparison with profiles from Illumina sequencing reveals that SMURF-seq attains similar accuracy. More broadly, SMURF-seq expands the utility of long-read sequencers for read-counting applications.</abstract>
+<accessCondition type="restriction on access">Open Access</accessCondition>
+<subject authority="nal">
+<topic>DNA</topic>
+</subject>
+<subject authority="nal">
+<topic>genome</topic>
+</subject>
+<subject authority="nal">
+<topic>nanopores</topic>
+</subject>
+<location>
+<url displayLabel="electronic resource" usage="primary display">https://dx.doi.org/10.1186/s13059-019-1732-1</url>
+</location>
+<relatedItem type="host">
+<titleInfo>
+<title>Genome Biol</title>
+</titleInfo>
+<originInfo>
+<publisher>BioMed Central</publisher>
+</originInfo>
+<identifier type="issn">1474-760X</identifier>
+<identifier type="local">9916338915907426</identifier>
+<identifier type="local">Journal:19127</identifier>
+<part>
+<text>2019 Dec., v. 20, no. 1 p.134-134</text>
+</part>
+</relatedItem>
+<identifier type="doi">10.1186/s13059-019-1732-1</identifier>
+<recordInfo>
+<recordContentSource authority="marcorg">AGL</recordContentSource>
+<recordCreationDate encoding="marc">240711</recordCreationDate>
+<recordChangeDate encoding="iso8601">20240826155215.0</recordChangeDate>
+<recordIdentifier>9915827859007426</recordIdentifier>
+<recordOrigin>Converted from MARCXML to MODS version 3.5 using MARC21slim2MODS3-5.xsl (Revision 1.112 2018/06/21)</recordOrigin>
+<languageOfCataloging>
+<languageTerm authority="iso639-2b" type="code">eng</languageTerm>
+</languageOfCataloging>
+</recordInfo>
+</mods>
+</recordData>
+<recordIdentifier>9915827859007426</recordIdentifier>
+<recordPosition>2</recordPosition>
+</record>
+</records>
+<extraResponseData xmlns:xb="http://www.exlibris.com/repository/search/xmlbeans/">
+<xb:exact>true</xb:exact>
+<xb:responseDate>2026-11-22T10:37:12-0500</xb:responseDate>
+</extraResponseData>
+</searchRetrieveResponse>

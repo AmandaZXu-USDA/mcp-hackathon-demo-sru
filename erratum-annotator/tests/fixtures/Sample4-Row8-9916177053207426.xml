@@ -1,0 +1,280 @@
+<searchRetrieveResponse xmlns="http://www.loc.gov/zing/srw/">
+<version>1.2</version>
+<numberOfRecords>2</numberOfRecords>
+<records>
+<record>
+<recordSchema>mods</recordSchema>
+<recordPacking>xml</recordPacking>
+<recordData>
+<mods xmlns="http://www.loc.gov/mods/v3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="3.5" xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-5.xsd">
+<titleInfo>
+<title>547 transcriptomes from 44 brain areas reveal features of the aging brain in non-human primates</title>
+</titleInfo>
+<name type="personal" usage="primary">
+<namePart>Li, Ming-Li</namePart>
+<affiliation>State Key Laboratory of Genetic Resources and Evolution, Kunming Institute of Zoology, Chinese Academy of Sciences, Kunming, 650223, Yunnan, China</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>Wu, Shi-Hao</namePart>
+<affiliation>Kunming College of Life Science, University of the Chinese Academy of Sciences, Kunming, 650223, Yunnan, China</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>Zhang, Jin-Jin</namePart>
+<affiliation>State Key Laboratory of Genetic Resources and Evolution, Kunming Institute of Zoology, Chinese Academy of Sciences, Kunming, 650223, Yunnan, China</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>Tian, Hang-Yu</namePart>
+<affiliation>State Key Laboratory of Genetic Resources and Evolution, Kunming Institute of Zoology, Chinese Academy of Sciences, Kunming, 650223, Yunnan, China</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>Shao, Yong</namePart>
+<affiliation>State Key Laboratory of Genetic Resources and Evolution, Kunming Institute of Zoology, Chinese Academy of Sciences, Kunming, 650223, Yunnan, China</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>Wang, Zheng-Bo</namePart>
+<affiliation>Yunnan Key Laboratory of Primate Biomedicine Research, Institute of Primate Translational Medicine, Kunming University of Science and Technology, Kunming, 650500, Yunnan, China</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>Irwin, David M.</namePart>
+<affiliation>Department of Laboratory Medicine and Pathobiology, University of Toronto, Toronto, ON, Canada</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>Li, Jia-Li</namePart>
+<affiliation>Key Laboratory of Animal Models and Human Disease Mechanisms of Chinese Academy of Sciences & Yunnan Province, Kunming Institute of Zoology, Chinese Academy of Sciences, Kunming, 650223, Yunnan, China</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>Hu, Xin-Tian</namePart>
+<affiliation>Key Laboratory of Animal Models and Human Disease Mechanisms of Chinese Academy of Sciences & Yunnan Province, Kunming Institute of Zoology, Chinese Academy of Sciences, Kunming, 650223, Yunnan, China. xthu@mail.kiz.ac.cn</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>Wu, Dong-Dong</namePart>
+<affiliation>State Key Laboratory of Genetic Resources and Evolution, Kunming Institute of Zoology, Chinese Academy of Sciences, Kunming, 650223, Yunnan, China. wudongdong@mail.kiz.ac.cn</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<typeOfResource>text</typeOfResource>
+<originInfo>
+<place>
+<placeTerm authority="marccountry" type="code">xx</placeTerm>
+</place>
+<dateIssued encoding="marc">2019</dateIssued>
+<issuance>serial</issuance>
+</originInfo>
+<language>
+<languageTerm authority="iso639-2b" type="code">eng</languageTerm>
+</language>
+<physicalDescription>
+<extent>p. 258.</extent>
+</physicalDescription>
+<abstract type="Summary">BACKGROUND: Brain aging is a complex process that depends on the precise regulation of multiple brain regions; however, the underlying molecular mechanisms behind this process remain to be clarified in non-human primates. RESULTS: Here, we explore non-human primate brain aging using 547 transcriptomes originating from 44 brain areas in rhesus macaques (Macaca mulatta). We show that expression connectivity between pairs of cerebral cortex areas as well as expression symmetry between the left and right hemispheres both decrease after aging. Although the aging mechanisms across different brain areas are largely convergent, changes in gene expression and alternative splicing vary at diverse genes, reinforcing the complex multifactorial basis of aging. Through gene co-expression network analysis, we identify nine modules that exhibit gain of connectivity in the aged brain and uncovered a hub gene, PGLS, underlying brain aging. We further confirm the functional significance of PGLS in mice at the gene transcription, molecular, and behavioral levels. CONCLUSIONS: Taken together, our study provides comprehensive transcriptomes on multiple brain regions in non-human primates and provides novel insights into the molecular mechanism of healthy brain aging.</abstract>
+<subject authority="nal">
+<topic>Macaca mulatta</topic>
+</subject>
+<subject authority="nal">
+<topic>cerebral cortex</topic>
+</subject>
+<subject authority="nal">
+<topic>genes</topic>
+</subject>
+<subject authority="nal">
+<topic>transcription (genetics)</topic>
+</subject>
+<subject authority="nal">
+<topic>transcriptome</topic>
+</subject>
+<location>
+<url displayLabel="electronic resource" usage="primary display">https://dx.doi.org/10.1186/s13059-019-1866-1</url>
+</location>
+<relatedItem type="host">
+<titleInfo>
+<title>Genome Biol</title>
+</titleInfo>
+<originInfo>
+<publisher>BioMed Central</publisher>
+</originInfo>
+<identifier type="issn">1474-760X</identifier>
+<identifier type="local">9916338915907426</identifier>
+<identifier type="local">Journal:19127</identifier>
+<part>
+<text>2019 Dec., v. 20, no. 1 p.258-258</text>
+</part>
+</relatedItem>
+<identifier type="doi">10.1186/s13059-019-1866-1</identifier>
+<recordInfo>
+<recordContentSource authority="marcorg">AGL</recordContentSource>
+<recordCreationDate encoding="marc">240711</recordCreationDate>
+<recordChangeDate encoding="iso8601">20240715211223.0</recordChangeDate>
+<recordIdentifier>9916127477307426</recordIdentifier>
+<recordOrigin>Converted from MARCXML to MODS version 3.5 using MARC21slim2MODS3-5.xsl (Revision 1.112 2018/06/21)</recordOrigin>
+<languageOfCataloging>
+<languageTerm authority="iso639-2b" type="code">eng</languageTerm>
+</languageOfCataloging>
+</recordInfo>
+</mods>
+</recordData>
+<recordIdentifier>9916127477307426</recordIdentifier>
+<recordPosition>1</recordPosition>
+</record>
+<record>
+<recordSchema>mods</recordSchema>
+<recordPacking>xml</recordPacking>
+<recordData>
+<mods xmlns="http://www.loc.gov/mods/v3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="3.5" xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-5.xsd">
+<titleInfo>
+<title>Author Correction: 547 transcriptomes from 44 brain areas reveal features of the aging brain in non-human primates</title>
+</titleInfo>
+<name type="personal" usage="primary">
+<namePart>Li, Ming-Li</namePart>
+<affiliation>State Key Laboratory of Genetic Resources and Evolution, Kunming Institute of Zoology, Chinese Academy of Sciences, Kunming, 650223, Yunnan, China ``Kunming College of Life Science, University of the Chinese Academy of Sciences, Kunming, 650223, Yunnan, China</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>Wu, Shi-Hao</namePart>
+<affiliation>Kunming College of Life Science, University of the Chinese Academy of Sciences, Kunming, 650223, Yunnan, China ``Key Laboratory of Animal Models and Human Disease Mechanisms of Chinese Academy of Sciences & Yunnan Province, Kunming Institute of Zoology, Chinese Academy of Sciences, Kunming, 650223, Yunnan, China</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>Zhang, Jin-Jin</namePart>
+<affiliation>State Key Laboratory of Genetic Resources and Evolution, Kunming Institute of Zoology, Chinese Academy of Sciences, Kunming, 650223, Yunnan, China ``Kunming College of Life Science, University of the Chinese Academy of Sciences, Kunming, 650223, Yunnan, China</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>Tian, Hang-Yu</namePart>
+<affiliation>State Key Laboratory of Genetic Resources and Evolution, Kunming Institute of Zoology, Chinese Academy of Sciences, Kunming, 650223, Yunnan, China ``Kunming College of Life Science, University of the Chinese Academy of Sciences, Kunming, 650223, Yunnan, China</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>Shao, Yong</namePart>
+<affiliation>State Key Laboratory of Genetic Resources and Evolution, Kunming Institute of Zoology, Chinese Academy of Sciences, Kunming, 650223, Yunnan, China ``Kunming College of Life Science, University of the Chinese Academy of Sciences, Kunming, 650223, Yunnan, China</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>Wang, Zheng-Bo</namePart>
+<affiliation>Yunnan Key Laboratory of Primate Biomedicine Research, Institute of Primate Translational Medicine, Kunming University of Science and Technology, Kunming, 650500, Yunnan, China</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>Irwin, David</namePart>
+<affiliation>Department of Laboratory Medicine and Pathobiology, University of Toronto, Toronto, ON, Canada</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>Li, Jia-Li</namePart>
+<affiliation>Key Laboratory of Animal Models and Human Disease Mechanisms of Chinese Academy of Sciences & Yunnan Province, Kunming Institute of Zoology, Chinese Academy of Sciences, Kunming, 650223, Yunnan, China</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>Hu, Xin-Tian</namePart>
+<affiliation>Key Laboratory of Animal Models and Human Disease Mechanisms of Chinese Academy of Sciences & Yunnan Province, Kunming Institute of Zoology, Chinese Academy of Sciences, Kunming, 650223, Yunnan, China. xthu@mail.kiz.ac.cn ``Center for Excellence in Brain Science and Intelligence Technology, Chinese Academy of Sciences, Shanghai, 200031, China. xthu@mail.kiz.ac.cn ``National Research Facility for Phenotypic and Genetic Analysis of Model Animals, Kunming Institute of Zoology, Chinese Academy of Sciences, Kunming, 650223, Yunnan, China. xthu@mail.kiz.ac.cn ``Kunming Primate Research Center, Kunming Institute of Zoology, Chinese Academy of Sciences, Kunming, Yunnan, China. xthu@mail.kiz.ac.cn</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>Wu, Dong-Dong</namePart>
+<affiliation>State Key Laboratory of Genetic Resources and Evolution, Kunming Institute of Zoology, Chinese Academy of Sciences, Kunming, 650223, Yunnan, China. wudongdong@mail.kiz.ac.cn ``National Research Facility for Phenotypic and Genetic Analysis of Model Animals, Kunming Institute of Zoology, Chinese Academy of Sciences, Kunming, 650223, Yunnan, China. wudongdong@mail.kiz.ac.cn ``Center for Excellence in Animal Evolution and Genetics, Chinese Academy of Sciences, Kunming, 650223, Yunnan, China. wudongdong@mail.kiz.ac.cn</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<typeOfResource>text</typeOfResource>
+<originInfo>
+<place>
+<placeTerm authority="marccountry" type="code">xx#</placeTerm>
+</place>
+<dateIssued encoding="marc">2020</dateIssued>
+<issuance>serial</issuance>
+</originInfo>
+<language>
+<languageTerm authority="iso639-2b" type="code">eng</languageTerm>
+</language>
+<physicalDescription>
+<extent>46</extent>
+</physicalDescription>
+<abstract type="Summary">Following publication of the original paper [1], the authors reported an error in the affiliation of Xin-Tian Hu, who is also affiliated with “Kunming Primate Research Center, Kunming Institute of Zoology, Chinese Academy of Sciences, Kunming, Yunnan, China”.</abstract>
+<note>ERRATUM</note>
+<location>
+<url displayLabel="Available from publisher's site" usage="primary display">https://dx.doi.org/10.1186/s13059-020-01962-z</url>
+</location>
+<relatedItem type="host">
+<titleInfo>
+<title>Genome biology</title>
+</titleInfo>
+<originInfo>
+<publisher>BioMed Central</publisher>
+</originInfo>
+<identifier type="issn">1474-760X</identifier>
+<identifier type="local">Journal:19127</identifier>
+<part>
+<text>2020 Dec., v. 21, no. 1, 46</text>
+</part>
+</relatedItem>
+<identifier type="pmcid">PMC7038610</identifier>
+<identifier type="pmid">32093779</identifier>
+<identifier type="doi">10.1186/s13059-020-01962-z</identifier>
+<recordInfo>
+<descriptionStandard>aacr</descriptionStandard>
+<recordContentSource authority="marcorg">AGL</recordContentSource>
+<recordCreationDate encoding="marc">260722</recordCreationDate>
+<recordChangeDate encoding="iso8601">20221117155741.0</recordChangeDate>
+<recordIdentifier>9916177053207426</recordIdentifier>
+<recordOrigin>Converted from MARCXML to MODS version 3.5 using MARC21slim2MODS3-5.xsl (Revision 1.112 2018/06/21)</recordOrigin>
+<languageOfCataloging>
+<languageTerm authority="iso639-2b" type="code">eng</languageTerm>
+</languageOfCataloging>
+</recordInfo>
+</mods>
+</recordData>
+<recordIdentifier>9916177053207426</recordIdentifier>
+<recordPosition>2</recordPosition>
+</record>
+</records>
+<extraResponseData xmlns:xb="http://www.exlibris.com/repository/search/xmlbeans/">
+<xb:exact>true</xb:exact>
+<xb:responseDate>2026-11-22T10:33:45-0500</xb:responseDate>
+</extraResponseData>
+</searchRetrieveResponse>

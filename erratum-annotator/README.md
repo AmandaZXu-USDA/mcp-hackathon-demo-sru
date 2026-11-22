@@ -10,10 +10,14 @@ How the annotated title is built depends on what the SRU response holds:
 
 | Category | SRU response holds | Annotated title | Example |
 | --- | --- | --- | --- |
-| One correction, one original | 1 correction record + 1 original article | `<original title> [Erratum: ...]` | Sample 4, rows 2, 3 and 5 |
+| One correction, one original | 1 correction record + 1 original article | `<original title> [Erratum: ...]` | Sample 4, rows 2, 3, 5, 6, 8, 9 and 10 |
 | **Two corrections in one original title** | 2 or more correction records of the **same** original article + 1 original article | `<original title> [Erratum: A] [Erratum: B]`: every correction's note, ordered by date (year, month, day), then volume, issue and page | Sample 4, row 4; Sample 1, row 41 |
-| Already annotated | An original whose title already contains `[Erratum:` | Unchanged | Sample 1 |
+| Already annotated | An original whose title already contains `[Erratum:` | Unchanged | Sample 1; Sample 4, row 7 |
 | No original in Alma | Only the correction record | The correction notice only; no annotated original (status `no_original`) | Sample 1, rows 4 and 24 |
+
+The original title is the MODS main title (`titleInfo` without a `type`) with its `nonSort` and `subTitle`. A
+parallel title keeps its `=` (Sample 4, row 10: `MÚLT-JELEN-JÖVŐ ... = PAST-PRESENT-FUTURE in Hungarian soil analyses`);
+any other subtitle follows `: `.
 
 Two corrections in one original title (project owner's rule, 2026-11-22): Sample 4, row 4 (correction
 `9917012079207426`) returns the original `9917011947507426` and two corrections from the same issue, so page
@@ -58,9 +62,9 @@ catalog title.
 ## Demo web page
 
 <https://mcp-erratum-note-7474654188777746.aws.databricksapps.com> (sign in with a workspace account; needs
-`CAN USE` on the app). Pick one of the 54 saved correction notices (48 from Sample 1, Sample 2 rows 3 and 14,
-whose correction titles are in curly double quotes, and Sample 4 rows 2 to 5, where row 4 has two corrections in
-one original title), or paste SRU XML, and see the correction
+`CAN USE` on the app). Pick one of the 59 saved correction notices (48 from Sample 1, Sample 2 rows 3 and 14,
+whose correction titles are in curly double quotes, and Sample 4 rows 2 to 10, where row 4 has two corrections in
+one original title and row 10 has a parallel title with a subtitle), or paste SRU XML, and see the correction
 notice, the original article found, the erratum note and the annotated title, with a status (ready, needs
 review, no original in Alma, already annotated). **See all saved notices at once** annotates all 48 in one
 table. The page is served by the same app and code as the MCP tools (`GET /`, `GET /api/examples`,

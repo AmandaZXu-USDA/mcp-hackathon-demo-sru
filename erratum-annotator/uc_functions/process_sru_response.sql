@@ -142,10 +142,15 @@ def parse_sru_response(xml: str) -> list[ModsRecord]:
         mods = rd.find(f"{MODS}mods")
         if mods is None:
             continue
-        title = _text(mods.find(f"{MODS}titleInfo/{MODS}title"))
-        non_sort = _text(mods.find(f"{MODS}titleInfo/{MODS}nonSort"))
+        infos = mods.findall(f"{MODS}titleInfo")
+        info = next((t for t in infos if not t.get("type")), infos[0] if infos else None)
+        title = _text(info.find(f"{MODS}title")) if info is not None else None
+        non_sort = _text(info.find(f"{MODS}nonSort")) if info is not None else None
         if non_sort:  # leading article stored separately, e.g. <nonSort>A</nonSort>
             title = f"{non_sort} {title}"
+        sub = _text(info.find(f"{MODS}subTitle")) if info is not None else None
+        if title and sub:  # MARC 245 $b; a parallel title keeps its ' =' (e.g. 'Cím = Title')
+            title = f"{title} {sub}" if title.rstrip()[-1:] in "=:;/" else f"{title}: {sub}"
         rid = _text(mods.find(f"{MODS}recordInfo/{MODS}recordIdentifier"))
         part = _text(mods.find(f".//{MODS}part/{MODS}text"))
         doi = next((_text(i) for i in mods.findall(f"{MODS}identifier")

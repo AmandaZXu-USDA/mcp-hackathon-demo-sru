@@ -1,0 +1,160 @@
+<searchRetrieveResponse xmlns="http://www.loc.gov/zing/srw/">
+<version>1.2</version>
+<numberOfRecords>2</numberOfRecords>
+<records>
+<record>
+<recordSchema>mods</recordSchema>
+<recordPacking>xml</recordPacking>
+<recordData>
+<mods xmlns="http://www.loc.gov/mods/v3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="3.5" xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-5.xsd">
+<titleInfo>
+<title>Author Correction: Stairway Plot 2: demographic history inference with folded SNP frequency spectra</title>
+</titleInfo>
+<name type="personal" usage="primary">
+<namePart>Liu, Xiaoming</namePart>
+<affiliation>USF Genomics & College of Public Health, University of South Florida, Tampa, FL, USA. xiaomingliu@usf.edu</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>Fu, Yun-Xin</namePart>
+<affiliation>Department of Biostatistics and Data Science, School of Public Health, The University of Texas Health Science Center at Houston, Houston, TX, USA</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<typeOfResource>text</typeOfResource>
+<originInfo>
+<place>
+<placeTerm authority="marccountry" type="code">xx#</placeTerm>
+</place>
+<dateIssued encoding="marc">2020</dateIssued>
+<issuance>serial</issuance>
+</originInfo>
+<language>
+<languageTerm authority="iso639-2b" type="code">eng</languageTerm>
+</language>
+<physicalDescription>
+<extent>305</extent>
+</physicalDescription>
+<note>ERRATUM</note>
+<location>
+<url displayLabel="Available from publisher's site" usage="primary display">https://dx.doi.org/10.1186/s13059-020-02243-5</url>
+</location>
+<relatedItem type="host">
+<titleInfo>
+<title>Genome biology</title>
+</titleInfo>
+<originInfo>
+<publisher>BioMed Central</publisher>
+</originInfo>
+<identifier type="issn">1474-760X</identifier>
+<identifier type="local">Journal:19127</identifier>
+<part>
+<text>2020 Dec., v. 21, no. 1, 305</text>
+</part>
+</relatedItem>
+<identifier type="doi">10.1186/s13059-020-02243-5</identifier>
+<recordInfo>
+<descriptionStandard>aacr</descriptionStandard>
+<recordContentSource authority="marcorg">AGL</recordContentSource>
+<recordCreationDate encoding="marc">260722</recordCreationDate>
+<recordChangeDate encoding="iso8601">20221120131236.0</recordChangeDate>
+<recordIdentifier>9916208075707426</recordIdentifier>
+<recordOrigin>Converted from MARCXML to MODS version 3.5 using MARC21slim2MODS3-5.xsl (Revision 1.112 2018/06/21)</recordOrigin>
+<languageOfCataloging>
+<languageTerm authority="iso639-2b" type="code">eng</languageTerm>
+</languageOfCataloging>
+</recordInfo>
+</mods>
+</recordData>
+<recordIdentifier>9916208075707426</recordIdentifier>
+<recordPosition>1</recordPosition>
+</record>
+<record>
+<recordSchema>mods</recordSchema>
+<recordPacking>xml</recordPacking>
+<recordData>
+<mods xmlns="http://www.loc.gov/mods/v3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="3.5" xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-5.xsd">
+<titleInfo>
+<title>Stairway Plot 2: demographic history inference with folded SNP frequency spectra</title>
+</titleInfo>
+<name type="personal" usage="primary">
+<namePart>Liu, Xiaoming</namePart>
+<affiliation>USF Genomics & College of Public Health, University of South Florida, Tampa, FL, USA. xiaomingliu@usf.edu</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>Fu, Yun-Xin</namePart>
+<affiliation>Department of Biostatistics and Data Science, School of Public Health, The University of Texas Health Science Center at Houston, Houston, TX, USA</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<typeOfResource>text</typeOfResource>
+<originInfo>
+<place>
+<placeTerm authority="marccountry" type="code">xx#</placeTerm>
+</place>
+<dateIssued encoding="marc">2020</dateIssued>
+<issuance>serial</issuance>
+</originInfo>
+<language>
+<languageTerm authority="iso639-2b" type="code">eng</languageTerm>
+</language>
+<physicalDescription>
+<extent>280</extent>
+</physicalDescription>
+<abstract type="Summary">Inferring the demographic histories of populations has wide applications in population, ecological, and conservation genomics. We present Stairway Plot 2, a cross-platform program package for this task using SNP frequency spectra. It is based on a nonparametric method with the capability of handling folded SNP frequency spectra (that is, when the ancestral alleles of the SNPs are unknown) of thousands of samples produced with genotyping-by-sequencing technologies; therefore, it is particularly suitable for nonmodel organisms.</abstract>
+<note>JOURNAL ARTICLE</note>
+<subject authority="nal">
+<topic>genome</topic>
+</subject>
+<subject authority="nal">
+<topic>genomics</topic>
+</subject>
+<subject authority="nal">
+<topic>genotyping by sequencing</topic>
+</subject>
+<location>
+<url displayLabel="electronic resource" usage="primary display">https://dx.doi.org/10.1186/s13059-020-02196-9</url>
+</location>
+<relatedItem type="host">
+<titleInfo>
+<title>Genome biology</title>
+</titleInfo>
+<originInfo>
+<publisher>BioMed Central</publisher>
+</originInfo>
+<identifier type="issn">1474-760X</identifier>
+<identifier type="local">Journal:19127</identifier>
+<part>
+<text>2020 Dec., v. 21, no. 1, 280</text>
+</part>
+</relatedItem>
+<identifier type="doi">10.1186/s13059-020-02196-9</identifier>
+<recordInfo>
+<descriptionStandard>aacr</descriptionStandard>
+<recordContentSource authority="marcorg">AGL</recordContentSource>
+<recordCreationDate encoding="marc">260722</recordCreationDate>
+<recordChangeDate encoding="iso8601">20240613230157.0</recordChangeDate>
+<recordIdentifier>9915837933107426</recordIdentifier>
+<recordOrigin>Converted from MARCXML to MODS version 3.5 using MARC21slim2MODS3-5.xsl (Revision 1.112 2018/06/21)</recordOrigin>
+<languageOfCataloging>
+<languageTerm authority="iso639-2b" type="code">eng</languageTerm>
+</languageOfCataloging>
+</recordInfo>
+</mods>
+</recordData>
+<recordIdentifier>9915837933107426</recordIdentifier>
+<recordPosition>2</recordPosition>
+</record>
+</records>
+<extraResponseData xmlns:xb="http://www.exlibris.com/repository/search/xmlbeans/">
+<xb:exact>true</xb:exact>
+<xb:responseDate>2026-11-22T10:28:34-0500</xb:responseDate>
+</extraResponseData>
+</searchRetrieveResponse>

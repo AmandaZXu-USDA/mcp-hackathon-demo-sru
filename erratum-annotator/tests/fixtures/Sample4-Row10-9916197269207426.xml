@@ -1,0 +1,254 @@
+<searchRetrieveResponse xmlns="http://www.loc.gov/zing/srw/">
+<version>1.2</version>
+<numberOfRecords>2</numberOfRecords>
+<records>
+<record>
+<recordSchema>mods</recordSchema>
+<recordPacking>xml</recordPacking>
+<recordData>
+<mods xmlns="http://www.loc.gov/mods/v3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="3.5" xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-5.xsd">
+<titleInfo>
+<title>ERRATUM: MÚLT-JELEN-JÖVŐ a hazai mezőgazdasági talajvizsgálatokban =</title>
+<subTitle>PAST-PRESENT-FUTURE in Hungarian soil analyses</subTitle>
+</titleInfo>
+<titleInfo type="alternative">
+<title>PAST-PRESENT-FUTURE in Hungarian soil analyses</title>
+</titleInfo>
+<titleInfo type="translated">
+<title>PAST-PRESENT-FUTURE in Hungarian soil analyses</title>
+</titleInfo>
+<name type="personal" usage="primary">
+<namePart>Vona, Viktória</namePart>
+<affiliation>Széchenyi István Egyetem, Mezőgazdasági- és Élelmiszertudományi Kar, Víz- és Környezettudományi Tanszék, Mosonmagyaróvár;</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>Bakos, István Attila</namePart>
+<affiliation>Széchenyi István Egyetem, Mezőgazdasági- és Élelmiszertudományi Kar, Víz- és Környezettudományi Tanszék, Mosonmagyaróvár;</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>Giczi, Zsolt</namePart>
+<affiliation>Széchenyi István Egyetem, Mezőgazdasági- és Élelmiszertudományi Kar, Víz- és Környezettudományi Tanszék, Mosonmagyaróvár;</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>Kalocsai, Renátó</namePart>
+<affiliation>Széchenyi István Egyetem, Mezőgazdasági- és Élelmiszertudományi Kar, Víz- és Környezettudományi Tanszék, Mosonmagyaróvár;</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>Vona, Márton</namePart>
+<affiliation>Csernozjom Kft., Nagykörű;</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>Kulmány, Mihály István</namePart>
+<affiliation>Nemzeti Agrárkutatási és Innovációs Központ, Agrárgazdasági Kutatóintézet, Budapest;</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>Centeri, Csaba</namePart>
+<affiliation>Szent István Egyetem, Természetvédelmi és Tájgazdálkodási Tanszék, Gödöllő</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<typeOfResource>text</typeOfResource>
+<originInfo>
+<place>
+<placeTerm authority="marccountry" type="code">xx#</placeTerm>
+</place>
+<dateIssued encoding="marc">2021</dateIssued>
+<issuance>serial</issuance>
+</originInfo>
+<language>
+<languageTerm authority="iso639-2b" type="code">eng</languageTerm>
+</language>
+<physicalDescription>
+<extent>p. 85-85</extent>
+</physicalDescription>
+<note>ERRATUM</note>
+<location>
+<url displayLabel="Available from publisher's site" usage="primary display">https://dx.doi.org/10.1556/0088.2021.00087</url>
+</location>
+<relatedItem type="host">
+<titleInfo>
+<title>Agrokémia és Talajtan</title>
+</titleInfo>
+<originInfo>
+<publisher>Akadémiai Kiadó</publisher>
+</originInfo>
+<identifier type="issn">1588-2713</identifier>
+<identifier type="local">Journal:J000000044</identifier>
+<part>
+<text>2021 May 31, v. 70, no. 1 p. 85-85</text>
+</part>
+</relatedItem>
+<identifier type="doi">10.1556/0088.2021.00087</identifier>
+<recordInfo>
+<descriptionStandard>aacr</descriptionStandard>
+<recordContentSource authority="marcorg">AGL</recordContentSource>
+<recordCreationDate encoding="marc">260722</recordCreationDate>
+<recordChangeDate encoding="iso8601">20221117195406.0</recordChangeDate>
+<recordIdentifier>9916197269207426</recordIdentifier>
+<recordOrigin>Converted from MARCXML to MODS version 3.5 using MARC21slim2MODS3-5.xsl (Revision 1.112 2018/06/21)</recordOrigin>
+<languageOfCataloging>
+<languageTerm authority="iso639-2b" type="code">eng</languageTerm>
+</languageOfCataloging>
+</recordInfo>
+</mods>
+</recordData>
+<recordIdentifier>9916197269207426</recordIdentifier>
+<recordPosition>1</recordPosition>
+</record>
+<record>
+<recordSchema>mods</recordSchema>
+<recordPacking>xml</recordPacking>
+<recordData>
+<mods xmlns="http://www.loc.gov/mods/v3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="3.5" xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-5.xsd">
+<titleInfo>
+<title>MÚLT-JELEN-JÖVŐ a hazai mezőgazdasági talajvizsgálatokban =</title>
+<subTitle>PAST-PRESENT-FUTURE in Hungarian soil analyses</subTitle>
+</titleInfo>
+<titleInfo type="alternative">
+<title>PAST-PRESENT-FUTURE in Hungarian soil analyses</title>
+</titleInfo>
+<name type="personal" usage="primary">
+<namePart>Vona, Viktória</namePart>
+<affiliation>Széchenyi István Egyetem, Mezőgazdasági- és Élelmiszertudományi Kar, Víz- és Környezettudományi Tanszék, Mosonmagyaróvár</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>Bakos, István Attila</namePart>
+<affiliation>Széchenyi István Egyetem, Mezőgazdasági- és Élelmiszertudományi Kar, Víz- és Környezettudományi Tanszék, Mosonmagyaróvár</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>Giczi, Zsolt</namePart>
+<affiliation>Széchenyi István Egyetem, Mezőgazdasági- és Élelmiszertudományi Kar, Víz- és Környezettudományi Tanszék, Mosonmagyaróvár</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>Kalocsai, Renátó</namePart>
+<affiliation>Széchenyi István Egyetem, Mezőgazdasági- és Élelmiszertudományi Kar, Víz- és Környezettudományi Tanszék, Mosonmagyaróvár</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>Vona, Márton</namePart>
+<affiliation>Csernozjom Kft., Nagykörű</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>Kulmány, István Mihály</namePart>
+<affiliation>Nemzeti Agrárkutatási és Innovációs Központ, Agrárgazdasági Kutatóintézet, Budapest</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>Centeri, Csaba</namePart>
+<affiliation>Szent István Egyetem, Természetvédelmi és Tájgazdálkodási Tanszék, Gödöllő</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<typeOfResource>text</typeOfResource>
+<originInfo>
+<place>
+<placeTerm authority="marccountry" type="code">xx#</placeTerm>
+</place>
+<dateIssued encoding="marc">2020</dateIssued>
+<issuance>serial</issuance>
+</originInfo>
+<language>
+<languageTerm authority="iso639-2b" type="code">eng</languageTerm>
+</language>
+<physicalDescription>
+<extent>p. 127-151</extent>
+</physicalDescription>
+<abstract type="Summary">The purpose of the present paper is Authors aim was to deliver a compilation of to summarize the Hungarian soil analysies methods and theas well as to present the advisory system for nutrient management advisory system. Both of them are based on several decades of work. We need to should learn from these past experiences of reasonable and good agricultural practices. We can only apply the present and future results of soil science and find out what direction should we develop, if we were aware of the results of the past and we calculate with their governing effects. The majority of our recent methods are based on historical researches and the present current statesituation of our field of scientific fieldce can only be judged and developed further if we knew the former history of the methodological findings. The recent Hungarian soil analysis system provides useful results that can be used very well today, however, the adaptation of the new international methods , learned from the follow-up of the international trends can might provide open new perspectives in for the Hungarian laboratory analyses methodology. TThe subject is extremely timely because there are hea never- met demand for cost and time effective, environmentally friendly soil analysis methods underpin how actual and hot the topic is. nowadays.</abstract>
+<accessCondition type="restriction on access">Open Access</accessCondition>
+<accessCondition type="use and reproduction">Creative Commons Attribution 4.0 Generic (CC BY 4.0)</accessCondition>
+<note>REVIEW</note>
+<subject authority="nal">
+<topic>soil</topic>
+</subject>
+<subject authority="nal">
+<topic>nutrient management</topic>
+</subject>
+<subject authority="nal">
+<topic>soil analysis</topic>
+</subject>
+<subject>
+<topic>soil chemistry</topic>
+</subject>
+<subject>
+<topic>soil physics</topic>
+</subject>
+<subject>
+<topic>laboratory measurements</topic>
+</subject>
+<subject>
+<topic>history</topic>
+</subject>
+<location>
+<url displayLabel="Available from publisher's website" usage="primary display">https://doi.org/10.1556/0088.2020.00061</url>
+</location>
+<relatedItem type="host">
+<titleInfo>
+<title>Agrokémia és Talajtan</title>
+</titleInfo>
+<originInfo>
+<publisher>Akadémiai Kiadó</publisher>
+</originInfo>
+<identifier type="issn">1588-2713</identifier>
+<identifier type="local">Journal:J000000044</identifier>
+<part>
+<text>2020 Nov. 28, v. 69, no. 1-2 p. 127-151</text>
+</part>
+</relatedItem>
+<identifier type="doi">10.1556/0088.2020.00061</identifier>
+<recordInfo>
+<descriptionStandard>aacr</descriptionStandard>
+<recordContentSource authority="marcorg">AGL</recordContentSource>
+<recordCreationDate encoding="marc">260722</recordCreationDate>
+<recordIdentifier>9917152597007426</recordIdentifier>
+<recordOrigin>Converted from MARCXML to MODS version 3.5 using MARC21slim2MODS3-5.xsl (Revision 1.112 2018/06/21)</recordOrigin>
+<languageOfCataloging>
+<languageTerm authority="iso639-2b" type="code">eng</languageTerm>
+</languageOfCataloging>
+</recordInfo>
+</mods>
+</recordData>
+<recordIdentifier>9917152597007426</recordIdentifier>
+<recordPosition>2</recordPosition>
+</record>
+</records>
+<extraResponseData xmlns:xb="http://www.exlibris.com/repository/search/xmlbeans/">
+<xb:exact>true</xb:exact>
+<xb:responseDate>2026-11-22T10:39:06-0500</xb:responseDate>
+</extraResponseData>
+</searchRetrieveResponse>
