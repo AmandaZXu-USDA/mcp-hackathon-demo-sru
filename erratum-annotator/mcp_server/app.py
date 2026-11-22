@@ -335,7 +335,8 @@ def enhance_title(original_title: str, erratum_note: str) -> dict:
 def process_sru_response(xml: str, search_title: str = "", correction_id: str = "") -> dict:
     """Full pipeline: parse SRU XML, match correction to original, annotate the title.
 
-    Uses search_title as the fallback when no original record is in the response.
+    search_title only ranks the original records in the response. When the response has no original
+    record (status no_original), annotated_title is blank (""): there is nothing to annotate.
     Pass correction_id (the 16-digit erratum MMS ID) when a response may contain several
     correction records, so the right one supplies the note.
     When the response holds two or more corrections of one original article, all their notes go into

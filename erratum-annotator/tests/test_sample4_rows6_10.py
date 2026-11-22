@@ -66,3 +66,22 @@ def _mods(title_info: str) -> str:
 def test_title_with_subtitle(title_info, expected):
     (rec,) = ea.parse_sru_response(_mods(title_info))
     assert rec.title == expected
+
+
+CORRECTION_ONLY = (
+    '<searchRetrieveResponse xmlns="http://www.loc.gov/zing/srw/"><records><record><recordData>'
+    '<mods xmlns="http://www.loc.gov/mods/v3"><titleInfo><title>Correction to: A study</title></titleInfo>'
+    '<note>ERRATUM</note><relatedItem type="host"><part><text>2021 Sept., v. 44, no. 9 p. 2001-2001</text>'
+    '</part></relatedItem><identifier type="doi">10.1/x</identifier>'
+    '<recordInfo><recordIdentifier>9917167033407426</recordIdentifier></recordInfo>'
+    '</mods></recordData></record></records></searchRetrieveResponse>')
+
+
+@pytest.mark.parametrize("search_title", ["", "A study"])
+def test_no_original_gives_blank_annotated_title(search_title):
+    # e.g. Sample 4 rows 14 and 15: the response holds only the correction notice
+    res = ea.process_sru_response(CORRECTION_ONLY, search_title, "9917167033407426")
+    assert res["original_id"] is None
+    assert res["annotated_title"] == ""
+    assert res["erratum_note"] == "[Erratum: Sept. 2021, v. 44, no. 9, 2001-2001, 10.1/x]"
+    assert res["already_annotated"] is False

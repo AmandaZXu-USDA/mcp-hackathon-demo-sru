@@ -1,0 +1,218 @@
+<searchRetrieveResponse xmlns="http://www.loc.gov/zing/srw/">
+<version>1.2</version>
+<numberOfRecords>2</numberOfRecords>
+<records>
+<record>
+<recordSchema>mods</recordSchema>
+<recordPacking>xml</recordPacking>
+<recordData>
+<mods xmlns="http://www.loc.gov/mods/v3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="3.5" xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-5.xsd">
+<titleInfo>
+<title>Correction: New C₁₉-Diterpenoid Alkaloid 19-Oxo-14-acetylbrowniine with Antioxidant Activity from Delphinium oreophilum</title>
+</titleInfo>
+<name type="personal" usage="primary">
+<namePart>Ahunova, H.</namePart>
+<affiliation>Institute of Botany, Academy of Science of the Republic of Uzbekistan, Tashkent, Uzbekistan ``Namangan State University, Namangan, Uzbekistan</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>Bobakulov, Kh.</namePart>
+<affiliation>S. Yu. Yunusov Institute of the Chemistry of Plant Substances, Academy of Sciences of the Republic of Uzbekistan, 77 Mirzo Ulugbek St, 100170, Tashkent, Uzbekistan ``National Research University Tashkent Institute of Irrigation and Agricultural Mechanization Engineers, 39 Kori Niyazov St, 100000, Tashkent, Uzbekistan</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>Kulonov, A.</namePart>
+<affiliation>Tashkent International University of Chemistry, Tashkent, Uzbekistan</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>Abdullaev, Sh.</namePart>
+<affiliation>Namangan State University, Namangan, Uzbekistan</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>Aripova, S.</namePart>
+<affiliation>S. Yu. Yunusov Institute of the Chemistry of Plant Substances, Academy of Sciences of the Republic of Uzbekistan, 77 Mirzo Ulugbek St, 100170, Tashkent, Uzbekistan. khayrulla@rambler.ru</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<typeOfResource>text</typeOfResource>
+<originInfo>
+<place>
+<placeTerm authority="marccountry" type="code">xx#</placeTerm>
+</place>
+<dateIssued encoding="marc">2026</dateIssued>
+<issuance>serial</issuance>
+</originInfo>
+<language>
+<languageTerm authority="iso639-2b" type="code">eng</languageTerm>
+</language>
+<physicalDescription>
+<extent>p. 643-643</extent>
+</physicalDescription>
+<note>ERRATUM</note>
+<location>
+<url displayLabel="Available from publisher's website" usage="primary display">https://doi.org/10.1007/s10600-026-05032-x</url>
+</location>
+<relatedItem type="host">
+<titleInfo>
+<title>Chemistry of natural compounds</title>
+</titleInfo>
+<originInfo>
+<publisher>Springer US</publisher>
+</originInfo>
+<identifier type="issn">0009-3130</identifier>
+<identifier type="local">Journal:jnl45134</identifier>
+<part>
+<text>2026 May, v. 62, no. 3 p. 643-643</text>
+</part>
+</relatedItem>
+<identifier type="doi">10.1007/s10600-026-05032-x</identifier>
+<recordInfo>
+<descriptionStandard>aacr</descriptionStandard>
+<recordContentSource authority="marcorg">AGL</recordContentSource>
+<recordCreationDate encoding="marc">260727</recordCreationDate>
+<recordIdentifier>9917172378907426</recordIdentifier>
+<recordOrigin>Converted from MARCXML to MODS version 3.5 using MARC21slim2MODS3-5.xsl (Revision 1.112 2018/06/21)</recordOrigin>
+<languageOfCataloging>
+<languageTerm authority="iso639-2b" type="code">eng</languageTerm>
+</languageOfCataloging>
+</recordInfo>
+</mods>
+</recordData>
+<recordIdentifier>9917172378907426</recordIdentifier>
+<recordPosition>1</recordPosition>
+</record>
+<record>
+<recordSchema>mods</recordSchema>
+<recordPacking>xml</recordPacking>
+<recordData>
+<mods xmlns="http://www.loc.gov/mods/v3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="3.5" xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-5.xsd">
+<titleInfo>
+<title>New C₁₉-Diterpenoid Alkaloid 19-Oxo-14-Acetylbrowniine with Antioxidant Activity from Delphinium oreophilum</title>
+</titleInfo>
+<name type="personal" usage="primary">
+<namePart>Akhunova, Kh.</namePart>
+<affiliation>Institute of Botany, Academy of Science of the Republic of Uzbekistan, Tashkent, Uzbekistan</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>Bobakulov, Kh.</namePart>
+<affiliation>S. Yu. Yunusov Institute of the Chemistry of Plant Substances, Academy of Sciences of the Republic of Uzbekistan, 77 Mirzo Ulugbek St, 100170, Tashkent, Uzbekistan ``National Research University Tashkent Institute of Irrigation and Agricultural Mechanization Engineers, 39 Kori Niyazov St, 100000, Tashkent, Uzbekistan</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>Kulonov, A.</namePart>
+<affiliation>Tashkent International University of Chemistry, Tashkent, Uzbekistan</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>Abdullaev, Sh.</namePart>
+<affiliation>Namangan State University, Namangan, Uzbekistan</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>Aripova, S.</namePart>
+<affiliation>S. Yu. Yunusov Institute of the Chemistry of Plant Substances, Academy of Sciences of the Republic of Uzbekistan, 77 Mirzo Ulugbek St, 100170, Tashkent, Uzbekistan. khayrulla@rambler.ru</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<typeOfResource>text</typeOfResource>
+<originInfo>
+<place>
+<placeTerm authority="marccountry" type="code">xx#</placeTerm>
+</place>
+<dateIssued encoding="marc">2026</dateIssued>
+<issuance>serial</issuance>
+</originInfo>
+<language>
+<languageTerm authority="iso639-2b" type="code">eng</languageTerm>
+</language>
+<physicalDescription>
+<extent>p. 368-371</extent>
+</physicalDescription>
+<abstract type="Summary">The new C₁₉-diterpenoid alkaloid 19-oxo-14-acetylbrowniine (1) and the alkaloid shawurensine for the first time were isolated from the plant Delphinium oreophilum collected in Jizzakh Region, Uzbekistan. The structure of the new alkaloid was elucidated using IR, 1D, and 2D NMR spectroscopy and high-resolution mass spectrometry. Compound 1 demonstrated high (78.6%) antioxidant activity for neutralization of DPPH (2,2-diphenyl-1-picrylhydrazyl) radicals vs. ascorbic acid as a positive control.</abstract>
+<note>JOURNAL ARTICLE</note>
+<subject authority="nal">
+<topic>alkaloids</topic>
+</subject>
+<subject authority="nal">
+<topic>antioxidant activity</topic>
+</subject>
+<subject authority="nal">
+<topic>Delphinium</topic>
+</subject>
+<subject authority="nal">
+<topic>nuclear magnetic resonance spectroscopy</topic>
+</subject>
+<subject authority="nal">
+<topic>mass spectrometry</topic>
+</subject>
+<subject authority="nal">
+<topic>neutralization</topic>
+</subject>
+<subject authority="nal">
+<topic>2,2-diphenyl-1-picrylhydrazyl</topic>
+</subject>
+<subject authority="nal">
+<topic>ascorbic acid</topic>
+</subject>
+<subject authority="nal">
+<geographic>Uzbekistan</geographic>
+</subject>
+<location>
+<url displayLabel="Available from publisher's website" usage="primary display">https://doi.org/10.1007/s10600-026-04959-5</url>
+</location>
+<relatedItem type="host">
+<titleInfo>
+<title>Chemistry of natural compounds</title>
+</titleInfo>
+<originInfo>
+<publisher>Springer US</publisher>
+</originInfo>
+<identifier type="issn">0009-3130</identifier>
+<identifier type="local">Journal:jnl45134</identifier>
+<part>
+<text>2026 Mar., v. 62, no. 2 p. 368-371</text>
+</part>
+</relatedItem>
+<identifier type="doi">10.1007/s10600-026-04959-5</identifier>
+<recordInfo>
+<descriptionStandard>aacr</descriptionStandard>
+<recordContentSource authority="marcorg">AGL</recordContentSource>
+<recordCreationDate encoding="marc">260812</recordCreationDate>
+<recordIdentifier>9917167473907426</recordIdentifier>
+<recordOrigin>Converted from MARCXML to MODS version 3.5 using MARC21slim2MODS3-5.xsl (Revision 1.112 2018/06/21)</recordOrigin>
+<languageOfCataloging>
+<languageTerm authority="iso639-2b" type="code">eng</languageTerm>
+</languageOfCataloging>
+</recordInfo>
+</mods>
+</recordData>
+<recordIdentifier>9917167473907426</recordIdentifier>
+<recordPosition>2</recordPosition>
+</record>
+</records>
+<extraResponseData xmlns:xb="http://www.exlibris.com/repository/search/xmlbeans/">
+<xb:exact>true</xb:exact>
+<xb:responseDate>2026-11-22T10:46:21-0500</xb:responseDate>
+</extraResponseData>
+</searchRetrieveResponse>

@@ -1,0 +1,193 @@
+<searchRetrieveResponse xmlns="http://www.loc.gov/zing/srw/">
+<version>1.2</version>
+<numberOfRecords>2</numberOfRecords>
+<records>
+<record>
+<recordSchema>mods</recordSchema>
+<recordPacking>xml</recordPacking>
+<recordData>
+<mods xmlns="http://www.loc.gov/mods/v3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="3.5" xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-5.xsd">
+<titleInfo>
+<title>Erratum to “Phylogenomics resolves the evolutionary histories and taxonomy of the long‐associated North American legume genera Psorodendron and Psorothamnus”</title>
+</titleInfo>
+<typeOfResource>text</typeOfResource>
+<originInfo>
+<place>
+<placeTerm authority="marccountry" type="code">xx#</placeTerm>
+</place>
+<dateIssued encoding="marc">2026</dateIssued>
+<issuance>serial</issuance>
+</originInfo>
+<language>
+<languageTerm authority="iso639-2b" type="code">eng</languageTerm>
+</language>
+<physicalDescription>
+<extent>p. e70228</extent>
+</physicalDescription>
+<note>ERRATUM</note>
+<location>
+<url displayLabel="Available from publisher's website" usage="primary display">https://doi.org/10.1002/ajb2.70228</url>
+</location>
+<relatedItem type="host">
+<titleInfo>
+<title>American Journal of Botany</title>
+</titleInfo>
+<originInfo>
+<publisher>John Wiley & Sons, Ltd</publisher>
+</originInfo>
+<identifier>10.1002/(ISSN)1537-2197</identifier>
+<identifier type="issn">0002-9122</identifier>
+<identifier type="local">Journal:jnl44651</identifier>
+<part>
+<text>2026 July, v. 113, no. 7 p. e70228</text>
+</part>
+</relatedItem>
+<identifier type="doi">10.1002/ajb2.70228</identifier>
+<recordInfo>
+<descriptionStandard>aacr</descriptionStandard>
+<recordContentSource authority="marcorg">AGL</recordContentSource>
+<recordCreationDate encoding="marc">260728</recordCreationDate>
+<recordIdentifier>9917172306307426</recordIdentifier>
+<recordOrigin>Converted from MARCXML to MODS version 3.5 using MARC21slim2MODS3-5.xsl (Revision 1.112 2018/06/21)</recordOrigin>
+<languageOfCataloging>
+<languageTerm authority="iso639-2b" type="code">eng</languageTerm>
+</languageOfCataloging>
+</recordInfo>
+</mods>
+</recordData>
+<recordIdentifier>9917172306307426</recordIdentifier>
+<recordPosition>1</recordPosition>
+</record>
+<record>
+<recordSchema>mods</recordSchema>
+<recordPacking>xml</recordPacking>
+<recordData>
+<mods xmlns="http://www.loc.gov/mods/v3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="3.5" xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-5.xsd">
+<titleInfo>
+<title>Phylogenomics resolves the evolutionary histories and taxonomy of the long‐associated North American legume genera Psorodendron and Psorothamnus</title>
+</titleInfo>
+<name type="personal" usage="primary">
+<namePart>Wojciechowski, Martin F.</namePart>
+<affiliation>School of Life Sciences, Arizona State University, Tempe, AZ 85287, USA</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>Madrigal, Sara Carvalho</namePart>
+<affiliation>School of Mathematical and Natural Sciences, Arizona State University, Glendale, AZ 85306, USA</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>Lewis, Gwilym P.</namePart>
+<affiliation>Accelerated Taxonomy Department, Royal Botanic Gardens, Kew, Richmond, London, TW9 3AE, UK</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<name type="personal">
+<namePart>Sanín, María José</namePart>
+<affiliation>School of Mathematical and Natural Sciences, Arizona State University, Glendale, AZ 85306, USA</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<typeOfResource>text</typeOfResource>
+<originInfo>
+<place>
+<placeTerm authority="marccountry" type="code">xx#</placeTerm>
+</place>
+<dateIssued encoding="marc">2026</dateIssued>
+<issuance>serial</issuance>
+</originInfo>
+<language>
+<languageTerm authority="iso639-2b" type="code">eng</languageTerm>
+</language>
+<physicalDescription>
+<extent>p. e70193</extent>
+</physicalDescription>
+<abstract type="Summary">PREMISE: The genus Psorothamnus sensu Barneby consists of nine species distributed across the deserts and basins of southwestern North America. Studies have suggested Psorothamnus is paraphyletic, separated into two clades essentially corresponding to Rydberg's original concepts of Psorothamnus and Psorodendron. We sought to fully resolve their relationships to understand their evolutionary histories, current geographic distributions, and the timing of diversification of their constituent taxa. METHODS: We sampled and phylogenetically analyzed sequences of 148 low‐copy nuclear loci from 82 accessions of all recognized taxa of Psorothamnus sensu Barneby to clearly identify species and their relationships. We also estimated divergence times of these lineages for comparison to related groups. Genetic analyses of single‐nucleotide polymorphisms called from these loci were used to identify the genetic structure of the taxa resolved in these two genera. RESULTS: Our phylogenomic analyses yielded a highly resolved, well‐supported hypothesis of evolutionary relationships that establishes Psorodendron Rydb. and Psorothamnus Rydb. as reciprocally monophyletic, independent genera. Allopatry is common between populations, nevertheless, population genomic analyses revealed, in some cases, admixture between populations of closely related taxa. A time‐calibrated phylogeny indicates a late Oligocene divergence between these and related genera, with late‐Miocene divergences among species. CONCLUSIONS: The genomic results presented here substantiate a taxonomic revision of several of the species and varieties of both Psorodendron Rydb. and Psorothamnus Rydb. Both genera diversified since the Miocene in the deserts and intermountain basins of southwestern North America suggesting their antiquity and persistence in these regions.</abstract>
+<note>JOURNAL ARTICLE</note>
+<subject authority="nal">
+<topic>legumes</topic>
+</subject>
+<subject authority="nal">
+<topic>Psorothamnus</topic>
+</subject>
+<subject authority="nal">
+<topic>botany</topic>
+</subject>
+<subject authority="nal">
+<topic>genus</topic>
+</subject>
+<subject authority="nal">
+<topic>species</topic>
+</subject>
+<subject authority="nal">
+<topic>paraphyly</topic>
+</subject>
+<subject authority="nal">
+<topic>genetic structure</topic>
+</subject>
+<subject authority="nal">
+<topic>monophyly</topic>
+</subject>
+<subject authority="nal">
+<topic>allopatry</topic>
+</subject>
+<subject authority="nal">
+<topic>genomics</topic>
+</subject>
+<subject authority="nal">
+<topic>Oligocene epoch</topic>
+</subject>
+<subject authority="nal">
+<topic>taxonomic revisions</topic>
+</subject>
+<subject authority="nal">
+<topic>Miocene epoch</topic>
+</subject>
+<subject authority="nal">
+<geographic>North America</geographic>
+</subject>
+<location>
+<url displayLabel="Available from publisher's website" usage="primary display">https://doi.org/10.1002/ajb2.70193</url>
+</location>
+<relatedItem type="host">
+<titleInfo>
+<title>American Journal of Botany</title>
+</titleInfo>
+<originInfo>
+<publisher>John Wiley & Sons, Ltd</publisher>
+</originInfo>
+<identifier>10.1002/(ISSN)1537-2197</identifier>
+<identifier type="issn">0002-9122</identifier>
+<identifier type="local">Journal:jnl44651</identifier>
+<part>
+<text>2026 May, v. 113, no. 5 p. e70193</text>
+</part>
+</relatedItem>
+<identifier type="doi">10.1002/ajb2.70193</identifier>
+<recordInfo>
+<descriptionStandard>aacr</descriptionStandard>
+<recordContentSource authority="marcorg">AGL</recordContentSource>
+<recordCreationDate encoding="marc">260716</recordCreationDate>
+<recordIdentifier>9917162209407426</recordIdentifier>
+<recordOrigin>Converted from MARCXML to MODS version 3.5 using MARC21slim2MODS3-5.xsl (Revision 1.112 2018/06/21)</recordOrigin>
+<languageOfCataloging>
+<languageTerm authority="iso639-2b" type="code">eng</languageTerm>
+</languageOfCataloging>
+</recordInfo>
+</mods>
+</recordData>
+<recordIdentifier>9917162209407426</recordIdentifier>
+<recordPosition>2</recordPosition>
+</record>
+</records>
+<extraResponseData xmlns:xb="http://www.exlibris.com/repository/search/xmlbeans/">
+<xb:exact>true</xb:exact>
+<xb:responseDate>2026-11-22T10:43:30-0500</xb:responseDate>
+</extraResponseData>
+</searchRetrieveResponse>

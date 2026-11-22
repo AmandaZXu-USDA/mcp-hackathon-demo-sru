@@ -1,0 +1,72 @@
+<searchRetrieveResponse xmlns="http://www.loc.gov/zing/srw/">
+<version>1.2</version>
+<numberOfRecords>1</numberOfRecords>
+<records>
+<record>
+<recordSchema>mods</recordSchema>
+<recordPacking>xml</recordPacking>
+<recordData>
+<mods xmlns="http://www.loc.gov/mods/v3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="3.5" xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-5.xsd">
+<titleInfo>
+<title>Erratum to: Jan Evangelista Purkyně/Purkinje (1787–1869) and the establishment of cellular physiology—Wrocław/ Breslau as a central European cradle for a new science</title>
+</titleInfo>
+<name type="personal" usage="primary">
+<namePart>Žárský, Viktor</namePart>
+<affiliation>Department of Experimental Plant Biology, Faculty of Science, Charles University, Viničná 5, Prague 2, 128 44, Czech Republic. zarsky@ueb.cas.cz ``Institute of Experimental Botany, Academy of Sciences of the Czech Republic, Rozvojová 263, Prague 6, 165 02, Czech Republic. zarsky@ueb.cas.cz</affiliation>
+<role>
+<roleTerm type="text">author</roleTerm>
+</role>
+</name>
+<typeOfResource>text</typeOfResource>
+<originInfo>
+<place>
+<placeTerm authority="marccountry" type="code">xx#</placeTerm>
+</place>
+<dateIssued encoding="marc">2012</dateIssued>
+<issuance>serial</issuance>
+</originInfo>
+<language>
+<languageTerm authority="iso639-2b" type="code">eng</languageTerm>
+</language>
+<physicalDescription>
+<extent>p. 1181-1181</extent>
+</physicalDescription>
+<note>ERRATUM</note>
+<location>
+<url displayLabel="Available from publisher's website" usage="primary display">https://doi.org/10.1007/s00709-012-0420-8</url>
+</location>
+<relatedItem type="host">
+<titleInfo>
+<title>Protoplasma</title>
+</titleInfo>
+<originInfo>
+<publisher>Springer Vienna</publisher>
+</originInfo>
+<identifier type="issn">0033-183X</identifier>
+<identifier type="local">Journal:jnl44608</identifier>
+<part>
+<text>2012 Oct., v. 249, no. 4 p. 1181-1181</text>
+</part>
+</relatedItem>
+<identifier type="doi">10.1007/s00709-012-0420-8</identifier>
+<recordInfo>
+<descriptionStandard>aacr</descriptionStandard>
+<recordContentSource authority="marcorg">AGL</recordContentSource>
+<recordCreationDate encoding="marc">260718</recordCreationDate>
+<recordIdentifier>9917167031307426</recordIdentifier>
+<recordOrigin>Converted from MARCXML to MODS version 3.5 using MARC21slim2MODS3-5.xsl (Revision 1.112 2018/06/21)</recordOrigin>
+<languageOfCataloging>
+<languageTerm authority="iso639-2b" type="code">eng</languageTerm>
+</languageOfCataloging>
+</recordInfo>
+</mods>
+</recordData>
+<recordIdentifier>9917167031307426</recordIdentifier>
+<recordPosition>1</recordPosition>
+</record>
+</records>
+<extraResponseData xmlns:xb="http://www.exlibris.com/repository/search/xmlbeans/">
+<xb:exact>true</xb:exact>
+<xb:responseDate>2026-11-22T10:49:57-0500</xb:responseDate>
+</extraResponseData>
+</searchRetrieveResponse>

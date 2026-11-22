@@ -237,7 +237,8 @@ def _pick_original(records, correction, search_title: str = ""):
 def process_sru_response(xml: str, search_title: str = "", correction_id: str = "") -> dict:
     """Full pipeline: parse, match correction -> original, build annotated title.
 
-    Falls back to search_title when the response has no original record.
+    search_title only ranks the original records in the response. When the response has
+    no original record, annotated_title is blank (""): there is no record to annotate.
     When a response holds several correction records, pass correction_id (the
     row's erratum MMS ID) to pick the right one; otherwise the first is used.
     When it holds two or more corrections of one original article, all their
@@ -249,12 +250,12 @@ def process_sru_response(xml: str, search_title: str = "", correction_id: str = 
     correction = next((r for r in corrections if correction_id and r.record_id == str(correction_id)),
                       corrections[0] if corrections else None)
     original, candidates, review = _pick_original(records, correction, search_title)
-    base = original.title if original else search_title
+    base = original.title if original else ""
     used = _same_article_corrections(corrections, correction, original, candidates)
     notes = [n for n in (extract_erratum_note(c) for c in used) if n]
     note = " ".join(notes) or None
     already = "[Erratum:" in (base or "")
-    annotated = enhance_title(base, note) if note else base
+    annotated = (enhance_title(base, note) if note else base) if original else ""
     return {
         "num_records": len(records),
         "num_corrections": len(corrections),
