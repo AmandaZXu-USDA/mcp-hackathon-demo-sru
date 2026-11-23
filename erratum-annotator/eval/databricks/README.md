@@ -78,8 +78,8 @@ no_correction status ([`../../agent/README.md`](../../agent/README.md#no-correct
 
 82 rows: the 53 Sample 1 rows plus the 29 Sample 4 rows (2 to 30) from
 `/Volumes/users/amanda_xu/erratum_files/Correction-Sample4-29-annotated.csv`. Sample 4's expected titles were drafted
-from the tool output (`Correction-Sample4-29-annotated-DRAFT-unreviewed.csv`, kept) and approved as drafted by the
-project owner on 2026-11-22, not re-checked record by record against Alma. Sample 4 row n is `row_num` 400 + n
+from the tool output (`Correction-Sample4-29-annotated-DRAFT-unreviewed.csv`, kept), then checked one by one against
+the records in Alma by the project owner, who approved all 29. Sample 4 row n is `row_num` 400 + n
 (columns `sample` and `sample_row` in the results). New case `file_but_no_correction` (row 25: only the original in
 Alma); rows 16, 19, 20 and 22 (no SRU response) expect a manual-review reply. The smoke test adds rows 404 and 425.
 The scorer self-check passed (67/67 corrupted and doubled notes caught).
