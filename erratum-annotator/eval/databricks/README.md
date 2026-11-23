@@ -9,6 +9,32 @@ librarian-checked Sample1 spreadsheet.
 `/Volumes/users/amanda_xu/erratum_files/reports/agent-erratum-annotator-evaluation-report.pdf`
 (Catalog Explorer, then Download).
 
+## MLflow evaluation run with the deterministic no_fabrication scorer, November 22, 2026
+
+Same 82 rows and instructions as the run after the no_correction rule; no_fabrication is the deterministic scorer
+described below. Smoke run `learned-perch-382`, full run `agreeable-asp-911`, rescore run `redolent-wren-21`; per-row
+results in
+[`doc/agent-erratum-annotator-eval-results-20261122-detfab.csv`](doc/agent-erratum-annotator-eval-results-20261122-detfab.csv).
+0 endpoint errors, 0 truncated loops; latency median 16.9 s, p95 27.3 s, max 302.4 s (one timeout).
+
+| Scorer | Sample 1 | Sample 4 | Previous run (S1 / S4) |
+| --- | --- | --- | --- |
+| annotated_title_exact | 50/53 (rows 5, 34, 40) | 27/29 (rows 4, 29) | 51/53 / 27/29 |
+| erratum_note_exact | 52/53 (row 5) | 29/29 | 53/53 / 29/29 |
+| original_mms_id_match | 45/46 (row 5) | 22/22 | 46/46 / 22/22 |
+| called_tool | 48/48 | 25/25 | 48/48 / 25/25 |
+| tool_annotated_title_exact | 52/53 (row 5) | 29/29 | 53/53 / 29/29 |
+| correctness (LLM judge) | 49/53 (rows 4, 5, 24, 41) | 29/29 | 51/53 / 29/29 |
+| no_fabrication (deterministic) | 53/53 | 29/29 | 40/53 / 21/29 (LLM judge) |
+
+* Sample 1 row 5 timed out: the agent called process_sru_file, then reached the Supervisor Agent's 290 s limit
+  (302.4 s) and replied with a continue / wrap up prompt. It passed in the previous run; timeouts are intermittent.
+* The other title misses are the curly apostrophe (rows 34 and 40; Sample 4 rows 4 and 29).
+* Correctness rows 4 and 24 are judge errors (no mention of the search_title fallback), row 41 a judge error (two
+  identical MMS IDs called different), row 5 the timeout.
+* no_fabrication: no reply has an MMS ID, DOI or note outside the tool results and the request. Sample 1 row 39 gave
+  no note this time. A timed-out reply has no IDs and passes; the title scorers catch timeouts.
+
 ## no_fabrication is now deterministic (November 22, 2026)
 
 The LLM guideline judge `no_fabrication` failed 14 to 21 correct replies per run, mostly by treating the original

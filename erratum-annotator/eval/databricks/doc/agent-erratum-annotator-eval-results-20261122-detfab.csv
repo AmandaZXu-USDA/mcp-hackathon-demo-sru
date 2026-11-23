@@ -1,0 +1,729 @@
+row_num,sample,sample_row,case,erratum_status,latency_s,tools,error,truncated,annotated_title_exact,erratum_note_exact,original_mms_id_match,called_tool,tool_annotated_title_exact,no_fabrication,correctness,title_rationale,correctness_rationale,no_fabrication_rationale,expected_annotated_title,reply
+1,1,1,annotated,annotated (response),18.4,process_sru_file,,False,True,True,True,True,True,True,True,"Exact annotated title found, no extra note","The claim states that the annotated original title is 'STING-dependent trained immunity contributes to host defense against Clostridium perfringens infection via mTOR signaling [Erratum: Dec. 2024, v. 55, no. 1, 77, 10.1186/s13567-024-01322-w]' and that the original article's MMS ID is '9916522736607426'. The response confirms that the annotated title is indeed the same as stated in the claim and also provides the original article's MMS ID as '9916522736607426'. Therefore, both parts of the claim are supported by the response. The response is correct.","Every MMS ID, DOI and erratum note in the reply is in a tool result or the request","STING-dependent trained immunity contributes to host defense against Clostridium perfringens infection via mTOR signaling [Erratum: Dec. 2024, v. 55, no. 1, 77, 10.1186/s13567-024-01322-w]","**Annotated Title:**
+
+STING-dependent trained immunity contributes to host defense against Clostridium perfringens infection via mTOR signaling [Erratum: Dec. 2024, v. 55, no. 1, 77, 10.1186/s13567-024-01322-w]
+
+**Details:**
+- **Original article MMS ID:** 9916522736607426
+- **Correction notice MMS ID:** 9916524607707426
+- **Status:** Ready (no manual review needed)
+
+The original article title has been successfully annotated with the erratum note from the December 2024 correction (volume 55, number 1, page 77)."
+2,1,2,annotated,annotated (response),17.0,process_sru_file,,False,True,True,True,True,True,True,True,"Exact annotated title found, no extra note","The annotated original title provided in the response matches the title stated in the expectation. Additionally, the original article's MMS ID in the response is also correctly stated in the expectation. Therefore, both parts of the expectation are supported by the response. The response is correct.","Every MMS ID, DOI and erratum note in the reply is in a tool result or the request","Development of single-pin, un-barbed, pole-tagging of free-swimming dolphins and sharks with satellite-linked transmitters [Erratum: Dec. 2025, v. 13, no. 1, 3, 10.1186/s40317-024-00398-7]","**Annotated Title:**
+
+Development of single-pin, un-barbed, pole-tagging of free-swimming dolphins and sharks with satellite-linked transmitters [Erratum: Dec. 2025, v. 13, no. 1, 3, 10.1186/s40317-024-00398-7]
+
+**Details:**
+- **Original Article MMS ID:** 9916531160507426
+- **Correction Notice MMS ID:** 9916694738007426
+- **Needs Review:** No
+
+The original article title has been successfully annotated with the erratum note."
+3,1,3,annotated,annotated (response),17.6,process_sru_file,,False,True,True,True,True,True,True,True,"Exact annotated title found, no extra note","The claim states that the annotated original title is 'Emergence and genomic characterization of Proteus mirabilis harboring blaNDM-1 in Korean companion dogs [Erratum: Dec. 2024, v. 55, no. 1, 55, 10.1186/s13567-024-01317-7]', which matches the annotated title provided in the response. Additionally, the claim mentions that the original article's MMS ID is '9916523917907426', which is also confirmed in the response. Since both parts of the claim are supported by the response, the claim is fully supported.","Every MMS ID, DOI and erratum note in the reply is in a tool result or the request","Emergence and genomic characterization of Proteus mirabilis harboring blaNDM-1 in Korean companion dogs [Erratum: Dec. 2024, v. 55, no. 1, 55, 10.1186/s13567-024-01317-7]","**Annotated Title:**
+
+Emergence and genomic characterization of Proteus mirabilis harboring blaNDM-1 in Korean companion dogs [Erratum: Dec. 2024, v. 55, no. 1, 55, 10.1186/s13567-024-01317-7]
+
+**Details:**
+- **Original article MMS ID:** 9916523917907426
+- **Correction notice MMS ID:** 9916524375307426
+- **Status:** Ready (no manual review needed)
+
+The original article title has been successfully annotated with the erratum note referencing the December 2024 correction published in volume 55, number 1, page 55."
+4,1,4,file_but_no_original,no original in Alma - correction notice only,17.2,process_sru_file,,False,True,True,True,True,True,True,False,No annotation expected; no annotated title given,"The expectation states that no annotated title is given and that the original article is not in Alma, which is supported by the response. The document explicitly mentions that the original article is not in Alma and therefore no annotated title can be produced. However, the claim also states that the response does not present the search_title fallback as the annotated original title. The response indicates that the original source is 'search_title', but it does not provide an annotated title, which could imply that the fallback was not successful. Therefore, while the first two parts of the claim are supported, the last part about the search_title fallback is not clearly supported as it does not explicitly state that it was not presented. Thus, the claim is partially supported but not fully. The response is not correct in fully supporting the claim as stated.","Every MMS ID, DOI and erratum note in the reply is in a tool result or the request",,"**Status: No original in Alma - correction notice only**
+
+**Correction MMS ID:** 9916565256907426
+
+**Erratum note:** [Erratum: Oct. 2024, v. 169, no. 10, 203, 10.1007/s00705-024-06127-y]
+
+The SRU response contains only the correction notice. The original article ""A taxonomic proposal for cedratviruses, orpheovirus, and pithoviruses"" is not in Alma, so no annotated title can be produced. The correction record will need manual review to locate and link to the original article."
+5,1,5,annotated,annotated (response),302.4,process_sru_file,,False,False,False,False,True,False,True,False,"Expected: Baicalin attenuates PD-1/PD-L1 axis-induced immunosuppression in piglets challenged with Glaesserella parasuis by inhibiting the PI3K/Akt/mTOR and RAS/MEK/ERK signalling pathways [Erratum: Dec. 2024, v. 55, no. 1, 127, 10.1186/s13567-024-01375-x]","The expectation states that the annotated original title is provided, which includes the erratum note and the original article's MMS ID. However, the response does not provide the annotated title or confirm the MMS ID of the original article. Instead, it indicates a timeout in processing the request and does not deliver the expected information. Therefore, the claim is not fully supported by the document. The specific part about the original article's MMS ID being 9916524601007426 is not supported as the document does not confirm this information. The response is not correct.","Every MMS ID, DOI and erratum note in the reply is in a tool result or the request","Baicalin attenuates PD-1/PD-L1 axis-induced immunosuppression in piglets challenged with Glaesserella parasuis by inhibiting the PI3K/Akt/mTOR and RAS/MEK/ERK signalling pathways [Erratum: Dec. 2024, v. 55, no. 1, 127, 10.1186/s13567-024-01375-x]","<name>agent-erratum-annotator</name>
+## ⚠️ Request Time Out ⚠️
+
+This request reached the time limit of 290 seconds. Would you like me to:
+
+**Continue** - Keep working on your request
+
+**Wrap up** - Provide a final response with what I have gathered so far
+
+Please respond with either 'continue' or 'wrap up'."
+6,1,6,manual_review,"manual review - generic ""Correction"" title",5.0,,,False,True,True,True,True,True,True,True,No annotation expected; no annotated title given,"The response states that no saved SRU response exists for the correction notice, which means no annotated title can be produced. It also mentions that the correction title is generic ('Correction' with no article title), indicating that it indeed needs manual review. Therefore, both parts of the expectation are supported by the response. The response is correct.","Every MMS ID, DOI and erratum note in the reply is in a tool result or the request",,"No saved SRU response exists for correction notice MMS ID 9917147215307426, so no annotated title can be produced. The correction title is generic (""Correction"" with no article title), so this notice needs manual review."
+7,1,7,annotated,annotated (response),17.1,process_sru_file,,False,True,True,True,True,True,True,True,"Exact annotated title found, no extra note","The first part of the expectation states that the annotated original title is 'Comparative analysis of the interactions of different Streptococcus suis strains with monocytes, granulocytes and the complement system in porcine blood [Erratum: Dec. 2024, v. 55, no. 1, 29, 10.1186/s13567-024-01288-9]'. This is directly supported by the response, which includes the same annotated title. The second part of the expectation states that the original article's MMS ID is 9916524008207426, which is also confirmed in the response. Therefore, both statements in the expectation are supported by the response. The response is correct.","Every MMS ID, DOI and erratum note in the reply is in a tool result or the request","Comparative analysis of the interactions of different Streptococcus suis strains with monocytes, granulocytes and the complement system in porcine blood [Erratum: Dec. 2024, v. 55, no. 1, 29, 10.1186/s13567-024-01288-9]","**Annotated Title:**
+
+Comparative analysis of the interactions of different Streptococcus suis strains with monocytes, granulocytes and the complement system in porcine blood [Erratum: Dec. 2024, v. 55, no. 1, 29, 10.1186/s13567-024-01288-9]
+
+**Details:**
+- **Original article MMS ID:** 9916524008207426
+- **Correction notice MMS ID:** 9916522796107426
+- **Status:** Ready (no manual review needed)
+
+The original article title has been successfully annotated with the erratum note referencing the correction published in December 2024, volume 55, number 1, page 29."
+8,1,8,annotated,annotated (response),17.8,process_sru_file,,False,True,True,True,True,True,True,True,"Exact annotated title found, no extra note","The expectation states that the annotated original title is ""Phylosymbiosis in Seven Wild Fish Species Collected Off the Southern Coast of Korea: Skin Microbiome Most Strongly Reflects Evolutionary Pressures [Erratum: Dec. 2024, v. 87, no. 1, 159, 10.1007/s00248-024-02478-w]"" and that the original article's MMS ID is 9916661455707426. The response explicitly confirms this exact annotated title and the original article MMS ID as 9916661455707426. Therefore, the response fully supports both parts of the expectation in the context of the question. The response is correct.","Every MMS ID, DOI and erratum note in the reply is in a tool result or the request","Phylosymbiosis in Seven Wild Fish Species Collected Off the Southern Coast of Korea: Skin Microbiome Most Strongly Reflects Evolutionary Pressures [Erratum: Dec. 2024, v. 87, no. 1, 159, 10.1007/s00248-024-02478-w]","**Annotated Title:**
+
+Phylosymbiosis in Seven Wild Fish Species Collected Off the Southern Coast of Korea: Skin Microbiome Most Strongly Reflects Evolutionary Pressures [Erratum: Dec. 2024, v. 87, no. 1, 159, 10.1007/s00248-024-02478-w]
+
+**Details:**
+- **Original article MMS ID:** 9916661455707426
+- **Correction notice MMS ID:** 9916679799707426
+- **Status:** Ready (no manual review needed)
+
+The original article title has been successfully annotated with the erratum note from the December 2024 correction (volume 87, number 1, page 159)."
+9,1,9,no_file_no_original,no original in Alma - correction notice only,5.5,,,False,True,True,True,True,True,True,True,No annotation expected; no annotated title given,"The claim states that 'No annotated title is given: the original article is not in Alma (only the correction notice is)'. The response confirms that there is no original article in Alma and that only the correction notice exists. It also states that since the original article is not in Alma, there is no title to annotate. Therefore, both parts of the claim are supported by the response. The response is correct.","Every MMS ID, DOI and erratum note in the reply is in a tool result or the request",,"I cannot produce an annotated title for this correction notice.
+
+**Status:** no original in Alma - correction notice only
+
+**Correction MMS ID:** 9916084654307426
+
+Since the original article ""Morphological Characterization and Gene Expression Patterns for Melanin Pigmentation in Rex Rabbit"" is not in Alma, there is no original title to annotate. The correction notice exists in Alma, but without the original article record, no annotation can be performed."
+10,1,10,annotated,annotated (response),20.8,process_sru_file,,False,True,True,True,True,True,True,True,"Exact annotated title found, no extra note","The expectation states that the annotated original title is ""Blastocystis occurrence and subtype diversity in European wild boar (Sus scrofa) from the Iberian Peninsula [Erratum: Dec. 2024, v. 55, no. 1, 152, 10.1186/s13567-024-01408-5]"" and that the original article's MMS ID is 9916590009707426. The response explicitly provides the annotated title exactly as stated in the claim and confirms the original article MMS ID as 9916590009707426. Therefore, the response fully supports both parts of the expectation in the context of the question. The response is correct.","Every MMS ID, DOI and erratum note in the reply is in a tool result or the request","Blastocystis occurrence and subtype diversity in European wild boar (Sus scrofa) from the Iberian Peninsula [Erratum: Dec. 2024, v. 55, no. 1, 152, 10.1186/s13567-024-01408-5]","**Annotated Title:**
+
+Blastocystis occurrence and subtype diversity in European wild boar (Sus scrofa) from the Iberian Peninsula [Erratum: Dec. 2024, v. 55, no. 1, 152, 10.1186/s13567-024-01408-5]
+
+**Details:**
+- **Original Article MMS ID:** 9916590009707426
+- **Correction Notice MMS ID:** 9916642705707426
+- **Erratum Note:** [Erratum: Dec. 2024, v. 55, no. 1, 152, 10.1186/s13567-024-01408-5]
+- **Status:** Ready (no manual review needed)"
+11,1,11,annotated,annotated (response),17.8,process_sru_file,,False,True,True,True,True,True,True,True,"Exact annotated title found, no extra note","The claim states that the annotated original title is 'Vidofludimus inhibits porcine reproductive and respiratory syndrome virus infection by targeting dihydroorotate dehydrogenase [Erratum: Dec. 2024, v. 55, no. 1, 173, 10.1186/s13567-024-01447-y]', which matches exactly with the annotated title provided in the response. Additionally, the claim mentions that the original article's MMS ID is 9916523287507426, which is also confirmed in the response. Therefore, both parts of the claim are supported by the response. The response is correct.","Every MMS ID, DOI and erratum note in the reply is in a tool result or the request","Vidofludimus inhibits porcine reproductive and respiratory syndrome virus infection by targeting dihydroorotate dehydrogenase [Erratum: Dec. 2024, v. 55, no. 1, 173, 10.1186/s13567-024-01447-y]","**Annotated Title:**
+
+Vidofludimus inhibits porcine reproductive and respiratory syndrome virus infection by targeting dihydroorotate dehydrogenase [Erratum: Dec. 2024, v. 55, no. 1, 173, 10.1186/s13567-024-01447-y]
+
+**Details:**
+- **Original article MMS ID:** 9916523287507426
+- **Correction notice MMS ID:** 9916681244207426
+- **Needs review:** No
+
+The original article title has been successfully annotated with the erratum note from the December 2024 correction (volume 55, number 1, page 173)."
+12,1,12,annotated,annotated (response),18.5,process_sru_file,,False,True,True,True,True,True,True,True,"Exact annotated title found, no extra note","The expectation states that the annotated original title is ""Fasciola hepatica soluble antigens (FhAg) induce ovine PMN innate immune reactions and NET formation in vitro and in vivo [Erratum: Dec. 2024, v. 55, no. 1, 39, 10.1186/s13567-024-01297-8]"" and that the original article's MMS ID is 9916524001907426. The response explicitly confirms this exact annotated title and the original article MMS ID as 9916524001907426. Therefore, every part of the expectation is fully supported by the response in the context of the question. The response is correct.","Every MMS ID, DOI and erratum note in the reply is in a tool result or the request","Fasciola hepatica soluble antigens (FhAg) induce ovine PMN innate immune reactions and NET formation in vitro and in vivo [Erratum: Dec. 2024, v. 55, no. 1, 39, 10.1186/s13567-024-01297-8]","**Annotated Title:**
+
+Fasciola hepatica soluble antigens (FhAg) induce ovine PMN innate immune reactions and NET formation in vitro and in vivo [Erratum: Dec. 2024, v. 55, no. 1, 39, 10.1186/s13567-024-01297-8]
+
+**Details:**
+- **Original article MMS ID:** 9916524001907426
+- **Correction notice MMS ID:** 9916522756107426
+- **Status:** Ready (no manual review needed)
+
+The original article title has been successfully annotated with the erratum note referencing the correction published in December 2024, volume 55, number 1, page 39, with DOI 10.1186/s13567-024-01297-8."
+13,1,13,annotated,annotated (response),17.4,process_sru_file,,False,True,True,True,True,True,True,True,"Exact annotated title found, no extra note","The claim states that the annotated original title is 'Interleukin-22 facilitates the interferon-λ-mediated production of tripartite motif protein 25 to inhibit replication of duck viral hepatitis A virus type 1 [Erratum: Dec. 2024, v. 55, no. 1, 47, 10.1186/s13567-024-01307-9]', which matches the annotated title provided in the response. Additionally, the claim mentions that the original article's MMS ID is 9916522824707426, which is also confirmed in the response. Therefore, both parts of the claim are supported by the response. The response is correct.","Every MMS ID, DOI and erratum note in the reply is in a tool result or the request","Interleukin-22 facilitates the interferon-λ-mediated production of tripartite motif protein 25 to inhibit replication of duck viral hepatitis A virus type 1 [Erratum: Dec. 2024, v. 55, no. 1, 47, 10.1186/s13567-024-01307-9]","**Annotated Title:**
+
+Interleukin-22 facilitates the interferon-λ-mediated production of tripartite motif protein 25 to inhibit replication of duck viral hepatitis A virus type 1 [Erratum: Dec. 2024, v. 55, no. 1, 47, 10.1186/s13567-024-01307-9]
+
+**Details:**
+- **Original article MMS ID:** 9916522824707426
+- **Correction notice MMS ID:** 9916523832807426
+- **Status:** Ready (no manual review needed)
+
+The original article title has been successfully annotated with the erratum note referencing the correction published in December 2024, volume 55, number 1, page 47."
+14,1,14,annotated,annotated (response),17.0,process_sru_file,,False,True,True,True,True,True,True,True,"Exact annotated title found, no extra note","The annotated title in the response matches the title provided in the expectation. Additionally, the original article's MMS ID in the response is also the same as that mentioned in the expectation. Therefore, both parts of the expectation are supported by the response. The response is correct.","Every MMS ID, DOI and erratum note in the reply is in a tool result or the request","Study of Different Cultivated Plants Rhizosphere Soil Fungi-Mediated Pectinase: Insights into Production, Optimization, Purification, Biocompatibility, and Application [Erratum: Dec. 2024, v. 87, no. 1, 180, 10.1007/s00248-025-02498-0]","**Annotated Title:**
+
+Study of Different Cultivated Plants Rhizosphere Soil Fungi-Mediated Pectinase: Insights into Production, Optimization, Purification, Biocompatibility, and Application [Erratum: Dec. 2024, v. 87, no. 1, 180, 10.1007/s00248-025-02498-0]
+
+**Details:**
+- **Original article MMS ID:** 9916681741907426
+- **Correction notice MMS ID:** 9916701689407426
+- **Status:** Ready (no manual review needed)
+
+The original article title has been successfully annotated with the erratum note from the correction notice published in December 2024, volume 87, number 1, page 180."
+15,1,15,annotated,annotated (response),17.9,process_sru_file,,False,True,True,True,True,True,True,True,"Exact annotated title found, no extra note","The claim states that the annotated original title is 'S100A11 is involved in the progression of colorectal cancer through the desmosome-catenin-TCF signaling pathway [Erratum: Dec. 2024, v. 60, no. 10, 1150-1150, 10.1007/s11626-024-00940-0]', which matches the annotated title provided in the response. Additionally, the claim mentions that the original article's MMS ID is '9916671754507426', which is also confirmed in the response. Therefore, both parts of the claim are supported by the response. The response is correct.","Every MMS ID, DOI and erratum note in the reply is in a tool result or the request","S100A11 is involved in the progression of colorectal cancer through the desmosome-catenin-TCF signaling pathway [Erratum: Dec. 2024, v. 60, no. 10, 1150-1150, 10.1007/s11626-024-00940-0]","**Annotated Title:**
+
+S100A11 is involved in the progression of colorectal cancer through the desmosome-catenin-TCF signaling pathway [Erratum: Dec. 2024, v. 60, no. 10, 1150-1150, 10.1007/s11626-024-00940-0]
+
+**Details:**
+- **Original article MMS ID:** 9916671754507426
+- **Correction notice MMS ID:** 9916671871907426
+- **Status:** Ready (no manual review needed)
+
+The original article title has been successfully annotated with the erratum note from the December 2024 correction (volume 60, issue 10, page 1150)."
+16,1,16,manual_review,"manual review - generic ""Correction"" title",4.9,,,False,True,True,True,True,True,True,True,No annotation expected; no annotated title given,"The response states that no saved SRU response exists for the correction notice, which means no annotated title can be produced. It also mentions that the correction title is generic ('Correction' with no article title), indicating that it indeed needs manual review. Therefore, both parts of the expectation are supported by the response. The response is correct.","Every MMS ID, DOI and erratum note in the reply is in a tool result or the request",,"No saved SRU response exists for correction notice MMS ID 9917141204907426, so no annotated title can be produced. The correction title is generic (""Correction"" with no article title), so this notice needs manual review."
+17,1,17,annotated,annotated (response),48.5,process_sru_file,,False,True,True,True,True,True,True,True,"Exact annotated title found, no extra note","The annotated original title provided in the response matches the title in the expectation. Additionally, the original article's MMS ID in the response is 9916826080707426, which is also stated in the expectation. Therefore, both parts of the expectation are supported by the response. The response is correct.","Every MMS ID, DOI and erratum note in the reply is in a tool result or the request","Harnessing GIS, remote sensing, and machine learning for sustainable management and carbon sequestration of non-timber forest products in Gujarat, India [Erratum: Aug. 2025, v. 99, no. 6, 151, 10.1007/s10457-025-01257-x]","**Annotated Title:**
+
+Harnessing GIS, remote sensing, and machine learning for sustainable management and carbon sequestration of non-timber forest products in Gujarat, India [Erratum: Aug. 2025, v. 99, no. 6, 151, 10.1007/s10457-025-01257-x]
+
+**Details:**
+- **Original article MMS ID:** 9916826080707426
+- **Correction notice MMS ID:** 9916898214707426
+- **Status:** Ready (no manual review needed)
+
+The original article title has been successfully annotated with the erratum note referencing the correction published in August 2025, volume 99, number 6, page 151."
+18,1,18,annotated,annotated (response),16.3,process_sru_file,,False,True,True,True,True,True,True,True,"Exact annotated title found, no extra note","The claim states that the annotated original title is 'Detection efficiency of fish tracking by autonomous sailboat while underway [Erratum: Dec. 2025, v. 13, no. 1, 28, 10.1186/s40317-025-00424-2]', which matches exactly with the annotated title provided in the response. Additionally, the claim mentions that the original article's MMS ID is '9916883742307426', which is also confirmed in the response. Therefore, both parts of the claim are supported by the response. The response is correct.","Every MMS ID, DOI and erratum note in the reply is in a tool result or the request","Detection efficiency of fish tracking by autonomous sailboat while underway [Erratum: Dec. 2025, v. 13, no. 1, 28, 10.1186/s40317-025-00424-2]","**Annotated Title:**
+
+Detection efficiency of fish tracking by autonomous sailboat while underway [Erratum: Dec. 2025, v. 13, no. 1, 28, 10.1186/s40317-025-00424-2]
+
+**Details:**
+- **Original article MMS ID:** 9916883742307426
+- **Correction notice MMS ID:** 9916991080407426
+- **Status:** Ready (no manual review needed)"
+19,1,19,manual_review,"manual review - generic ""Correction"" title",4.8,,,False,True,True,True,True,True,True,True,No annotation expected; no annotated title given,"The expectation states that 'No annotated title is given' and that 'the notice is a generic 'Correction' title that needs manual review.' The response confirms that no annotated title can be produced because there is no saved SRU response for the correction notice, and it describes the correction title as generic, indicating that it requires manual review. Therefore, both parts of the expectation are supported by the response. The response is correct.","Every MMS ID, DOI and erratum note in the reply is in a tool result or the request",,"No saved SRU response exists for correction notice MMS ID 9917146940507426, so no annotated title can be produced. The correction title is generic (""Correction"" with no article title), so this notice needs manual review.
+
+**Correction MMS ID:** 9917146940507426"
+20,1,20,annotated,annotated (response),16.7,process_sru_file,,False,True,True,True,True,True,True,True,"Exact annotated title found, no extra note","The first part of the claim states that the annotated original title is 'Loggerhead Sea Turtles as Hosts of Diverse Bacterial and Fungal Communities [Erratum: Dec. 2024, v. 87, no. 1, 84, 10.1007/s00248-024-02405-z]', which is confirmed in the response. The second part of the claim states that the original article's MMS ID is 9916494476007426, which is also supported by the response. Therefore, both parts of the claim are supported by the response. The response is correct.","Every MMS ID, DOI and erratum note in the reply is in a tool result or the request","Loggerhead Sea Turtles as Hosts of Diverse Bacterial and Fungal Communities [Erratum: Dec. 2024, v. 87, no. 1, 84, 10.1007/s00248-024-02405-z]","**Annotated Title:**
+
+Loggerhead Sea Turtles as Hosts of Diverse Bacterial and Fungal Communities [Erratum: Dec. 2024, v. 87, no. 1, 84, 10.1007/s00248-024-02405-z]
+
+**Details:**
+- **Original article MMS ID:** 9916494476007426
+- **Correction notice MMS ID:** 9916504158907426
+- **Erratum note:** [Erratum: Dec. 2024, v. 87, no. 1, 84, 10.1007/s00248-024-02405-z]
+- **Review needed:** No
+
+The original article title has been successfully annotated with the erratum information from the correction notice."
+21,1,21,annotated,annotated (response),16.3,process_sru_file,,False,True,True,True,True,True,True,True,"Exact annotated title found, no extra note","The first part of the claim states that the annotated original title is 'Meeting forest product needs through agroforestry: insights from rural mid-hills of Western Nepal [Erratum: Aug. 2025, v. 99, no. 6, 142, 10.1007/s10457-025-01249-x]', which is confirmed in the response. The second part of the claim states that the original article's MMS ID is 9916865243307426, which is also supported by the response. Therefore, both statements in the expectation are supported by the response. The response is correct.","Every MMS ID, DOI and erratum note in the reply is in a tool result or the request","Meeting forest product needs through agroforestry: insights from rural mid-hills of Western Nepal [Erratum: Aug. 2025, v. 99, no. 6, 142, 10.1007/s10457-025-01249-x]","**Annotated Title:**
+
+Meeting forest product needs through agroforestry: insights from rural mid-hills of Western Nepal [Erratum: Aug. 2025, v. 99, no. 6, 142, 10.1007/s10457-025-01249-x]
+
+**Details:**
+- **Original article MMS ID:** 9916865243307426
+- **Correction notice MMS ID:** 9916889360907426
+- **Status:** Ready (no manual review needed)
+
+The original article title has been successfully annotated with the erratum note from the August 2025 correction."
+22,1,22,annotated,annotated (response),17.0,process_sru_file,,False,True,True,True,True,True,True,True,"Exact annotated title found, no extra note","The claim states that the annotated original title is 'Antagonistic effects of Bacillus megaterium on Fusarium graminearum: transcriptomic modulation of ion and metabolite transport, stress, and mycotoxin pathways [Erratum: Aug. 2026, v. 174, no. 8, 1743-1744, 10.1007/s10658-026-03277-4]'. This matches exactly with the annotated title provided in the response. The claim also states that the original article's MMS ID is '9917230926807426', which is confirmed in the response as the original article MMS ID. Therefore, both parts of the claim are supported by the response. The response is correct.","Every MMS ID, DOI and erratum note in the reply is in a tool result or the request","Antagonistic effects of Bacillus megaterium on Fusarium graminearum: transcriptomic modulation of ion and metabolite transport, stress, and mycotoxin pathways [Erratum: Aug. 2026, v. 174, no. 8, 1743-1744, 10.1007/s10658-026-03277-4]","**Annotated Title:**
+
+Antagonistic effects of Bacillus megaterium on Fusarium graminearum: transcriptomic modulation of ion and metabolite transport, stress, and mycotoxin pathways [Erratum: Aug. 2026, v. 174, no. 8, 1743-1744, 10.1007/s10658-026-03277-4]
+
+**Details:**
+- **Original article MMS ID:** 9917230926807426
+- **Correction notice MMS ID:** 9917172551007426
+- **Status:** Ready (no manual review needed)
+
+The original article title has been successfully annotated with the erratum note from the correction notice published in August 2026."
+23,1,23,already_annotated,already annotated,18.6,process_sru_file,,False,True,True,True,True,True,True,True,"Exact annotated title found, no extra note","The claim states that the annotated original title is 'Synergistic effects of early post-hatch thermal manipulation and dietary fat supplementation on thermotolerance and performance in broilers under chronic heat stress [Erratum: Sept. 2026, v. 58(7),p. 461]'. This matches the annotated title provided in the response. The claim also states that the original article's MMS ID is 9917067921007426, which is confirmed in the response. Furthermore, the claim asserts that the original title already carried an erratum note, which is also supported by the response stating that no change is needed because the title already contains the erratum annotation. Therefore, all parts of the claim are supported by the response. The response is correct.","Every MMS ID, DOI and erratum note in the reply is in a tool result or the request","Synergistic effects of early post-hatch thermal manipulation and dietary fat supplementation on thermotolerance and performance in broilers under chronic heat stress [Erratum: Sept. 2026, v. 58(7),p. 461]","The original article title already carries an erratum note and no change is needed.
+
+**Original ID:** 9917067921007426  
+**Correction ID:** 9917172555807426  
+**Needs review:** No
+
+**Annotated title:**  
+Synergistic effects of early post-hatch thermal manipulation and dietary fat supplementation on thermotolerance and performance in broilers under chronic heat stress [Erratum: Sept. 2026, v. 58(7),p. 461]
+
+The title already contains the erratum annotation, so no further modification is required."
+24,1,24,file_but_no_original,no original in Alma - correction notice only,17.4,process_sru_file,,False,True,True,True,True,True,True,False,No annotation expected; no annotated title given,"The claim states that 'No annotated title is given: the original article is not in Alma (only the correction notice is); the response does not present the search_title fallback as the annotated original title.' The response confirms that there is no original article in Alma and that only the correction notice is available. It also states that no annotated title can be produced because the original article is not found. However, the document does not explicitly mention that the response does not present the search_title fallback; it only indicates that the original article is not available. Therefore, the part of the claim regarding the absence of the search_title fallback is not fully supported. The response is not correct.","Every MMS ID, DOI and erratum note in the reply is in a tool result or the request",,"**Status: no original in Alma - correction notice only**
+
+**Correction MMS ID:** 9917172448707426
+
+**Erratum note:** [Erratum: Aug. 2026, v. 73, no. 6, 250, 10.1007/s10722-026-02878-6]
+
+The SRU response contains only the correction notice. The original article ""Integrated analysis of fruit phytochemical traits and molecular marker-based genetic diversity in Thai Mulberry germplasm"" is not in Alma, so no annotated title can be produced. The correction notice needs manual review to locate and annotate the original article title."
+25,1,25,annotated,annotated (response),19.2,process_sru_file,,False,True,True,True,True,True,True,True,"Exact annotated title found, no extra note","The claim states that the annotated original title is 'Recombinant porcine interferon delta 8 inhibits swine acute diarrhoea syndrome coronavirus infection in vitro and in vivo [Erratum: Dec. 2026, v. 57, no. 1, 139, 10.1186/s13567-026-01812-z]' and this matches exactly with the annotated title provided in the response. Additionally, the claim mentions that the original article's MMS ID is '9916524337907426', which is also confirmed in the response. Therefore, both parts of the claim are supported by the response. The response is correct.","Every MMS ID, DOI and erratum note in the reply is in a tool result or the request","Recombinant porcine interferon delta 8 inhibits swine acute diarrhoea syndrome coronavirus infection in vitro and in vivo [Erratum: Dec. 2026, v. 57, no. 1, 139, 10.1186/s13567-026-01812-z]","**Annotated Title:**
+
+Recombinant porcine interferon delta 8 inhibits swine acute diarrhoea syndrome coronavirus infection in vitro and in vivo [Erratum: Dec. 2026, v. 57, no. 1, 139, 10.1186/s13567-026-01812-z]
+
+**Details:**
+- **Original article MMS ID:** 9916524337907426
+- **Correction notice MMS ID:** 9917172576607426
+- **Status:** Ready (no manual review needed)
+
+The original article title has been successfully annotated with the erratum note referencing the correction published in December 2026, volume 57, number 1, page 139, with DOI 10.1186/s13567-026-01812-z."
+26,1,26,already_annotated,already annotated,16.1,process_sru_file,,False,True,True,True,True,True,True,True,"Exact annotated title found, no extra note","The first part of the expectation states that the annotated original title is 'Arbuscular mycorrhizal density and propagation are driven by vegetation cover and plant phylogenetic diversity [Erratum: July 2026, v. 524(1), p. 373]', which matches the annotated title provided in the response. The second part of the expectation states that the original article's MMS ID is 9917172456507426, which is also confirmed in the response. The third part of the expectation states that the original title already carried an erratum note, so no second note was added, which is supported by the response as it mentions that the title already carries an [Erratum: ...] note and no change is needed. Therefore, all parts of the expectation are supported by the response. The response is correct.","Every MMS ID, DOI and erratum note in the reply is in a tool result or the request","Arbuscular mycorrhizal density and propagation are driven by vegetation cover and plant phylogenetic diversity [Erratum: July 2026, v. 524(1), p. 373]","The original article title already carries an [Erratum: ...] note and no change is needed.
+
+**Original article ID:** 9917172456507426  
+**Correction notice ID:** 9917172561807426  
+**Annotated title:** Arbuscular mycorrhizal density and propagation are driven by vegetation cover and plant phylogenetic diversity [Erratum: July 2026, v. 524(1), p. 373]
+
+The title has already been annotated with the erratum note, so no further action is required."
+27,1,27,already_annotated,already annotated,16.5,process_sru_file,,False,True,True,True,True,True,True,True,"Exact annotated title found, no extra note","The expectation states that the annotated original title is ""Food insecurity and its associated factors among men of minority orientation in southwest Nigeria [Erratum: July 4, 2026, v. 21(4), p. 1015]"" and that the original article's MMS ID is 9917172451607426, and that the original title already carried an erratum note so no second note was added. The response confirms all these points explicitly: it shows the original article ID as 9917172451607426, the correction notice ID as 9917172575807426, and states that the original article title already carries an [Erratum: ...] note and no change is needed. It also provides the exact annotated title matching the claim. Therefore, all parts of the expectation are fully supported by the response in the context of the question. The response is correct.","Every MMS ID, DOI and erratum note in the reply is in a tool result or the request","Food insecurity and its associated factors among men of minority orientation in southwest Nigeria [Erratum: July 4, 2026, v. 21(4), p. 1015]","The original article title already carries an [Erratum: ...] note and no change is needed.
+
+**Original article ID:** 9917172451607426  
+**Correction notice ID:** 9917172575807426  
+**Needs review:** No
+
+**Annotated title:**  
+Food insecurity and its associated factors among men of minority orientation in southwest Nigeria [Erratum: July 4, 2026, v. 21(4), p. 1015]
+
+The title has already been annotated with the erratum note, so no further action is required."
+28,1,28,already_annotated,already annotated,17.6,process_sru_file,,False,True,True,True,True,True,True,True,"Exact annotated title found, no extra note","The original article title is indeed annotated as stated in the expectation: 'A Gerbox-based minisett method for in vitro assessment of pineapple disease in sugarcane [Erratum: Aug. 2026, v. 174(8), p. 1741-1742]'. The original article's MMS ID is also confirmed in the response as 9917172504807426. Furthermore, the response states that the original title already carries an erratum note and no second note was added, which supports the claim that no further action is required. Therefore, all parts of the expectation are supported by the response.","Every MMS ID, DOI and erratum note in the reply is in a tool result or the request","A Gerbox-based minisett method for in vitro assessment of pineapple disease in sugarcane [Erratum: Aug. 2026, v. 174(8), p. 1741-1742]","The original article title already carries an [Erratum: ...] note and no change is needed.
+
+**Original article title:**
+A Gerbox-based minisett method for in vitro assessment of pineapple disease in sugarcane [Erratum: Aug. 2026, v. 174(8), p. 1741-1742]
+
+**Details:**
+- Original article MMS ID: 9917172504807426
+- Correction notice MMS ID: 9917172567407426
+- Erratum note: [Erratum: Aug. 2026, v. 174, no. 8, 1741-1742, 10.1007/s10658-026-03275-6]
+- Status: already_annotated
+
+The title has already been annotated with the erratum information, so no further action is required."
+29,1,29,already_annotated,already annotated,17.4,process_sru_file,,False,True,True,True,True,True,True,True,"Exact annotated title found, no extra note","The claim states that the annotated original title is 'Hearing and seeing through the soils: insights from new sensing technologies to monitor soil invertebrate activity [Erratum: July 2026, v. 524(1), p. 575]'. The response confirms this title as the original article title and states that it already carries an erratum note, which aligns with the claim. The claim also mentions that the original article's MMS ID is 9917172610007426, which is supported by the response. Finally, the claim states that no second note was added because the original title already carried an erratum note, which is also confirmed in the response. Therefore, all parts of the claim are supported by the response. The response is correct.","Every MMS ID, DOI and erratum note in the reply is in a tool result or the request","Hearing and seeing through the soils: insights from new sensing technologies to monitor soil invertebrate activity [Erratum: July 2026, v. 524(1), p. 575]","The original article title already carries an [Erratum: ...] note and no change is needed.
+
+**Original article title:**
+Hearing and seeing through the soils: insights from new sensing technologies to monitor soil invertebrate activity [Erratum: July 2026, v. 524(1), p. 575]
+
+**Original MMS ID:** 9917172610007426  
+**Correction MMS ID:** 9917172457407426  
+**Needs review:** No
+
+The title already includes the erratum annotation, so no further modification is required."
+30,1,30,already_annotated,already annotated,17.4,process_sru_file,,False,True,True,True,True,True,True,True,"Exact annotated title found, no extra note","The first part of the expectation states that the annotated original title is 'LCMS profiling of phenolics extracted using an ultrasonic extraction process from Fragrant Manjack [Erratum: July 2026, v. 20(7), p. 14680-14688]'. This is confirmed in the response where the annotated title is explicitly provided. The second part of the expectation states that the original article's MMS ID is 9917172485107426, which is also supported by the response. The final part of the expectation states that the original title already carried an erratum note, so no second note was added. The response confirms that the title already carries an erratum note and that no change is needed. Therefore, all parts of the expectation are supported by the response. The response is correct.","Every MMS ID, DOI and erratum note in the reply is in a tool result or the request","LCMS profiling of phenolics extracted using an ultrasonic extraction process from Fragrant Manjack [Erratum: July 2026, v. 20(7), p. 14680-14688]","The original article title already carries an [Erratum: ...] note and no change is needed.
+
+**Annotated Title:**
+LCMS profiling of phenolics extracted using an ultrasonic extraction process from Fragrant Manjack [Erratum: July 2026, v. 20(7), p. 14680-14688]
+
+**Details:**
+- **Original MMS ID:** 9917172485107426
+- **Correction MMS ID:** 9917172589607426
+- **Status:** Already annotated
+- **Needs Review:** No
+
+The title has already been annotated with the erratum note referencing the correction published in July 2026, volume 20, issue 7, pages 14680-14688."
+31,1,31,already_annotated,already annotated,17.4,process_sru_file,,False,True,True,True,True,True,True,True,"Exact annotated title found, no extra note","The claim states that the annotated original title is 'Machine learning-inspired image processing for accurate length characterization of complexly crossed hemp fibers [Erratum: June 2026, v. 33(9), p. 5591]'. This is supported by the response, which confirms that this is the annotated title. The claim also states that the original article's MMS ID is 9917163965307426, which is also supported by the response. Furthermore, the claim mentions that the original title already carried an erratum note, so no second note was added, which is also confirmed in the response. Therefore, all parts of the claim are supported by the response. The response is correct.","Every MMS ID, DOI and erratum note in the reply is in a tool result or the request","Machine learning-inspired image processing for accurate length characterization of complexly crossed hemp fibers [Erratum: June 2026, v. 33(9), p. 5591]","The original article title already carries an erratum note and no change is needed.
+
+**Annotated Title:**
+Machine learning-inspired image processing for accurate length characterization of complexly crossed hemp fibers [Erratum: June 2026, v. 33(9), p. 5591]
+
+**Details:**
+- **Original Article MMS ID:** 9917163965307426
+- **Correction Notice MMS ID:** 9917172583407426
+- **Erratum Note:** [Erratum: June 2026, v. 33, no. 9, 5591-5591, 10.1007/s10570-026-07085-1]
+- **Status:** Already annotated
+
+The title has already been annotated with the erratum information, so no further action is required."
+32,1,32,already_annotated,already annotated,18.7,process_sru_file,,False,True,True,True,True,True,True,True,"Exact annotated title found, no extra note","The claim states that the annotated original title is 'Pregnenolone biotransformation by a plant-associated Bulbithecium sp. GSBT E3 and in silico insights [Erratum: Aug. 2026, v. 16(8), 362]', which is confirmed in the response. The claim also mentions that the original article's MMS ID is 9917163880807426, which is also supported by the response. Furthermore, the claim states that the original title already carried an erratum note, so no second note was added, which is also confirmed in the response. Therefore, all parts of the claim are supported by the response. The response is correct.","Every MMS ID, DOI and erratum note in the reply is in a tool result or the request","Pregnenolone biotransformation by a plant-associated Bulbithecium sp. GSBT E3 and in silico insights [Erratum: Aug. 2026, v. 16(8), 362]","The original article title already carries an erratum note and no change is needed.
+
+**Original article ID:** 9917163880807426  
+**Correction ID:** 9917172484207426  
+**Annotated title:** Pregnenolone biotransformation by a plant-associated Bulbithecium sp. GSBT E3 and in silico insights [Erratum: Aug. 2026, v. 16(8), 362]
+
+The title has already been annotated with the erratum reference, so no further modification is required."
+33,1,33,already_annotated,already annotated,16.5,process_sru_file,,False,True,True,True,True,True,True,True,"Exact annotated title found, no extra note","The first part of the expectation states that the annotated original title is 'A global synthesis of plant-plant interaction investigations: current knowledge and future directions [Erratum: July 2026, v. 524(1), p. 969-970]'. This is supported by the response, which confirms that this is the annotated title. The second part of the expectation states that the original article's MMS ID is 9917004277107426, which is also supported by the response. The final part of the expectation states that the original title already carried an erratum note, so no second note was added. The response confirms that the title already includes the erratum annotation and no further modification is required. Therefore, all parts of the expectation are supported by the response. The response is correct.","Every MMS ID, DOI and erratum note in the reply is in a tool result or the request","A global synthesis of plant-plant interaction investigations: current knowledge and future directions [Erratum: July 2026, v. 524(1), p. 969-970]","The original article title already carries an erratum note and no change is needed.
+
+**Original article MMS ID:** 9917004277107426  
+**Correction MMS ID:** 9917172483007426  
+
+**Annotated title:**  
+A global synthesis of plant-plant interaction investigations: current knowledge and future directions [Erratum: July 2026, v. 524(1), p. 969-970]
+
+The title already includes the erratum annotation, so no further modification is required."
+34,1,34,already_annotated,already annotated,19.7,process_sru_file,,False,False,True,True,True,True,True,True,"Expected: Nutritional status of school-aged children in cocoa-growing rural areas of Côte d’Ivoire: a baseline study for a future nutritional intervention [Erratum: July 4, 2026, v. 21(4), p. 1016-1017]","The first part of the expectation states that the annotated original title is 'Nutritional status of school-aged children in cocoa-growing rural areas of Côte d’Ivoire: a baseline study for a future nutritional intervention [Erratum: July 4, 2026, v. 21(4), p. 1016-1017]'. This matches the annotated title provided in the response. The second part of the expectation states that the original article's MMS ID is 9917007663107426, which is also confirmed in the response. The third part of the expectation states that the original title already carried an erratum note, so no second note was added. The response confirms that the original title already carries an [Erratum: ...] note and no change is needed. Therefore, all parts of the expectation are supported by the response. The response is correct.","Every MMS ID, DOI and erratum note in the reply is in a tool result or the request","Nutritional status of school-aged children in cocoa-growing rural areas of Côte d’Ivoire: a baseline study for a future nutritional intervention [Erratum: July 4, 2026, v. 21(4), p. 1016-1017]","The original article title already carries an [Erratum: ...] note and no change is needed.
+
+**Original ID:** 9917007663107426  
+**Correction ID:** 9917172583807426  
+**Needs Review:** No
+
+**Annotated Title:**  
+Nutritional status of school-aged children in cocoa-growing rural areas of Côte d'Ivoire: a baseline study for a future nutritional intervention [Erratum: July 4, 2026, v. 21(4), p. 1016-1017]"
+35,1,35,already_annotated,already annotated,16.3,process_sru_file,,False,True,True,True,True,True,True,True,"Exact annotated title found, no extra note","The first part of the expectation states that the annotated original title is 'Soil water dynamics and sap flow responses in mature oaks (Quercus robur and Quercus petraea) in a temporarily waterlogged forest soil [Erratum: July 2026, v. 524(1), p. 967-968]'. This is confirmed in the response where the annotated title is explicitly provided. The second part of the expectation states that the original article's MMS ID is 9917167176407426, which is also confirmed in the response. The third part of the expectation states that the original title already carried an erratum note, so no second note was added. The response supports this by stating that the original article title already carries an erratum note and no change is needed. Therefore, all parts of the expectation are supported by the response.","Every MMS ID, DOI and erratum note in the reply is in a tool result or the request","Soil water dynamics and sap flow responses in mature oaks (Quercus robur and Quercus petraea) in a temporarily waterlogged forest soil [Erratum: July 2026, v. 524(1), p. 967-968]","The original article title already carries an erratum note and no change is needed.
+
+**Original article MMS ID:** 9917167176407426  
+**Correction notice MMS ID:** 9917172579907426  
+**Needs review:** No
+
+**Annotated title:**  
+Soil water dynamics and sap flow responses in mature oaks (Quercus robur and Quercus petraea) in a temporarily waterlogged forest soil [Erratum: July 2026, v. 524(1), p. 967-968]
+
+The title has already been annotated with the erratum note referencing the correction published in July 2026, volume 524, issue 1, pages 967-968, DOI 10.1007/s11104-026-08675-5."
+36,1,36,already_annotated,already annotated,17.2,process_sru_file,,False,True,True,True,True,True,True,True,"Exact annotated title found, no extra note","The expectation states that the annotated original title is ""(-)-Catechin mediates both allelopathy and phosphorus mobilization via leaf litter and root exudates in low-phosphorus granite soils [Erratum: July 2026, v. 524(1), p. 971-972]"" and that the original article's MMS ID is 9917168393007426. It also claims that the original title already carried an erratum note, so no second note was added. The response confirms all these points explicitly: it provides the annotated title exactly as stated in the claim, confirms the original MMS ID as 9917168393007426, and states that the original article title already carries an erratum note and no change is needed. Therefore, the response fully supports the entire expectation in the context of the question. The response is correct.","Every MMS ID, DOI and erratum note in the reply is in a tool result or the request","(-)-Catechin mediates both allelopathy and phosphorus mobilization via leaf litter and root exudates in low-phosphorus granite soils [Erratum: July 2026, v. 524(1), p. 971-972]","The original article title already carries an erratum note and no change is needed.
+
+**Annotated Title:**
+(-)-Catechin mediates both allelopathy and phosphorus mobilization via leaf litter and root exudates in low-phosphorus granite soils [Erratum: July 2026, v. 524(1), p. 971-972]
+
+**Details:**
+- **Original MMS ID:** 9917168393007426
+- **Correction MMS ID:** 9917172494107426
+- **Erratum Note:** [Erratum: July 2026, v. 524, no. 1, 971-972, 10.1007/s11104-026-08724-z]
+- **Status:** Already annotated (the title already contains the erratum reference)"
+37,1,37,already_annotated,already annotated,16.5,process_sru_file,,False,True,True,True,True,True,True,True,"Exact annotated title found, no extra note","The first part of the expectation states that the annotated original title is 'Micro and nanobubble-oxygenated reclaimed water improves soil structure, rhizosphere function, and Chinese cabbage productivity under drip irrigation [Erratum: July 2026, v. 524(1), p. 965]'. This is confirmed in the response, which states that the current annotated title is indeed that same title. The second part of the expectation mentions that the original article's MMS ID is 9917168029907426, which is also supported by the response. The final part of the expectation states that the original title already carried an erratum note, so no second note was added. The response confirms that the title has already been annotated with the erratum information and that no change is needed. Therefore, all parts of the expectation are supported by the response.","Every MMS ID, DOI and erratum note in the reply is in a tool result or the request","Micro and nanobubble-oxygenated reclaimed water improves soil structure, rhizosphere function, and Chinese cabbage productivity under drip irrigation [Erratum: July 2026, v. 524(1), p. 965]","The original article title already carries an [Erratum: ...] note and no change is needed.
+
+**Original article ID:** 9917168029907426  
+**Correction ID:** 9917172512807426  
+**Needs review:** No
+
+**Current annotated title:**  
+Micro and nanobubble-oxygenated reclaimed water improves soil structure, rhizosphere function, and Chinese cabbage productivity under drip irrigation [Erratum: July 2026, v. 524(1), p. 965]
+
+The title has already been annotated with the erratum information from the July 2026 correction notice (v. 524, no. 1, page 965, DOI: 10.1007/s11104-026-08725-y)."
+38,1,38,annotated,annotated (response),17.4,process_sru_file,,False,True,True,True,True,True,True,True,"Exact annotated title found, no extra note","The annotated original title provided in the response matches the title stated in the expectation. Additionally, the original article's MMS ID in the response is 9917204337307426, which is also correctly stated in the expectation. Therefore, both parts of the expectation are supported by the response. The response is correct.","Every MMS ID, DOI and erratum note in the reply is in a tool result or the request","Application of XGBoost and Random Forest algorithms for body weight prediction in Blackbelly sheep using biometric measurements [Erratum: Dec. 2026, v. 22, no. 1, 451, 10.1186/s12917-026-05748-6]","**Annotated Title:**
+
+Application of XGBoost and Random Forest algorithms for body weight prediction in Blackbelly sheep using biometric measurements [Erratum: Dec. 2026, v. 22, no. 1, 451, 10.1186/s12917-026-05748-6]
+
+**Details:**
+- **Original Article MMS ID:** 9917204337307426
+- **Correction Notice MMS ID:** 9917172614707426
+- **Status:** Ready (no manual review needed)
+
+The original article title has been successfully annotated with the erratum note referencing the correction published in December 2026, volume 22, number 1, page 451, with DOI 10.1186/s12917-026-05748-6."
+39,1,39,no_file_no_original,no original in Alma - correction notice only,6.3,,,False,True,True,True,True,True,True,True,No annotation expected; no annotated title given,"The claim states that 'No annotated title is given: the original article is not in Alma (only the correction notice is)'. The response confirms that the original article is not in Alma and only the correction notice is present. Additionally, it states that no annotated title can be produced because the original article is not available. Therefore, both parts of the claim are supported by the response. The response is correct.","Every MMS ID, DOI and erratum note in the reply is in a tool result or the request",,"Based on your information, the original article for this correction notice is not in Alma (only the correction notice with MMS ID 9917175906707426 is present).
+
+**Status:** no original in Alma - correction notice only
+
+**Correction MMS ID:** 9917175906707426
+
+Since the original article is not in Alma, no annotated title can be produced. The correction notice references:
+- Original article: ""Hidden diversity of crust-like Sebacinaceae (Sebacinales, Agaricomycetes) in Asia""
+- Authors: Suh H, Seo CW, Park KH, Yoo S, Kim D, Cho Y, Lim YW
+- Published in: IMA Fungus 17: e168486 (2026)
+- DOI: https://doi.org/10.3897/imafungus.17.168486
+
+Without the original article record in Alma, the erratum annotation workflow cannot be completed."
+40,1,40,annotated,annotated (response),16.0,process_sru_file,,False,False,True,True,True,True,True,True,"Expected: How does chronic temperature exposure affect hypoxia tolerance in sheepshead minnows’ (Cyprinodon variegatus variegatus) ability to tolerate oxidative stress? [Erratum: Aug. 2026, v. 52, no. 4, 134, 10.1007/s10695-026-01767-0]","The claim states that the annotated original title is 'How does chronic temperature exposure affect hypoxia tolerance in sheepshead minnows’ (Cyprinodon variegatus variegatus) ability to tolerate oxidative stress? [Erratum: Aug. 2026, v. 52, no. 4, 134, 10.1007/s10695-026-01767-0]'. The response confirms that this is indeed the annotated title. The claim also states that the original article's MMS ID is 9916215223807426, which is also supported by the response. Therefore, both parts of the claim are supported by the response. The response is correct.","Every MMS ID, DOI and erratum note in the reply is in a tool result or the request","How does chronic temperature exposure affect hypoxia tolerance in sheepshead minnows’ (Cyprinodon variegatus variegatus) ability to tolerate oxidative stress? [Erratum: Aug. 2026, v. 52, no. 4, 134, 10.1007/s10695-026-01767-0]","The annotated title is:
+
+**How does chronic temperature exposure affect hypoxia tolerance in sheepshead minnows' (Cyprinodon variegatus variegatus) ability to tolerate oxidative stress? [Erratum: Aug. 2026, v. 52, no. 4, 134, 10.1007/s10695-026-01767-0]**
+
+**Details:**
+- **Original article MMS ID:** 9916215223807426
+- **Correction notice MMS ID:** 9917175924807426
+- **Status:** Ready (no manual review needed)"
+41,1,41,annotated,annotated (response),16.7,process_sru_file,,False,True,True,True,True,True,True,False,"Exact annotated title found, no extra note","The annotated original title provided in the response matches the title in the expectation. Additionally, the original article's MMS ID in the response is 9916848606207426, which is different from the MMS ID stated in the expectation (9916848606207426). Therefore, the claim about the original article's MMS ID is not supported. The first part of the expectation regarding the annotated title is supported, but the second part regarding the MMS ID is not. Thus, the expectation is not fully supported by the response.","Every MMS ID, DOI and erratum note in the reply is in a tool result or the request","Paracorymbiglomus gen. nov., Diversispora conica sp. nov., and new combinations in Diversisporaceae (Glomeromycota) [Erratum: Nov. 13, 2025, v. 124, 10.3897/mycokeys.124.171105] [Erratum: June 18, 2026, v. 134, 247-248, 10.3897/mycokeys.134.198487]","**Annotated Title:**
+
+Paracorymbiglomus gen. nov., Diversispora conica sp. nov., and new combinations in Diversisporaceae (Glomeromycota) [Erratum: Nov. 13, 2025, v. 124, 10.3897/mycokeys.124.171105] [Erratum: June 18, 2026, v. 134, 247-248, 10.3897/mycokeys.134.198487]
+
+**Details:**
+- **Original article MMS ID:** 9916848606207426
+- **Correction notice MMS ID:** 9917175655407426
+- **Needs review:** No
+
+**Note:** The SRU response contained two correction records for this original article. Both erratum notes have been appended to the title in chronological order."
+42,1,42,annotated,annotated (response),29.6,list_sru_files;process_sru_file,,False,True,True,True,True,True,True,True,"Exact annotated title found, no extra note","The claim states that the annotated original title is 'Climate-driven insect pest outbreaks and food security risks: a review of adaptive strategies for resilient agriculture [Erratum: Sept. 2026, v. 99, no. 3, 111, 10.1007/s10340-026-02069-3]'. This matches exactly with the annotated title provided in the response. The claim also states that the original article's MMS ID is '9917015258907426', which is confirmed in the response as the original article MMS ID. Therefore, both parts of the claim are supported by the response. The response is correct.","Every MMS ID, DOI and erratum note in the reply is in a tool result or the request","Climate-driven insect pest outbreaks and food security risks: a review of adaptive strategies for resilient agriculture [Erratum: Sept. 2026, v. 99, no. 3, 111, 10.1007/s10340-026-02069-3]","**Annotated Title:**
+
+Climate-driven insect pest outbreaks and food security risks: a review of adaptive strategies for resilient agriculture [Erratum: Sept. 2026, v. 99, no. 3, 111, 10.1007/s10340-026-02069-3]
+
+**Details:**
+- **Original article MMS ID:** 9917015258907426
+- **Correction notice MMS ID:** 9917175652607426
+- **Needs review:** No
+
+The original article title has been successfully annotated with the erratum note from the correction notice."
+43,1,43,annotated,annotated (response),16.3,process_sru_file,,False,True,True,True,True,True,True,True,"Exact annotated title found, no extra note","The annotated original title provided in the response is indeed ""DNMT3A/TET2-mediated epigenetic alteration in Type-1 diabetes dysregulates the haematopoiesis [Erratum: Dec. 2026, v. 53, no. 1, 1310, 10.1007/s11033-026-12468-5]"", which matches the title in the expectation. Additionally, the original article's MMS ID in the response is stated as 9917168304707426, which also matches the MMS ID in the expectation. Therefore, both parts of the expectation are supported by the response. The response is correct.","Every MMS ID, DOI and erratum note in the reply is in a tool result or the request","DNMT3A/TET2-mediated epigenetic alteration in Type-1 diabetes dysregulates the haematopoiesis [Erratum: Dec. 2026, v. 53, no. 1, 1310, 10.1007/s11033-026-12468-5]","**Annotated Title:**
+
+DNMT3A/TET2-mediated epigenetic alteration in Type-1 diabetes dysregulates the haematopoiesis [Erratum: Dec. 2026, v. 53, no. 1, 1310, 10.1007/s11033-026-12468-5]
+
+**Details:**
+- **Original Article MMS ID:** 9917168304707426
+- **Correction Notice MMS ID:** 9917175550407426
+- **Status:** Ready (no manual review needed)
+
+The original article title has been successfully annotated with the erratum note from the December 2026 correction published in volume 53, issue 1, page 1310."
+44,1,44,annotated,annotated (response),15.8,process_sru_file,,False,True,True,True,True,True,True,True,"Exact annotated title found, no extra note","The first part of the expectation states that the annotated original title is 'Elatostema weizhianum, a new species of Urticaceae from Zhejiang, East China [Erratum: July 23, 2026, v. 277, 287-288, 10.3897/phytokeys.277.207971]'. This matches exactly with the annotated title provided in the response. The second part of the expectation states that the original article's MMS ID is 9917175708407426, which is also confirmed in the response. Therefore, both statements in the expectation are supported by the response. The response is correct.","Every MMS ID, DOI and erratum note in the reply is in a tool result or the request","Elatostema weizhianum, a new species of Urticaceae from Zhejiang, East China [Erratum: July 23, 2026, v. 277, 287-288, 10.3897/phytokeys.277.207971]","**Annotated Title:**
+
+Elatostema weizhianum, a new species of Urticaceae from Zhejiang, East China [Erratum: July 23, 2026, v. 277, 287-288, 10.3897/phytokeys.277.207971]
+
+**Details:**
+- **Original article MMS ID:** 9917175708407426
+- **Correction notice MMS ID:** 9917175689607426
+- **Status:** Ready (no manual review needed)"
+45,1,45,annotated,annotated (response),16.6,process_sru_file,,False,True,True,True,True,True,True,True,"Exact annotated title found, no extra note","The claim states that the annotated original title is 'Optimization of material and extrusion parameters for wood flour–epoxy composites with potential additive-manufacturing applications in construction [Erratum: Aug. 2026, v. 84, no. 4, 103, 10.1007/s00107-026-02464-8]' and that the original article's MMS ID is '9917046021407426'. The response confirms that the annotated title is indeed the same as stated in the claim. Additionally, it also confirms that the original article's MMS ID is '9917046021407426'. Therefore, both parts of the claim are supported by the response. The response is correct.","Every MMS ID, DOI and erratum note in the reply is in a tool result or the request","Optimization of material and extrusion parameters for wood flour–epoxy composites with potential additive-manufacturing applications in construction [Erratum: Aug. 2026, v. 84, no. 4, 103, 10.1007/s00107-026-02464-8]","**Annotated Title:**
+
+Optimization of material and extrusion parameters for wood flour–epoxy composites with potential additive-manufacturing applications in construction [Erratum: Aug. 2026, v. 84, no. 4, 103, 10.1007/s00107-026-02464-8]
+
+**Details:**
+- **Original article MMS ID:** 9917046021407426
+- **Correction notice MMS ID:** 9917175553207426
+- **Erratum note:** [Erratum: Aug. 2026, v. 84, no. 4, 103, 10.1007/s00107-026-02464-8]
+- **Status:** Ready (no manual review needed)"
+46,1,46,already_annotated,already annotated,16.6,process_sru_file,,False,True,True,True,True,True,True,True,"Exact annotated title found, no extra note","The expectation states that the annotated original title is ""Lorazepam reduces recurrence of urethral obstruction in male cats: a prospective, randomized, double-blinded, placebo-controlled study [Erratum: July 8, 2026, v. 264 (9), p. 1171]"" and that the original article's MMS ID is 9917204277907426, and that the original title already carried an erratum note so no second note was added. The response confirms all these points explicitly: it shows the original article ID as 9917204277907426, the correction ID as 9917175567307426, and states that the original article title already carries an erratum note and no change is needed. The annotated title in the response matches exactly the title given in the expectation. Therefore, the response is correct and fully supports the expectation in the context of the question.","Every MMS ID, DOI and erratum note in the reply is in a tool result or the request","Lorazepam reduces recurrence of urethral obstruction in male cats: a prospective, randomized, double-blinded, placebo-controlled study [Erratum: July 8, 2026, v. 264 (9), p. 1171]","The original article title already carries an erratum note and no change is needed.
+
+**Original article ID:** 9917204277907426  
+**Correction ID:** 9917175567307426  
+
+**Current annotated title:**  
+Lorazepam reduces recurrence of urethral obstruction in male cats: a prospective, randomized, double-blinded, placebo-controlled study [Erratum: July 8, 2026, v. 264 (9), p. 1171]
+
+The title already includes the erratum reference, so no further annotation is required."
+47,1,47,annotated,annotated (response),16.0,process_sru_file,,False,True,True,True,True,True,True,True,"Exact annotated title found, no extra note","The first part of the expectation states that the annotated original title is 'Integrative taxonomy uncovers hidden diversity in Romanian Geophilus Leach, 1814 (Geophilomorpha, Geophilidae) [Erratum: June 19, 2026, v. 102, no. 3, 865-867, 10.3897/zse.102.203747]'. This matches exactly with the 'Annotated Title' in the response. The second part of the expectation states that the original article's MMS ID is 9917175704707426, which is also confirmed in the response under 'Original Article MMS ID'. Therefore, both statements in the expectation are supported by the response. The response is correct.","Every MMS ID, DOI and erratum note in the reply is in a tool result or the request","Integrative taxonomy uncovers hidden diversity in Romanian Geophilus Leach, 1814 (Geophilomorpha, Geophilidae) [Erratum: June 19, 2026, v. 102, no. 3, 865-867, 10.3897/zse.102.203747]","**Annotated Title:**
+
+Integrative taxonomy uncovers hidden diversity in Romanian Geophilus Leach, 1814 (Geophilomorpha, Geophilidae) [Erratum: June 19, 2026, v. 102, no. 3, 865-867, 10.3897/zse.102.203747]
+
+**Original Article MMS ID:** 9917175704707426  
+**Correction Notice MMS ID:** 9917175696307426  
+**Status:** Ready (no manual review needed)"
+48,1,48,annotated,annotated (response),17.4,process_sru_file,,False,True,True,True,True,True,True,True,"Exact annotated title found, no extra note","The expectation states that the annotated original title is ""Phylogenetic analysis, genetic diversity, and epidemiology of pigeon paramyxovirus type 1 in China [Erratum: Aug. 2026, v. 171, no. 8, 242, 10.1007/s00705-026-06699-x]"" and that the original article's MMS ID is 9916585114007426. The response explicitly confirms this exact annotated title and the original article MMS ID as 9916585114007426. Therefore, the response fully supports both parts of the expectation. The response is correct.","Every MMS ID, DOI and erratum note in the reply is in a tool result or the request","Phylogenetic analysis, genetic diversity, and epidemiology of pigeon paramyxovirus type 1 in China [Erratum: Aug. 2026, v. 171, no. 8, 242, 10.1007/s00705-026-06699-x]","**Annotated Title:**
+
+Phylogenetic analysis, genetic diversity, and epidemiology of pigeon paramyxovirus type 1 in China [Erratum: Aug. 2026, v. 171, no. 8, 242, 10.1007/s00705-026-06699-x]
+
+**Details:**
+- **Original article MMS ID:** 9916585114007426
+- **Correction notice MMS ID:** 9917175564707426
+- **Status:** Ready (no manual review needed)
+
+The original article title has been successfully annotated with the erratum note from the correction notice."
+49,1,49,annotated,annotated (response),16.4,process_sru_file,,False,True,True,True,True,True,True,True,"Exact annotated title found, no extra note","The first part of the expectation states that the annotated original title is 'Granuloma development in cattle after intratonsilar inoculation with Mycobacterium bovis [Erratum: Apr. 1, 1999, v. 60, no. 4, 413-413, 10.2460/ajvr.1999.60.04.413]', which matches the annotated title provided in the response. The second part of the expectation states that the original article's MMS ID is 9916452387707426, which is also confirmed in the response. Since both parts of the expectation are supported by the response, the response is correct.","Every MMS ID, DOI and erratum note in the reply is in a tool result or the request","Granuloma development in cattle after intratonsilar inoculation with Mycobacterium bovis [Erratum: Apr. 1, 1999, v. 60, no. 4, 413-413, 10.2460/ajvr.1999.60.04.413]","**Annotated Title:**
+
+Granuloma development in cattle after intratonsilar inoculation with Mycobacterium bovis [Erratum: Apr. 1, 1999, v. 60, no. 4, 413-413, 10.2460/ajvr.1999.60.04.413]
+
+**Details:**
+- **Original Article MMS ID:** 9916452387707426
+- **Correction Notice MMS ID:** 9917175590407426
+- **Needs Review:** No
+
+The annotation has been successfully added to the original article title."
+50,1,50,annotated,annotated (response),16.0,process_sru_file,,False,True,True,True,True,True,True,True,"Exact annotated title found, no extra note","The claim states that the annotated original title is 'Elephant habitat modeling in Sai Yok National Park using high-resolution Pléiades data [Erratum: July 2026, v. 22, no. 3, 723-723, 10.1007/s11355-026-00703-x]'. This matches exactly with the annotated title provided in the response. Additionally, the claim mentions that the original article's MMS ID is '9916790831807426', which is also confirmed in the response. Therefore, both parts of the claim are supported by the response. The response is correct.","Every MMS ID, DOI and erratum note in the reply is in a tool result or the request","Elephant habitat modeling in Sai Yok National Park using high-resolution Pléiades data [Erratum: July 2026, v. 22, no. 3, 723-723, 10.1007/s11355-026-00703-x]","**Annotated Title:**
+
+Elephant habitat modeling in Sai Yok National Park using high-resolution Pléiades data [Erratum: July 2026, v. 22, no. 3, 723-723, 10.1007/s11355-026-00703-x]
+
+**Details:**
+- **Original article MMS ID:** 9916790831807426
+- **Correction notice MMS ID:** 9917175623307426
+- **Needs review:** No
+
+The original article title has been successfully annotated with the erratum note from the correction notice published in July 2026."
+51,1,51,annotated,annotated (response),15.3,process_sru_file,,False,True,True,True,True,True,True,True,"Exact annotated title found, no extra note","The annotated title in the response matches the title provided in the expectation. Additionally, the original article's MMS ID in the response is 9917102319507426, which is also stated in the expectation. Therefore, both parts of the expectation are supported by the response. The response is correct.","Every MMS ID, DOI and erratum note in the reply is in a tool result or the request","Funiliomycetaceae fam. nov. (Amphisphaeriales, Ascomycota) accommodating Funiliomyces, including F. jiangxiensis sp. nov. from Tetradium ruticarpum and ten new combinations [Erratum: May 11, 2026, v. 17, e195349, 10.3897/imafungus.17.195349]","**Annotated Title:**
+
+Funiliomycetaceae fam. nov. (Amphisphaeriales, Ascomycota) accommodating Funiliomyces, including F. jiangxiensis sp. nov. from Tetradium ruticarpum and ten new combinations [Erratum: May 11, 2026, v. 17, e195349, 10.3897/imafungus.17.195349]
+
+**Details:**
+- **Original article MMS ID:** 9917102319507426
+- **Correction notice MMS ID:** 9917175317407426
+- **Status:** Ready (no manual review needed)"
+52,1,52,annotated,annotated (response),15.9,process_sru_file,,False,True,True,True,True,True,True,True,"Exact annotated title found, no extra note","The first part of the expectation states that the annotated original title is 'New taxa and a combination in Glomerales (Glomeromycota, Glomeromycetes) [Erratum: June 18, 2026, v. 134, 245-246, 10.3897/mycokeys.134.198490]'. This matches exactly with the annotated title provided in the response. The second part of the expectation states that the original article's MMS ID is 9916701602907426, which is also confirmed in the response. Therefore, both statements in the expectation are supported by the response. The response is correct.","Every MMS ID, DOI and erratum note in the reply is in a tool result or the request","New taxa and a combination in Glomerales (Glomeromycota, Glomeromycetes) [Erratum: June 18, 2026, v. 134, 245-246, 10.3897/mycokeys.134.198490]","**Annotated Title:**
+
+New taxa and a combination in Glomerales (Glomeromycota, Glomeromycetes) [Erratum: June 18, 2026, v. 134, 245-246, 10.3897/mycokeys.134.198490]
+
+**Details:**
+- **Original article MMS ID:** 9916701602907426
+- **Correction notice MMS ID:** 9917175623507426
+- **Status:** Ready (no manual review needed)"
+53,1,53,annotated,annotated (response),16.6,process_sru_file,,False,True,True,True,True,True,True,True,"Exact annotated title found, no extra note","The first part of the expectation states that the annotated original title is 'Morphological and molecular evidence support the inclusion of Mycetia hainanensis in Mouretia (Rubiaceae) [Erratum: Apr. 8, 2026, v. 272, 283-284, 10.3897/phytokeys.272.191461]'. This matches exactly with the annotated title provided in the response. The second part of the expectation states that the original article's MMS ID is 9917102338807426, which is also confirmed in the response. Therefore, both statements in the expectation are supported by the response. The response is correct.","Every MMS ID, DOI and erratum note in the reply is in a tool result or the request","Morphological and molecular evidence support the inclusion of Mycetia hainanensis in Mouretia (Rubiaceae) [Erratum: Apr. 8, 2026, v. 272, 283-284, 10.3897/phytokeys.272.191461]","**Annotated Title:**
+
+Morphological and molecular evidence support the inclusion of Mycetia hainanensis in Mouretia (Rubiaceae) [Erratum: Apr. 8, 2026, v. 272, 283-284, 10.3897/phytokeys.272.191461]
+
+**Details:**
+- **Original article MMS ID:** 9917102338807426
+- **Correction notice MMS ID:** 9917175447407426
+- **Status:** Ready (no manual review needed)
+
+The original article title has been successfully annotated with the erratum note from the correction notice published in PhytoKeys volume 272."
+402,4,2,annotated,annotated (response),16.5,process_sru_file,,False,True,True,True,True,True,True,True,"Exact annotated title found, no extra note","The first part of the expectation states that the annotated original title is 'Feature selection and dimension reduction for single-cell RNA-Seq based on a multinomial model [Erratum: Dec. 2020, v. 21, no. 1, 179, 10.1186/s13059-020-02109-w]', which matches the annotated title provided in the response. The second part of the expectation states that the original article's MMS ID is 9916127449507426, which is also confirmed in the response. Since both parts of the expectation are supported by the response, the response is correct.","Every MMS ID, DOI and erratum note in the reply is in a tool result or the request","Feature selection and dimension reduction for single-cell RNA-Seq based on a multinomial model [Erratum: Dec. 2020, v. 21, no. 1, 179, 10.1186/s13059-020-02109-w]","**Annotated Title:**
+
+Feature selection and dimension reduction for single-cell RNA-Seq based on a multinomial model [Erratum: Dec. 2020, v. 21, no. 1, 179, 10.1186/s13059-020-02109-w]
+
+**Details:**
+- **Original article MMS ID:** 9916127449507426
+- **Correction notice MMS ID:** 9916124125707426
+- **Needs review:** No
+
+The original article title has been successfully annotated with the erratum note."
+403,4,3,annotated,annotated (response),16.1,process_sru_file,,False,True,True,True,True,True,True,True,"Exact annotated title found, no extra note","The expectation states that the annotated original title is ""Bayesian model selection reveals biological origins of zero inflation in single-cell transcriptomics [Erratum: Dec. 2020, v. 21, no. 1, 270, 10.1186/s13059-020-02182-1]"" and that the original article's MMS ID is 9916066757007426. The response explicitly confirms this exact annotated title and the original article MMS ID as 9916066757007426. Therefore, the response fully supports both parts of the expectation. The response is correct.","Every MMS ID, DOI and erratum note in the reply is in a tool result or the request","Bayesian model selection reveals biological origins of zero inflation in single-cell transcriptomics [Erratum: Dec. 2020, v. 21, no. 1, 270, 10.1186/s13059-020-02182-1]","**Annotated Title:**
+
+Bayesian model selection reveals biological origins of zero inflation in single-cell transcriptomics [Erratum: Dec. 2020, v. 21, no. 1, 270, 10.1186/s13059-020-02182-1]
+
+**Details:**
+- **Original article MMS ID:** 9916066757007426
+- **Correction notice MMS ID:** 9916203873207426
+- **Needs review:** No
+
+The original article title has been successfully annotated with the erratum note from the Publisher Correction."
+404,4,4,annotated,annotated (response),17.1,process_sru_file,,False,False,True,True,True,True,True,True,"Expected: Characterization of the role of the antioxidant proteins metallothioneins 1 and 2 in an animal model of Alzheimer’s disease [Erratum: Dec. 2025, v. 82, no. 1, 416, 10.1007/s00018-025-05965-6] [Erratum: Dec. 2025, v. 82, no. 1, 429, 10.1007/s00018-025-05953-w]","The annotated original title provided in the response matches the title stated in the expectation. Additionally, the original article's MMS ID in the response is 9917011947507426, which is also correctly stated in the expectation. Therefore, both parts of the expectation are supported by the response. The response is correct.","Every MMS ID, DOI and erratum note in the reply is in a tool result or the request","Characterization of the role of the antioxidant proteins metallothioneins 1 and 2 in an animal model of Alzheimer’s disease [Erratum: Dec. 2025, v. 82, no. 1, 416, 10.1007/s00018-025-05965-6] [Erratum: Dec. 2025, v. 82, no. 1, 429, 10.1007/s00018-025-05953-w]","**Annotated Title:**
+
+Characterization of the role of the antioxidant proteins metallothioneins 1 and 2 in an animal model of Alzheimer's disease [Erratum: Dec. 2025, v. 82, no. 1, 416, 10.1007/s00018-025-05965-6] [Erratum: Dec. 2025, v. 82, no. 1, 429, 10.1007/s00018-025-05953-w]
+
+**Details:**
+- **Original Article MMS ID:** 9917011947507426
+- **Correction Notice MMS ID:** 9917012079207426
+- **Status:** Ready (no manual review needed)
+
+**Note:** This original article has two correction notices in Alma. Both erratum notes have been appended to the title:
+1. The correction you requested (9917012079207426): Dec. 2025, v. 82, no. 1, 416
+2. A second correction (9917011723907426): Dec. 2025, v. 82, no. 1, 429"
+405,4,5,annotated,annotated (response),16.5,process_sru_file,,False,True,True,True,True,True,True,True,"Exact annotated title found, no extra note","The first part of the expectation states that the annotated original title is 'Thierry B.R. Chopin (1959–2024) – Innovator of Modern IMTA [Erratum: Feb. 2026, v. 38, no. 1, 881-882, 10.1007/s10811-025-03735-2]'. This matches exactly with the annotated title provided in the response. The second part of the expectation states that the original article's MMS ID is 9917015200807426, which is also confirmed in the response. Therefore, both parts of the expectation are supported by the response. The response is correct.","Every MMS ID, DOI and erratum note in the reply is in a tool result or the request","Thierry B.R. Chopin (1959–2024) – Innovator of Modern IMTA [Erratum: Feb. 2026, v. 38, no. 1, 881-882, 10.1007/s10811-025-03735-2]","**Annotated Title:**
+
+Thierry B.R. Chopin (1959–2024) – Innovator of Modern IMTA [Erratum: Feb. 2026, v. 38, no. 1, 881-882, 10.1007/s10811-025-03735-2]
+
+**Details:**
+- **Original article MMS ID:** 9917015200807426
+- **Correction notice MMS ID:** 9917155204407426
+- **Status:** Ready (no manual review needed)
+
+The original article title has been successfully annotated with the erratum note from the correction notice published in February 2026, volume 38, issue 1, pages 881-882."
+406,4,6,annotated,annotated (response),17.6,process_sru_file,,False,True,True,True,True,True,True,True,"Exact annotated title found, no extra note","The first part of the expectation states that the annotated original title is 'Stairway Plot 2: demographic history inference with folded SNP frequency spectra [Erratum: Dec. 2020, v. 21, no. 1, 305, 10.1186/s13059-020-02243-5]', which matches exactly with the annotated title provided in the response. The second part of the expectation states that the original article's MMS ID is 9915837933107426, which is also confirmed in the response. Since both parts of the expectation are supported by the response, the response is correct.","Every MMS ID, DOI and erratum note in the reply is in a tool result or the request","Stairway Plot 2: demographic history inference with folded SNP frequency spectra [Erratum: Dec. 2020, v. 21, no. 1, 305, 10.1186/s13059-020-02243-5]","**Annotated Title:**
+
+Stairway Plot 2: demographic history inference with folded SNP frequency spectra [Erratum: Dec. 2020, v. 21, no. 1, 305, 10.1186/s13059-020-02243-5]
+
+**Details:**
+- **Original article MMS ID:** 9915837933107426
+- **Correction notice MMS ID:** 9916208075707426
+- **Status:** Ready (no manual review needed)"
+407,4,7,already_annotated,already annotated,16.2,process_sru_file,,False,True,True,True,True,True,True,True,"Exact annotated title found, no extra note","The first part of the expectation states that the annotated original title is 'PM2.5 exposure inducing ATP alteration links with NLRP3 inflammasome activation [Erratum: April 2022, v.29(17); p.24457]', which matches the annotated title provided in the response. The second part of the expectation states that the original article's MMS ID is 9915622429307426, which is also confirmed in the response. The third part of the expectation states that the original title already carried an erratum note, so no second note was added, which is supported by the response stating that 'The original article title already carries an erratum note and no change is needed.' Therefore, all parts of the expectation are supported by the response. The response is correct.","Every MMS ID, DOI and erratum note in the reply is in a tool result or the request","PM2.5 exposure inducing ATP alteration links with NLRP3 inflammasome activation [Erratum: April 2022, v.29(17); p.24457]","The original article title already carries an erratum note and no change is needed.
+
+**Original article ID:** 9915622429307426  
+**Correction ID:** 9915622432007426  
+**Annotated title:** PM2.5 exposure inducing ATP alteration links with NLRP3 inflammasome activation [Erratum: April 2022, v.29(17); p.24457]
+
+The title has already been annotated with the erratum information, so no further modification is required."
+408,4,8,annotated,annotated (response),15.8,process_sru_file,,False,True,True,True,True,True,True,True,"Exact annotated title found, no extra note","The first part of the expectation states that the annotated original title is '547 transcriptomes from 44 brain areas reveal features of the aging brain in non-human primates [Erratum: Dec. 2020, v. 21, no. 1, 46, 10.1186/s13059-020-01962-z]'. This is directly supported by the response, which confirms that this is the annotated title. The second part of the expectation states that the original article's MMS ID is '9916127477307426'. The response also supports this, as it explicitly states that the original article MMS ID is indeed '9916127477307426'. Therefore, both parts of the expectation are supported by the response. The response is correct.","Every MMS ID, DOI and erratum note in the reply is in a tool result or the request","547 transcriptomes from 44 brain areas reveal features of the aging brain in non-human primates [Erratum: Dec. 2020, v. 21, no. 1, 46, 10.1186/s13059-020-01962-z]","**Annotated Title:**
+
+547 transcriptomes from 44 brain areas reveal features of the aging brain in non-human primates [Erratum: Dec. 2020, v. 21, no. 1, 46, 10.1186/s13059-020-01962-z]
+
+**Details:**
+- **Original Article MMS ID:** 9916127477307426
+- **Correction Notice MMS ID:** 9916177053207426
+- **Needs Review:** No
+
+The original article title has been successfully annotated with the erratum note from the correction notice published in December 2020."
+409,4,9,annotated,annotated (response),15.8,process_sru_file,,False,True,True,True,True,True,True,True,"Exact annotated title found, no extra note","The first part of the expectation states that the annotated original title is 'SMURF-seq: efficient copy number profiling on long-read sequencers [Erratum: Dec. 2020, v. 21, no. 1, 214, 10.1186/s13059-020-02149-2]'. This is directly supported by the response, which includes the same annotated title. The second part of the expectation states that the original article's MMS ID is 9915827859007426, which is also confirmed in the response. Since both parts of the expectation are supported by the response, the response is correct.","Every MMS ID, DOI and erratum note in the reply is in a tool result or the request","SMURF-seq: efficient copy number profiling on long-read sequencers [Erratum: Dec. 2020, v. 21, no. 1, 214, 10.1186/s13059-020-02149-2]","**Annotated Title:**
+
+SMURF-seq: efficient copy number profiling on long-read sequencers [Erratum: Dec. 2020, v. 21, no. 1, 214, 10.1186/s13059-020-02149-2]
+
+**Details:**
+- **Original article MMS ID:** 9915827859007426
+- **Correction notice MMS ID:** 9916175063907426
+- **Status:** Ready (no manual review needed)
+
+The original article title has been successfully annotated with the erratum note from the December 2020 correction."
+410,4,10,annotated,annotated (response),16.5,process_sru_file,,False,True,True,True,True,True,True,True,"Exact annotated title found, no extra note","The claim states that the annotated original title is 'MÚLT-JELEN-JÖVŐ a hazai mezőgazdasági talajvizsgálatokban = PAST-PRESENT-FUTURE in Hungarian soil analyses [Erratum: May 31, 2021, v. 70, no. 1, 85-85, 10.1556/0088.2021.00087]'. The response confirms that this is indeed the annotated title provided in the response. Additionally, the claim mentions that the original article's MMS ID is 9917152597007426, which is also supported by the response. Therefore, both parts of the claim are supported by the response. The response is correct.","Every MMS ID, DOI and erratum note in the reply is in a tool result or the request","MÚLT-JELEN-JÖVŐ a hazai mezőgazdasági talajvizsgálatokban = PAST-PRESENT-FUTURE in Hungarian soil analyses [Erratum: May 31, 2021, v. 70, no. 1, 85-85, 10.1556/0088.2021.00087]","**Annotated Title:**
+
+MÚLT-JELEN-JÖVŐ a hazai mezőgazdasági talajvizsgálatokban = PAST-PRESENT-FUTURE in Hungarian soil analyses [Erratum: May 31, 2021, v. 70, no. 1, 85-85, 10.1556/0088.2021.00087]
+
+**Details:**
+- **Original article MMS ID:** 9917152597007426
+- **Correction notice MMS ID:** 9916197269207426
+- **Status:** Ready (no manual review needed)
+
+The original article title has been successfully annotated with the erratum note from the correction notice."
+411,4,11,annotated,annotated (response),16.6,process_sru_file,,False,True,True,True,True,True,True,True,"Exact annotated title found, no extra note","The claim states that the annotated original title is 'Initially Coexisting Endosymbionts Migrate Into Different Tissues During Ontogeny of Host Cicadas [Erratum: July 2026, v. 28, no. 7, e70363, 10.1111/1462-2920.70363]'. This matches exactly with the annotated title provided in the response. Additionally, the claim mentions that the original article's MMS ID is 9917011787407426, which is also confirmed in the response. Therefore, both parts of the claim are supported by the response. The response is correct.","Every MMS ID, DOI and erratum note in the reply is in a tool result or the request","Initially Coexisting Endosymbionts Migrate Into Different Tissues During Ontogeny of Host Cicadas [Erratum: July 2026, v. 28, no. 7, e70363, 10.1111/1462-2920.70363]","**Annotated Title:**
+
+Initially Coexisting Endosymbionts Migrate Into Different Tissues During Ontogeny of Host Cicadas [Erratum: July 2026, v. 28, no. 7, e70363, 10.1111/1462-2920.70363]
+
+**Details:**
+- **Original article MMS ID:** 9917011787407426
+- **Correction notice MMS ID:** 9917172119507426
+- **Status:** Ready (no manual review needed)
+
+The original article title has been successfully annotated with the erratum note from the correction notice."
+412,4,12,annotated,annotated (response),16.6,process_sru_file,,False,True,True,True,True,True,True,True,"Exact annotated title found, no extra note","The first part of the expectation states that the annotated original title is 'Phylogenomics resolves the evolutionary histories and taxonomy of the long‐associated North American legume genera Psorodendron and Psorothamnus [Erratum: July 2026, v. 113, no. 7, e70228, 10.1002/ajb2.70228]'. This matches exactly with the annotated title provided in the response. The second part of the expectation states that the original article's MMS ID is 9917162209407426, which is also confirmed in the response. Therefore, both statements in the expectation are supported by the response. The response is correct.","Every MMS ID, DOI and erratum note in the reply is in a tool result or the request","Phylogenomics resolves the evolutionary histories and taxonomy of the long‐associated North American legume genera Psorodendron and Psorothamnus [Erratum: July 2026, v. 113, no. 7, e70228, 10.1002/ajb2.70228]","**Annotated Title:**
+
+Phylogenomics resolves the evolutionary histories and taxonomy of the long‐associated North American legume genera Psorodendron and Psorothamnus [Erratum: July 2026, v. 113, no. 7, e70228, 10.1002/ajb2.70228]
+
+**Details:**
+- **Original Article MMS ID:** 9917162209407426
+- **Correction Notice MMS ID:** 9917172306307426
+- **Needs Review:** No
+
+The original article title has been successfully annotated with the erratum note."
+413,4,13,annotated,annotated (response),16.4,process_sru_file,,False,True,True,True,True,True,True,True,"Exact annotated title found, no extra note","The annotated original title provided in the response matches the title in the expectation exactly, including the erratum note. Additionally, the original article's MMS ID in the response is stated as 9917167473907426, which is also mentioned in the expectation. Therefore, both parts of the expectation are supported by the response. The response is correct.","Every MMS ID, DOI and erratum note in the reply is in a tool result or the request","New C₁₉-Diterpenoid Alkaloid 19-Oxo-14-Acetylbrowniine with Antioxidant Activity from Delphinium oreophilum [Erratum: May 2026, v. 62, no. 3, 643-643, 10.1007/s10600-026-05032-x]","**Annotated Title:**
+
+New C₁₉-Diterpenoid Alkaloid 19-Oxo-14-Acetylbrowniine with Antioxidant Activity from Delphinium oreophilum [Erratum: May 2026, v. 62, no. 3, 643-643, 10.1007/s10600-026-05032-x]
+
+**Details:**
+- **Original article MMS ID:** 9917167473907426
+- **Correction notice MMS ID:** 9917172378907426
+- **Status:** Ready (no manual review needed)
+
+The original article title has been successfully annotated with the erratum note referencing the correction published in May 2026, volume 62, number 3, pages 643-643, with DOI 10.1007/s10600-026-05032-x."
+414,4,14,file_but_no_original,no original in Alma - correction notice only,19.0,process_sru_file,,False,True,True,True,True,True,True,True,No annotation expected; no annotated title given,"The claim states that 'No annotated title is given' and the document confirms this by stating 'no annotated title can be produced' due to the absence of the original article in Alma. The claim also states 'the original article is not in Alma (only the correction notice is)', which is supported by the document that explicitly mentions 'The original article is not in Alma.' Finally, the claim mentions 'the response does not present the search_title fallback as the annotated original title', which is also supported by the document as it indicates that there is no original record to annotate and thus no title is provided. Therefore, all parts of the claim are supported by the document. The response is correct.","Every MMS ID, DOI and erratum note in the reply is in a tool result or the request",,"**Status: no original in Alma - correction notice only**
+
+**Correction MMS ID:** 9917167033407426
+
+**Erratum note:** [Erratum: Sept. 2021, v. 44, no. 9, 2001-2001, 10.1007/s00449-021-02575-x]
+
+The SRU response contains only the correction notice; the original article ""Lipase-catalyzed transesterification of soybean oil and phytosterol in supercritical CO₂"" is not in Alma. Since there is no original record to annotate, no annotated title can be produced."
+415,4,15,file_but_no_original,no original in Alma - correction notice only,17.1,process_sru_file,,False,True,True,True,True,True,True,True,No annotation expected; no annotated title given,"The expectation states that 'No annotated title is given' and the response confirms this by stating 'no annotated title can be produced.' The claim also mentions that 'the original article is not in Alma (only the correction notice is),' which is supported by the response that indicates 'The original article is not in Alma.' Finally, the claim states that 'the response does not present the search_title fallback as the annotated original title,' which is also supported by the response since it shows that the 'original_candidates' is 0 and 'annotated_title' is empty. Therefore, all parts of the expectation are supported by the response. The response is correct.","Every MMS ID, DOI and erratum note in the reply is in a tool result or the request",,"**Status: no original in Alma - correction notice only**
+
+**Correction MMS ID:** 9917167031307426
+
+**Erratum note:** [Erratum: Oct. 2012, v. 249, no. 4, 1181-1181, 10.1007/s00709-012-0420-8]
+
+The SRU response contains only the correction notice record. The original article is not in Alma, so no annotated title can be produced. The correction notice needs manual review to locate and annotate the original article title."
+416,4,16,manual_review,manual review - no SRU response,4.9,,,False,True,True,True,True,True,True,True,No annotation expected; no annotated title given,"The expectation states that 'No annotated title is given' and that 'no SRU response is saved for this notice, so it needs manual review.' The response confirms that no saved SRU response exists for the correction notice and that no annotated title can be produced, which supports the first part of the claim. Additionally, it states that the correction title is generic and requires manual review, which supports the second part of the claim. Therefore, both parts of the expectation are supported by the response. The response is correct.","Every MMS ID, DOI and erratum note in the reply is in a tool result or the request",,"No saved SRU response exists for correction notice MMS ID 9917166931607426, so no annotated title can be produced. The correction title is generic (""Erratum"" with no article title), so this notice needs manual review.
+
+**Correction MMS ID:** 9917166931607426"
+417,4,17,file_but_no_original,no original in Alma - correction notice only,27.6,list_sru_files;process_sru_file,,False,True,True,True,True,True,True,True,No annotation expected; no annotated title given,"The expectation states that 'No annotated title is given' and that 'the original article is not in Alma (only the correction notice is)'. The response confirms that there is no original article in Alma and that only the correction notice is present. It also states that 'no annotated title can be produced', which supports the claim that no annotated title is given. Therefore, both parts of the claim are supported by the document. The response is correct.","Every MMS ID, DOI and erratum note in the reply is in a tool result or the request",,"**Status: no original in Alma - correction notice only**
+
+**Correction MMS ID:** 9917166931307426
+
+**Erratum note:** [Erratum: Apr. 2026, v. 73, no. 2, 295-295, 10.1007/s10228-026-01071-0]
+
+The SRU response contains only the correction notice record. The original article is not in Alma, so no annotated title can be produced. The correction notice needs manual review to locate the original article outside of Alma."
+418,4,18,annotated,annotated (response),16.5,process_sru_file,,False,True,True,True,True,True,True,True,"Exact annotated title found, no extra note","The expectation states that the annotated original title is ""Probing and tracking organelles in living plant cells [Erratum: Oct. 2012, v. 249, no. 4, 1183-1183, 10.1007/s00709-012-0376-8]"" and that the original article's MMS ID is 9915788769007426. The response explicitly provides the annotated title exactly as stated in the claim and confirms the original article MMS ID as 9915788769007426. Therefore, both parts of the expectation are fully supported by the response in the context of the question. The response is correct.","Every MMS ID, DOI and erratum note in the reply is in a tool result or the request","Probing and tracking organelles in living plant cells [Erratum: Oct. 2012, v. 249, no. 4, 1183-1183, 10.1007/s00709-012-0376-8]","**Annotated Title:**
+
+Probing and tracking organelles in living plant cells [Erratum: Oct. 2012, v. 249, no. 4, 1183-1183, 10.1007/s00709-012-0376-8]
+
+**Details:**
+- Original article MMS ID: 9915788769007426
+- Correction notice MMS ID: 9917166980707426
+- Status: Ready (no manual review needed)"
+419,4,19,manual_review,manual review - no SRU response,6.4,,,False,True,True,True,True,True,True,True,No annotation expected; no annotated title given,"The expectation states that 'No annotated title is given' and that 'no SRU response is saved for this notice, so it needs manual review.' The response confirms that no saved SRU response exists for the correction notice, which means no annotated title can be produced. It also states that the correction title 'ERRATA' is generic and does not contain an article title, indicating that manual review is necessary. Therefore, both parts of the expectation are supported by the response. The response is correct.","Every MMS ID, DOI and erratum note in the reply is in a tool result or the request",,"No saved SRU response exists for correction notice MMS ID 9917162383107426, so no annotated title can be produced. The correction title ""ERRATA"" is generic (contains no article title), which means this notice needs manual review to identify the original article."
+420,4,20,manual_review,manual review - no SRU response,7.5,,,False,True,True,True,True,True,True,True,No annotation expected; no annotated title given,"The expectation states that 'No annotated title is given' and 'no SRU response is saved for this notice, so it needs manual review.' The response confirms that no saved SRU response exists for the correction notice and that no annotated title can be produced. It also mentions that the correction title is generic and requires manual review. Therefore, both parts of the expectation are supported by the response. The response is correct.","Every MMS ID, DOI and erratum note in the reply is in a tool result or the request",,"No saved SRU response exists for correction notice MMS ID 9917162282607426, so no annotated title can be produced. Additionally, since the correction title is generic (""ERRATUM"" with no article title), this notice needs manual review.
+
+**Correction MMS ID:** 9917162282607426"
+421,4,21,annotated,annotated (response),17.8,process_sru_file,,False,True,True,True,True,True,True,True,"Exact annotated title found, no extra note","The first part of the expectation states that the annotated original title is 'Disentangling complex relationships and disjunctions in western Camassia: Integrating multiple criteria to resolve taxonomic boundaries [Erratum: May 2026, v. 113, no. 5, e70209, 10.1002/ajb2.70209]'. This matches exactly with the annotated title provided in the response. The second part of the expectation states that the original article's MMS ID is 9917035108507426, which is also confirmed in the response. Therefore, both statements in the expectation are supported by the response. The response is correct.","Every MMS ID, DOI and erratum note in the reply is in a tool result or the request","Disentangling complex relationships and disjunctions in western Camassia: Integrating multiple criteria to resolve taxonomic boundaries [Erratum: May 2026, v. 113, no. 5, e70209, 10.1002/ajb2.70209]","**Annotated Title:**
+
+Disentangling complex relationships and disjunctions in western Camassia: Integrating multiple criteria to resolve taxonomic boundaries [Erratum: May 2026, v. 113, no. 5, e70209, 10.1002/ajb2.70209]
+
+**Details:**
+- **Original article MMS ID:** 9917035108507426
+- **Correction notice MMS ID:** 9917162379507426
+- **Needs review:** No
+
+The original article title has been successfully annotated with the erratum note."
+422,4,22,manual_review,manual review - no SRU response,7.0,,,False,True,True,True,True,True,True,True,No annotation expected; no annotated title given,"The expectation states that 'No annotated title is given' and that 'no SRU response is saved for this notice, so it needs manual review.' The response confirms that there is no saved SRU response for the correction notice and that no annotated title can be produced. It also states that the correction title is generic and requires manual review to identify the original article. Therefore, both parts of the expectation are supported by the response. The response is correct.","Every MMS ID, DOI and erratum note in the reply is in a tool result or the request",,"No saved SRU response exists for correction notice MMS ID 9917162277007426, so no annotated title can be produced. The correction title is generic (""Correction"" with no article title), which means this notice needs manual review to identify the original article.
+
+**Correction MMS ID:** 9917162277007426  
+**Status:** No saved SRU response file"
+423,4,23,annotated,annotated (response),16.9,process_sru_file,,False,True,True,True,True,True,True,True,"Exact annotated title found, no extra note","The annotated original title provided in the response matches the title in the expectation. Additionally, the original MMS ID in the response is stated as 9917138970307426, which is also correctly mentioned in the expectation. Therefore, both parts of the expectation are supported by the response. The response is correct.","Every MMS ID, DOI and erratum note in the reply is in a tool result or the request","Revisiting Masstige Marketing: A Structured Literature Review and Future Research Agenda Using SPAR‐4‐SLR and S‐O‐R Model [Erratum: May 2026, v. 50, no. 3, e70224, 10.1111/ijcs.70224]","**Annotated Title:**
+
+Revisiting Masstige Marketing: A Structured Literature Review and Future Research Agenda Using SPAR‐4‐SLR and S‐O‐R Model [Erratum: May 2026, v. 50, no. 3, e70224, 10.1111/ijcs.70224]
+
+**Details:**
+- **Original MMS ID:** 9917138970307426
+- **Correction MMS ID:** 9917162387507426
+- **Status:** Ready (no manual review needed)
+
+The original article title has been successfully annotated with the erratum note from the correction notice published in May 2026."
+424,4,24,annotated,annotated (response),20.4,process_sru_file,,False,True,True,True,True,True,True,True,"Exact annotated title found, no extra note","The first part of the expectation states that the annotated original title is 'Taxonomic revision of Sargassum sect. Acanthocarpicae (Fucales, Phaeophyceae) [Erratum: Aug. 2013, v. 62, no. 4, 847-847, 10.12705/624.32]', which matches the annotated title provided in the response. The second part of the expectation states that the original article's MMS ID is 9917162105907426, which is also confirmed in the response. Therefore, both statements in the expectation are supported by the response. The response is correct.","Every MMS ID, DOI and erratum note in the reply is in a tool result or the request","Taxonomic revision of Sargassum sect. Acanthocarpicae (Fucales, Phaeophyceae) [Erratum: Aug. 2013, v. 62, no. 4, 847-847, 10.12705/624.32]","**Annotated Title:**
+
+Taxonomic revision of Sargassum sect. Acanthocarpicae (Fucales, Phaeophyceae) [Erratum: Aug. 2013, v. 62, no. 4, 847-847, 10.12705/624.32]
+
+**Details:**
+- **Original article MMS ID:** 9917162105907426
+- **Correction notice MMS ID:** 9917162403807426
+- **Status:** Ready (no manual review needed)
+
+The original article title has been successfully annotated with the erratum note from the August 2013 correction."
+425,4,25,file_but_no_correction,no correction in Alma - original only,16.9,process_sru_file,,False,True,True,True,True,True,True,True,No annotation expected; no annotated title given,"The expectation states that no annotated title is given and that the SRU response contains only the original article without the correction notice, which is supported by the response. The document confirms that the SRU response contains only the original article record and that the correction notice is not in Alma, leading to the conclusion that there is no erratum note to add. Additionally, it states that no annotated title can be produced and that the correction notice needs manual review. Therefore, the claim is fully supported by the document.","Every MMS ID, DOI and erratum note in the reply is in a tool result or the request",,"**Status: No correction in Alma - original only**
+
+**Original article MMS ID:** 9917162191107426  
+**Correction notice MMS ID:** 9917162397207426
+
+The SRU response contains only the original article record. The correction notice (MMS ID 9917162397207426) is not in Alma, so there is no erratum note to add. 
+
+**No annotated title can be produced.** This correction notice needs manual review to locate the correction record and add the erratum note by hand."
+426,4,26,annotated,annotated (response),19.2,process_sru_file,,False,True,True,True,True,True,True,True,"Exact annotated title found, no extra note","The first part of the expectation states that the annotated original title is 'Holotype specimens and type citations: General issues [Erratum: Mar. 2015, v. 64, no. 1, 183-183, 10.12705/641.18]', which matches the annotated title provided in the response. The second part of the expectation states that the original article's MMS ID is '9917162169107426', which is also confirmed in the response. Since both parts of the expectation are supported by the response, the response is correct.","Every MMS ID, DOI and erratum note in the reply is in a tool result or the request","Holotype specimens and type citations: General issues [Erratum: Mar. 2015, v. 64, no. 1, 183-183, 10.12705/641.18]","**Annotated Title:**
+
+Holotype specimens and type citations: General issues [Erratum: Mar. 2015, v. 64, no. 1, 183-183, 10.12705/641.18]
+
+**Details:**
+- **Original article MMS ID:** 9917162169107426
+- **Correction notice MMS ID:** 9917162200107426
+- **Needs review:** No
+
+The original article title has been successfully annotated with the erratum note from the March 2015 correction published in Taxon, volume 64, number 1, page 183."
+427,4,27,annotated,annotated (response),31.8,process_sru_file,,False,True,True,True,True,True,True,True,"Exact annotated title found, no extra note","The claim states that the annotated original title is 'Extraction of Microplastics from River Water in a Rotating Coiled Column Using a Water–Oil System [Erratum: Dec. 2025, v. 80, no. 14, 2309-2309, 10.1134/S1061934825020042]', which matches the annotated title provided in the response. Additionally, the claim mentions that the original article's MMS ID is 9916836293907426, which is also confirmed in the response. Therefore, both parts of the claim are supported by the response. The response is correct.","Every MMS ID, DOI and erratum note in the reply is in a tool result or the request","Extraction of Microplastics from River Water in a Rotating Coiled Column Using a Water–Oil System [Erratum: Dec. 2025, v. 80, no. 14, 2309-2309, 10.1134/S1061934825020042]","**Annotated Title:**
+
+Extraction of Microplastics from River Water in a Rotating Coiled Column Using a Water–Oil System [Erratum: Dec. 2025, v. 80, no. 14, 2309-2309, 10.1134/S1061934825020042]
+
+**Details:**
+- **Original article MMS ID:** 9916836293907426
+- **Correction notice MMS ID:** 9917164112007426
+- **Status:** Ready (no manual review needed)
+
+The original article title has been successfully annotated with the erratum note referencing the correction published in December 2025, volume 80, issue 14, page 2309, with DOI 10.1134/S1061934825020042."
+428,4,28,annotated,annotated (response),16.8,process_sru_file,,False,True,True,True,True,True,True,True,"Exact annotated title found, no extra note","The annotated original title provided in the response matches the title in the expectation. Additionally, the original article's MMS ID in the response is correctly stated as 9917163931807426, which is also reflected in the expectation. Therefore, both parts of the expectation are supported by the response. The response is correct.","Every MMS ID, DOI and erratum note in the reply is in a tool result or the request","Socioeconomic and Perceptual Drivers of Climate Change Impact Perceptions Among Peach Farmers: Evidence from Çanakkale, Türkiye [Erratum: June 2026, v. 68, no. 3, 165, 10.1007/s10341-026-01878-1]","**Annotated Title:**
+
+Socioeconomic and Perceptual Drivers of Climate Change Impact Perceptions Among Peach Farmers: Evidence from Çanakkale, Türkiye [Erratum: June 2026, v. 68, no. 3, 165, 10.1007/s10341-026-01878-1]
+
+**Details:**
+- **Original article MMS ID:** 9917163931807426
+- **Correction notice MMS ID:** 9917163838107426
+- **Status:** Ready (no manual review needed)
+
+The original article title has been successfully annotated with the erratum note referencing the correction published in June 2026, volume 68, number 3, page 165."
+429,4,29,annotated,annotated (response),17.7,process_sru_file,,False,False,True,True,True,True,True,True,"Expected: Ecological drivers of malaria vector habitat and transmission over 1 year of long-lasting insecticidal net intervention in Côte d’Ivoire [Erratum: Dec. 2025, v. 18, no. 1, 369, 10.1186/s13071-025-07023-3]","The annotated title provided in the response matches the title stated in the expectation. Additionally, the original article's MMS ID in the response is also the same as that mentioned in the expectation. Therefore, both parts of the expectation are supported by the response. The response is correct.","Every MMS ID, DOI and erratum note in the reply is in a tool result or the request","Ecological drivers of malaria vector habitat and transmission over 1 year of long-lasting insecticidal net intervention in Côte d’Ivoire [Erratum: Dec. 2025, v. 18, no. 1, 369, 10.1186/s13071-025-07023-3]","The annotated title is ready:
+
+**Annotated Title:**
+Ecological drivers of malaria vector habitat and transmission over 1 year of long-lasting insecticidal net intervention in Côte d'Ivoire [Erratum: Dec. 2025, v. 18, no. 1, 369, 10.1186/s13071-025-07023-3]
+
+**Details:**
+- **Original Article MMS ID:** 9916945788907426
+- **Correction Notice MMS ID:** 9916991253207426
+- **Status:** Ready (no manual review needed)
+
+The erratum note has been successfully appended to the original article title."
+430,4,30,annotated,annotated (response),17.0,process_sru_file,,False,True,True,True,True,True,True,True,"Exact annotated title found, no extra note","The claim states that the annotated original title is 'Classical swine fever virus NS5A protein changed inflammatory cytokine secretion in porcine alveolar macrophages by inhibiting the NF-κB signaling pathway [Erratum: Dec. 2016, v. 13, no. 1, 135, 10.1186/s12985-016-0582-7]', which matches exactly with the annotated title provided in the response. Additionally, the claim mentions that the original article's MMS ID is 9915614049107426, which is also confirmed in the response. Therefore, both parts of the claim are supported by the response. The response is correct.","Every MMS ID, DOI and erratum note in the reply is in a tool result or the request","Classical swine fever virus NS5A protein changed inflammatory cytokine secretion in porcine alveolar macrophages by inhibiting the NF-κB signaling pathway [Erratum: Dec. 2016, v. 13, no. 1, 135, 10.1186/s12985-016-0582-7]","**Annotated Title:**
+
+Classical swine fever virus NS5A protein changed inflammatory cytokine secretion in porcine alveolar macrophages by inhibiting the NF-κB signaling pathway [Erratum: Dec. 2016, v. 13, no. 1, 135, 10.1186/s12985-016-0582-7]
+
+**Details:**
+- **Original article MMS ID:** 9915614049107426
+- **Correction notice MMS ID:** 9917155273707426
+- **Erratum note:** [Erratum: Dec. 2016, v. 13, no. 1, 135, 10.1186/s12985-016-0582-7]
+- **Status:** Ready (no manual review needed)
+
+The original article title has been successfully annotated with the erratum note from the correction notice."
