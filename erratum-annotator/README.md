@@ -158,7 +158,7 @@ For people without a Databricks account, [`demo/`](demo/README.md) has an offlin
 
 All code is in Git, at the same paths in both repos
 ([AmandaZXu-USDA/NAL](https://github.com/AmandaZXu-USDA/NAL/tree/add-mcp-servers/erratum-annotator), branch
-`add-mcp-servers`, and [AmandaZXu-USDA/mcp-hackathon-demo-sru](https://github.com/AmandaZXu-USDA/mcp-hackathon-demo-sru/tree/main/erratum-annotator)).
+`add-mcp-servers`, and [gsa-mcp-hackathon/mcp-sru-erratum](https://github.com/gsa-mcp-hackathon/mcp-sru-erratum/tree/main/erratum-annotator)).
 The 7 tools of `mcp-erratum-note` (at `/mcp`) are defined in `mcp_server/app.py` and call the logic in
 `mcp_server/erratum_annotator.py`. All are read-only: none writes anything. Errors are described in [Error handling](#error-handling).
 
@@ -247,7 +247,7 @@ The deployed app runs from this repo folder: `/Workspace/Users/amanda.xu@usda.go
 ### Deploying safely
 
 * **One deploy source.** The live app is deployed from the NAL repo folder above. The copy of this folder in
-  [`AmandaZXu-USDA/mcp-hackathon-demo-sru`](https://github.com/AmandaZXu-USDA/mcp-hackathon-demo-sru/tree/main/erratum-annotator)
+  [`gsa-mcp-hackathon/mcp-sru-erratum`](https://github.com/gsa-mcp-hackathon/mcp-sru-erratum/tree/main/erratum-annotator)
   is kept byte-identical for review; change the code in NAL first, then copy it.
 * **Update, don't recreate.** The workspace is at its 100-app limit, so `apps deploy` updates the existing app.
   Never delete the app to redeploy it.

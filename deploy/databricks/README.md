@@ -21,7 +21,7 @@ and exposes it behind your workspace's authentication.
 
 All code for this app is in Git, at the same paths in both repos
 ([AmandaZXu-USDA/NAL](https://github.com/AmandaZXu-USDA/NAL/tree/add-mcp-servers/sru-syntax-mcp), branch
-`add-mcp-servers`, and [AmandaZXu-USDA/mcp-hackathon-demo-sru](https://github.com/AmandaZXu-USDA/mcp-hackathon-demo-sru/tree/main/sru-syntax-mcp)).
+`add-mcp-servers`, and [gsa-mcp-hackathon/mcp-sru-erratum](https://github.com/gsa-mcp-hackathon/mcp-sru-erratum/tree/main/sru-syntax-mcp)).
 Paths below are from the repo root. The live app is deployed from the NAL copy.
 
 ### MCP tool (at `/mcp`)

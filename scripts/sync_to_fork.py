@@ -1,8 +1,9 @@
 """Copy changed files from the NAL repo to the hackathon fork, refusing unsafe copies.
 
 NAL (AmandaZXu-USDA/NAL, branch add-mcp-servers) is what the live apps are deployed
-from; the fork (AmandaZXu-USDA/mcp-hackathon-demo-sru, branch main) is what judges
-see. Change NAL first, then copy to the fork with this script.
+from; the fork (AmandaZXu-USDA/mcp-hackathon-demo-sru, branch main) is pushed to the
+submission repository judges review (gsa-mcp-hackathon/mcp-sru-erratum). Change NAL
+first, then copy to the fork with this script.
 
 Usage (from either repo; both clones side by side, as in the Databricks workspace):
 

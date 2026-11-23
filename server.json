@@ -3,7 +3,7 @@
   "name": "io.github.AmandaZXu-USDA/mcp-sru-syntax",
   "description": "NAL SRU Syntax MCP server: converts erratum/correction notice titles into NAL Alma production SRU search URLs for the original article.",
   "repository": {
-    "url": "https://github.com/AmandaZXu-USDA/mcp-hackathon-demo-sru",
+    "url": "https://github.com/gsa-mcp-hackathon/mcp-sru-erratum",
     "source": "github"
   },
   "version": "0.1.0",

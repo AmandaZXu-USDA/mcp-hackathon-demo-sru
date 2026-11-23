@@ -46,7 +46,8 @@ ig.run_all(gadget, repo, sru_rows, truth, tester="Inspector Gadget (service prin
 ```
 
 `sru-eval-0.csv` is at `sru-syntax-mcp/eval/databricks/datasets/` in AmandaZXu-USDA/NAL and at
-`eval/databricks/datasets/` in AmandaZXu-USDA/mcp-hackathon-demo-sru.
+`eval/databricks/datasets/` in gsa-mcp-hackathon/mcp-sru-erratum (the hackathon submission repository) and its source fork
+AmandaZXu-USDA/mcp-hackathon-demo-sru.
 
 The suite uses the MCP 2.x client (`mcp.Client` over `httpx2`), so it needs `mcp` 2.x and `httpx2`; with
 `mcp` 1.x it fails with `cannot import name 'Client' from 'mcp'`. Tested with `mcp==2.3.0` and `httpx2` 2.16.2

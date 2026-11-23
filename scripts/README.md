@@ -4,7 +4,7 @@ Command-line scripts for the routine jobs of this project. The same four scripts
 both repositories: [AmandaZXu-USDA/NAL](https://github.com/AmandaZXu-USDA/NAL) (branch
 `add-mcp-servers`, which the live apps are deployed from) and
 [AmandaZXu-USDA/mcp-hackathon-demo-sru](https://github.com/AmandaZXu-USDA/mcp-hackathon-demo-sru)
-(the hackathon fork). Run them from the repository root. Each one prints what it would
+(the hackathon fork, pushed to the submission repository [gsa-mcp-hackathon/mcp-sru-erratum](https://github.com/gsa-mcp-hackathon/mcp-sru-erratum)). Run them from the repository root. Each one prints what it would
 do and writes nothing unless you add `--upload`, `--fixture` or `--apply`. None of them
 deletes, commits or pushes.
 
