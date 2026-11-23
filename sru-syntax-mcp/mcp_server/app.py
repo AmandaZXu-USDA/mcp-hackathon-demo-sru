@@ -30,9 +30,10 @@ from starlette.middleware.cors import CORSMiddleware
 from starlette.requests import Request
 from starlette.responses import HTMLResponse, JSONResponse
 
+from sru_inputs import MAX_TITLE_CHARS, CorrectionTitleArg, is_valid_title
+
 ENDPOINT = os.environ.get("SERVING_ENDPOINT", "mas-c8629507-endpoint")
 TIMEOUT_S = int(os.environ.get("AGENT_TIMEOUT_SECONDS", "300"))
-MAX_TITLE_CHARS = 1000
 SQL_FUNCTION = "users.amanda_xu.build_sru_url"
 WAREHOUSE_ID = os.environ.get("SQL_WAREHOUSE_ID", "")
 FUNCTION_WAIT = os.environ.get("FUNCTION_WAIT_TIMEOUT", "40s")  # SQL API wait, 5s-50s; then fall back to the agent
@@ -334,8 +335,9 @@ def _warm_up() -> None:
 
 
 def _check_title(title: object) -> None:
-    """Reject empty or over-long titles before calling the agent."""
-    if not isinstance(title, str) or not title.strip() or len(title) > MAX_TITLE_CHARS:
+    """Reject titles the Pydantic input model (sru_inputs.BuildSruSearchUrlInput) does not accept:
+    not text, empty or over-long. Checked before any function or agent call."""
+    if not is_valid_title(title):
         raise UpstreamError("invalid_input")
 
 
@@ -357,7 +359,7 @@ def _checked_reply(text: str) -> str:
         openWorldHint=False,  # calls only this workspace's Supervisor Agent endpoint
     )
 )
-async def build_sru_search_url(correction_title: str) -> str:
+async def build_sru_search_url(correction_title: CorrectionTitleArg) -> str:
     """Turn an erratum/correction notice title (e.g. 'Correction: <title>', 'Correction to “<title>”',
     'Corrigendum: ...') into the NAL Alma production SRU searchRetrieve URL for the original article.
     Pass the full title exactly as given. Runs the governed SQL function users.amanda_xu.build_sru_url

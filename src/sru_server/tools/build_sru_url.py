@@ -21,12 +21,12 @@ from mcp.server.fastmcp.exceptions import ToolError
 from mcp.types import ToolAnnotations
 
 from sru_server.config import settings
+from sru_server.models import MAX_TITLE_CHARS, CorrectionTitleArg, is_valid_title
 
 log = logging.getLogger("mcp_sru_syntax")
 
 ENDPOINT = settings.serving_endpoint
 TIMEOUT_S = settings.agent_timeout_seconds
-MAX_TITLE_CHARS = 1000
 SQL_FUNCTION = "users.amanda_xu.build_sru_url"
 SRU_PREFIX = "https://nal.alma.exlibrisgroup.com/view/sru/"
 RETRY_DEFAULT_WAIT_S = 2.0  # wait before retrying a busy (429) or unavailable agent
@@ -314,8 +314,10 @@ def warm_up() -> None:
 
 
 def _check_title(title: object) -> None:
-    """Reject empty or over-long titles before calling the agent."""
-    if not isinstance(title, str) or not title.strip() or len(title) > MAX_TITLE_CHARS:
+    """Reject titles the Pydantic input model (models.BuildSruSearchUrlInput) does
+    not accept: not text, empty or over-long. Checked before any function or agent
+    call."""
+    if not is_valid_title(title):
         raise UpstreamError("invalid_input")
 
 
@@ -340,7 +342,7 @@ def register(mcp) -> None:
             openWorldHint=False,
         )
     )
-    async def build_sru_search_url(correction_title: str) -> str:
+    async def build_sru_search_url(correction_title: CorrectionTitleArg) -> str:
         """Turn an erratum/correction notice title (e.g. 'Correction: <title>',
         'Correction to \u201c<title>\u201d', 'Corrigendum: ...') into the NAL Alma
         production SRU searchRetrieve URL for the original article. Pass the full

@@ -20,7 +20,22 @@ from databricks.sdk import errors as dberr
 from mcp.server.fastmcp import FastMCP
 from mcp.server.fastmcp.exceptions import ToolError
 from mcp.types import ToolAnnotations
+from pydantic import ValidationError
 
+import erratum_inputs as models
+from erratum_inputs import (
+    MAX_TEXT_CHARS,
+    MAX_XML_CHARS,
+    ContainsArg,
+    CorrectionIdArg,
+    DoiArg,
+    ErratumNoteArg,
+    FileNameArg,
+    OriginalTitleArg,
+    PartTextArg,
+    SearchTitleArg,
+    XmlArg,
+)
 from erratum_annotator import (
     ModsRecord,
     clean_xml,
@@ -60,8 +75,7 @@ def _safe_path(file_name: str) -> str:
 # "[error <category>, id <error id>]". Categories: invalid_input, not_well_formed, not_sru, sru_diagnostic,
 # not_found, permission_denied, unavailable, bad_file, internal. Logs carry the error id, category, tool and
 # exception type only, never XML, titles or file contents. Temporary volume errors are retried once.
-MAX_XML_CHARS = 2_000_000
-MAX_TEXT_CHARS = 2_000
+# Input limits (MAX_XML_CHARS, MAX_TEXT_CHARS, ...) live with the Pydantic input models in erratum_inputs.py.
 SRW_DIAG = "{http://www.loc.gov/zing/srw/diagnostic/}"
 _TEMPORARY = (dberr.TemporarilyUnavailable, dberr.DeadlineExceeded, dberr.InternalError, dberr.TooManyRequests,
               dberr.ResourceExhausted, ConnectionError, TimeoutError)
@@ -83,28 +97,18 @@ def _log_error(err: ErratumError, where: str, exc: BaseException | None = None) 
           + (f" exception={type(exc).__name__}" if exc is not None else ""), flush=True)
 
 
-def _check_text(name: str, value, limit: int = MAX_TEXT_CHARS, required: bool = False) -> str:
-    if value is None:
-        value = ""
-    if not isinstance(value, str):
-        raise ErratumError("invalid_input", f"{name} must be text.")
-    if required and not value.strip():
-        raise ErratumError("invalid_input", f"{name} is empty.")
-    if len(value) > limit:
-        raise ErratumError("invalid_input", f"{name} is too long (limit {limit:,} characters).")
-    return value
-
-
-def _check_correction_id(correction_id) -> str:
-    cid = _check_text("correction_id", correction_id, 50).strip()
-    if cid and not re.fullmatch(r"\d{16}", cid):
-        raise ErratumError("invalid_input", "correction_id must be the 16-digit erratum MMS ID, or empty.")
-    return cid
+def _validated(model: type[models.ToolInput], **values) -> models.ToolInput:
+    """Check a tool's arguments with its Pydantic input model (erratum_inputs.py). A problem becomes an
+    invalid_input ErratumError naming the field, so the caller still gets a category and an error id."""
+    try:
+        return model.model_validate(values)
+    except ValidationError as e:
+        raise ErratumError("invalid_input", models.input_error_message(e)) from None
 
 
 def _check_xml(xml) -> str:
     """Reject input that is not a well-formed SRU searchRetrieveResponse, with a message saying why."""
-    xml = _check_text("xml", xml, MAX_XML_CHARS, required=True)
+    xml = _validated(models.SruXmlInput, xml=xml).xml
     try:
         root = ET.fromstring(clean_xml(xml))
     except ET.ParseError as e:
@@ -290,7 +294,7 @@ def health() -> str:
 
 @mcp.tool(annotations=_read_only("Parse an SRU response"))
 @_handled
-def parse_sru_response(xml: str) -> dict:
+def parse_sru_response(xml: XmlArg) -> dict:
     """Parse an SRU searchRetrieveResponse XML string into classified records.
 
     Returns {num_records, records: [{title, record_id, part_text, doi, is_correction}]}.
@@ -309,36 +313,34 @@ def parse_sru_response(xml: str) -> dict:
 
 @mcp.tool(annotations=_read_only("Format an erratum note"))
 @_handled
-def extract_erratum_note(part_text: str, doi: str) -> str:
+def extract_erratum_note(part_text: PartTextArg, doi: DoiArg) -> str:
     """Format an erratum note from a correction record's <part><text> and DOI.
 
     Returns '[Erratum: Mon. YYYY, v. V, no. N, page, doi]' or '' if inputs are missing.
     """
-    part_text = _check_text("part_text", part_text, 500)
-    doi = _check_text("doi", doi, 500)
-    rec = ModsRecord(title="Correction", record_id="", part_text=part_text,
-                     doi=doi, is_correction=True)
+    args = _validated(models.ExtractErratumNoteInput, part_text=part_text, doi=doi)
+    rec = ModsRecord(title="Correction", record_id="", part_text=args.part_text,
+                     doi=args.doi, is_correction=True)
     return _extract_note(rec) or ""
 
 
 @mcp.tool(annotations=_read_only("Append an erratum note to a title"))
 @_handled
-def enhance_title(original_title: str, erratum_note: str) -> dict:
+def enhance_title(original_title: OriginalTitleArg, erratum_note: ErratumNoteArg) -> dict:
     """Append an erratum note to the end of the original title.
 
     Skips if the title already contains '[Erratum:'.
     Returns {annotated_title, already_annotated}.
     """
-    original_title = _check_text("original_title", original_title)
-    erratum_note = _check_text("erratum_note", erratum_note)
-    already = "[Erratum:" in (original_title or "")
-    return {"annotated_title": _enhance(original_title, erratum_note),
+    args = _validated(models.EnhanceTitleInput, original_title=original_title, erratum_note=erratum_note)
+    already = "[Erratum:" in args.original_title
+    return {"annotated_title": _enhance(args.original_title, args.erratum_note),
             "already_annotated": already}
 
 
 @mcp.tool(annotations=_read_only("Annotate a title from SRU XML"))
 @_handled
-def process_sru_response(xml: str, search_title: str = "", correction_id: str = "") -> dict:
+def process_sru_response(xml: XmlArg, search_title: SearchTitleArg = "", correction_id: CorrectionIdArg = "") -> dict:
     """Full pipeline: parse SRU XML, match correction to original, annotate the title.
 
     search_title only ranks the original records in the response. When the response has no original
@@ -354,27 +356,28 @@ def process_sru_response(xml: str, search_title: str = "", correction_id: str = 
     status: ready, needs_review, no_original, already_annotated, no_records, no_correction or no_note.
     Errors (bad or non-SRU XML, bad correction_id) end with [error <category>, id <id>].
     """
-    search_title = _check_text("search_title", search_title).strip()
-    correction_id = _check_correction_id(correction_id)
-    return _with_status(_process(_check_xml(xml), search_title, correction_id), correction_id)
+    args = _validated(models.ProcessSruResponseInput, xml=xml, search_title=search_title,
+                      correction_id=correction_id)
+    return _with_status(_process(_check_xml(args.xml), args.search_title, args.correction_id), args.correction_id)
 
 
 @mcp.tool(annotations=_read_only("List saved SRU responses"))
 @_handled
-def list_sru_files(contains: str = "") -> dict:
+def list_sru_files(contains: ContainsArg = "") -> dict:
     """List saved SRU response XML files in the erratum volume folder.
 
     Optional `contains` filters file names by substring (case-insensitive),
     e.g. 'Row41' or an MMS ID. Returns {folder, count, files}.
     """
-    contains = _check_text("contains", contains, 200).strip()
+    contains = _validated(models.ListSruFilesInput, contains=contains).contains
     names = sorted(n for n in _list_xml_names() if contains.lower() in n.lower())
     return {"folder": SRU_DIR, "count": len(names), "files": names}
 
 
 @mcp.tool(annotations=_read_only("Annotate a title from a saved SRU response"))
 @_handled
-def process_sru_file(file_name: str, search_title: str = "", correction_id: str = "") -> dict:
+def process_sru_file(file_name: FileNameArg, search_title: SearchTitleArg = "",
+                     correction_id: CorrectionIdArg = "") -> dict:
     """Read a saved SRU response from the erratum volume folder and annotate the title.
 
     file_name is a bare name from list_sru_files, e.g. 'Sample1-Row43-9917175550407426.xml'.
@@ -383,14 +386,14 @@ def process_sru_file(file_name: str, search_title: str = "", correction_id: str 
     Returns the same fields as process_sru_response plus {file_name, correction_id_requested}.
     Errors (no such file, unreadable file, bad XML) end with [error <category>, id <id>].
     """
-    file_name = _check_text("file_name", file_name, 200, required=True)
+    args = _validated(models.ProcessSruFileInput, file_name=file_name, search_title=search_title,
+                      correction_id=correction_id)
+    file_name, search_title, correction_id = args.file_name, args.search_title, args.correction_id
     try:
         path = _safe_path(file_name)
     except ValueError:
         raise ErratumError("invalid_input", "file_name must be a bare .xml file name from list_sru_files, "
                            "with no folder.") from None
-    search_title = _check_text("search_title", search_title).strip()
-    correction_id = _check_correction_id(correction_id)
     if not correction_id:
         m = re.search(r"(\d{16})(?:-[A-Za-z][A-Za-z0-9]*)*\.xml$", file_name, re.I)
         correction_id = m.group(1) if m else ""

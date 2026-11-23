@@ -77,6 +77,8 @@ def sru(monkeypatch):
         "WorkspaceClient",
         lambda *a, **k: types.SimpleNamespace(config=config),
     )
+    # app.py imports its Pydantic input model from sru_inputs.py next to it.
+    monkeypatch.syspath_prepend(str(SRU_APP.parent))
     return _load("deployed_sru_app", SRU_APP)
 
 

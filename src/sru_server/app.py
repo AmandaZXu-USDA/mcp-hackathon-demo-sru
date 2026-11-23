@@ -30,6 +30,7 @@ from starlette.requests import Request
 from starlette.responses import HTMLResponse, JSONResponse
 
 from sru_server.config import settings
+from sru_server.models import MAX_TITLE_CHARS
 from sru_server.tools import build_sru_url as agent_tool
 from sru_server.tools import register_tools
 
@@ -147,7 +148,6 @@ async def invocations(request: Request) -> JSONResponse:
 # ---- Browser page for librarians (Databricks Apps handles the login) ----
 
 SRU_PREFIX = "https://nal.alma.exlibrisgroup.com/view/sru/"
-MAX_TITLE_CHARS = 1000
 _SRU_URL_RE = re.compile(re.escape(SRU_PREFIX) + r"[^\s<>\"'`]+")
 PAGE = (Path(__file__).parent / "static" / "index.html").read_text(encoding="utf-8")
 
