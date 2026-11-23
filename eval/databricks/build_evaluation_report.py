@@ -604,6 +604,15 @@ story += [
            ['Result', 'Matches the ground-truth sru_url in Correction-Sample1-53-annotated.csv character for character; 50 s'],
           ], [1.3, 5.6], code_cols=()),
     Spacer(1, 4),
+    p('Second example (video demo): MMS ID 9917175553207426 (Sample 1, row 45), checked the same day. Its title has an en dash '
+      '(flour–epoxy); the rules change it to a plain hyphen for the SRU query.'),
+    table([['Item', 'Value'],
+           ['Prompt', 'Build the Alma SRU search URL for correction notice MMS ID 9917175553207426. Correction notice title: Correction: Optimization of material and extrusion parameters for wood flour–epoxy composites with potential additive-manufacturing applications in construction'],
+           ['Tool called', 'users__amanda_xu__build_sru_url'],
+           ['Reply URL', 'https://nal.alma.exlibrisgroup.com/view/sru/01NAL_INST?version=1.2&operation=searchRetrieve&recordSchema=mods&query=alma.title%3D%22Optimization%20of%20material%20and%20extrusion%20parameters%20for%20wood%20flour-epoxy%20composites%20with%20potential%20additive-manufacturing%20applications%20in%20construction%22%20and%20alma.local_field_912%3D%22Article%22'],
+           ['Result', 'Matches the ground-truth sru_url character for character; 39 s'],
+          ], [1.3, 5.6], code_cols=()),
+    Spacer(1, 4),
     *bullets([
         'To call the MCP app itself, add mcp-sru-syntax to a model pane under Tools &gt; MCP servers &gt; Databricks Apps, '
         'then send the same prompt.',
@@ -681,7 +690,7 @@ for check in ['1. Inspector Gadget testing', '2. Databricks offline MLflow evalu
               '9. Phoenix evaluation on November 22, 2026', '9. Phoenix evaluation (November 22)', 'Phoenix evaluation of an agent',
               '9.1 Harness', '9.2 Results', 'url_exact_match', 'match_expected_response', 'check_answer_scope',
               'databricks-claude-sonnet-4-6', 'RXhwZXJpbWVudDo0', 'Phoenix (section 9)', 'section 9 from the',
-              '10. Playground demo prompt', '9917175652607426', 'mas-c8629507-endpoint']:
+              '10. Playground demo prompt', '9917175652607426', 'mas-c8629507-endpoint', '9917175553207426']:
     print('OK  ' if check in flat else 'MISSING  ', check)
 
 # The server is named mcp-sru-syntax throughout. The only allowed old-name text is the

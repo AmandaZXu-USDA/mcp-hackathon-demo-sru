@@ -95,6 +95,38 @@ Expected:
 * Original MMS ID: `9917015258907426`
 * Needs manual review: No
 
+**Second example (video demo): MMS ID `9917175553207426` (Sample 1, row 45).** Checked on November 23, 2026 with the same two
+panes side by side. Its title has an en dash in "flour–epoxy": step 1 changes it to a plain hyphen for the SRU URL, and step 2 keeps the en dash in the annotated title.
+
+| Step | Tool called | Time | Result |
+| --- | --- | --- | --- |
+| 1 | `users__amanda_xu__build_sru_url` | 39 s | URL matches the ground-truth `sru_url` exactly |
+| 2 | `process_sru_file` (MCP) | 13 s | Annotated title and original MMS ID match the ground truth; no manual review |
+
+Prompt 1:
+
+```text
+Build the Alma SRU search URL for correction notice MMS ID 9917175553207426. Correction notice title: Correction: Optimization of material and extrusion parameters for wood flour–epoxy composites with potential additive-manufacturing applications in construction
+```
+
+Expected URL:
+
+```text
+https://nal.alma.exlibrisgroup.com/view/sru/01NAL_INST?version=1.2&operation=searchRetrieve&recordSchema=mods&query=alma.title%3D%22Optimization%20of%20material%20and%20extrusion%20parameters%20for%20wood%20flour-epoxy%20composites%20with%20potential%20additive-manufacturing%20applications%20in%20construction%22%20and%20alma.local_field_912%3D%22Article%22
+```
+
+Prompt 2:
+
+```text
+Annotate the original article for correction notice MMS ID 9917175553207426. Correction notice title: Correction: Optimization of material and extrusion parameters for wood flour–epoxy composites with potential additive-manufacturing applications in construction. The saved SRU response file is Sample1-Row45-9917175553207426.xml. Return the annotated original title, the erratum note, the original MMS ID, and whether it needs manual review.
+```
+
+Expected:
+
+* Annotated title: `Optimization of material and extrusion parameters for wood flour–epoxy composites with potential additive-manufacturing applications in construction [Erratum: Aug. 2026, v. 84, no. 4, 103, 10.1007/s00107-026-02464-8]`
+* Original MMS ID: `9917046021407426`
+* Needs manual review: No
+
 Notes:
 
 * The two steps run in order. Prompt 1 gives the SRU URL. The librarian runs that URL in Alma and saves the response.

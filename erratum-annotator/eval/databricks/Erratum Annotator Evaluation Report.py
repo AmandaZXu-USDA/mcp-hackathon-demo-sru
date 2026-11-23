@@ -520,6 +520,9 @@ story += [p("10. Changes since the November 21 run", H1),
 PG_PROMPT = 'Annotate the original article for correction notice MMS ID 9917175652607426. Correction notice title: Correction to: Climate‐driven insect pest outbreaks and food security risks: a review of adaptive strategies for resilient agriculture. The saved SRU response file is Sample1-Row42-9917175652607426.xml. Return the annotated original title, the erratum note, the original MMS ID, and whether it needs manual review.'
 _pg = ea_now.process_sru_response(_xml("Sample1-Row42-9917175652607426.xml"), "", "9917175652607426")
 assert _pg["annotated_title"] == 'Climate-driven insect pest outbreaks and food security risks: a review of adaptive strategies for resilient agriculture [Erratum: Sept. 2026, v. 99, no. 3, 111, 10.1007/s10340-026-02069-3]', _pg["annotated_title"]
+PG_PROMPT2 = 'Annotate the original article for correction notice MMS ID 9917175553207426. Correction notice title: Correction: Optimization of material and extrusion parameters for wood flour–epoxy composites with potential additive-manufacturing applications in construction. The saved SRU response file is Sample1-Row45-9917175553207426.xml. Return the annotated original title, the erratum note, the original MMS ID, and whether it needs manual review.'
+_pg2 = ea_now.process_sru_response(_xml("Sample1-Row45-9917175553207426.xml"), "", "9917175553207426")
+assert _pg2["annotated_title"] == 'Optimization of material and extrusion parameters for wood flour–epoxy composites with potential additive-manufacturing applications in construction [Erratum: Aug. 2026, v. 84, no. 4, 103, 10.1007/s00107-026-02464-8]', _pg2["annotated_title"]
 story += [p("11. Playground demo prompt (November 23, 2026)", H1),
           p("Judges can repeat this check in the Databricks AI Playground. The demo uses one correction notice for both MCP "
             "apps: MMS ID 9917175652607426 (Sample 1, row 42). This prompt is step 2. Step 1 (mcp-sru-syntax, which "
@@ -532,6 +535,17 @@ story += [p("11. Playground demo prompt (November 23, 2026)", H1),
                  ["Original MMS ID", '9917015258907426'],
                  ["Needs manual review", "No"],
                  ["Result", "Matches the ground truth for row 42 in Correction-Sample1-53-annotated.csv; 13 s"],
+                ], [1.4, 5.1]),
+          Spacer(1, 4),
+          p("Second example (video demo): MMS ID 9917175553207426 (Sample 1, row 45), checked the same day. The annotated "
+            "title keeps the en dash (flour–epoxy) from the original record."),
+          table([["Item", "Value"],
+                 ["Prompt", PG_PROMPT2],
+                 ["Tool called", "process_sru_file (mcp-erratum-note)"],
+                 ["Annotated title", _pg2["annotated_title"]],
+                 ["Original MMS ID", '9917046021407426'],
+                 ["Needs manual review", "No"],
+                 ["Result", "Matches the ground truth for row 45 in Correction-Sample1-53-annotated.csv; 13 s"],
                 ], [1.4, 5.1]),
           Spacer(1, 4),
           *bullets(["The prompts are also in the README files (repository root, submission/, sru-syntax-mcp/ and "
@@ -574,7 +588,7 @@ checks = ["1. Summary", "2. System under test", "3. Evaluation dataset", "4. Met
           f"{now_ok}/{now_n}", "before-20261122", "agent_erratum_eval_otel", f"{int(t_in.sum() + t_out.sum()):,}",
           f"{len(t_tools)} tool calls", "no_correction", "Sample 4", "Correction-Sample4-29-annotated", "checked one by one against the records in Alma",
           "file_but_no_correction", "no correction in Alma - original only", "Previous run: S4", "S4 row 26", "S4 row 25", "S1 row 5", "no_fabrication is deterministic", F("annotated_title_exact", 4), f"{s4_ok}/{s4_n}",
-          "11. Playground demo prompt", "9917175652607426", "mas-c341c0aa-endpoint"]
+          "11. Playground demo prompt", "9917175652607426", "mas-c341c0aa-endpoint", "9917175553207426"]
 missing = [c for c in checks if c not in flat]
 for c in checks:
     print("OK  " if c not in missing else "MISSING  ", c)
