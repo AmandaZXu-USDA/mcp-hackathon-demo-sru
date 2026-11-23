@@ -19,3 +19,6 @@ from a title (Supervisor Agent chat, Genie Code with the MCP tool, the app's age
 
 Tools, functions and deployment: [`deploy/databricks/README.md`](../deploy/databricks/README.md#tools-and-functions).
 `src/sru_server/` is the same server adapted to the GSA hackathon template, with the tests in `tests/`.
+
+**Playground demo:** the two demo prompts (MMS ID 9917175652607426, both MCP apps) are in the root README under
+[Playground demo: both MCP apps on one correction notice](../README.md#playground-demo-both-mcp-apps-on-one-correction-notice).

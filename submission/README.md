@@ -39,6 +39,52 @@ take a publisher's correction notice to the original article's catalog record:
   MCP server, or the Unity Catalog function `users.amanda_xu.process_sru_response` generated from the same
   Python file when the user pastes SRU XML.
 
+## Playground demo: both MCP apps on one correction notice
+
+Judges can repeat this demo in the Databricks **AI Playground**. Both prompts use the same correction notice:
+MMS ID `9917175652607426` (Sample 1, row 42). Its title has a Unicode hyphen (U+2010) in "Climate‐driven".
+Paste each prompt as written. Both were checked on November 23, 2026: each reply matched the ground truth in
+`Correction-Sample1-53-annotated.csv`.
+
+| Step | App | Playground pane (serving endpoint) | Tool called | Time |
+| --- | --- | --- | --- | --- |
+| 1 | `mcp-sru-syntax` | `agent-sru-syntax` (`mas-c8629507-endpoint`) | `users__amanda_xu__build_sru_url` | 50 s |
+| 2 | `mcp-erratum-note` | `agent-erratum-annotator` (`mas-c341c0aa-endpoint`) | `process_sru_file` (MCP) | 13 s |
+
+**Prompt 1 (`mcp-sru-syntax`, build the SRU search URL):**
+
+```text
+Build the Alma SRU search URL for correction notice MMS ID 9917175652607426. Correction notice title: Correction to: Climate‐driven insect pest outbreaks and food security risks: a review of adaptive strategies for resilient agriculture
+```
+
+Expected: the reply gives this URL (it matches the ground-truth `sru_url` character for character):
+
+```text
+https://nal.alma.exlibrisgroup.com/view/sru/01NAL_INST?version=1.2&operation=searchRetrieve&recordSchema=mods&query=alma.title%3D%22Climate-driven%20insect%20pest%20outbreaks%20and%20food%20security%20risks%3A%20a%20review%20of%20adaptive%20strategies%20for%20resilient%20agriculture%22%20and%20alma.local_field_912%3D%22Article%22
+```
+
+**Prompt 2 (`mcp-erratum-note`, annotate the original title from the saved SRU response):**
+
+```text
+Annotate the original article for correction notice MMS ID 9917175652607426. Correction notice title: Correction to: Climate‐driven insect pest outbreaks and food security risks: a review of adaptive strategies for resilient agriculture. The saved SRU response file is Sample1-Row42-9917175652607426.xml. Return the annotated original title, the erratum note, the original MMS ID, and whether it needs manual review.
+```
+
+Expected:
+
+* Annotated title: `Climate-driven insect pest outbreaks and food security risks: a review of adaptive strategies for resilient agriculture [Erratum: Sept. 2026, v. 99, no. 3, 111, 10.1007/s10340-026-02069-3]`
+* Original MMS ID: `9917015258907426`
+* Needs manual review: No
+
+Notes:
+
+* The two steps run in order. Prompt 1 gives the SRU URL. The librarian runs that URL in Alma and saves the response.
+  For this notice the response is already saved as
+  `/Volumes/users/amanda_xu/erratum_files/sru_responses/Sample1-Row42-9917175652607426.xml`. Prompt 2 reads that file.
+* In pane 2, approve the `mcp-erratum-note` tool call when the Playground asks. The reply arrives after approval.
+* Pane 1 talks to `agent-sru-syntax`, the Supervisor Agent behind the `mcp-sru-syntax` tool `build_sru_search_url`. It calls the same rules function
+  (`users.amanda_xu.build_sru_url`) that the tool calls first. To call the MCP app itself, open a model pane, choose
+  **Tools > MCP servers > Databricks Apps**, add `mcp-sru-syntax` (and `mcp-erratum-note` for step 2), then send the same prompt.
+
 ## Results summary: step 1
 
 | Evaluation | Result |

@@ -592,6 +592,24 @@ story += [
         "as 8.2); the scope set has only 4 questions and each configuration ran once; the server ran locally over "
         "stdio from the fork, not as the deployed app.",
     ]),
+    p('10. Playground demo prompt (November 23, 2026)', H1),
+    p('Judges can repeat this check in the Databricks AI Playground. The demo uses one correction notice for both MCP '
+      'apps: MMS ID 9917175652607426 (Sample 1, row 42). Its title has a Unicode hyphen (U+2010). This prompt is step 1. '
+      'Step 2 (mcp-erratum-note) is in section 11 of the agent-erratum-annotator evaluation report.'),
+    table([['Item', 'Value'],
+           ['Playground pane', 'agent-sru-syntax (serving endpoint mas-c8629507-endpoint), the Supervisor Agent behind the mcp-sru-syntax tool build_sru_search_url'],
+           ['Prompt', 'Build the Alma SRU search URL for correction notice MMS ID 9917175652607426. Correction notice title: Correction to: Climate‐driven insect pest outbreaks and food security risks: a review of adaptive strategies for resilient agriculture'],
+           ['Tool called', 'users__amanda_xu__build_sru_url'],
+           ['Reply URL', 'https://nal.alma.exlibrisgroup.com/view/sru/01NAL_INST?version=1.2&operation=searchRetrieve&recordSchema=mods&query=alma.title%3D%22Climate-driven%20insect%20pest%20outbreaks%20and%20food%20security%20risks%3A%20a%20review%20of%20adaptive%20strategies%20for%20resilient%20agriculture%22%20and%20alma.local_field_912%3D%22Article%22'],
+           ['Result', 'Matches the ground-truth sru_url in Correction-Sample1-53-annotated.csv character for character; 50 s'],
+          ], [1.3, 5.6], code_cols=()),
+    Spacer(1, 4),
+    *bullets([
+        'To call the MCP app itself, add mcp-sru-syntax to a model pane under Tools &gt; MCP servers &gt; Databricks Apps, '
+        'then send the same prompt.',
+        'The prompts are also in the README files (repository root, submission/, sru-syntax-mcp/ and erratum-annotator/), '
+        'under Playground demo: both MCP apps on one correction notice.',
+    ]),
     PageBreak(),
     KeepTogether([p('Next steps', H1),
     *bullets([
@@ -662,7 +680,8 @@ for check in ['1. Inspector Gadget testing', '2. Databricks offline MLflow evalu
               '3bd980fb57ec4b769ba66036c91091ee', '8.3 Live response times', 'Response time: done November 21, 2026',
               '9. Phoenix evaluation on November 22, 2026', '9. Phoenix evaluation (November 22)', 'Phoenix evaluation of an agent',
               '9.1 Harness', '9.2 Results', 'url_exact_match', 'match_expected_response', 'check_answer_scope',
-              'databricks-claude-sonnet-4-6', 'RXhwZXJpbWVudDo0', 'Phoenix (section 9)', 'section 9 from the']:
+              'databricks-claude-sonnet-4-6', 'RXhwZXJpbWVudDo0', 'Phoenix (section 9)', 'section 9 from the',
+              '10. Playground demo prompt', '9917175652607426', 'mas-c8629507-endpoint']:
     print('OK  ' if check in flat else 'MISSING  ', check)
 
 # The server is named mcp-sru-syntax throughout. The only allowed old-name text is the
