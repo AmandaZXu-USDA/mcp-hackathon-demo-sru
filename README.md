@@ -61,7 +61,7 @@ Annotated original title (original MMS ID 9917168304707426, needs_review = false
 
 ## Playground demo: both MCP apps on one correction notice
 
-**Video demo:** [Two MCP apps side by side in the Databricks AI Playground (YouTube)](https://youtu.be/OXjYBd19azA). It walks through the second example below (MMS ID 9917175553207426).
+**Video demo:** [Two MCP apps side by side in the Databricks AI Playground (YouTube)](https://youtu.be/OXjYBd19azA). It shows the two-app Playground demo described below.
 
 Judges can repeat this demo in the Databricks **AI Playground**. Both prompts use the same correction notice:
 MMS ID `9917175652607426` (Sample 1, row 42). Its title has a Unicode hyphen (U+2010) in "Climate‐driven".
