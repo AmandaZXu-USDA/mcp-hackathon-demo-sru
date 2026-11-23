@@ -16,6 +16,7 @@ take a publisher's correction notice to the original article's catalog record:
 | [`sru-syntax-mcp-evaluation-report.pdf`](sru-syntax-mcp-evaluation-report.pdf) | Step 1 evaluation report (16 pages, November 18, 2026; updated November 22, 2026), including lessons learned, recommendations, the November 21 re-run (41/41) and the November 22 Phoenix evaluation (section 9) |
 | [`agent-erratum-annotator-evaluation-report.pdf`](agent-erratum-annotator-evaluation-report.pdf) | Step 2 evaluation report (6 pages, November 20, 2026; updated November 22, 2026): MLflow evaluation of `agent-erratum-annotator` on 82 notices (Sample 1 and Sample 4, results per sample) with traces in Unity Catalog (tool calls, latency percentiles, token usage), two corrections in one original title, and the Inspector Gadget test of `mcp-erratum-note` |
 | [`LIBRARIAN_QUICKSTART.md`](LIBRARIAN_QUICKSTART.md) | Librarian quick-start: four ways to get an SRU URL from a correction title (Supervisor Agent chat, Genie Code with the MCP tool, the app's agent endpoint, the SQL function for lists), with access needed and errors |
+| [`DEMO_VIDEO_SCRIPT.md`](DEMO_VIDEO_SCRIPT.md) | Demo video narration script (about 2.5 minutes): timed narration and on-screen cues for the two-app AI Playground demo, a pre-recording checklist, and recording and editing tools |
 
 ## How it works: step 1, `mcp-sru-syntax`
 
