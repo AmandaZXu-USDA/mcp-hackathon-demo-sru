@@ -144,7 +144,7 @@ self-check against the ground truth passed (46/46 corrupted and doubled notes ca
 
 Only rows 4, 9, 24 and 39 say `no original in Alma`, the four rows with that ground-truth status.
 
-## Row 9: "no original in Alma" (November 21, 2026, latest)
+## Row 9: "no original in Alma" (Latest for November 21, 2026)
 
 Rows 9 and 39 have no saved SRU response, and the librarian's Alma search found only the correction notice
 (ground truth `no original in Alma - correction notice only`). The agent cannot tell that from a missing file, so:
