@@ -9,6 +9,19 @@ librarian-checked Sample1 spreadsheet.
 `/Volumes/users/amanda_xu/erratum_files/reports/agent-erratum-annotator-evaluation-report.pdf`
 (Catalog Explorer, then Download).
 
+## no_fabrication is now deterministic (November 22, 2026)
+
+The LLM guideline judge `no_fabrication` failed 14 to 21 correct replies per run, mostly by treating the original
+article's MMS ID as invented. It is replaced by a deterministic scorer of the same name: every MMS ID (16 digits, not
+inside a DOI) and DOI in the reply must appear in a tool call (arguments or output) or in the request, and every
+erratum note must appear in a tool output. The scorer self-check adds cases that must fail (an MMS ID, DOI or note in
+no tool result; a note without a tool call) and must pass (the user's erratum MMS ID, a note copied from the tool).
+
+Applied to the 82 saved replies of `valuable-turtle-195` (not yet a new MLflow run): 81/82. The one failure is a real
+fabrication the LLM judge passed: for Sample 1 row 39 (no SRU file, original not in Alma) the agent wrote an erratum
+note itself from the correction title, without a tool call and in the wrong format
+(`[Erratum: 2026, v. 17, no., e168486, https://doi.org/...]`). The instructions forbid building notes.
+
 ## MLflow evaluation run after the no_correction instruction rule, November 22, 2026
 
 Same 82 rows and scorers as the Sample 4 run below, after the agent's instructions gained a rule for the
