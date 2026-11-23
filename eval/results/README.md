@@ -5,6 +5,19 @@ demo replay. Every file is hashed in [`INDEX.json`](INDEX.json). The writer refu
 it holds a credential. Identifiers that are not credentials are kept: app URLs, the Inspector Gadget service
 principal ID and MMS IDs are already public in this repository.
 
+## Runs on November 23, 2026 UTC, after Pydantic input models (commit `698a2e3` of AmandaZXu-USDA/NAL)
+
+Both apps redeployed with a Pydantic input model for every MCP tool (`sru_inputs.py`, `erratum_inputs.py`):
+`mcp-sru-syntax` from the hackathon repo's `prod` bundle target (fork commit `3467be9`, deployment
+`01f1e7891ecb1e2b9f258ee18fbd8bc4`), `mcp-erratum-note` as deployment `01f1e78892b01eaead4d001f50db7a8d`. Same
+ground truth as below. Every tool argument now has a description and a length limit in `tools/list`; invalid
+input still returns the `invalid_input` category with an error id, so the error suites are unchanged.
+
+| Run | App | Result | By suite | Functional latency (new session per call) |
+| --- | --- | --- | --- | --- |
+| [`20261123T2159Z_mcp-sru-syntax_6e46ce61`](runs/20261123T2159Z_mcp-sru-syntax_6e46ce61/report.log) | `mcp-sru-syntax` | **55/55 pass** | smoke 1/1, contract 3/3, functional 41/41, errors 3/3, security 3/3, determinism 2/2, auth 2/2 | p50 4.04 s, p95 12.58 s, max 13.47 s (41 calls, 5 at a time) |
+| [`20261123T2200Z_mcp-erratum-note_c94f588c`](runs/20261123T2200Z_mcp-erratum-note_c94f588c/report.log) | `mcp-erratum-note` | **89/89 pass** | smoke 3/3, contract 21/21, functional 51/51, errors 7/7, security 3/3, determinism 2/2, auth 2/2 | p50 2.09 s, p95 2.25 s, max 2.26 s (51 calls, 8 at a time) |
+
 ## Runs on November 22, 2026 UTC, after MLflow tracing of tool calls (commit `7bd5058` of AmandaZXu-USDA/NAL)
 
 Both apps redeployed with every MCP tool call traced to MLflow: `mcp-sru-syntax` from the hackathon repo's
