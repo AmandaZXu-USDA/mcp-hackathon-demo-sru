@@ -12,6 +12,9 @@ second.
 
 **Video demo of the web interface:** <https://youtu.be/o3JAZNkKqss> (YouTube).
 
+**Video demo of the agent interface:** <https://youtu.be/t6i1iKBW45c> (YouTube): the two agents use their tools to automate the
+correction-notice workflow.
+
 # Part 1: Erratum annotator (add the erratum note to the original title)
 
 The annotator reads the Alma SRU response, finds the original article's record (the one whose DOI the
@@ -72,6 +75,8 @@ sign-in may have expired", reload the page.
 notices with their results, needs no sign-in or network, but cannot annotate pasted XML.
 
 ## Erratum annotator: chat with the agent
+
+Video: [agent interface demo](https://youtu.be/t6i1iKBW45c) (YouTube).
 
 1. In Databricks, open **Agents** and select **agent-erratum-annotator**.
 2. Click **Endpoint**, then **Open in playground**.
@@ -162,6 +167,8 @@ ask the project owner for `CAN USE` on the app. You need a user account in the w
 (`https://dbc-aae0ba16-8727.cloud.databricks.com`); only a workspace admin can add one.
 
 ## Option 1: Chat with the Supervisor Agent
+
+Video: [agent interface demo](https://youtu.be/t6i1iKBW45c) (YouTube).
 
 1. In Databricks, open **Agents** and select **agent-sru-syntax**.
 2. Click **Endpoint**, then **Open in playground**.

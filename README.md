@@ -16,6 +16,10 @@ This project is the initial stage of automating that workflow:
 3. **Part 3, erratum annotation:** from the SRU response, find the original article's record and append an
    erratum note to its title, with a second MCP server and agent ([`erratum-annotator/`](erratum-annotator/README.md)).
 
+**Video demos (YouTube):** [web interface](https://youtu.be/o3JAZNkKqss), [agent interface](https://youtu.be/t6i1iKBW45c) (the two
+agents use their MCP tools to automate the correction-notice workflow), and
+[AI Playground](https://youtu.be/OXjYBd19azA).
+
 ## At a glance: two MCP apps, two agents
 
 | | Project 1: SRU syntax (Parts 1 and 2) | Project 2: Erratum annotator (Part 3) |

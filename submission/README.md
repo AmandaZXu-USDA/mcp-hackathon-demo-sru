@@ -11,6 +11,7 @@ take a publisher's correction notice to the original article's catalog record:
 ## Video demos
 
 * [Web interface demo (YouTube)](https://youtu.be/o3JAZNkKqss).
+* [Agent interface demo (YouTube)](https://youtu.be/t6i1iKBW45c): the two agents, `agent-sru-syntax` and `agent-erratum-annotator`, use their MCP tools to automate the correction-notice workflow.
 * [AI Playground demo (YouTube)](https://youtu.be/OXjYBd19azA): both MCP apps side by side in the Databricks AI Playground (see [Playground demo](#playground-demo-both-mcp-apps-on-one-correction-notice)).
 
 ## Contents

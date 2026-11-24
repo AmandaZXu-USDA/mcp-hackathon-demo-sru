@@ -4,6 +4,9 @@ Agent Bricks Supervisor Agent that annotates an original article title with an e
 `mcp-erratum-note` MCP server. Supervisor Agents are configured in the Databricks UI, not in a bundle, so this
 file records the configuration needed to recreate it.
 
+**Video demo:** [agent interface (YouTube)](https://youtu.be/t6i1iKBW45c): this agent and `agent-sru-syntax` use their MCP tools to
+automate the correction-notice workflow.
+
 | Setting | Value |
 | --- | --- |
 | Name | `agent-erratum-annotator` |
