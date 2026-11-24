@@ -10,6 +10,8 @@ Two tools, one for each step of linking a publisher's correction notice to the a
 Start with Part 1 if you want to see the result: its demo web page needs no setup and answers in about a
 second.
 
+**Video demo of the web interface:** <https://youtu.be/o3JAZNkKqss> (YouTube).
+
 # Part 1: Erratum annotator (add the erratum note to the original title)
 
 The annotator reads the Alma SRU response, finds the original article's record (the one whose DOI the

@@ -8,6 +8,11 @@ take a publisher's correction notice to the original article's catalog record:
 | 1 | `mcp-sru-syntax` (1 tool) | `agent-sru-syntax` (Supervisor Agent) | Correction notice title -> NAL Alma production SRU search URL for the original article |
 | 2 | `mcp-erratum-note` (7 tools) | `agent-erratum-annotator` (Supervisor Agent) | SRU response -> original article title with an `[Erratum: ...]` note, ready for the catalog |
 
+## Video demos
+
+* [Web interface demo (YouTube)](https://youtu.be/o3JAZNkKqss): the two apps' browser pages, no setup needed.
+* [AI Playground demo (YouTube)](https://youtu.be/OXjYBd19azA): both MCP apps side by side in the Databricks AI Playground (see [Playground demo](#playground-demo-both-mcp-apps-on-one-correction-notice)).
+
 ## Contents
 
 | File | What it is |
