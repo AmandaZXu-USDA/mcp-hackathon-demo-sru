@@ -10,7 +10,7 @@ take a publisher's correction notice to the original article's catalog record:
 
 ## Video demos
 
-* [Web interface demo (YouTube)](https://youtu.be/o3JAZNkKqss): the two apps' browser pages, no setup needed.
+* [Web interface demo (YouTube)](https://youtu.be/o3JAZNkKqss).
 * [AI Playground demo (YouTube)](https://youtu.be/OXjYBd19azA): both MCP apps side by side in the Databricks AI Playground (see [Playground demo](#playground-demo-both-mcp-apps-on-one-correction-notice)).
 
 ## Contents
