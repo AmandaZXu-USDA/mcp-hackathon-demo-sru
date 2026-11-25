@@ -21,11 +21,11 @@ FIX = HERE / "fixtures"
 # file, original MMS ID (None: not in Alma), erratum note, annotated title (checked against the live app)
 ROWS = [
     ("Sample4-Row17-9917166931307426-NoOriginalTitle.xml", None,
-     "[Erratum: Apr. 2026, v. 73, no. 2, 295-295, 10.1007/s10228-026-01071-0]", ""),
+     "[Erratum: Apr. 2026, v. 73, no. 2, 295, 10.1007/s10228-026-01071-0]", ""),
     ("Sample4-Row18-9917166980707426.xml", "9915788769007426",
-     "[Erratum: Oct. 2012, v. 249, no. 4, 1183-1183, 10.1007/s00709-012-0376-8]",
+     "[Erratum: Oct. 2012, v. 249, no. 4, 1183, 10.1007/s00709-012-0376-8]",
      "Probing and tracking organelles in living plant cells "
-     "[Erratum: Oct. 2012, v. 249, no. 4, 1183-1183, 10.1007/s00709-012-0376-8]"),
+     "[Erratum: Oct. 2012, v. 249, no. 4, 1183, 10.1007/s00709-012-0376-8]"),
     ("Sample4-Row21-9917162379507426.xml", "9917035108507426",
      "[Erratum: May 2026, v. 113, no. 5, e70209, 10.1002/ajb2.70209]",
      "Disentangling complex relationships and disjunctions in western Camassia: Integrating multiple criteria "
@@ -35,9 +35,9 @@ ROWS = [
      "Revisiting Masstige Marketing: A Structured Literature Review and Future Research Agenda Using "
      "SPAR\u20104\u2010SLR and S\u2010O\u2010R Model [Erratum: May 2026, v. 50, no. 3, e70224, 10.1111/ijcs.70224]"),
     ("Sample4-Row24-9917162403807426.xml", "9917162105907426",
-     "[Erratum: Aug. 2013, v. 62, no. 4, 847-847, 10.12705/624.32]",
+     "[Erratum: Aug. 2013, v. 62, no. 4, 847, 10.12705/624.32]",
      "Taxonomic revision of Sargassum sect. Acanthocarpicae (Fucales, Phaeophyceae) "
-     "[Erratum: Aug. 2013, v. 62, no. 4, 847-847, 10.12705/624.32]"),
+     "[Erratum: Aug. 2013, v. 62, no. 4, 847, 10.12705/624.32]"),
 ]
 
 

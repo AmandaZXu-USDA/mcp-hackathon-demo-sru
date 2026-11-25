@@ -23,7 +23,7 @@ ROWS = [
      "[Erratum: Dec. 2020, v. 21, no. 1, 305, 10.1186/s13059-020-02243-5]"),
     ("Sample4-Row7-9915622432007426.xml", "already_annotated", "9915622429307426",
      "PM2.5 exposure inducing ATP alteration links with NLRP3 inflammasome activation "
-     "[Erratum: April 2022, v.29(17); p.24457]"),
+     "[Erratum: April 2022, v.29(17); p.24457, 10.1007/s11356-022-19090-5]"),
     ("Sample4-Row8-9916177053207426.xml", "ready", "9916127477307426",
      "547 transcriptomes from 44 brain areas reveal features of the aging brain in non-human primates "
      "[Erratum: Dec. 2020, v. 21, no. 1, 46, 10.1186/s13059-020-01962-z]"),
@@ -32,7 +32,7 @@ ROWS = [
      "[Erratum: Dec. 2020, v. 21, no. 1, 214, 10.1186/s13059-020-02149-2]"),
     ("Sample4-Row10-9916197269207426.xml", "ready", "9917152597007426",
      "MÚLT-JELEN-JÖVŐ a hazai mezőgazdasági talajvizsgálatokban = PAST-PRESENT-FUTURE in Hungarian soil "
-     "analyses [Erratum: May 31, 2021, v. 70, no. 1, 85-85, 10.1556/0088.2021.00087]"),
+     "analyses [Erratum: May 31, 2021, v. 70, no. 1, 85, 10.1556/0088.2021.00087]"),
 ]
 
 
@@ -83,5 +83,5 @@ def test_no_original_gives_blank_annotated_title(search_title):
     res = ea.process_sru_response(CORRECTION_ONLY, search_title, "9917167033407426")
     assert res["original_id"] is None
     assert res["annotated_title"] == ""
-    assert res["erratum_note"] == "[Erratum: Sept. 2021, v. 44, no. 9, 2001-2001, 10.1/x]"
+    assert res["erratum_note"] == "[Erratum: Sept. 2021, v. 44, no. 9, 2001, 10.1/x]"
     assert res["already_annotated"] is False

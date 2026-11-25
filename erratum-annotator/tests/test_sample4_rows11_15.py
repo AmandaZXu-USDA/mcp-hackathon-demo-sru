@@ -29,13 +29,13 @@ ROWS = [
      "Phylogenomics resolves the evolutionary histories and taxonomy of the long\u2010associated North American "
      "legume genera Psorodendron and Psorothamnus [Erratum: July 2026, v. 113, no. 7, e70228, 10.1002/ajb2.70228]"),
     ("Sample4-Row13-9917172378907426.xml", "9917167473907426",
-     "[Erratum: May 2026, v. 62, no. 3, 643-643, 10.1007/s10600-026-05032-x]",
+     "[Erratum: May 2026, v. 62, no. 3, 643, 10.1007/s10600-026-05032-x]",
      "New C\u2081\u2089-Diterpenoid Alkaloid 19-Oxo-14-Acetylbrowniine with Antioxidant Activity from "
-     "Delphinium oreophilum [Erratum: May 2026, v. 62, no. 3, 643-643, 10.1007/s10600-026-05032-x]"),
+     "Delphinium oreophilum [Erratum: May 2026, v. 62, no. 3, 643, 10.1007/s10600-026-05032-x]"),
     ("Sample4-Row14-9917167033407426-NoOriginalTitle.xml", None,
-     "[Erratum: Sept. 2021, v. 44, no. 9, 2001-2001, 10.1007/s00449-021-02575-x]", ""),
+     "[Erratum: Sept. 2021, v. 44, no. 9, 2001, 10.1007/s00449-021-02575-x]", ""),
     ("Sample4-Row15-9917167031307426-NoOriginalTitle.xml", None,
-     "[Erratum: Oct. 2012, v. 249, no. 4, 1181-1181, 10.1007/s00709-012-0420-8]", ""),
+     "[Erratum: Oct. 2012, v. 249, no. 4, 1181, 10.1007/s00709-012-0420-8]", ""),
 ]
 
 

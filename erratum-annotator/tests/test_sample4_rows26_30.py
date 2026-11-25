@@ -20,13 +20,13 @@ FIX = HERE / "fixtures"
 # file, original MMS ID, erratum note, annotated title (checked against the live app)
 ROWS = [
     ("Sample4-Row26-9917162200107426.xml", "9917162169107426",
-     "[Erratum: Mar. 2015, v. 64, no. 1, 183-183, 10.12705/641.18]",
+     "[Erratum: Mar. 2015, v. 64, no. 1, 183, 10.12705/641.18]",
      "Holotype specimens and type citations: General issues "
-     "[Erratum: Mar. 2015, v. 64, no. 1, 183-183, 10.12705/641.18]"),
+     "[Erratum: Mar. 2015, v. 64, no. 1, 183, 10.12705/641.18]"),
     ("Sample4-Row27-9917164112007426.xml", "9916836293907426",
-     "[Erratum: Dec. 2025, v. 80, no. 14, 2309-2309, 10.1134/S1061934825020042]",
+     "[Erratum: Dec. 2025, v. 80, no. 14, 2309, 10.1134/S1061934825020042]",
      "Extraction of Microplastics from River Water in a Rotating Coiled Column Using a Water\u2013Oil System "
-     "[Erratum: Dec. 2025, v. 80, no. 14, 2309-2309, 10.1134/S1061934825020042]"),
+     "[Erratum: Dec. 2025, v. 80, no. 14, 2309, 10.1134/S1061934825020042]"),
     ("Sample4-Row28-9917163838107426.xml", "9917163931807426",
      "[Erratum: June 2026, v. 68, no. 3, 165, 10.1007/s10341-026-01878-1]",
      "Socioeconomic and Perceptual Drivers of Climate Change Impact Perceptions Among Peach Farmers: "

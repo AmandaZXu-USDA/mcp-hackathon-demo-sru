@@ -18,7 +18,7 @@ Parses SRU MODS XML responses from the NAL Alma catalog, extracts erratum
 notes from correction records, and appends them to original article titles.
 
 Validated on 22 SRU XML files covering: dual/single-record responses,
-already-annotated titles (skip rule), malformed XML (unescaped &, raw <),
+already-annotated titles (no second note; correction DOI added), malformed XML (unescaped &, raw <),
 and variant part-text formats.
 """
 import re
@@ -96,7 +96,7 @@ def parse_part(part_text: str) -> str:
 
     Handles variants such as:
       '2024 Dec., v. 55, no. 1, 77'
-      '2024 Dec., v. 60, no. 10 p. 1150-1150'
+      '2024 Dec., v. 60, no. 10 p. 1150-1150' (single page -> '1150')
       '2026 July, v. 524, no. 1 p. 373-373'   (unabbreviated month, no period)
       '2026 July 4, v. 21, no. 4 p. 1015-1015' (day included -> 'July 4, 2026')
       '2026 June 18, v. 134 p. 247-248'       (no issue -> 'June 18, 2026, v. 134, 247-248')
@@ -112,7 +112,7 @@ def parse_part(part_text: str) -> str:
     if not with_issue:
         # No issue number: 'V p. PAGES', 'V, PAGE' or just 'V'
         np = re.match(r"([^,\s]+)\s*,?\s*(?:p\.\s*)?(.*)$", rest)
-        volume, page = np.group(1), np.group(2).strip()
+        volume, page = np.group(1), collapse_pages(np.group(2))
         return f"{date}, v. {volume}, {page}" if page else f"{date}, v. {volume}"
     volume, remainder = with_issue.groups()
     if "," in remainder:
@@ -120,7 +120,18 @@ def parse_part(part_text: str) -> str:
     else:
         mm = re.match(r"(\S+)\s*p\.?\s*(.+)", remainder)
         issue, page = (mm.group(1), mm.group(2)) if mm else (remainder, "")
-    return f"{date}, v. {volume.strip()}, no. {issue.strip()}, {page.strip()}"
+    return f"{date}, v. {volume.strip()}, no. {issue.strip()}, {collapse_pages(page)}"
+
+
+def collapse_pages(page: str) -> str:
+    """Collapse a single-page range to one page: '1171-1171' -> '1171', 'p. 77-77' -> '77'.
+
+    Rule (user, 2026-11-25, Lorazepam notice 9917175567307426). Real ranges such as
+    '247-248' are kept as they are.
+    """
+    s = (page or "").strip()
+    m = re.fullmatch(r"(?:p\.\s*)?([A-Za-z]?\d+)\s*[-\u2013]\s*\1", s)
+    return m.group(1) if m else s
 
 
 def clean_xml(xml: str) -> str:
@@ -168,6 +179,24 @@ def enhance_title(original_title: str, erratum_note: str) -> str:
     if not erratum_note or "[Erratum:" in (original_title or ""):
         return original_title
     return f"{original_title} {erratum_note}"
+
+
+def add_doi_to_existing_note(title: str, doi: str):
+    """Add the correction DOI to an erratum note already in the original title.
+
+    Rule (user, 2026-11-25, Lorazepam notice 9917175567307426): Alma notes such as
+    '[Erratum: July 8, 2026, v. 264 (9), p. 1171]' get ', <correction DOI>' before the ']'.
+    Skipped when the DOI is already in the title. With two or more existing notes it is
+    unclear which one is this correction's, so the title is left as is and flagged for review.
+    Returns (title, needs_review).
+    """
+    if not title or not doi or doi.lower() in title.lower():
+        return title, False
+    notes = list(re.finditer(r"\[Erratum:[^\]]*\]", title))
+    if len(notes) != 1:
+        return title, len(notes) > 1
+    m = notes[0]
+    return f"{title[:m.end() - 1].rstrip()}, {doi}]{title[m.end():]}", False
 
 
 _MONTHS = {m: i for i, m in enumerate(
@@ -271,6 +300,9 @@ def process_sru_response(xml: str, search_title: str = "", correction_id: str = 
     note = " ".join(notes) or None
     already = "[Erratum:" in (base or "")
     annotated = (enhance_title(base, note) if note else base) if original and correction else ""
+    if already and annotated and correction:
+        annotated, doi_review = add_doi_to_existing_note(annotated, correction.doi)
+        review = review or doi_review
     return {
         "num_records": len(records),
         "num_corrections": len(corrections),
